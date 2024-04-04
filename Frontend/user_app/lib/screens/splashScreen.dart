@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/widgets/colors.dart';
+import 'package:user_app/widgets/constants/colors.dart';
+
+import 'onBoardingScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,7 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/onboarding');
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => OnBoardingScreen()));
     });
   }
 
@@ -47,9 +50,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   border: Border.all(width: 3.w, color: Colors.white),
                   borderRadius: BorderRadius.circular(1000),
                 ),
-                child: Center(
-                  child: Image.asset('assets/images/logo.png'),
-                ),
+                // child: Center(
+                //   child: Image.asset('assets/images/logo.png'),
+                // ),
               ),
             ),
           ),

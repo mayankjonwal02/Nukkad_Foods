@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/widgets/colors.dart';
+import 'package:user_app/widgets/constants/colors.dart';
+
+import '../widgets/constants/texts.dart';
+import 'loginScreen.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -21,7 +24,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void _onIntroEnd(context) {
-    Navigator.of(context).pushReplacementNamed('/login');
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   Widget _buildImage(String assetName) {
@@ -83,31 +87,32 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
               child: SizedBox(
                 width: double.infinity,
                 height: 60,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor2,
-                    ),
-                    elevation:
-                        MaterialStateProperty.resolveWith((states) => 2.0),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
+                child: Container(
+                  height: 7.h,
+                  width: 97.w,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => primaryColor2,
+                        ),
+                        elevation:
+                            MaterialStateProperty.resolveWith((states) => 2.0),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  child: Text(
-                    'NEXT',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Poppins',
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/login');
-                  },
+                      child: h4Text('NEXT', Colors.white),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
+                      }),
                 ),
               ),
             )

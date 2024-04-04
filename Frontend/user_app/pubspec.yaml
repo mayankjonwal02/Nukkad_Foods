@@ -1,15 +1,17 @@
 name: user_app
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  intl_phone_number_input: ^0.7.4
   introduction_screen: ^3.1.14
+  pinput: ^4.0.0
   sizer: ^2.0.15
 
 dev_dependencies:
@@ -22,3 +24,4 @@ flutter:
   assets:
     - assets/images/
     - assets/images/introduction/
+    - assets/images/socials/
