@@ -9,7 +9,9 @@ Widget h1Text(String text, Color color) {
       fontFamily: 'Poppins',
       fontSize: 29.sp,
       fontWeight: FontWeight.w600,
+      
     ),
+    textAlign: TextAlign.center,
   );
 }
 

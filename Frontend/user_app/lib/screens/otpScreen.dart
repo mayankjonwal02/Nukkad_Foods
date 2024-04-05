@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/screens/loginScreen.dart';
+import 'package:user_app/screens/resetPasswordScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';
-import 'package:pinput/pinput.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class OTPScreen extends StatefulWidget {
   final String userNumber;
@@ -14,36 +15,11 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-  final pinController = TextEditingController();
-  final focusNode = FocusNode();
-
-  @override
-  void dispose() {
-    pinController.dispose();
-    focusNode.dispose();
-    super.dispose();
-  }
+  String enteredpin = '';
 
   @override
   Widget build(BuildContext context) {
     String userNumber = widget.userNumber;
-    String enteredpin = pinController.text;
-    const focusedBorderColor = Colors.black;
-    const fillColor = Colors.white;
-    const borderColor = Colors.grey;
-
-    final defaultPinTheme = PinTheme(
-      width: 16.w,
-      height: 8.h,
-      textStyle: TextStyle(
-        fontSize: 22.sp,
-        color: textBlack,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(19),
-        border: Border.all(color: borderColor),
-      ),
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -75,52 +51,19 @@ class _OTPScreenState extends State<OTPScreen> {
                   'Verify with OTP sent to ${'XXXXXXX' + userNumber.substring(userNumber.length - 3)}',
                   textBlack),
               SizedBox(height: 8.h),
-              Directionality(
-                textDirection: TextDirection.ltr,
-                child: Pinput(
-                  controller: pinController,
-                  focusNode: focusNode,
-                  // androidSmsAutofillMethod:
-                  //     AndroidSmsAutofillMethod.smsUserConsentApi,
-                  // listenForMultipleSmsOnAndroid: true,
-                  defaultPinTheme: defaultPinTheme,
-                  separatorBuilder: (index) => SizedBox(width: 5.w),
-                  // validator: (value) {
-                  //   return value == '2222' ? ;
-                  // },
-                  hapticFeedbackType: HapticFeedbackType.heavyImpact,
-                  onCompleted: (pin) {
-                    debugPrint('onCompleted: $pin');
-                  },
-                  onChanged: (value) {
-                    debugPrint('onChanged: $value');
-                  },
-                  cursor: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 9),
-                        width: 22,
-                        height: 1,
-                        color: focusedBorderColor,
-                      ),
-                    ],
-                  ),
-                  focusedPinTheme: defaultPinTheme.copyWith(
-                    decoration: defaultPinTheme.decoration!.copyWith(
-                      borderRadius: BorderRadius.circular(7),
-                      border:
-                          Border.all(color: focusedBorderColor, width: 0.2.h),
-                    ),
-                  ),
-                  submittedPinTheme: defaultPinTheme.copyWith(
-                    decoration: defaultPinTheme.decoration!.copyWith(
-                      color: fillColor,
-                      borderRadius: BorderRadius.circular(7),
-                      border: Border.all(color: borderColor, width: 0.2.h),
-                    ),
-                  ),
-                ),
+              OtpTextField(
+                fieldHeight: 8.h,
+                fieldWidth: 15.w,
+                numberOfFields: 4,
+                borderColor: Colors.grey.shade600,
+                focusedBorderColor: Colors.black,
+                cursorColor: Colors.black,
+                borderRadius: BorderRadius.circular(7),
+                showFieldAsBox: true,
+                clearText: true,
+                onSubmit: (String verificationCode) {
+                  enteredpin = verificationCode;
+                },
               ),
               SizedBox(height: 8.h),
               SizedBox(
@@ -139,15 +82,13 @@ class _OTPScreenState extends State<OTPScreen> {
                       ),
                     ),
                   ),
-                  child: h4Text('Send OTP'.toUpperCase(), Colors.white),
+                  child: h4Text('Continue'.toUpperCase(), Colors.white),
                   onPressed: () {
                     if (enteredpin == '8888') {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              OTPScreen(userNumber: userNumber),
-                        ),
+                            builder: (context) => ResetPasswordScreen()),
                       );
                     } else {
                       ScaffoldMessenger.of(context)
@@ -164,6 +105,9 @@ class _OTPScreenState extends State<OTPScreen> {
                           ),
                         );
                     }
+                    setState(() {
+                      enteredpin = '';
+                    });
                   },
                 ),
               ),
