@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/screens/loginScreen.dart';
-import 'package:user_app/screens/resetPasswordScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class OTPScreen extends StatefulWidget {
   final String userNumber;
-  const OTPScreen({Key? key, required this.userNumber}) : super(key: key);
+  final String route;
+  const OTPScreen({Key? key, required this.userNumber, required this.route})
+      : super(key: key);
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -20,7 +21,11 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     String userNumber = widget.userNumber;
-
+    String countryCode = userNumber.split(' ')[0];
+    String lastThreeDigits = userNumber.length >= 3
+        ? userNumber.substring(userNumber.length - 3)
+        : 'XXXX';
+    String displayNumber = '$countryCode XXXXXXX$lastThreeDigits';
     return Scaffold(
       appBar: AppBar(
         title: h4Text('Verification', textBlack),
@@ -47,9 +52,9 @@ class _OTPScreenState extends State<OTPScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              h3Text(
-                  'Verify with OTP sent to ${'XXXXXXX' + userNumber.substring(userNumber.length - 3)}',
-                  textBlack),
+              // h3Text('Verify with OTP sent to ${'XXXXXXX' + lastThreeDigits}',
+              //     textBlack),
+              h3Text('Verify with OTP sent to $displayNumber', textBlack),
               SizedBox(height: 8.h),
               OtpTextField(
                 fieldHeight: 8.h,
@@ -85,10 +90,9 @@ class _OTPScreenState extends State<OTPScreen> {
                   child: h4Text('Continue'.toUpperCase(), Colors.white),
                   onPressed: () {
                     if (enteredpin == '8888') {
-                      Navigator.pushReplacement(
+                      Navigator.pushReplacementNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => ResetPasswordScreen()),
+                        widget.route,
                       );
                     } else {
                       ScaffoldMessenger.of(context)
@@ -120,9 +124,10 @@ class _OTPScreenState extends State<OTPScreen> {
                   TextButton(
                       onPressed: () {
                         Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
+                        );
                       },
                       child: h6Text('Resend', primaryColor2))
                 ],

@@ -84,8 +84,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              OTPScreen(userNumber: userNumber),
+                          builder: (context) => OTPScreen(
+                            userNumber: userNumber,
+                            route: '/reset',
+                          ),
                         ),
                       );
                     } else {
@@ -97,7 +99,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             content: Container(
                               height: 3.h,
                               child: bodyText1(
-                                  'Please enter correct mobile number', Colors.white),
+                                  'Please enter correct mobile number',
+                                  Colors.white),
                             ),
                             backgroundColor: colorFailure,
                           ),
