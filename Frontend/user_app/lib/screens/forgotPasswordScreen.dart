@@ -19,6 +19,18 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   String enteredNumber = '';
 
+  void routeNext(String userNumber) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OTPScreen(
+          userNumber: userNumber,
+          option: 1,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     String userNumber = widget.userNumber;
@@ -62,7 +74,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 });
               }),
               SizedBox(height: 8.h),
-              Container(
+              SizedBox(
                 height: 7.h,
                 width: 97.w,
                 child: ElevatedButton(
@@ -81,22 +93,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: h4Text('Send OTP'.toUpperCase(), Colors.white),
                   onPressed: () {
                     if (userNumber == enteredNumber) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => OTPScreen(
-                            userNumber: userNumber,
-                            route: '/reset',
-                          ),
-                        ),
-                      );
+                      routeNext(userNumber);
                     } else {
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
                         ..showSnackBar(
                           SnackBar(
                             duration: Duration(seconds: 4),
-                            content: Container(
+                            content: SizedBox(
                               height: 3.h,
                               child: bodyText1(
                                   'Please enter correct mobile number',

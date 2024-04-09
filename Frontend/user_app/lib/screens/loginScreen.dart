@@ -79,9 +79,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      socialLoginButton('google.png'),
-                      socialLoginButton('facebook.png'),
-                      socialLoginButton('twitter.png'),
+                      socialLoginButton('google.png', onGoogleTap),
+                      socialLoginButton('facebook.png', onFacebookTap),
+                      socialLoginButton('twitter.png', onTwitterTap),
                     ],
                   ),
                 ),
@@ -93,3 +93,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+onGoogleTap() {}
+
+onFacebookTap() {}
+
+onTwitterTap() {}

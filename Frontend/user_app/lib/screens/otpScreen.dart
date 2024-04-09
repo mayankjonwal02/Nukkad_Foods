@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/screens/locationSetupScreen.dart';
 import 'package:user_app/screens/loginScreen.dart';
+import 'package:user_app/screens/resetPasswordScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 class OTPScreen extends StatefulWidget {
   final String userNumber;
-  final String route;
-  const OTPScreen({Key? key, required this.userNumber, required this.route})
+  final int option;
+  const OTPScreen({Key? key, required this.userNumber, required this.option})
       : super(key: key);
 
   @override
@@ -21,11 +23,22 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     String userNumber = widget.userNumber;
-    String countryCode = userNumber.split(' ')[0];
-    String lastThreeDigits = userNumber.length >= 3
-        ? userNumber.substring(userNumber.length - 3)
-        : 'XXXX';
-    String displayNumber = '$countryCode XXXXXXX$lastThreeDigits';
+    int option = widget.option;
+
+    void chooseRoute() {
+      if (option == 1) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
+        );
+      } else if (option == 2) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LocationSetupScreen()),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: h4Text('Verification', textBlack),
@@ -52,9 +65,7 @@ class _OTPScreenState extends State<OTPScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // h3Text('Verify with OTP sent to ${'XXXXXXX' + lastThreeDigits}',
-              //     textBlack),
-              h3Text('Verify with OTP sent to $displayNumber', textBlack),
+              h3Text('Verify with OTP sent to $userNumber', textBlack),
               SizedBox(height: 8.h),
               OtpTextField(
                 fieldHeight: 8.h,
@@ -90,10 +101,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   child: h4Text('Continue'.toUpperCase(), Colors.white),
                   onPressed: () {
                     if (enteredpin == '8888') {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        widget.route,
-                      );
+                      chooseRoute();
                     } else {
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
@@ -126,7 +134,8 @@ class _OTPScreenState extends State<OTPScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()),
+                            builder: (context) => LoginScreen(),
+                          ),
                         );
                       },
                       child: h6Text('Resend', primaryColor2))

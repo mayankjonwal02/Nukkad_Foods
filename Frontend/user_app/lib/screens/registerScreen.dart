@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/screens/otpScreen.dart';
 import 'package:user_app/widgets/constants/conditionsWidget.dart';
-import 'package:user_app/widgets/input_fields/inputField.dart';
+import 'package:user_app/widgets/input_fields/textInputField.dart';
 import 'package:user_app/widgets/input_fields/passwordField.dart';
 
 import '../widgets/constants/colors.dart';
@@ -25,6 +24,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String newPassword = '';
   String confirmPassword = '';
 
+  final userNameController = TextEditingController();
+  final userEmailController = TextEditingController();
   bool obscureText = true;
 
   void handlePasswordChange(String password) {
@@ -52,15 +53,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           children: [
             h1Text('Sign Up', textBlack),
             SizedBox(height: 3.h),
-            inputField(
+            textInputField(
                 'Name',
+                userNameController,
                 (String name) => {
                       setState(() {
                         userName = name;
                       })
                     }),
             SizedBox(height: 2.h),
-            inputField('Email', (String email) {
+            textInputField('Email', userEmailController, (String email) {
               setState(() {
                 userEmail = email;
               });
@@ -101,24 +103,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                     child: h4Text('Sign Up'.toUpperCase(), Colors.white),
                     onPressed: () {
-                      print(
-                          'All fields are filled \n User name: ${userName} \n Email: ${userEmail} \n Number: ${userNumber} \n Password: ${newPassword} \n Confirm Password: ${confirmPassword}');
-
                       if (userName != '' &&
                           userEmail != '' &&
                           userNumber != '' &&
                           newPassword != '' &&
                           confirmPassword != '' &&
                           newPassword == confirmPassword) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OTPScreen(
-                              userNumber: userNumber,
-                              route: '/locationScreen',
-                            ),
-                          ),
-                        );
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   // MaterialPageRoute(
+                        //   //   builder: (context) => OTPScreen(
+                        //   //     userNumber: userNumber,
+                        //   //     option: 2,
+                        //   //   ),
+                        //   // ),
+                        // );
                         setState(() {
                           userName = '';
                           userEmail = '';
@@ -148,9 +147,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                              builder: (context) => const LoginScreen()));
                     },
-                    style: ButtonStyle(
+                    style: const ButtonStyle(
                         overlayColor:
                             MaterialStatePropertyAll(Colors.transparent)),
                     child: h6Text('Login', primaryColor2))
@@ -168,9 +167,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    socialLoginButton('google.png'),
-                    socialLoginButton('facebook.png'),
-                    socialLoginButton('twitter.png'),
+                    socialLoginButton('google.png', onGoogleTap),
+                    socialLoginButton('facebook.png', onFacebookTap),
+                    socialLoginButton('twitter.png', onTwitterTap),
                   ],
                 ),
               ),
@@ -182,3 +181,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     ));
   }
 }
+
+onGoogleTap() {}
+
+onFacebookTap() {}
+
+onTwitterTap() {}

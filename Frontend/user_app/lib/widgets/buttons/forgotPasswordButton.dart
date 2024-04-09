@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/screens/forgotPasswordScreen.dart';
+import 'package:user_app/Screens/forgotPasswordScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';
 
-Widget forgotPassButton(userNumber, BuildContext context) {
+Widget forgotPassButton(String userNumber, BuildContext context) {
   return Center(
     child: TextButton(
       onPressed: () {
         if (userNumber != '') {
-          Navigator.pushReplacement(
-            context,
+          print('User number: $userNumber');
+          Navigator.of(context).pushReplacement(
+            
             MaterialPageRoute(
-              builder: (context) =>
-                  ForgotPasswordScreen(userNumber: userNumber),
+              builder: (context) => ForgotPasswordScreen(userNumber: userNumber),
             ),
           );
         } else {
