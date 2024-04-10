@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget sectionSlider(String headerText, List names, List images) {
-  return Container(
+  return SizedBox(
     height: 22.h,
-    margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,10 +24,12 @@ Widget sectionSlider(String headerText, List names, List images) {
                   padding: EdgeInsets.symmetric(horizontal: 2.w),
                   child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 6.h,
+                      SizedBox(
+                        height: 12.h,
+                        width: 12.h,
+                        child: Image.asset('assets/images/waffle.png'),
                       ),
-                      h6Text('Item $index', textBlack)
+                      h6Text('Waffle', textBlack)
                     ],
                   ),
                 );

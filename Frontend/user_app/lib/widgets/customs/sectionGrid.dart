@@ -26,10 +26,12 @@ Widget sectionGrid(String headerText, List names, List images) {
                 padding: EdgeInsets.symmetric(horizontal: 2.w),
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 4.h,
+                    SizedBox(
+                      height: 8.5.h,
+                      width: 8.5.h,
+                      child: Image.asset('assets/images/bowl.png'),
                     ),
-                    bodyText1('Item $index', textBlack),
+                    h6Text('Waffle', textBlack)
                   ],
                 ),
               );
