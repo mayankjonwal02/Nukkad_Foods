@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
         return const MaterialApp(
           title: 'Nukkad Foods',
           debugShowCheckedModeBanner: false,
-          home: HomeScreen(),
+          home: SplashScreen(),
         );
       },
     );

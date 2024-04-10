@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/NavBarWidgets/foodBody.dart';
 import 'package:user_app/Screens/NavBarWidgets/orderBody.dart';
 import 'package:user_app/Screens/NavBarWidgets/profileBody.dart';
@@ -33,10 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          margin: EdgeInsets.fromLTRB(3.w, 5.h, 2.w, 0),
-          child: _widgetOptions[_selectedIndex],
-        ),
+        child: _widgetOptions[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

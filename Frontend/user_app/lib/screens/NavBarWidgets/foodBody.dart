@@ -29,90 +29,80 @@ class _FoodBodyState extends State<FoodBody> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          customAppBar(),
-          searchBar(),
-          adsSlider(),
-          SizedBox(height: 1.h),
-          sectionSlider(
-              'Favorite Merchants', restaurantNames, restaurantImages),
-          Divider(color: textGrey, thickness: 0.2.h),
-          sectionGrid('Hey, What\'s on your mind?', foodCategories, foodImaqes),
-          Divider(color: textGrey, thickness: 0.2.h),
-          offersSlider('Offers curated for you', offerData),
-          SizedBox(height: 1.h),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: h5Text('Restaurants near me'.toUpperCase(), textBlack),
-          ),
-          SizedBox(height: 2.h),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: h5Text('Quick Delivery', textBlack),
-          ),
-          SizedBox(height: 1.h),
-          restaurantSlider(),
-          SizedBox(height: 3.h),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: h5Text('Nearest Restaurants', textBlack),
-          ),
-          SizedBox(height: 1.h),
-          restaurantSlider(),
-          SizedBox(height: 3.h),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: h5Text('Latest Restaurants', textBlack),
-          ),
-          SizedBox(height: 1.h),
-          restaurantSlider(),
-          SizedBox(height: 2.h),
-          Divider(color: textGrey, thickness: 0.2.h),
-          SizedBox(height: 3.h),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'ALL RESTAURANTS',
-                style: TextStyle(
-                  color: textBlack,
-                  fontFamily: 'Poppins',
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w600,
+      child: Container(
+        margin: EdgeInsets.fromLTRB(3.w, 5.h, 2.w, 0),
+        child: Column(
+          children: [
+            customAppBar(),
+            searchBar(),
+            adsSlider(),
+            SizedBox(height: 1.h),
+            sectionSlider(
+                'Favorite Merchants', restaurantNames, restaurantImages),
+            Divider(color: textGrey, thickness: 0.2.h),
+            sectionGrid(
+                'Hey, What\'s on your mind?', foodCategories, foodImaqes),
+            Divider(color: textGrey, thickness: 0.2.h),
+            offersSlider('Offers curated for you', offerData),
+            SizedBox(height: 1.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: h5Text('Restaurants near me'.toUpperCase(), textBlack),
+            ),
+            SizedBox(height: 2.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: h5Text('Quick Delivery', textBlack),
+            ),
+            SizedBox(height: 1.h),
+            restaurantSlider(),
+            SizedBox(height: 3.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: h5Text('Nearest Restaurants', textBlack),
+            ),
+            SizedBox(height: 1.h),
+            restaurantSlider(),
+            SizedBox(height: 3.h),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: h5Text('Latest Restaurants', textBlack),
+            ),
+            SizedBox(height: 1.h),
+            restaurantSlider(),
+            SizedBox(height: 2.h),
+            Divider(color: textGrey, thickness: 0.2.h),
+            SizedBox(height: 3.h),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'ALL RESTAURANTS',
+                  style: TextStyle(
+                    color: textBlack,
+                    fontFamily: 'Poppins',
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                '50 Restaurants delivering to you',
-                style: TextStyle(
-                  color: textGrey,
-                  fontFamily: 'Poppins',
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
+                Text(
+                  '50 Restaurants delivering to you',
+                  style: TextStyle(
+                    color: textGrey,
+                    fontFamily: 'Poppins',
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          SizedBox(height: 3.h),
-          allRestaurants(),
-          SizedBox(height: 2.h),
-          allRestaurants(),
-          SizedBox(height: 2.h),
-          allRestaurants(),
-          SizedBox(height: 2.h),
-          allRestaurants(),
-          SizedBox(height: 2.h),
-          allRestaurants(),
-          SizedBox(height: 2.h),
-          allRestaurants(),
-          SizedBox(height: 2.h),
-          allRestaurants(),
-          SizedBox(height: 2.h),
-          allRestaurants(),
-        ],
+              ],
+            ),
+            allRestaurants(),
+            SizedBox(height: 3.h),
+          ],
+        ),
       ),
     );
   }

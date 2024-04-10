@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/constants/colors.dart';
@@ -18,11 +19,52 @@ class _customAppBarState extends State<customAppBar> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Center(
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 1.h,2.w, 1.h),
           child: Image.asset('assets/icons/location_pin.png'),
         ),
-        Container(
-          width: 40.w,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 25.w,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Karuna Sagar',
+                    style: TextStyle(
+                      color: textBlack,
+                      fontFamily: 'Poppins',
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    '506 B, kanadiya road main road',
+                    style: TextStyle(
+                      color: textBlack,
+                      fontFamily: 'Poppins',
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Image.asset('assets/icons/down.png'),
+            ),
+          ],
         ),
         Container(
           height: 5.h,

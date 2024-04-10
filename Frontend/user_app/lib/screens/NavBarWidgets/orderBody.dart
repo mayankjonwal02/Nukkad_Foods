@@ -23,15 +23,18 @@ class _OrdersBodyState extends State<OrdersBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: h2Text('Orders', textBlack),
-        ),
-        OrderTypeSelector(onOrderTypeChanged: _handleOrderTypeChanged),
-        SizedBox(height: 1.5.h),
-        _isOngoing ? ongoingOrders(_isOngoing) : previousOrders(_isOngoing),
-      ],
+    return Container(
+      margin: EdgeInsets.fromLTRB(3.w, 4.h, 2.w, 0),
+      child: Column(
+        children: [
+          Center(
+            child: h2Text('Orders', textBlack),
+          ),
+          OrderTypeSelector(onOrderTypeChanged: _handleOrderTypeChanged),
+          SizedBox(height: 1.5.h),
+          _isOngoing ? ongoingOrders(_isOngoing) : previousOrders(_isOngoing),
+        ],
+      ),
     );
   }
 }
