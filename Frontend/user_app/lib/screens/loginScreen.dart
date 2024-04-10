@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/screens/registerScreen.dart';
 import 'package:user_app/widgets/buttons/forgotPasswordButton.dart';
@@ -24,14 +25,22 @@ class _LoginScreenState extends State<LoginScreen> {
   void routeSignIn() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      PageTransition(
+        child: LoginScreen(),
+        type: PageTransitionType.fade,
+        duration: const Duration(milliseconds: 200),
+      ),
     );
   }
 
   void routeRegister() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => RegistrationScreen()),
+      PageTransition(
+        child: RegistrationScreen(),
+        type: PageTransitionType.fade,
+        duration: const Duration(milliseconds: 200),
+      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/screens/locationSetupScreen.dart';
 import 'package:user_app/screens/loginScreen.dart';
@@ -29,12 +30,20 @@ class _OTPScreenState extends State<OTPScreen> {
       if (option == 1) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
+          PageTransition(
+            child: ResetPasswordScreen(),
+            type: PageTransitionType.fade,
+            duration: Duration(milliseconds: 200),
+          ),
         );
       } else if (option == 2) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LocationSetupScreen()),
+          PageTransition(
+            child: LocationSetupScreen(),
+            type: PageTransitionType.fade,
+            duration: Duration(milliseconds: 200),
+          ),
         );
       }
     }
@@ -48,8 +57,10 @@ class _OTPScreenState extends State<OTPScreen> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                builder: (context) => LoginScreen(),
+              PageTransition(
+                child: LoginScreen(),
+                type: PageTransitionType.fade,
+                duration: Duration(milliseconds: 200),
               ),
             );
           },
@@ -130,15 +141,18 @@ class _OTPScreenState extends State<OTPScreen> {
                 children: [
                   bodyText1("Didn't receive OTP?", textBlack),
                   TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
-                      },
-                      child: h6Text('Resend', primaryColor2))
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        PageTransition(
+                          child: LoginScreen(),
+                          type: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 200),
+                        ),
+                      );
+                    },
+                    child: h6Text('Resend', primaryColor2),
+                  ),
                 ],
               ),
             ],

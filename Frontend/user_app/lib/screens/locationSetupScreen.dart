@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/screens/homeScreen.dart';
 import 'package:user_app/screens/loginScreen.dart';
@@ -13,13 +14,18 @@ class LocationSetupScreen extends StatefulWidget {
   State<LocationSetupScreen> createState() => _LocationSetupScreenState();
 }
 
-onPressed(BuildContext context) {
-  print('Pressed');
-  Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (context) => HomeScreen()));
-}
-
 class _LocationSetupScreenState extends State<LocationSetupScreen> {
+  void routeHome() {
+    Navigator.pushReplacement(
+      context,
+      PageTransition(
+        child: HomeScreen(),
+        type: PageTransitionType.fade,
+        duration: const Duration(milliseconds: 200),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,15 +57,17 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
                 textAlign: TextAlign.start,
               ),
               SizedBox(height: 9.h),
-              mainButton(
-                  'Allow Location Access', Colors.white, onPressed(context)),
+              mainButton('Allow Location Access', Colors.white, routeHome),
               SizedBox(height: 2.h),
               TextButton(
+                style: TextButton.styleFrom(shadowColor: Colors.transparent),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
+                    PageTransition(
+                      child: LoginScreen(),
+                      type: PageTransitionType.fade,
+                      duration: const Duration(milliseconds: 200),
                     ),
                   );
                 },

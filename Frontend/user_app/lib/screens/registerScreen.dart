@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Screens/otpScreen.dart';
 import 'package:user_app/widgets/constants/conditionsWidget.dart';
 import 'package:user_app/widgets/input_fields/textInputField.dart';
 import 'package:user_app/widgets/input_fields/passwordField.dart';
@@ -109,15 +111,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           newPassword != '' &&
                           confirmPassword != '' &&
                           newPassword == confirmPassword) {
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   // MaterialPageRoute(
-                        //   //   builder: (context) => OTPScreen(
-                        //   //     userNumber: userNumber,
-                        //   //     option: 2,
-                        //   //   ),
-                        //   // ),
-                        // );
+                        Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                            child: OTPScreen(userNumber: userNumber, option: 2),
+                            type: PageTransitionType.fade,
+                            duration: const Duration(milliseconds: 200),
+                          ),
+                        );
                         setState(() {
                           userName = '';
                           userEmail = '';
@@ -145,9 +146,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginScreen()));
+                        context,
+                        PageTransition(
+                          child: LoginScreen(),
+                          type: PageTransitionType.fade,
+                          duration: const Duration(milliseconds: 200),
+                        ),
+                      );
                     },
                     style: const ButtonStyle(
                         overlayColor:

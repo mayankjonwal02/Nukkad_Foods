@@ -12,9 +12,10 @@ Widget forgotPassButton(String userNumber, BuildContext context) {
         if (userNumber != '') {
           print('User number: $userNumber');
           Navigator.of(context).pushReplacement(
-            
-            MaterialPageRoute(
-              builder: (context) => ForgotPasswordScreen(userNumber: userNumber),
+            PageTransition(
+              child: ForgotPasswordScreen(userNumber: userNumber),
+              type: PageTransitionType.fade,
+              duration: Duration(milliseconds: 200),
             ),
           );
         } else {

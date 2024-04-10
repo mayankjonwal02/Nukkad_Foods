@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Screens/onBoardingScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
-
-import 'loginScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-                PageTransition(child: const LoginScreen(), type: PageTransitionType.fade, duration: const Duration(milliseconds: 200))
+                PageTransition(child: const OnBoardingScreen(), type: PageTransitionType.fade, duration: const Duration(milliseconds: 200))
       );
     });
   }
