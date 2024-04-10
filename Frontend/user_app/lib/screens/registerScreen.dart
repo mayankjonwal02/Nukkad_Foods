@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/Screens/otpScreen.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/widgets/buttons/socialLoginButtons.dart';
+import 'package:user_app/widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/conditionsWidget.dart';
-import 'package:user_app/widgets/input_fields/textInputField.dart';
 import 'package:user_app/widgets/input_fields/passwordField.dart';
-
-import '../widgets/constants/colors.dart';
-import '../widgets/constants/texts.dart';
-import '../widgets/input_fields/phoneField.dart';
-import '../widgets/buttons/socialLoginButtons.dart';
-import 'loginScreen.dart';
+import 'package:user_app/widgets/input_fields/phoneField.dart';
+import 'package:user_app/widgets/input_fields/textInputField.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});

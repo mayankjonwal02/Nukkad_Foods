@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/screens/locationSetupScreen.dart';
-import 'package:user_app/screens/loginScreen.dart';
-import 'package:user_app/screens/resetPasswordScreen.dart';
+import 'package:user_app/Screens/PasswordScreens/resetPasswordScreen.dart';
+import 'package:user_app/Screens/locationSetupScreen.dart';
+import 'package:user_app/Screens/loginScreen.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/constants/colors.dart';
-import 'package:user_app/widgets/constants/texts.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-
 class OTPScreen extends StatefulWidget {
   final String userNumber;
   final int option;

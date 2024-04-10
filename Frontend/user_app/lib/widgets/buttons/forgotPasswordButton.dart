@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Screens/forgotPasswordScreen.dart';
+import 'package:user_app/Screens/PasswordScreens/forgotPasswordScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/screens/homeScreen.dart';
-import 'package:user_app/screens/loginScreen.dart';
 import 'package:user_app/widgets/buttons/mainButton.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';

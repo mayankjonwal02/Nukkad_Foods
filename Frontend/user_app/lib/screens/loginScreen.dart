@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/screens/registerScreen.dart';
+import 'package:user_app/Screens/registerScreen.dart';
+import 'package:user_app/Screens/homeScreen.dart';
 import 'package:user_app/widgets/buttons/forgotPasswordButton.dart';
-import 'package:user_app/widgets/buttons/mainButton.dart';
 import 'package:user_app/widgets/buttons/socialLoginButtons.dart';
 import 'package:user_app/widgets/buttons/textRichButton.dart';
 import 'package:user_app/widgets/constants/colors.dart';
@@ -20,17 +20,22 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   String userNumber = '';
-  String password = '';
+  String userPassword = '';
 
-  void routeSignIn() {
-    Navigator.pushReplacement(
-      context,
-      PageTransition(
-        child: LoginScreen(),
-        type: PageTransitionType.fade,
-        duration: const Duration(milliseconds: 200),
-      ),
-    );
+  void routeHome() {
+    print('User number: $userNumber');
+    print('Password: $userPassword');
+    if (userNumber != '' && userPassword != '') {
+      print('Sign in successful');
+      Navigator.pushReplacement(
+        context,
+        PageTransition(
+          child: HomeScreen(),
+          type: PageTransitionType.fade,
+          duration: const Duration(milliseconds: 200),
+        ),
+      );
+    }
   }
 
   void routeRegister() {
@@ -65,14 +70,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 labelText: 'Password',
                 onValueChanged: (String password) {
                   setState(() {
-                    password = password;
+                    userPassword = password;
                   });
                 },
               ),
               SizedBox(height: 2.h),
               forgotPassButton(userNumber, context),
               SizedBox(height: 2.h),
-              mainButton('Sign In', Colors.white, routeSignIn),
+              Center(
+                child: SizedBox(
+                  height: 7.h,
+                  width: 97.w,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => primaryColor2,
+                      ),
+                      elevation:
+                          MaterialStateProperty.resolveWith((states) => 2.0),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                      ),
+                    ),
+                    child: h4Text('SIGN IN', Colors.white),
+                    onPressed: () => routeHome(),
+                  ),
+                ),
+              ),
               SizedBox(height: 2.h),
               textRichButton(
                   'Don\'t have an account?', 'Sign Up', routeRegister),

@@ -5,8 +5,8 @@ import 'package:user_app/screens/otpScreen.dart';
 import 'package:user_app/widgets/constants/texts.dart';
 import 'package:user_app/widgets/input_fields/phoneField.dart';
 
-import '../widgets/constants/colors.dart';
-import 'loginScreen.dart';
+import '../../widgets/constants/colors.dart';
+import '../loginScreen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   final String userNumber;

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/widgets/input_fields/passwordField.dart';
 
-import '../widgets/constants/colors.dart';
-import '../widgets/constants/texts.dart';
-import 'loginScreen.dart';
+import '../../widgets/constants/colors.dart';
+import '../../widgets/constants/texts.dart';
+import '../loginScreen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
