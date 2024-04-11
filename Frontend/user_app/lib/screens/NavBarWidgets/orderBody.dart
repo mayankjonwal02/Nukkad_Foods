@@ -50,6 +50,11 @@ class _OrdersBodyState extends State<OrdersBody> {
                   color: Colors.white,
                   child: Center(
                       child: TextButton(
+                    style: ButtonStyle(
+                      overlayColor: MaterialStateProperty.all(
+                        Colors.transparent,
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.push(
                         context,

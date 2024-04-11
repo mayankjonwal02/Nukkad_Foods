@@ -21,7 +21,7 @@ Widget mainButton(String buttonText, Color buttonTextColor, Function() route) {
           ),
         ),
         child: h4Text(buttonText.toUpperCase(), buttonTextColor),
-        onPressed: () => route,
+        onPressed: () => route(),
       ),
     ),
   );
