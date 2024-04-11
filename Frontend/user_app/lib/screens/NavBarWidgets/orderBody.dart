@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Screens/Orders/helpSupportScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/Widgets/customs/orderTypeSelector.dart';
-import 'package:user_app/Widgets/customs/placedOrderDetails.dart';
+import 'package:user_app/Widgets/customs/Orders/orderTypeSelector.dart';
+import 'package:user_app/Widgets/customs/Orders/placedOrderDetails.dart';
 
 class OrdersBody extends StatefulWidget {
   const OrdersBody({Key? key}) : super(key: key);
@@ -23,8 +25,8 @@ class _OrdersBodyState extends State<OrdersBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(3.w, 4.h, 2.w, 0),
+    return Padding(
+      padding: EdgeInsets.only(top: 5.h),
       child: Column(
         children: [
           Center(
@@ -32,7 +34,37 @@ class _OrdersBodyState extends State<OrdersBody> {
           ),
           OrderTypeSelector(onOrderTypeChanged: _handleOrderTypeChanged),
           SizedBox(height: 1.5.h),
-          _isOngoing ? ongoingOrders(_isOngoing) : previousOrders(_isOngoing),
+          Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
+                child: _isOngoing
+                    ? ongoingOrders(_isOngoing)
+                    : previousOrders(_isOngoing),
+              ),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  height: 6.h,
+                  width: 100.w,
+                  color: Colors.white,
+                  child: Center(
+                      child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HelpSupportScreen(),
+                        ),
+                      );
+                    },
+                    child:
+                        bodyText1('Need help with the orders?', primaryColor2),
+                  )),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -48,7 +80,7 @@ Widget previousOrders(isOngoing) {
         itemBuilder: (context, index) {
           return Padding(
             padding: EdgeInsets.only(bottom: 2.h),
-            child: placedOrderDetails(isOngoing),
+            child: placedOrderDetails(isOngoing, context),
           );
         },
       ),
@@ -65,7 +97,7 @@ Widget ongoingOrders(isOngoing) {
         itemBuilder: (context, index) {
           return Padding(
             padding: EdgeInsets.only(bottom: 2.h),
-            child: placedOrderDetails(isOngoing),
+            child: placedOrderDetails(isOngoing, context),
           );
         },
       ),

@@ -3,14 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/Widgets/customs/adsSlider.dart';
-import 'package:user_app/Widgets/customs/allRestaurants.dart';
-import 'package:user_app/Widgets/customs/appBar.dart';
-import 'package:user_app/Widgets/customs/offersSlider.dart';
-import 'package:user_app/Widgets/customs/restaurantSlider.dart';
-import 'package:user_app/Widgets/customs/searchBar.dart';
-import 'package:user_app/Widgets/customs/sectionGrid.dart';
-import 'package:user_app/Widgets/customs/sectionSlider.dart';
+import 'package:user_app/Widgets/customs/Food/adsSlider.dart';
+import 'package:user_app/Widgets/customs/Food/allRestaurants.dart';
+import 'package:user_app/Widgets/customs/Food/appBar.dart';
+import 'package:user_app/Widgets/customs/Food/offersSlider.dart';
+import 'package:user_app/Widgets/customs/Food/restaurantSlider.dart';
+import 'package:user_app/Widgets/customs/Food/searchBar.dart';
+import 'package:user_app/Widgets/customs/Food/sectionGrid.dart';
+import 'package:user_app/Widgets/customs/Food/sectionSlider.dart';
 
 class FoodBody extends StatefulWidget {
   const FoodBody({super.key});
