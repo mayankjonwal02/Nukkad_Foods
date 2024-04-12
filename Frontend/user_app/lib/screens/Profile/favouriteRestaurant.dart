@@ -29,9 +29,9 @@ class _FavouriteRestaurantsState extends State<FavouriteRestaurants> {
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         child: Column(
           children: [
-            restaurant(),
-            restaurant(),
-            restaurant(),
+            restaurant(context),
+            restaurant(context),
+            restaurant(context),
           ],
         ),
       ),

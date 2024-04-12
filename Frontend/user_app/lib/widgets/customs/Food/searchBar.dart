@@ -3,13 +3,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 
-Widget searchBar() {
+Widget searchBar(String barText) {
   return Container(
     height: 7.h,
-    margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+    margin: EdgeInsets.fromLTRB(2.w, 2.h, 2.w, 0),
     child: TextField(
       decoration: InputDecoration(
-        hintText: "What are you looking for?",
+        hintText: barText,
         contentPadding: EdgeInsets.symmetric(vertical: 1.h),
         hintStyle: TextStyle(
           fontFamily: 'Poppins',

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/PasswordScreens/forgotPasswordScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
@@ -12,10 +11,9 @@ Widget forgotPassButton(String userNumber, BuildContext context) {
         if (userNumber != '') {
           print('User number: $userNumber');
           Navigator.of(context).pushReplacement(
-            PageTransition(
-              child: ForgotPasswordScreen(userNumber: userNumber),
-              type: PageTransitionType.fade,
-              duration: Duration(milliseconds: 200),
+            MaterialPageRoute(
+              builder: (context) =>
+                  ForgotPasswordScreen(userNumber: userNumber),
             ),
           );
         } else {

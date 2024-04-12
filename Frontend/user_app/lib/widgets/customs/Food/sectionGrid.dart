@@ -16,6 +16,7 @@ Widget sectionGrid(String headerText, List names, List images) {
         SizedBox(
           height: 30.h,
           child: GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
               mainAxisSpacing: 2.h,

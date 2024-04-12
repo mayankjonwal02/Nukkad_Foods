@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/Screens/otpScreen.dart';
@@ -112,10 +111,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           newPassword == confirmPassword) {
                         Navigator.pushReplacement(
                           context,
-                          PageTransition(
-                            child: OTPScreen(userNumber: userNumber, option: 2),
-                            type: PageTransitionType.fade,
-                            duration: const Duration(milliseconds: 200),
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                OTPScreen(userNumber: userNumber, option: 2),
                           ),
                         );
                         setState(() {
@@ -146,10 +144,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        PageTransition(
-                          child: LoginScreen(),
-                          type: PageTransitionType.fade,
-                          duration: const Duration(milliseconds: 200),
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
                         ),
                       );
                     },

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
@@ -35,9 +34,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   routeLogin() {
     Navigator.pushReplacement(
       context,
-      PageTransition(
-        type: PageTransitionType.fade,
-        child: LoginScreen(),
+      MaterialPageRoute(
+        builder: (context) => LoginScreen(),
       ),
     );
   }
@@ -177,89 +175,3 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
-// import 'package:sizer/sizer.dart';
-// import 'package:user_app/widgets/constants/colors.dart';
-// import 'package:user_app/widgets/constants/texts.dart';
-
-// import 'loginScreen.dart';
-
-// class OnBoardingScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return OnBoardingSlider(
-//       headerBackgroundColor: Colors.white,
-//       addButton: false,
-//       finishButtonText: 'Register',
-//       centerBackground: true,
-//       finishButtonStyle: FinishButtonStyle(
-//         backgroundColor: Colors.black,
-//       ),
-//       trailing: h5Text('Skip', textGrey),
-//       background: [
-//         Image.asset(
-//           'assets/images/introduction/bg_1.png',
-//           fit: BoxFit.cover, // Ensures the image covers the entire screen
-//         ),
-//         Image.asset(
-//           'assets/images/introduction/bg_2.png',
-//           fit: BoxFit.cover,
-//         ),
-//         Image.asset(
-//           'assets/images/introduction/bg_3.png',
-//           fit: BoxFit.cover,
-//         ),
-//       ],
-//       totalPage: 3,
-//       speed: 1.8,
-//       pageBodies: [
-//         Container(
-//           padding: EdgeInsets.symmetric(horizontal: 40),
-//           child: Column(
-//             children: <Widget>[
-//               SizedBox(),
-//               Text('Description Text 1'),
-//             ],
-//           ),
-//         ),
-//         Container(
-//           padding: EdgeInsets.symmetric(horizontal: 40),
-//           child: Column(
-//             children: <Widget>[
-//               SizedBox(),
-//               Text('Description Text 2'),
-//             ],
-//           ),
-//         ),
-//         Container(
-//           padding: EdgeInsets.symmetric(horizontal: 40),
-//           child: Column(
-//             children: <Widget>[
-//               SizedBox(),
-//               Text('Description Text 3'),
-//             ],
-//           ),
-//         ),
-//       ],
-//       indicatorPosition: 60.h,
-//       onFinish: () {
-//         Navigator.pushReplacement(
-//           context,
-//           MaterialPageRoute(
-//             builder: (context) => LoginScreen(),
-//           ),
-//         );
-//       },
-//       trailingFunction: () {
-//         Navigator.pushReplacement(
-//           context,
-//           MaterialPageRoute(
-//             builder: (context) => LoginScreen(),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }

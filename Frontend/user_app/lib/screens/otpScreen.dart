@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/PasswordScreens/resetPasswordScreen.dart';
 import 'package:user_app/Screens/locationSetupScreen.dart';
 import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/constants/colors.dart';
+
 class OTPScreen extends StatefulWidget {
   final String userNumber;
   final int option;
@@ -29,19 +29,15 @@ class _OTPScreenState extends State<OTPScreen> {
       if (option == 1) {
         Navigator.pushReplacement(
           context,
-          PageTransition(
-            child: ResetPasswordScreen(),
-            type: PageTransitionType.fade,
-            duration: Duration(milliseconds: 200),
+          MaterialPageRoute(
+            builder: (context) => ResetPasswordScreen(),
           ),
         );
       } else if (option == 2) {
         Navigator.pushReplacement(
           context,
-          PageTransition(
-            child: LocationSetupScreen(),
-            type: PageTransitionType.fade,
-            duration: Duration(milliseconds: 200),
+          MaterialPageRoute(
+            builder: (context) => LocationSetupScreen(),
           ),
         );
       }
@@ -56,10 +52,8 @@ class _OTPScreenState extends State<OTPScreen> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              PageTransition(
-                child: LoginScreen(),
-                type: PageTransitionType.fade,
-                duration: Duration(milliseconds: 200),
+              MaterialPageRoute(
+                builder: (context) => LoginScreen(),
               ),
             );
           },
@@ -143,10 +137,8 @@ class _OTPScreenState extends State<OTPScreen> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        PageTransition(
-                          child: LoginScreen(),
-                          type: PageTransitionType.fade,
-                          duration: Duration(milliseconds: 200),
+                        MaterialPageRoute(
+                          builder: (context) => LoginScreen(),
                         ),
                       );
                     },

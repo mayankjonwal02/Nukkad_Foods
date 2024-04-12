@@ -34,7 +34,7 @@ class _FoodBodyState extends State<FoodBody> {
         child: Column(
           children: [
             customAppBar(),
-            searchBar(),
+            searchBar("What are you looking for?"),
             adsSlider(),
             SizedBox(height: 1.h),
             sectionSlider(
@@ -55,21 +55,21 @@ class _FoodBodyState extends State<FoodBody> {
               child: h5Text('Quick Delivery', textBlack),
             ),
             SizedBox(height: 1.h),
-            restaurantSlider(),
+            restaurantSlider(context),
             SizedBox(height: 3.h),
             Align(
               alignment: Alignment.centerLeft,
               child: h5Text('Nearest Restaurants', textBlack),
             ),
             SizedBox(height: 1.h),
-            restaurantSlider(),
+            restaurantSlider(context),
             SizedBox(height: 3.h),
             Align(
               alignment: Alignment.centerLeft,
               child: h5Text('Latest Restaurants', textBlack),
             ),
             SizedBox(height: 1.h),
-            restaurantSlider(),
+            restaurantSlider(context),
             SizedBox(height: 2.h),
             Divider(color: textGrey, thickness: 0.2.h),
             SizedBox(height: 3.h),
@@ -99,8 +99,16 @@ class _FoodBodyState extends State<FoodBody> {
                 ),
               ],
             ),
-            allRestaurants(),
-            SizedBox(height: 3.h),
+            SizedBox(
+              height: 70.h,
+              child: ListView.builder(
+                itemCount: 15,
+                itemBuilder: (context, index) {
+                  return restaurant(context);
+                },
+              ),
+            ),
+            SizedBox(height: 1.h),
           ],
         ),
       ),

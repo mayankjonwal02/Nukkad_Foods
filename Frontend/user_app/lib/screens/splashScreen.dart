@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/onBoardingScreen.dart';
 import 'package:user_app/widgets/constants/colors.dart';
@@ -19,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-                PageTransition(child: const OnBoardingScreen(), type: PageTransitionType.fade, duration: const Duration(milliseconds: 200))
+        MaterialPageRoute(builder: (context) => OnBoardingScreen()),
       );
     });
   }

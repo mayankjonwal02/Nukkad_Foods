@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/screens/otpScreen.dart';
 import 'package:user_app/widgets/constants/texts.dart';
@@ -23,13 +22,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void routeNext(String userNumber) {
     Navigator.pushReplacement(
       context,
-      PageTransition(
-        child: OTPScreen(
+      MaterialPageRoute(
+        builder: (context) => OTPScreen(
           userNumber: userNumber,
           option: 1,
         ),
-        type: PageTransitionType.fade,
-        duration: const Duration(milliseconds: 200),
       ),
     );
   }
@@ -44,10 +41,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              PageTransition(
-                child: LoginScreen(),
-                type: PageTransitionType.fade,
-                duration: const Duration(milliseconds: 200),
+              MaterialPageRoute(
+                builder: (context) => LoginScreen(),
               ),
             );
           },

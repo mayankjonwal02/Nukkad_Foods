@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Screens/NavBarWidgets/orderBody.dart';
 import 'package:user_app/Widgets/buttons/mainButton.dart';
 import 'package:user_app/Widgets/buttons/ratingButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
@@ -66,8 +63,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       isSelected[index] = !isSelected[index];
     });
   }
-
-  // Function to toggle the visibility of a specific toggles widget
   void toggleTogglesVisibility(int index) {
     setState(() {
       isTogglesVisible[index] = !isTogglesVisible[index];
@@ -234,15 +229,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 'Submit Feedback',
                 Colors.white,
                 () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrdersBody(),
-                    ),
-                  );
+                  Navigator.pop(context);
                 },
               ),
             ),
+            SizedBox(height: 2.h),
           ],
         ),
       ),
@@ -255,7 +246,7 @@ Widget toggles(
   return Container(
     height: 15.h,
     width: 100.w,
-    padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
+      
     decoration: BoxDecoration(
       color: Color(0xFFe7ffe5),
       border: Border(

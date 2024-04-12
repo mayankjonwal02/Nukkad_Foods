@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/registerScreen.dart';
 import 'package:user_app/Screens/homeScreen.dart';
@@ -29,10 +28,8 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Sign in successful');
       Navigator.pushReplacement(
         context,
-        PageTransition(
-          child: HomeScreen(),
-          type: PageTransitionType.fade,
-          duration: const Duration(milliseconds: 200),
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
         ),
       );
     }
@@ -41,10 +38,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void routeRegister() {
     Navigator.pushReplacement(
       context,
-      PageTransition(
-        child: RegistrationScreen(),
-        type: PageTransitionType.fade,
-        duration: const Duration(milliseconds: 200),
+      MaterialPageRoute(
+        builder: (context) => RegistrationScreen(),
       ),
     );
   }

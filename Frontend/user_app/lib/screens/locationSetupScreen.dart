@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/screens/homeScreen.dart';
@@ -18,10 +17,8 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
   void routeHome() {
     Navigator.pushReplacement(
       context,
-      PageTransition(
-        child: HomeScreen(),
-        type: PageTransitionType.fade,
-        duration: const Duration(milliseconds: 200),
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(),
       ),
     );
   }
@@ -67,10 +64,8 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    PageTransition(
-                      child: LoginScreen(),
-                      type: PageTransitionType.fade,
-                      duration: const Duration(milliseconds: 200),
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(),
                     ),
                   );
                 },
