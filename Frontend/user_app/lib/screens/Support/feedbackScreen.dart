@@ -255,6 +255,7 @@ Widget toggles(
   return Container(
     height: 15.h,
     width: 100.w,
+    padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
     decoration: BoxDecoration(
       color: Color(0xFFe7ffe5),
       border: Border(
@@ -286,36 +287,34 @@ Widget toggles(
         Container(
           height: 6.h,
           margin: EdgeInsets.symmetric(vertical: 2.h),
-          child: Expanded(
-            child: ListView.builder(
-              itemCount: namesList.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    onTap(index);
-                  },
-                  child: Container(
-                    width: 25.w,
-                    margin: EdgeInsets.symmetric(horizontal: 2.w),
-                    decoration: BoxDecoration(
-                      color: isSelected[index] ? primaryColor2 : Colors.white,
-                      border: Border.all(
-                        color: primaryColor2,
-                        width: 0.2.h,
-                      ),
-                      borderRadius: BorderRadius.circular(7),
+          child: ListView.builder(
+            itemCount: namesList.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  onTap(index);
+                },
+                child: Container(
+                  width: 25.w,
+                  margin: EdgeInsets.symmetric(horizontal: 2.w),
+                  decoration: BoxDecoration(
+                    color: isSelected[index] ? primaryColor2 : Colors.white,
+                    border: Border.all(
+                      color: primaryColor2,
+                      width: 0.2.h,
                     ),
-                    child: Center(
-                      child: h5Text(
-                        namesList[index],
-                        isSelected[index] ? Colors.white : textBlack,
-                      ),
+                    borderRadius: BorderRadius.circular(7),
+                  ),
+                  child: Center(
+                    child: h5Text(
+                      namesList[index],
+                      isSelected[index] ? Colors.white : textBlack,
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ],

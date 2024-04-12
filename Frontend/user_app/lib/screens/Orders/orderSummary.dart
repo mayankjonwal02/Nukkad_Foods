@@ -208,7 +208,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                     style: TextStyle(
                       color: colorSuccess,
                       fontFamily: 'Poppins',
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
                     ),
                     maxLines: 1,
