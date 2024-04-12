@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Screens/Profile/savedAddresses.dart';
+import 'package:user_app/Screens/Support/helpSupportScreen.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 
@@ -20,21 +23,25 @@ class _customAppBarState extends State<customAppBar> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(0, 1.h,2.w, 1.h),
-          child: Image.asset('assets/icons/location_pin.png'),
+          padding: EdgeInsets.fromLTRB(0, 1.h, 2.w, 1.h),
+          child: SvgPicture.asset(
+            'assets/icons/location_pin_icon.svg',
+            height: 3.h,
+            color: primaryColor2,
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               width: 25.w,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Karuna Sagar',
+                    'Home',
                     style: TextStyle(
                       color: textBlack,
                       fontFamily: 'Poppins',
@@ -61,8 +68,18 @@ class _customAppBarState extends State<customAppBar> {
               ),
             ),
             IconButton(
-              onPressed: () {},
-              icon: Image.asset('assets/icons/down.png'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SavedAddresses(),
+                  ),
+                );
+              },
+              icon: SvgPicture.asset(
+                'assets/icons/dropdown_icon.svg',
+                height: 3.h,
+              ),
             ),
           ],
         ),
@@ -79,7 +96,10 @@ class _customAppBarState extends State<customAppBar> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('assets/icons/coin.png'),
+              SvgPicture.asset(
+                'assets/icons/coin_icon.svg',
+                height: 2.5.h,
+              ),
               h5Text('25', textBlack),
             ],
           ),
@@ -89,7 +109,6 @@ class _customAppBarState extends State<customAppBar> {
             setState(() {
               _darkMode = !_darkMode;
             });
-            print('Dark mode: $_darkMode');
           },
           child: Container(
             height: 5.h,
@@ -101,12 +120,29 @@ class _customAppBarState extends State<customAppBar> {
               color: _darkMode == true ? const Color(0xFF4d4d4d) : Colors.white,
             ),
             child: Center(
-              child: Image.asset('assets/icons/dark_mode.png'),
+              child: SvgPicture.asset(
+                _darkMode
+                    ? 'assets/icons/dark_mode_icon.svg'
+                    : 'assets/icons/light_mode_icon.svg',
+                height: 3.h,
+                color: _darkMode ? textLightGrey : textGrey,
+              ),
             ),
           ),
         ),
         TextButton(
-          onPressed: () {},
+          style: ButtonStyle(
+            overlayColor: MaterialStatePropertyAll(Colors.transparent),
+            foregroundColor: MaterialStatePropertyAll(primaryColor2),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HelpSupportScreen(),
+              ),
+            );
+          },
           child: h6Text('Help', primaryColor2),
         ),
       ],

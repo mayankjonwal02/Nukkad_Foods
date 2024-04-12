@@ -60,7 +60,10 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
               mainButton('Allow Location Access', Colors.white, routeHome),
               SizedBox(height: 2.h),
               TextButton(
-                style: TextButton.styleFrom(shadowColor: Colors.transparent),
+                style: ButtonStyle(
+                    overlayColor: MaterialStateColor.resolveWith(
+                  (states) => Colors.transparent,
+                )),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/customs/Food/ratingWidget.dart';
 
 Widget restaurantSlider() {
   return SizedBox(
@@ -22,7 +24,7 @@ Widget restaurantSlider() {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 14.h,
+                height: 13.5.h,
                 width: 20.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -39,8 +41,12 @@ Widget restaurantSlider() {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset('assets/icons/like.png'),
-                          Image.asset('assets/icons/rating.png'),
+                          SvgPicture.asset(
+                            'assets/icons/unlike_heart_icon.svg',
+                            height: 3.h,
+                            color: Colors.white,
+                          ),
+                          ratingWidget(2.5),
                         ],
                       ),
                     )
@@ -56,22 +62,29 @@ Widget restaurantSlider() {
                 indent: 1.w,
                 endIndent: 1.w,
               ),
-              Text(
-                ' Shiva Chinese',
-                style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.bold,
-                    color: textBlack),
-                textAlign: TextAlign.start,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 1.w),
+                child: Text(
+                  'Shiva Chinese',
+                  style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.bold,
+                      color: textBlack),
+                  textAlign: TextAlign.start,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset('assets/icons/clock.png'),
+                  SvgPicture.asset(
+                    'assets/icons/timer_icon.svg',
+                    color: primaryColor2,
+                    height: 3.h,
+                  ),
                   Text(
                     '20 Mins',
                     style: TextStyle(

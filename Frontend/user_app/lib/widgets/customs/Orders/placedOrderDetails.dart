@@ -1,5 +1,6 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Orders/orderSummary.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
@@ -11,7 +12,9 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => OrderSummary(),
+          builder: (context) => OrderSummary(
+            isOngoing: _isOngoing,
+          ),
         ),
       );
     },
@@ -19,7 +22,7 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
       elevation: 5,
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: 34.4.h,
+        height: 35.5.h,
         width: 100.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -30,7 +33,7 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
             Stack(
               children: [
                 Container(
-                  height: 14.h,
+                  height: 15.h,
                   width: 100.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -50,28 +53,33 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                           fit: BoxFit.fill,
                         ),
                       ),
-                      SizedBox(width: 5.w),
+                      SizedBox(width: 3.w),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           h5Text('Shiva Chinese Wok', textBlack),
                           bodyText1('Saket Nagar, Indore', textLightGrey),
-                          SizedBox(height: 0.5.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/icons/clock.png'),
-                              SizedBox(width: 1.w),
-                              bodyText2('30 MINS', textGrey),
-                              SizedBox(width: 1.w),
-                              Image.asset('assets/icons/dot.png'),
-                              SizedBox(width: 1.w),
-                              bodyText2('5.4 KM', textGrey),
-                            ],
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 1.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/timer_icon.svg',
+                                  height: 3.h,
+                                  color: primaryColor2,
+                                ),
+                                SizedBox(width: 1.w),
+                                bodyText2('30 MINS', textGrey),
+                                SizedBox(width: 1.w),
+                                Image.asset('assets/icons/dot.png'),
+                                SizedBox(width: 1.w),
+                                bodyText2('5.4 KM', textGrey),
+                              ],
+                            ),
                           ),
-                          SizedBox(width: 1.h),
                         ],
                       ),
                     ],
@@ -90,9 +98,13 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset(_isOngoing
-                            ? 'assets/icons/preparing.png'
-                            : 'assets/icons/delivering.png'),
+                        SvgPicture.asset(
+                          _isOngoing
+                              ? 'assets/icons/preparing_icon.svg'
+                              : 'assets/icons/delivered_icon.svg',
+                          height: _isOngoing ? 3.h : 2.h,
+                          color: Colors.white,
+                        ),
                         bodyText2(_isOngoing ? 'Preparing' : 'Delivered',
                             Colors.white),
                       ],
@@ -161,12 +173,15 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                _isOngoing
-                                    ? Image.asset('assets/icons/track.png')
-                                    : Image.asset('assets/icons/repeat.png'),
-                                _isOngoing
-                                    ? bodyText2('Track', Colors.white)
-                                    : bodyText2('Reorder', Colors.white),
+                                SvgPicture.asset(
+                                  _isOngoing
+                                      ? 'assets/icons/track_order_icon.svg'
+                                      : 'assets/icons/repeat_order_icon.svg',
+                                  color: Colors.white,
+                                  height: 2.5.h,
+                                ),
+                                bodyText2(_isOngoing ? 'Track' : 'Reorder',
+                                    Colors.white),
                               ],
                             ),
                           ),
@@ -183,3 +198,5 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
     ),
   );
 }
+
+class _isOngoing {}

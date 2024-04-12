@@ -74,8 +74,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             padding: const EdgeInsets.only(top: 16, right: 16),
             child: currentPageIndex != 2
                 ? TextButton(
-                    style: TextButton.styleFrom(
-                      shadowColor: Colors.transparent,
+                    style: ButtonStyle(
+                      overlayColor: MaterialStateColor.resolveWith(
+                        (states) => Colors.transparent,
+                      ),
                     ),
                     onPressed: () => routeLogin(),
                     child: const Text(

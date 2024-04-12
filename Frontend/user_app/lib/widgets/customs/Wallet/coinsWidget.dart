@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
@@ -20,14 +21,7 @@ Widget coinsWidget() {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 4.h,
-          width: 4.h,
-          child: Image.asset(
-            'assets/icons/coin.png',
-            fit: BoxFit.fill,
-          ),
-        ),
+        SvgPicture.asset('assets/icons/coin_icon.svg', height: 4.h),
         SizedBox(width: 2.w),
         h3Text('30 Coins', textBlack),
       ],

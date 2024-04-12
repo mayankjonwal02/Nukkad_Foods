@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
-Widget addressCard(icon, String mainText, String address) {
+Widget addressCard(assetName, String mainText, String address) {
   return Container(
     height: 20.h,
     width: 100.w,
@@ -18,11 +19,7 @@ Widget addressCard(icon, String mainText, String address) {
       children: [
         Padding(
           padding: EdgeInsets.only(top: 1.h),
-          child: Icon(
-            icon,
-            size: 22.sp,
-            color: textBlack,
-          ),
+          child: SvgPicture.asset(assetName, color: textBlack, height: 4.h,width: 4.h,)
         ),
         SizedBox(
           width: 5.w,

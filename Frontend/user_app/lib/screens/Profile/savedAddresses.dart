@@ -29,9 +29,9 @@ class _SavedAddressesState extends State<SavedAddresses> {
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         child: Column(
           children: [
-            addressCard(Icons.home_outlined, 'Home',
+            addressCard('assets/icons/home_address_icon.svg', 'Home',
                 '489, Near Shakuntala Devi Hospital, Chameli Park, Goyal Nagar, Indore, Madhya Pradesh, India'),
-            addressCard(Icons.work_outline_rounded, 'Work',
+            addressCard('assets/icons/work_address_icon.svg', 'Work',
                 '489, Near Shakuntala Devi Hospital, Chameli Park, Goyal Nagar, Indore, Madhya Pradesh, India'),
           ],
         ),

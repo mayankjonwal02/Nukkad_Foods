@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
@@ -43,7 +42,8 @@ Widget offersSlider(String headerText, List offerData) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset('assets/icons/offer.png'),
+                      SvgPicture.asset('assets/icons/discount_icon.svg',
+                          color: Colors.white, height: 4.h, width: 4.h),
                       SizedBox(width: 2.w),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +79,8 @@ Widget offersSlider(String headerText, List offerData) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset('assets/icons/suprise_box.png'),
+                      SvgPicture.asset('assets/icons/suprise_box_icon.svg',
+                          height: 4.h, width: 4.h),
                       SizedBox(width: 2.w),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,

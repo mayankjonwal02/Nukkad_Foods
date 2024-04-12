@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
@@ -29,9 +30,8 @@ class _OrderTypeSelectorState extends State<OrderTypeSelector> {
             });
             widget.onOrderTypeChanged(_isOngoing);
           },
-          icon: Image.asset(_isOngoing
-              ? 'assets/icons/ongoing_enabled.png'
-              : 'assets/icons/ongoing_disabled.png'),
+          icon: SvgPicture.asset('assets/icons/ongoing_orders_icon.svg',height: 4.h,
+          color: _isOngoing ? Colors.white : primaryColor2,),
           label: h4Text('Ongoing', _isOngoing ? Colors.white : primaryColor2),
           style: ElevatedButton.styleFrom(
             foregroundColor: _isOngoing ? Colors.white : primaryColor2,
@@ -52,9 +52,8 @@ class _OrderTypeSelectorState extends State<OrderTypeSelector> {
             });
             widget.onOrderTypeChanged(_isOngoing);
           },
-          icon: Image.asset(_isOngoing
-              ? 'assets/icons/previous_disabled.png'
-              : 'assets/icons/previous_enabled.png'),
+          icon: SvgPicture.asset('assets/icons/previous_orders_icon.svg', height: 3.h,
+          color: _isOngoing ? primaryColor2 : Colors.white,),
           label: h4Text('Previous', _isOngoing ? primaryColor2 : Colors.white),
           style: ElevatedButton.styleFrom(
             foregroundColor: _isOngoing ? primaryColor2 : Colors.white,

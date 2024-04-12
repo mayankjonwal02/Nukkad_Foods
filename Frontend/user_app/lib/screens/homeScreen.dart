@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/NavBarWidgets/foodBody.dart';
 import 'package:user_app/Screens/NavBarWidgets/orderBody.dart';
 import 'package:user_app/Screens/NavBarWidgets/profileBody.dart';
@@ -35,21 +37,41 @@ class _HomeScreenState extends State<HomeScreen> {
         child: _widgetOptions[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: SvgPicture.asset(
+              'assets/icons/food_home_icon.svg',
+              color: _selectedIndex == 0 ? primaryColor2 : textGrey,
+              height: 4.h,
+              width: 4.h,
+            ),
             label: 'Food',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: SvgPicture.asset(
+              'assets/icons/orders_icon.svg',
+              color: _selectedIndex == 1 ? primaryColor2 : textGrey,
+              height: 4.h,
+              width: 4.h,
+            ),
             label: 'Orders',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: SvgPicture.asset(
+              'assets/icons/wallet_icon.svg',
+              color: _selectedIndex == 2 ? primaryColor2 : textGrey,
+              height: 4.h,
+              width: 4.h,
+            ),
             label: 'Wallet',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: SvgPicture.asset(
+              'assets/icons/profile_icon.svg',
+              color: _selectedIndex == 3 ? primaryColor2 : textGrey,
+              height: 4.h,
+              width: 4.h,
+            ),
             label: 'Profile',
           ),
         ],

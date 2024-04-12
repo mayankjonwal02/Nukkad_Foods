@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/Widgets/customs/Food/ratingWidget.dart';
 
 Widget allRestaurants() {
   return Container(
@@ -54,8 +55,11 @@ Widget restaurant() {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset('assets/icons/like.png'),
-                          Image.asset('assets/icons/rating.png'),
+                          SvgPicture.asset(
+                            'assets/icons/unlike_heart_icon.svg',
+                            height: 3.h,
+                          ),
+                          ratingWidget(4.1)
                         ],
                       ),
                     ),
@@ -73,7 +77,11 @@ Widget restaurant() {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset('assets/icons/clock.png'),
+                        SvgPicture.asset(
+                          'assets/icons/timer_icon.svg',
+                          height: 3.h,
+                          color: primaryColor2,
+                        ),
                         SizedBox(width: 1.w),
                         bodyText2('30 MINS', textGrey),
                         SizedBox(width: 1.w),

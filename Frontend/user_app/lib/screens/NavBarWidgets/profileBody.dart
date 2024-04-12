@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Profile/aboutPage.dart';
 import 'package:user_app/Screens/Profile/editProfile.dart';
 import 'package:user_app/Screens/Profile/favouriteRestaurant.dart';
-import 'package:user_app/Screens/Profile/feedbackScreen.dart';
+import 'package:user_app/Screens/Support/feedbackScreen.dart';
 import 'package:user_app/Screens/Profile/hiddenRestaurant.dart';
 import 'package:user_app/Screens/Profile/savedAddresses.dart';
 import 'package:user_app/Screens/loginScreen.dart';
@@ -28,7 +29,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         children: [
           profileHeader(),
           Container(
-            height: 51.h,
+            height: 50.5.h,
             width: 100.w,
             color: Color(0xFFf7f7f7),
             child: ListView(
@@ -42,7 +43,11 @@ class _ProfileBodyState extends State<ProfileBody> {
                     children: [
                       button(
                         'Edit Profile',
-                        Image.asset('assets/icons/edit.png'),
+                        SvgPicture.asset(
+                          'assets/icons/edit_icon.svg',
+                          height: 3.h,
+                          color: textBlack,
+                        ),
                         () {
                           Navigator.push(
                             context,
@@ -59,7 +64,14 @@ class _ProfileBodyState extends State<ProfileBody> {
                       ),
                       button(
                         'Favourites',
-                        Image.asset('assets/icons/heart.png'),
+                        Container(
+                          height: 3.h,
+                          width: 3.h,
+                          child: Image.asset(
+                            'assets/icons/heart.png',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                         () {
                           Navigator.push(
                             context,
@@ -97,7 +109,11 @@ class _ProfileBodyState extends State<ProfileBody> {
                       ),
                       button(
                         'Saved Addresses',
-                        Image.asset('assets/icons/contact.png'),
+                        SvgPicture.asset(
+                          'assets/icons/address_book_icon.svg',
+                          height: 3.h,
+                          color: textBlack,
+                        ),
                         () {
                           Navigator.push(
                             context,
@@ -114,7 +130,11 @@ class _ProfileBodyState extends State<ProfileBody> {
                       ),
                       button(
                         'About',
-                        Image.asset('assets/icons/info.png'),
+                        SvgPicture.asset(
+                          'assets/icons/about_icon.svg',
+                          height: 3.5.h,
+                          color: textBlack,
+                        ),
                         () {
                           Navigator.push(
                             context,
@@ -131,7 +151,11 @@ class _ProfileBodyState extends State<ProfileBody> {
                       ),
                       button(
                         'Send Feedback',
-                        Image.asset('assets/icons/feedback.png'),
+                        SvgPicture.asset(
+                          'assets/icons/feedback_icon.svg',
+                          height: 3.h,
+                          color: textBlack,
+                        ),
                         () {
                           Navigator.push(
                             context,
@@ -148,18 +172,12 @@ class _ProfileBodyState extends State<ProfileBody> {
                       ),
                       button(
                         'Report',
-                        Icon(
-                          Icons.flag_outlined,
-                          size: 22.sp,
+                        SvgPicture.asset(
+                          'assets/icons/report.svg',
+                          semanticsLabel: 'Report',
                           color: textBlack,
                         ),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditProfile()),
-                          );
-                        },
+                        () {},
                       ),
                       Divider(
                         color: textGrey,
@@ -171,7 +189,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         'Logout',
                         Icon(
                           Icons.logout,
-                          size: 22.sp,
+                          size: 20.sp,
                           color: textBlack,
                         ),
                         () {
