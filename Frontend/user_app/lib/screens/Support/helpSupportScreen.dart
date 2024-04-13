@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Support/chatSupportScreen.dart';
-import 'package:user_app/Widgets/buttons/mainButton.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
-import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/widgets/buttons/mainButton.dart';
+import 'package:user_app/widgets/constants/colors.dart';
+import 'package:user_app/widgets/constants/texts.dart';
 
 class HelpSupportScreen extends StatefulWidget {
   const HelpSupportScreen({super.key});
@@ -32,7 +32,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Help & Support', textBlack),
+        title: Text('Help & Support', style: h4TextStyle),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -76,7 +76,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                     'In order to cancel your order, please click on "Help" and then "I want to cancel my order". Please note that we may charge you a cancellation fee as it helps us to minimise food wastage and also compensate our restaurant partners for cancelled orders.',
               ),
               SizedBox(height: 5.h),
-              h6Text('Still need help?', primaryColor2),
+              Text('Still need help?', style: h4TextStyle),
               SizedBox(height: 4.h),
               mainButton('chat with us', Colors.white, routeChat)
             ],
@@ -163,7 +163,7 @@ class _ExpandableBoxState extends State<ExpandableBox> {
               ),
               if (_isExpanded)
                 Expanded(
-                  child: bodyText3(widget.contentText, textBlack),
+                  child: Text(widget.contentText, style: body3TextStyle),
                 ),
             ],
           ),

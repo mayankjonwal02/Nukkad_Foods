@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
-import 'package:user_app/widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginScreen(),
+        builder: (context) => const LoginScreen(),
       ),
     );
   }
@@ -43,19 +44,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     final pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(
-        fontSize: 24.sp,
-        fontFamily: 'Poppins',
-        fontWeight: FontWeight.w500,
-        color: primaryColor2,
-      ),
-      bodyTextStyle: TextStyle(
-        fontSize: 18.sp,
-        fontFamily: 'Poppins',
-        color: textBlack,
-        fontWeight: FontWeight.w300,
-      ),
-      bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      titleTextStyle: h3TextStyle,
+      bodyTextStyle: body2TextStyle,
+      bodyPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
     );
@@ -78,13 +69,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                     ),
                     onPressed: () => routeLogin(),
-                    child: const Text(
+                    child: Text(
                       'Skip',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: textGrey,
-                      ),
+                      style: h4TextStyle.copyWith(color: textGrey2),
                     ),
                   )
                 : null,
@@ -100,7 +87,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor2,
+                      (states) => primaryColor,
                     ),
                     elevation:
                         MaterialStateProperty.resolveWith((states) => 2.0),
@@ -111,13 +98,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                     ),
                   ),
                   child: Text(
-                    'NEXT',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Poppins',
-                      color: Colors.white,
-                    ),
+                    'NEXT'.toUpperCase(),
+                    style: h5TextStyle.copyWith(color: textWhite),
                   ),
                   onPressed: () => routeLogin(),
                 ),
@@ -161,9 +143,9 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       controlsPadding: const EdgeInsets.all(12.0),
       dotsDecorator: DotsDecorator(
         size: Size(1.5.h, 1.2.h),
-        color: textLightGrey,
+        color: textGrey2,
         activeSize: Size(1.5.h, 1.5.h),
-        activeColor: primaryColor2,
+        activeColor: primaryColor,
       ),
       dotsContainerDecorator: const ShapeDecoration(
         color: Colors.transparent,

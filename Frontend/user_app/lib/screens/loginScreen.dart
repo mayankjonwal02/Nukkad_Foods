@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/registerScreen.dart';
 import 'package:user_app/Screens/homeScreen.dart';
-import 'package:user_app/widgets/buttons/forgotPasswordButton.dart';
-import 'package:user_app/widgets/buttons/socialLoginButtons.dart';
-import 'package:user_app/widgets/buttons/textRichButton.dart';
-import 'package:user_app/widgets/constants/colors.dart';
-import 'package:user_app/widgets/input_fields/passwordField.dart';
-import 'package:user_app/widgets/input_fields/phoneField.dart';
-import 'package:user_app/widgets/constants/texts.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/buttons/forgotPasswordButton.dart';
+import 'package:user_app/Widgets/buttons/socialLoginButtons.dart';
+import 'package:user_app/Widgets/buttons/textRichButton.dart';
+import 'package:user_app/Widgets/input_fields/passwordField.dart';
+import 'package:user_app/Widgets/input_fields/phoneField.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => const HomeScreen(),
         ),
       );
     }
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => RegistrationScreen(),
+        builder: (context) => const RegistrationScreen(),
       ),
     );
   }
@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              h1Text('Sign In', textBlack),
+              Text('Sign In', style: h1TextStyle),
               SizedBox(height: 6.h),
               phoneField((String number) {
                 setState(() {
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => primaryColor2,
+                        (states) => primaryColor,
                       ),
                       elevation:
                           MaterialStateProperty.resolveWith((states) => 2.0),
@@ -89,7 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    child: h4Text('SIGN IN', Colors.white),
+                    child: Text('Sign In'.toUpperCase(),
+                        style: h5TextStyle.copyWith(color: textWhite)),
                     onPressed: () => routeHome(),
                   ),
                 ),
@@ -99,7 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Don\'t have an account?', 'Sign Up', routeRegister),
               SizedBox(height: 2.h),
               Center(
-                child: bodyText1('Sign In with', textGrey),
+                child: Text('Sign in with',
+                    style: body4TextStyle.copyWith(color: textGrey2)),
               ),
               Center(
                 child: SizedBox(

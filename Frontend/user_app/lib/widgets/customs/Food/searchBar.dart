@@ -23,7 +23,7 @@ Widget searchBar(String barText) {
           },
           icon: SvgPicture.asset(
             'assets/icons/search_icon.svg',
-            color: textGrey,
+            color: textGrey2,
             height: 3.h,
           ),
         ),
@@ -32,15 +32,15 @@ Widget searchBar(String barText) {
             print('Microphone button pressed');
           },
           icon: SvgPicture.asset('assets/icons/microphone_icon.svg',
-              color: primaryColor2, height: 3.h),
+              color: primaryColor, height: 3.h),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: textGrey, width: 0.2.h),
+          borderSide: BorderSide(color: textGrey2, width: 0.2.h),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: textGrey, width: 0.2.h),
+          borderSide: BorderSide(color: textGrey2, width: 0.2.h),
         ),
       ),
     ),

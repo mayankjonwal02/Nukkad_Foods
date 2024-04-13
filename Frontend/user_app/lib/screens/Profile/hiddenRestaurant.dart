@@ -22,7 +22,7 @@ class _HiddenRestaurantsState extends State<HiddenRestaurants> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Hidden Restaurants', textBlack),
+        title: Text('Hidden Restaurants', style: h4TextStyle),
         centerTitle: true,
       ),
       body: Padding(

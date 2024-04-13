@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/input_fields/passwordField.dart';
-
-import '../../widgets/constants/colors.dart';
-import '../../widgets/constants/texts.dart';
 import '../loginScreen.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -23,7 +22,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: h4Text('Reset Password', textBlack),
+        title: Text('Reset Password', style: h4TextStyle),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -70,7 +69,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor2,
+                      (states) => primaryColor,
                     ),
                     elevation:
                         MaterialStateProperty.resolveWith((states) => 2.0),
@@ -80,7 +79,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                     ),
                   ),
-                  child: h4Text('Continue'.toUpperCase(), Colors.white),
+                  child: Text(
+                    'Continue'.toUpperCase(),
+                    style: h4TextStyle,
+                  ),
                   onPressed: () {
                     print(
                         'Password: $newPassword && Confirm Password: $confirmPassword');
@@ -92,8 +94,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             duration: Duration(seconds: 4),
                             content: Container(
                               height: 3.h,
-                              child: bodyText1('Entered passwords do not match',
-                                  Colors.white),
+                              child: Text(
+                                'Entered passwords do not match',
+                                style: body4TextStyle,
+                              ),
                             ),
                             backgroundColor: colorFailure,
                           ),
@@ -106,8 +110,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             duration: Duration(seconds: 4),
                             content: Container(
                               height: 3.h,
-                              child:
-                                  bodyText1('Please enter data', Colors.white),
+                              child: Text('Please enter data',
+                                  style: body4TextStyle),
                             ),
                             backgroundColor: colorFailure,
                           ),
@@ -142,7 +146,7 @@ class SuccessPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              h1Text('Your Password has been reset!', primaryColor2),
+              Text('Your Password has been reset!', style: h1TextStyle),
               SizedBox(height: 5.h),
               Center(
                 child: Image.asset(
@@ -179,7 +183,7 @@ class SuccessPage extends StatelessWidget {
                     child: Text(
                       'Login Page',
                       style: TextStyle(
-                        color: primaryColor2,
+                        color: primaryColor,
                         fontFamily: 'Poppins',
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w600,

@@ -31,8 +31,8 @@ Widget adsSlider() {
         itemCount: imgList.length,
         pagination: const SwiperPagination(
           builder: DotSwiperPaginationBuilder(
-            activeColor: primaryColor2,
-            color: textLightGrey,
+            activeColor: primaryColor,
+            color: textGrey3,
           ),
         ),
       ),

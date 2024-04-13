@@ -39,39 +39,48 @@ class _FoodBodyState extends State<FoodBody> {
             SizedBox(height: 1.h),
             sectionSlider(
                 'Favorite Merchants', restaurantNames, restaurantImages),
-            Divider(color: textGrey, thickness: 0.2.h),
+            Divider(color: textGrey2, thickness: 0.2.h),
             sectionGrid(
                 'Hey, What\'s on your mind?', foodCategories, foodImaqes),
-            Divider(color: textGrey, thickness: 0.2.h),
+            Divider(color: textGrey2, thickness: 0.2.h),
             offersSlider('Offers curated for you', offerData),
             SizedBox(height: 1.h),
             Align(
               alignment: Alignment.centerLeft,
-              child: h5Text('Restaurants near me'.toUpperCase(), textBlack),
+              child: Text(
+                'Restaurants near me'.toUpperCase(),
+                style: h5TextStyle,
+              ),
             ),
             SizedBox(height: 2.h),
             Align(
               alignment: Alignment.centerLeft,
-              child: h5Text('Quick Delivery', textBlack),
+              child: Text(
+                'Quick Delivery',
+                style: h5TextStyle,
+              ),
             ),
             SizedBox(height: 1.h),
             restaurantSlider(context),
             SizedBox(height: 3.h),
             Align(
               alignment: Alignment.centerLeft,
-              child: h5Text('Nearest Restaurants', textBlack),
+              child: Text(
+                'Nearest Restaurants',
+                style: h5TextStyle,
+              ),
             ),
             SizedBox(height: 1.h),
             restaurantSlider(context),
             SizedBox(height: 3.h),
             Align(
               alignment: Alignment.centerLeft,
-              child: h5Text('Latest Restaurants', textBlack),
+              child: Text('Latest Restaurants', style: h5TextStyle,),
             ),
             SizedBox(height: 1.h),
             restaurantSlider(context),
             SizedBox(height: 2.h),
-            Divider(color: textGrey, thickness: 0.2.h),
+            Divider(color: textGrey2, thickness: 0.2.h),
             SizedBox(height: 3.h),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -90,7 +99,7 @@ class _FoodBodyState extends State<FoodBody> {
                 Text(
                   '50 Restaurants delivering to you',
                   style: TextStyle(
-                    color: textGrey,
+                    color: textGrey2,
                     fontFamily: 'Poppins',
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,

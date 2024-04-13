@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Profile/savedAddresses.dart';
 import 'package:user_app/Screens/Support/helpSupportScreen.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/widgets/constants/colors.dart';
 
 class customAppBar extends StatefulWidget {
   const customAppBar({super.key});
@@ -27,7 +27,7 @@ class _customAppBarState extends State<customAppBar> {
           child: SvgPicture.asset(
             'assets/icons/location_pin_icon.svg',
             height: 3.h,
-            color: primaryColor2,
+            color: primaryColor,
           ),
         ),
         Row(
@@ -35,7 +35,7 @@ class _customAppBarState extends State<customAppBar> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              width: 25.w,
+              width: 45.w,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,27 +83,6 @@ class _customAppBarState extends State<customAppBar> {
             ),
           ],
         ),
-        Container(
-          height: 5.h,
-          width: 9.h,
-          margin: EdgeInsets.fromLTRB(2.w, 0, 2.w, 0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: primaryColor2, width: 0.2.h),
-            color: Colors.white,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                'assets/icons/coin_icon.svg',
-                height: 2.5.h,
-              ),
-              h5Text('25', textBlack),
-            ],
-          ),
-        ),
         GestureDetector(
           onTap: () {
             setState(() {
@@ -116,7 +95,7 @@ class _customAppBarState extends State<customAppBar> {
             margin: EdgeInsets.fromLTRB(1.w, 0, 0.w, 0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
-              border: Border.all(color: primaryColor2, width: 0.2.h),
+              border: Border.all(color: primaryColor, width: 0.2.h),
               color: _darkMode == true ? const Color(0xFF4d4d4d) : Colors.white,
             ),
             child: Center(
@@ -125,7 +104,7 @@ class _customAppBarState extends State<customAppBar> {
                     ? 'assets/icons/dark_mode_icon.svg'
                     : 'assets/icons/light_mode_icon.svg',
                 height: 3.h,
-                color: _darkMode ? textLightGrey : textGrey,
+                color: _darkMode ? textGrey3 : textGrey2,
               ),
             ),
           ),
@@ -133,7 +112,7 @@ class _customAppBarState extends State<customAppBar> {
         TextButton(
           style: ButtonStyle(
             overlayColor: MaterialStatePropertyAll(Colors.transparent),
-            foregroundColor: MaterialStatePropertyAll(primaryColor2),
+            foregroundColor: MaterialStatePropertyAll(primaryColor),
           ),
           onPressed: () {
             Navigator.push(
@@ -143,7 +122,7 @@ class _customAppBarState extends State<customAppBar> {
               ),
             );
           },
-          child: h6Text('Help', primaryColor2),
+          child: Text('Help', style: h6TextStyle),
         ),
       ],
     );

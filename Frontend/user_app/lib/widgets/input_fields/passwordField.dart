@@ -32,7 +32,7 @@ class _PasswordFieldState extends State<PasswordField> {
           decoration: InputDecoration(
             labelText: widget.labelText.toUpperCase(),
             labelStyle: TextStyle(
-              color: textGrey,
+              color: textGrey1,
               fontFamily: 'Poppins',
               fontSize: 13.sp,
               fontWeight: FontWeight.w400,
@@ -40,21 +40,21 @@ class _PasswordFieldState extends State<PasswordField> {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7.0),
               borderSide: BorderSide(
-                color: textLightGrey,
+                color: textGrey2,
                 width: 0.1.h,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7.0),
               borderSide: BorderSide(
-                color: textLightGrey,
+                color: textGrey2,
                 width: 0.1.h,
               ),
             ),
             suffixIcon: IconButton(
               icon: Icon(
                 _isObscured ? Icons.visibility : Icons.visibility_off,
-                color: primaryColor2,
+                color: primaryColor,
               ),
               onPressed: () {
                 setState(() {

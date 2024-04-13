@@ -57,7 +57,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         },
                       ),
                       Divider(
-                        color: textGrey,
+                        color: textGrey2,
                         thickness: 0.2.h,
                         endIndent: 10.w,
                         indent: 10.w,
@@ -81,7 +81,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         },
                       ),
                       Divider(
-                        color: textGrey,
+                        color: textGrey2,
                         thickness: 0.2.h,
                         endIndent: 10.w,
                         indent: 10.w,
@@ -102,7 +102,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         },
                       ),
                       Divider(
-                        color: textGrey,
+                        color: textGrey2,
                         thickness: 0.2.h,
                         endIndent: 10.w,
                         indent: 10.w,
@@ -123,7 +123,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         },
                       ),
                       Divider(
-                        color: textGrey,
+                        color: textGrey2,
                         thickness: 0.2.h,
                         endIndent: 10.w,
                         indent: 10.w,
@@ -144,7 +144,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         },
                       ),
                       Divider(
-                        color: textGrey,
+                        color: textGrey2,
                         thickness: 0.2.h,
                         endIndent: 10.w,
                         indent: 10.w,
@@ -165,7 +165,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         },
                       ),
                       Divider(
-                        color: textGrey,
+                        color: textGrey2,
                         thickness: 0.2.h,
                         endIndent: 10.w,
                         indent: 10.w,
@@ -180,7 +180,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                         () {},
                       ),
                       Divider(
-                        color: textGrey,
+                        color: textGrey2,
                         thickness: 0.2.h,
                         endIndent: 10.w,
                         indent: 10.w,

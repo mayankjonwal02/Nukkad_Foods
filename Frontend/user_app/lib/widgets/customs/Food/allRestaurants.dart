@@ -36,7 +36,7 @@ Widget restaurant(BuildContext context) {
               width: 100.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(width: 0.2.h, color: textLightGrey),
+                border: Border.all(width: 0.2.h, color: textGrey3),
               ),
               child: Row(
                 children: [
@@ -76,8 +76,8 @@ Widget restaurant(BuildContext context) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      h5Text('Shiva Chinese Wok', textBlack),
-                      bodyText1('Saket Nagar, Indore', textLightGrey),
+                      Text('Shiva Chinese Wok', style: h4TextStyle),
+                      Text('Saket Nagar, Indore', style: body2TextStyle),
                       SizedBox(height: 0.5.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -86,14 +86,14 @@ Widget restaurant(BuildContext context) {
                           SvgPicture.asset(
                             'assets/icons/timer_icon.svg',
                             height: 3.h,
-                            color: primaryColor2,
+                            color: primaryColor,
                           ),
                           SizedBox(width: 1.w),
-                          bodyText2('30 MINS', textGrey),
+                          Text('30 MINS', style: body2TextStyle),
                           SizedBox(width: 1.w),
                           Image.asset('assets/icons/dot.png'),
                           SizedBox(width: 1.w),
-                          bodyText2('5.4 KM', textGrey)
+                          Text('5.4 KM', style: body2TextStyle),
                         ],
                       ),
                     ],

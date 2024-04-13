@@ -23,7 +23,7 @@ Widget restaurantSlider(BuildContext context) {
             margin: EdgeInsets.only(right: 3.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 0.2.h, color: textLightGrey),
+              border: Border.all(width: 0.2.h, color: textGrey3),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -64,7 +64,7 @@ Widget restaurantSlider(BuildContext context) {
                 ),
                 Divider(
                   height: 0.05.h,
-                  color: textGrey,
+                  color: textGrey1,
                   indent: 1.w,
                   endIndent: 1.w,
                 ),
@@ -88,7 +88,7 @@ Widget restaurantSlider(BuildContext context) {
                   children: [
                     SvgPicture.asset(
                       'assets/icons/timer_icon.svg',
-                      color: primaryColor2,
+                      color: primaryColor,
                       height: 3.h,
                     ),
                     Text(
@@ -97,7 +97,7 @@ Widget restaurantSlider(BuildContext context) {
                         fontFamily: 'Poppins',
                         fontSize: 8.sp,
                         fontWeight: FontWeight.w600,
-                        color: textGrey,
+                        color: textGrey2,
                       ),
                       textAlign: TextAlign.start,
                       maxLines: 1,
@@ -110,7 +110,7 @@ Widget restaurantSlider(BuildContext context) {
                         fontFamily: 'Poppins',
                         fontSize: 8.sp,
                         fontWeight: FontWeight.w600,
-                        color: textGrey,
+                        color: textGrey2,
                       ),
                       textAlign: TextAlign.start,
                       maxLines: 1,

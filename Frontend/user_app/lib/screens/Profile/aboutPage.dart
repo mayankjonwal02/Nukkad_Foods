@@ -21,7 +21,7 @@ class _AboutPageState extends State<AboutPage> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('About', textBlack),
+        title: Text('About', style: h4TextStyle),
         centerTitle: true,
       ),
       body: Padding(

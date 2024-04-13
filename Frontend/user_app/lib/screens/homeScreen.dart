@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/food_home_icon.svg',
-              color: _selectedIndex == 0 ? primaryColor2 : textGrey,
+              color: _selectedIndex == 0 ? primaryColor : textGrey2,
               height: 4.h,
               width: 4.h,
             ),
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/orders_icon.svg',
-              color: _selectedIndex == 1 ? primaryColor2 : textGrey,
+              color: _selectedIndex == 1 ? primaryColor : textGrey2,
               height: 4.h,
               width: 4.h,
             ),
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/wallet_icon.svg',
-              color: _selectedIndex == 2 ? primaryColor2 : textGrey,
+              color: _selectedIndex == 2 ? primaryColor : textGrey2,
               height: 4.h,
               width: 4.h,
             ),
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/profile_icon.svg',
-              color: _selectedIndex == 3 ? primaryColor2 : textGrey,
+              color: _selectedIndex == 3 ? primaryColor : textGrey2,
               height: 4.h,
               width: 4.h,
             ),
@@ -77,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         currentIndex: _selectedIndex,
         showUnselectedLabels: true,
-        selectedItemColor: primaryColor2,
-        unselectedItemColor: textGrey,
+        selectedItemColor: primaryColor,
+        unselectedItemColor: textGrey2,
         onTap: _onItemTapped,
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
@@ -27,7 +26,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Chat with Us', textBlack),
+        title: Text('Chat with Us', style: h4TextStyle),
         centerTitle: true,
       ),
       body: Column(
@@ -38,7 +37,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
               itemBuilder: (context, index) {
                 final message = _messages[index];
                 final isSupport = message['isSupport'] as bool;
-                final color = isSupport ? Colors.grey : primaryColor2;
+                final color = isSupport ? Colors.grey : primaryColor;
                 final textColor = isSupport ? textBlack : Colors.white;
                 final borderRadius = BorderRadius.circular(15);
                 return Container(
@@ -84,7 +83,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                   icon: SvgPicture.asset(
                     'assets/icons/message_icon.svg',
                     height: 3.h,
-                    color: primaryColor2,
+                    color: primaryColor,
                   ),
                   onPressed: () {
                     final text = _messageController.text;
@@ -101,11 +100,11 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: primaryColor2, width: 0.1.h),
+                  borderSide: BorderSide(color: primaryColor, width: 0.1.h),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: primaryColor2, width: 0.1.h),
+                  borderSide: BorderSide(color: primaryColor, width: 0.1.h),
                 ),
               ),
             ),

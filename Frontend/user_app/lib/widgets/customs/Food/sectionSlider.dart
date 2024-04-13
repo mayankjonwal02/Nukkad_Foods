@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget sectionSlider(String headerText, List names, List images) {
@@ -12,8 +11,9 @@ Widget sectionSlider(String headerText, List names, List images) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            padding: EdgeInsets.only(bottom: 1.h),
-            child: h5Text(headerText.toUpperCase(), textBlack)),
+          padding: EdgeInsets.only(bottom: 1.h),
+          child: Text(headerText.toUpperCase(), style: h5TextStyle),
+        ),
         SizedBox(
           height: 17.h,
           child: ListView.builder(
@@ -29,7 +29,7 @@ Widget sectionSlider(String headerText, List names, List images) {
                         width: 12.h,
                         child: Image.asset('assets/images/waffle.png'),
                       ),
-                      h6Text('Waffle', textBlack)
+                      Text('Waffle', style: h6TextStyle),
                     ],
                   ),
                 );

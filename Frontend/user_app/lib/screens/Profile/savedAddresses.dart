@@ -22,7 +22,7 @@ class _SavedAddressesState extends State<SavedAddresses> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Saved Addresses', textBlack),
+        title: Text('Saved Addresses', style: h4TextStyle),
         centerTitle: true,
       ),
       body: Padding(

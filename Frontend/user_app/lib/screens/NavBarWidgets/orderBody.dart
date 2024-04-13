@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Support/helpSupportScreen.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/customs/Orders/orderTypeSelector.dart';
 import 'package:user_app/Widgets/customs/Orders/placedOrderDetails.dart';
@@ -30,7 +28,10 @@ class _OrdersBodyState extends State<OrdersBody> {
       child: Column(
         children: [
           Center(
-            child: h2Text('Orders', textBlack),
+            child: Text(
+              'Orders',
+              style: h2TextStyle,
+            ),
           ),
           OrderTypeSelector(onOrderTypeChanged: _handleOrderTypeChanged),
           SizedBox(height: 1.h),
@@ -63,8 +64,10 @@ class _OrdersBodyState extends State<OrdersBody> {
                           ),
                         );
                       },
-                      child: bodyText1(
-                          'Need help with the orders?', primaryColor2),
+                      child: Text(
+                        'Need help with the orders?',
+                        style: body2TextStyle,
+                      ),
                     ),
                   ),
                 ),

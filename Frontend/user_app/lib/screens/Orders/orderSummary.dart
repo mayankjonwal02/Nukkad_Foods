@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Support/helpSupportScreen.dart';
 import 'package:user_app/Screens/Support/feedbackScreen.dart';
-import 'package:user_app/Widgets/buttons/ratingButton.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
-import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/widgets/buttons/ratingButton.dart';
+import 'package:user_app/widgets/constants/colors.dart';
+import 'package:user_app/widgets/constants/texts.dart';
 
 class OrderSummary extends StatefulWidget {
   final bool isOngoing;
@@ -27,7 +27,10 @@ class _OrderSummaryState extends State<OrderSummary> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Order Summary', textBlack),
+        title: Text(
+          'Order Summary',
+          style: h4TextStyle,
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -47,12 +50,15 @@ class _OrderSummaryState extends State<OrderSummary> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      h5Text('Shiva Chinese', primaryColor2),
+                      Text(
+                        'Shiva Chinese',
+                        style: h5TextStyle,
+                      ),
                       Container(
                         height: 3.5.h,
                         width: 25.w,
                         decoration: BoxDecoration(
-                            color: _isOngoing ? Colors.green : textGrey,
+                            color: _isOngoing ? Colors.green : textGrey2,
                             borderRadius: BorderRadius.circular(8)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -65,26 +71,33 @@ class _OrderSummaryState extends State<OrderSummary> {
                               height: _isOngoing ? 3.h : 2.h,
                               color: Colors.white,
                             ),
-                            bodyText2(_isOngoing ? 'Preparing' : 'Delivered',
-                                Colors.white),
+                            Text(
+                              _isOngoing ? 'Preparing' : 'Delivered',
+                              style: body2TextStyle,
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  bodyText1('Tilak Nagar, sanvid nagar, indore', textBlack),
-                  bodyText1('Order Number #256478316641', textBlack)
+                  Text(
+                    'Tilak Nagar, sanvid nagar, indore',
+                    style: body2TextStyle,
+                  ),
+                  Text(
+                    'Order Number #256478316641',
+                    style: body2TextStyle,
+                  ),
                 ],
               ),
             ),
             Divider(
-              color: textGrey,
+              color: textGrey2,
               thickness: 0.2.h,
               endIndent: 5.w,
               indent: 5.w,
             ),
             Container(
-              //TODO : make this container resizable based on number of items
               height: 25.h,
               padding: EdgeInsets.only(
                   top: 3.h, bottom: 3.h, right: 10.w, left: 2.w),
@@ -94,32 +107,53 @@ class _OrderSummaryState extends State<OrderSummary> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  h5Text('Your Order', primaryColor2),
+                  Text(
+                    'Your Order',
+                    style: h5TextStyle,
+                  ),
                   SizedBox(height: 2.h),
-                  h6Text('1 x Schezwan Noodles', textBlack),
+                  Text(
+                    '1 x Schezwan Noodles',
+                    style: h6TextStyle,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      bodyText1('1 x ₹70', textGrey),
-                      h6Text('₹ 70', textBlack),
+                      Text(
+                        '1 x ₹70',
+                        style: body2TextStyle,
+                      ),
+                      Text(
+                        '₹ 70',
+                        style: h6TextStyle,
+                      ),
                     ],
                   ),
                   SizedBox(height: 2.h),
-                  h6Text('2 x Fried Rice ', textBlack),
+                  Text(
+                    '2 x Fried Rice ',
+                    style: h6TextStyle,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      bodyText1('2 x ₹50', textGrey),
-                      h6Text('₹ 100', textBlack),
+                      Text(
+                        '2 x ₹50',
+                        style: body2TextStyle,
+                      ),
+                      Text(
+                        '₹ 100',
+                        style: h6TextStyle,
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
             Divider(
-              color: textGrey,
+              color: textGrey2,
               thickness: 0.2.h,
               endIndent: 5.w,
               indent: 5.w,
@@ -136,8 +170,14 @@ class _OrderSummaryState extends State<OrderSummary> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      h6Text('Taxes', textBlack),
-                      h6Text('₹ 7', textBlack),
+                      Text(
+                        'Taxes',
+                        style: h6TextStyle,
+                      ),
+                      Text(
+                        '₹ 7',
+                        style: h6TextStyle,
+                      ),
                     ],
                   ),
                   Column(
@@ -148,18 +188,27 @@ class _OrderSummaryState extends State<OrderSummary> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          h6Text('Delivery Fee', textBlack),
-                          h6Text('₹ 25', textBlack),
+                          Text(
+                            'Delivery Fee',
+                            style: h6TextStyle,
+                          ),
+                          Text(
+                            '₹ 25',
+                            style: h6TextStyle,
+                          ),
                         ],
                       ),
-                      bodyText1('For 5.4 KM', textLightGrey)
+                      Text(
+                        'For 5.4 KM',
+                        style: body2TextStyle,
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
             Divider(
-              color: textGrey,
+              color: textGrey2,
               thickness: 0.2.h,
               endIndent: 5.w,
               indent: 5.w,
@@ -176,43 +225,13 @@ class _OrderSummaryState extends State<OrderSummary> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  h4Text('Grand Total', colorSuccess),
-                  h4Text('₹ 202', colorSuccess),
-                ],
-              ),
-            ),
-            SizedBox(height: 2.h),
-            Container(
-              height: 6.h,
-              decoration: BoxDecoration(
-                color: Color(0xFFf7f7f7),
-                border: Border(
-                  top: BorderSide(
-                    color: textGrey,
-                    width: 0.2.h,
-                  ),
-                  bottom: BorderSide(
-                    color: textGrey,
-                    width: 0.2.h,
-                  ),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SvgPicture.asset('assets/icons/coin_icon.svg', height: 4.h),
-                  SizedBox(width: 2.w),
                   Text(
-                    'Yay! you earned 8 coins for this order!',
-                    style: TextStyle(
-                      color: colorSuccess,
-                      fontFamily: 'Poppins',
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    'Grand Total',
+                    style: h4TextStyle,
+                  ),
+                  Text(
+                    '₹ 202',
+                    style: h4TextStyle,
                   ),
                 ],
               ),
@@ -233,7 +252,10 @@ class _OrderSummaryState extends State<OrderSummary> {
                     ),
                   );
                 },
-                child: bodyText1('Need help with the orders?', primaryColor2),
+                child: Text(
+                  'Need help with the orders?',
+                  style: body3TextStyle,
+                ),
               ),
             ),
             Container(
@@ -243,7 +265,7 @@ class _OrderSummaryState extends State<OrderSummary> {
               decoration: BoxDecoration(
                   color: Color(0xFFf7f7f7),
                   border: Border.all(
-                    color: textGrey,
+                    color: textGrey2,
                     width: 0.2.h,
                   ),
                   borderRadius: BorderRadius.circular(10)),
@@ -251,8 +273,11 @@ class _OrderSummaryState extends State<OrderSummary> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  h4Text('Rate Your Order', textBlack),
-                  bodyText1('From shiva chinese wok', textGrey),
+                  Text('Rate Your Order', style: h5TextStyle),
+                  Text(
+                    'From shiva chinese wok',
+                    style: body2TextStyle,
+                  ),
                   ratingButton(),
                   TextButton(
                     style: ButtonStyle(
@@ -268,7 +293,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                         ),
                       );
                     },
-                    child: h5Text('Tell Us More', primaryColor2),
+                    child: Text('Tell Us More', style: h5TextStyle),
                   ),
                 ],
               ),

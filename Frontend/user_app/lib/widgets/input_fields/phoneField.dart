@@ -24,18 +24,18 @@ Widget phoneField(Function(String) onPhoneNumberChanged) {
         decoration: InputDecoration(
           labelText: 'Mobile'.toString().toUpperCase(),
           labelStyle: TextStyle(
-            color: textGrey,
+            color: textGrey1,
             fontFamily: 'Poppins',
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(7.0),
-            borderSide: BorderSide(color: textLightGrey, width: 0.1.h),
+            borderSide: BorderSide(color: textGrey2, width: 0.1.h),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(7.0),
-            borderSide: BorderSide(color: textLightGrey, width: 0.1.h),
+            borderSide: BorderSide(color: textGrey2, width: 0.1.h),
           ),
         ),
         dropdownTextStyle: TextStyle(

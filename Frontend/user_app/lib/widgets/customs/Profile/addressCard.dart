@@ -11,16 +11,20 @@ Widget addressCard(assetName, String mainText, String address) {
     margin: EdgeInsets.symmetric(vertical: 2.h),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
-      border: Border.all(width: 0.2.h, color: textLightGrey),
+      border: Border.all(width: 0.2.h, color: textGrey3),
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 1.h),
-          child: SvgPicture.asset(assetName, color: textBlack, height: 4.h,width: 4.h,)
-        ),
+            padding: EdgeInsets.only(top: 1.h),
+            child: SvgPicture.asset(
+              assetName,
+              color: textBlack,
+              height: 4.h,
+              width: 4.h,
+            )),
         SizedBox(
           width: 5.w,
         ),
@@ -28,7 +32,7 @@ Widget addressCard(assetName, String mainText, String address) {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            h4Text(mainText, textBlack),
+            Text(mainText, style: body4TextStyle),
             SizedBox(
               width: 70.w,
               child: Text(
@@ -50,11 +54,11 @@ Widget addressCard(assetName, String mainText, String address) {
               children: [
                 TextButton(
                   onPressed: () {},
-                  child: h5Text('EDIT', primaryColor2),
+                  child: Text('EDIT', style: h5TextStyle),
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: h5Text('DELETE', primaryColor2),
+                  child: Text('DELETE', style: h5TextStyle),
                 ),
               ],
             ),

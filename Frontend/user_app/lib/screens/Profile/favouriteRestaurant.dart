@@ -22,7 +22,7 @@ class _FavouriteRestaurantsState extends State<FavouriteRestaurants> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Favourite Restaurants', textBlack),
+        title: Text('Favourite Restaurants', style: h4TextStyle),
         centerTitle: true,
       ),
       body: Padding(

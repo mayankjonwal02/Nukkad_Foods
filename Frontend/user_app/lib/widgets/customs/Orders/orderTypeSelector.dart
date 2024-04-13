@@ -31,15 +31,15 @@ class _OrderTypeSelectorState extends State<OrderTypeSelector> {
             widget.onOrderTypeChanged(_isOngoing);
           },
           icon: SvgPicture.asset('assets/icons/ongoing_orders_icon.svg',height: 4.h,
-          color: _isOngoing ? Colors.white : primaryColor2,),
-          label: h4Text('Ongoing', _isOngoing ? Colors.white : primaryColor2),
+          color: _isOngoing ? Colors.white : primaryColor,),
+          label: Text('Ongoing', style: h4TextStyle.copyWith(color: _isOngoing ? Colors.white : primaryColor)),
           style: ElevatedButton.styleFrom(
-            foregroundColor: _isOngoing ? Colors.white : primaryColor2,
-            backgroundColor: _isOngoing ? primaryColor2 : Colors.white,
+            foregroundColor: _isOngoing ? Colors.white : primaryColor,
+            backgroundColor: _isOngoing ? primaryColor : Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: BorderSide(
-                color: primaryColor2,
+                color: primaryColor,
                 width: 0.2.h,
               ),
             ),
@@ -53,15 +53,15 @@ class _OrderTypeSelectorState extends State<OrderTypeSelector> {
             widget.onOrderTypeChanged(_isOngoing);
           },
           icon: SvgPicture.asset('assets/icons/previous_orders_icon.svg', height: 3.h,
-          color: _isOngoing ? primaryColor2 : Colors.white,),
-          label: h4Text('Previous', _isOngoing ? primaryColor2 : Colors.white),
+          color: _isOngoing ? primaryColor : Colors.white,),
+          label: Text('Previous', style: h4TextStyle.copyWith(color: _isOngoing ? primaryColor : Colors.white)),
           style: ElevatedButton.styleFrom(
-            foregroundColor: _isOngoing ? primaryColor2 : Colors.white,
-            backgroundColor: _isOngoing ? Colors.white : primaryColor2,
+            foregroundColor: _isOngoing ? primaryColor : Colors.white,
+            backgroundColor: _isOngoing ? Colors.white : primaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: BorderSide(
-                color: primaryColor2,
+                color: primaryColor,
                 width: 0.2.h,
               ),
             ),

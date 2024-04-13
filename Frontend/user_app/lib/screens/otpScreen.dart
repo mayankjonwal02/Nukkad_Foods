@@ -4,8 +4,8 @@ import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/PasswordScreens/resetPasswordScreen.dart';
 import 'package:user_app/Screens/locationSetupScreen.dart';
 import 'package:user_app/Screens/loginScreen.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/widgets/constants/colors.dart';
 
 class OTPScreen extends StatefulWidget {
   final String userNumber;
@@ -45,7 +45,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: h4Text('Verification', textBlack),
+        title: Text('Verification', style: h4TextStyle),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -69,7 +69,7 @@ class _OTPScreenState extends State<OTPScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              h3Text('Verify with OTP sent to $userNumber', textBlack),
+              Text('Verify with OTP sent to $userNumber', style: h3TextStyle),
               SizedBox(height: 8.h),
               OtpTextField(
                 fieldHeight: 8.h,
@@ -92,7 +92,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor2,
+                      (states) => primaryColor,
                     ),
                     elevation:
                         MaterialStateProperty.resolveWith((states) => 2.0),
@@ -102,7 +102,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       ),
                     ),
                   ),
-                  child: h4Text('Continue'.toUpperCase(), Colors.white),
+                  child: Text('Continue'.toUpperCase(), style: h4TextStyle),
                   onPressed: () {
                     if (enteredpin == '8888') {
                       chooseRoute();
@@ -112,10 +112,10 @@ class _OTPScreenState extends State<OTPScreen> {
                         ..showSnackBar(
                           SnackBar(
                             duration: Duration(seconds: 4),
-                            content: Container(
+                            content: SizedBox(
                               height: 3.h,
-                              child: bodyText1(
-                                  'Entered OTP is incorrect', Colors.white),
+                              child: Text('Entered OTP is incorrect',
+                                  style: body4TextStyle),
                             ),
                             backgroundColor: colorFailure,
                           ),
@@ -132,7 +132,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  bodyText1("Didn't receive OTP?", textBlack),
+                  Text("Didn't receive OTP?", style: body2TextStyle,),
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -142,7 +142,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         ),
                       );
                     },
-                    child: h6Text('Resend', primaryColor2),
+                    child: Text('Resend', style: h6TextStyle),
                   ),
                 ],
               ),

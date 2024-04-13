@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Widgets/buttons/mainButton.dart';
-import 'package:user_app/Widgets/buttons/ratingButton.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
-import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/widgets/buttons/mainButton.dart';
+import 'package:user_app/widgets/buttons/ratingButton.dart';
+import 'package:user_app/widgets/constants/colors.dart';
+import 'package:user_app/widgets/constants/texts.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({Key? key}) : super(key: key);
@@ -63,6 +63,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       isSelected[index] = !isSelected[index];
     });
   }
+
   void toggleTogglesVisibility(int index) {
     setState(() {
       isTogglesVisible[index] = !isTogglesVisible[index];
@@ -79,7 +80,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Feedback and Reviews', textBlack),
+        title: Text('Feedback and Reviews', style: h4TextStyle),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -95,7 +96,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 decoration: BoxDecoration(
                     color: Color(0xFFf7f7f7),
                     border: Border.all(
-                      color: textGrey,
+                      color: textGrey2,
                       width: 0.2.h,
                     ),
                     borderRadius: BorderRadius.circular(10)),
@@ -103,8 +104,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    h4Text('Overall Experience', textBlack),
-                    bodyText1('From shiva chinese wok', textGrey),
+                    Text('Overall Experience', style: h4TextStyle),
+                    Text('From shiva chinese wok', style: body2TextStyle),
                     ratingButton(),
                   ],
                 ),
@@ -122,7 +123,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 decoration: BoxDecoration(
                     color: Color(0xFFf7f7f7),
                     border: Border.all(
-                      color: textGrey,
+                      color: textGrey2,
                       width: 0.2.h,
                     ),
                     borderRadius: BorderRadius.circular(10)),
@@ -134,7 +135,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        h4Text('Rate Dishes', textBlack),
+                        Text('Rate Dishes', style: h4TextStyle),
                         SizedBox(width: 2.w),
                         SvgPicture.asset(
                           'assets/icons/dishes_icon.svg',
@@ -142,7 +143,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         )
                       ],
                     ),
-                    bodyText1('From shiva chinese wok', textGrey),
+                    Text('From shiva chinese wok', style: body2TextStyle),
                     SizedBox(height: 2.h),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -153,7 +154,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           Text('Schezwan Noodles', style: textstyle),
                           rating(),
                           Divider(
-                            color: textGrey,
+                            color: textGrey2,
                             thickness: 0.2.h,
                           ),
                           Text('Fried Rice', style: textstyle),
@@ -177,7 +178,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 decoration: BoxDecoration(
                     color: Color(0xFFf7f7f7),
                     border: Border.all(
-                      color: textGrey,
+                      color: textGrey2,
                       width: 0.2.h,
                     ),
                     borderRadius: BorderRadius.circular(10)),
@@ -189,7 +190,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        h4Text('Rate Delivery', textBlack),
+                        Text('Rate Delivery', style: h4TextStyle),
                         SizedBox(width: 2.w),
                         SvgPicture.asset(
                           'assets/icons/delivering_icon.svg',
@@ -197,7 +198,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         )
                       ],
                     ),
-                    bodyText1('From shiva chinese wok', textGrey),
+                    Text('From shiva chinese wok', style: body2TextStyle),
                     SizedBox(height: 2.h),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -208,7 +209,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           Text('Delivery time', style: textstyle),
                           rating(),
                           Divider(
-                            color: textGrey,
+                            color: textGrey2,
                             thickness: 0.2.h,
                           ),
                           Text('Delivery Partner behavior ', style: textstyle),
@@ -246,16 +247,15 @@ Widget toggles(
   return Container(
     height: 15.h,
     width: 100.w,
-      
     decoration: BoxDecoration(
       color: Color(0xFFe7ffe5),
       border: Border(
         top: BorderSide(
-          color: textGrey,
+          color: textGrey2,
           width: 0.2.h,
         ),
         bottom: BorderSide(
-          color: textGrey,
+          color: textGrey2,
           width: 0.2.h,
         ),
       ),
@@ -290,17 +290,17 @@ Widget toggles(
                   width: 25.w,
                   margin: EdgeInsets.symmetric(horizontal: 2.w),
                   decoration: BoxDecoration(
-                    color: isSelected[index] ? primaryColor2 : Colors.white,
+                    color: isSelected[index] ? primaryColor : Colors.white,
                     border: Border.all(
-                      color: primaryColor2,
+                      color: primaryColor,
                       width: 0.2.h,
                     ),
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: Center(
-                    child: h5Text(
+                    child: Text(
                       namesList[index],
-                      isSelected[index] ? Colors.white : textBlack,
+                      style: body5TextStyle,
                     ),
                   ),
                 ),

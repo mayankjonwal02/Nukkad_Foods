@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/Screens/otpScreen.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/conditionsWidget.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/buttons/socialLoginButtons.dart';
-import 'package:user_app/widgets/constants/colors.dart';
-import 'package:user_app/widgets/constants/conditionsWidget.dart';
 import 'package:user_app/widgets/input_fields/passwordField.dart';
 import 'package:user_app/widgets/input_fields/phoneField.dart';
 import 'package:user_app/widgets/input_fields/textInputField.dart';
@@ -51,7 +51,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            h1Text('Sign Up', textBlack),
+            Text('Sign Up', style: h1TextStyle),
             SizedBox(height: 3.h),
             textInputField(
                 'Name',
@@ -91,7 +91,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => primaryColor2,
+                        (states) => primaryColor,
                       ),
                       elevation:
                           MaterialStateProperty.resolveWith((states) => 2.0),
@@ -101,7 +101,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                       ),
                     ),
-                    child: h4Text('Sign Up'.toUpperCase(), Colors.white),
+                    child: Text(
+                      'Sign Up'.toUpperCase(),
+                      style: h4TextStyle,
+                    ),
                     onPressed: () {
                       if (userName != '' &&
                           userEmail != '' &&
@@ -139,25 +142,32 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                bodyText1('Already have an account?', textLightGrey),
+                Text('Already have an account?', style: h6TextStyle),
                 TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
-                    },
-                    style: const ButtonStyle(
-                        overlayColor:
-                            MaterialStatePropertyAll(Colors.transparent)),
-                    child: h6Text('Login', primaryColor2))
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                    );
+                  },
+                  style: const ButtonStyle(
+                      overlayColor:
+                          MaterialStatePropertyAll(Colors.transparent)),
+                  child: Text(
+                    'Login',
+                    style: h6TextStyle,
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 1.h),
             Center(
-              child: bodyText1('Sign In with', textGrey),
+              child: Text(
+                'Sign In with',
+                style: h6TextStyle,
+              ),
             ),
             Center(
               child: SizedBox(

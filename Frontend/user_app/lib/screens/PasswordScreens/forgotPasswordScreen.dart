@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/screens/otpScreen.dart';
-import 'package:user_app/widgets/constants/texts.dart';
 import 'package:user_app/widgets/input_fields/phoneField.dart';
-
-import '../../widgets/constants/colors.dart';
 import '../loginScreen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -52,7 +51,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             color: Colors.black,
           ),
         ),
-        title: h4Text('Forgot Password', textBlack),
+        title: Text('Forgot Password', style: h4TextStyle),
         centerTitle: true,
       ),
       body: Padding(
@@ -84,7 +83,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor2,
+                      (states) => primaryColor,
                     ),
                     elevation:
                         MaterialStateProperty.resolveWith((states) => 2.0),
@@ -94,7 +93,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                     ),
                   ),
-                  child: h4Text('Send OTP'.toUpperCase(), Colors.white),
+                  child: Text('Send OTP'.toUpperCase(), style: h4TextStyle),
                   onPressed: () {
                     if (userNumber == enteredNumber) {
                       routeNext(userNumber);
@@ -106,9 +105,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             duration: Duration(seconds: 4),
                             content: SizedBox(
                               height: 3.h,
-                              child: bodyText1(
-                                  'Please enter correct mobile number',
-                                  Colors.white),
+                              child: Text('Please enter correct mobile number',
+                                  style: body4TextStyle),
                             ),
                             backgroundColor: colorFailure,
                           ),

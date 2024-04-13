@@ -46,9 +46,9 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                   children: [
                     Image.asset(typeIcons[0], height: 4.h),
                     SizedBox(width: 2.w),
-                    h5Text(
+                    Text(
                       types[0],
-                      isSelected[0] ? Colors.white : textBlack,
+                      style: h5TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),
@@ -63,9 +63,9 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
               margin: EdgeInsets.symmetric(horizontal: 1.w),
               padding: EdgeInsets.symmetric(horizontal: 2.w),
               decoration: BoxDecoration(
-                color: isSelected[1] ? primaryColor2 : Colors.white,
+                color: isSelected[1] ? primaryColor : Colors.white,
                 border: Border.all(
-                  color: primaryColor2,
+                  color: primaryColor,
                   width: 0.2.h,
                 ),
                 borderRadius: BorderRadius.circular(7),
@@ -74,9 +74,9 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                 child: Row(
                   children: [
                     Image.asset(typeIcons[1], height: 4.h),
-                    h5Text(
+                    Text(
                       types[1],
-                      isSelected[1] ? Colors.white : textBlack,
+                      style: h5TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),
@@ -102,9 +102,9 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                 child: Row(
                   children: [
                     Image.asset(typeIcons[2], height: 4.h),
-                    h5Text(
+                    Text(
                       types[2],
-                      isSelected[2] ? Colors.white : textBlack,
+                      style: h5TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),
@@ -130,9 +130,9 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                 child: Row(
                   children: [
                     Image.asset(typeIcons[3], height: 4.h),
-                    h5Text(
+                    Text(
                       types[3],
-                      isSelected[3] ? Colors.white : textBlack,
+                      style: h5TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),
@@ -158,9 +158,9 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                 child: Row(
                   children: [
                     Image.asset(typeIcons[4], height: 4.h),
-                    h5Text(
+                    Text(
                       types[4],
-                      isSelected[4] ? Colors.white : textBlack,
+                      style: h5TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Widgets/buttons/mainButton.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
-import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/Widgets/input_fields/phoneField.dart';
-import 'package:user_app/Widgets/input_fields/textInputField.dart';
+import 'package:user_app/widgets/buttons/mainButton.dart';
+import 'package:user_app/widgets/constants/colors.dart';
+import 'package:user_app/widgets/constants/texts.dart';
+import 'package:user_app/widgets/input_fields/phoneField.dart';
+import 'package:user_app/widgets/input_fields/textInputField.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -32,7 +32,7 @@ class _EditProfileState extends State<EditProfile> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Edit Profile', textBlack),
+        title: Text('Edit Profile', style: h4TextStyle),
         centerTitle: true,
       ),
       body: Padding(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';
 
 Widget mainButton(String buttonText, Color buttonTextColor, Function() route) {
@@ -11,7 +11,7 @@ Widget mainButton(String buttonText, Color buttonTextColor, Function() route) {
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateColor.resolveWith(
-            (states) => primaryColor2,
+            (states) => primaryColor,
           ),
           elevation: MaterialStateProperty.resolveWith((states) => 2.0),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -20,7 +20,7 @@ Widget mainButton(String buttonText, Color buttonTextColor, Function() route) {
             ),
           ),
         ),
-        child: h4Text(buttonText.toUpperCase(), buttonTextColor),
+        child: Text(buttonText.toUpperCase(), style: h4TextStyle),
         onPressed: () => route(),
       ),
     ),

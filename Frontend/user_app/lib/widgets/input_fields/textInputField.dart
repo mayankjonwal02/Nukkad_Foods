@@ -16,16 +16,16 @@ Widget textInputField(String labelText, TextEditingController controller,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
-          borderSide: BorderSide(color: textLightGrey, width: 0.1.h),
+          borderSide: BorderSide(color: textGrey2, width: 0.1.h),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(7),
-          borderSide: BorderSide(color: textLightGrey, width: 0.1.h),
+          borderSide: BorderSide(color: textGrey2, width: 0.1.h),
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         labelText: labelText.toUpperCase(),
         labelStyle: TextStyle(
-          color: textGrey,
+          color: textGrey2,
           fontFamily: 'Poppins',
           fontSize: 12.sp,
           fontWeight: FontWeight.w400,

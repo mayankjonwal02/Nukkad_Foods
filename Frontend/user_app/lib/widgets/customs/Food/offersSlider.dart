@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget offersSlider(String headerText, List offerData) {
@@ -14,7 +13,7 @@ Widget offersSlider(String headerText, List offerData) {
       children: [
         Container(
           padding: EdgeInsets.only(bottom: 1.h),
-          child: h5Text(headerText.toUpperCase(), textBlack),
+          child: Text(headerText.toUpperCase(), style: h5TextStyle),
         ),
         Container(
           height: 7.h,
@@ -49,8 +48,8 @@ Widget offersSlider(String headerText, List offerData) {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          h5Text('Upto 60% off', Colors.white),
-                          bodyText2('On select restaurants', Colors.white),
+                          Text('Upto 60% off', style: h5TextStyle),
+                          Text('On select restaurants', style: body5TextStyle),
                         ],
                       ),
                     ],
@@ -86,8 +85,8 @@ Widget offersSlider(String headerText, List offerData) {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          h5Text('Upto 60% off', Colors.white),
-                          bodyText2('On select restaurants', Colors.white),
+                          Text('Upto 60% off', style: h5TextStyle),
+                          Text('On select restaurants', style: body5TextStyle),
                         ],
                       ),
                     ],
@@ -122,8 +121,8 @@ Widget offersSlider(String headerText, List offerData) {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          h5Text('Upto 60% off', Colors.white),
-                          bodyText2('On select restaurants', Colors.white),
+                          Text('Upto 60% off', style: h5TextStyle),
+                          Text('On select restaurants', style: body5TextStyle),
                         ],
                       ),
                     ],

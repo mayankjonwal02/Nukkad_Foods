@@ -23,7 +23,7 @@ Widget walletHeader() {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(height: 7.h),
-        h2Text('Wallet', Colors.white),
+        Text('Wallet', style: h2TextStyle.copyWith(color: textWhite)),
         SizedBox(height: 4.h),
         Container(
           height: 5.h,
@@ -36,7 +36,10 @@ Widget walletHeader() {
             ),
           ),
           child: Center(
-            child: h4Text('Available Balance'.toUpperCase(), primaryColor2),
+            child: Text(
+              'Available Balance'.toUpperCase(),
+              style: h4TextStyle.copyWith(color: primaryColor),
+            ),
           ),
         ),
         Row(
@@ -44,7 +47,10 @@ Widget walletHeader() {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset('assets/images/wallet.png'),
-            h1Text('47.61', Colors.white),
+            Text(
+              '47.61',
+              style: h1TextStyle.copyWith(color: textWhite),
+            ),
           ],
         )
       ],

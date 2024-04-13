@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
 class FoodItemWidget extends StatefulWidget {
+  final void Function(int) onCounterChanged;
+
+  const FoodItemWidget({Key? key, required this.onCounterChanged})
+      : super(key: key);
+
   @override
   _FoodItemWidgetState createState() => _FoodItemWidgetState();
 }
@@ -14,6 +20,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
   void _incrementCounter() {
     setState(() {
       _counter++;
+      widget.onCounterChanged(_counter);
     });
   }
 
@@ -21,6 +28,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
     setState(() {
       if (_counter > 0) {
         _counter--;
+        widget.onCounterChanged(_counter);
       }
     });
   }
@@ -29,7 +37,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
   Widget build(BuildContext context) {
     return Container(
       height: 15.h,
-      margin: EdgeInsets.only(top: 1.h, left: 1.w, right: 1.w, bottom: 1.h),
+      margin: EdgeInsets.only(top: 1.h, left: 1.w, right: 1.w, bottom: 2.h),
       child: Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(10),
@@ -41,7 +49,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
             color: Colors.white,
             border: Border.all(
               width: 0.2.h,
-              color: textGrey,
+              color: textGrey2,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
@@ -57,8 +65,8 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    bodyText1('Veg Manchurian Gravy', textBlack),
-                    bodyText1('₹ 200', textBlack),
+                    Text('Veg Manchurian Gravy', style: body3TextStyle),
+                    Text('₹ 200', style: body4TextStyle),
                   ],
                 ),
               ),
@@ -76,32 +84,32 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 0.2.h,
-                          color: primaryColor2,
+                          color: primaryColor,
                         ),
                         borderRadius: BorderRadius.circular(7),
                       ),
                       child: _counter > 0
                           ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 GestureDetector(
                                   onTap: _decrementCounter,
-                                  child: Icon(Icons.remove, color: primaryColor2, size: 14.sp),
+                                  child: Icon(Icons.remove,
+                                      color: primaryColor, size: 12.sp),
                                 ),
                                 Text(
                                   '$_counter',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: primaryColor2,
-                                    fontFamily: 'Poppins',
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: GoogleFonts.inter(
+                                      color: primaryColor,
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 GestureDetector(
                                   onTap: _incrementCounter,
-                                  child: Icon(Icons.add, color: primaryColor2, size: 14.sp),
+                                  child: Icon(Icons.add,
+                                      color: primaryColor, size: 12.sp),
                                 ),
                               ],
                             )
@@ -111,7 +119,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                                 'Add +',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: primaryColor2,
+                                  color: primaryColor,
                                   fontFamily: 'Poppins',
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.w600,

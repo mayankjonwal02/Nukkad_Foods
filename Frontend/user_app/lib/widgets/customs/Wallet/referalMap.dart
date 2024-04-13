@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/widgets/constants/colors.dart';
 
 Widget referalMap() {
   return Container(
@@ -19,7 +17,7 @@ Widget referalMap() {
           width: 100.w,
           padding: EdgeInsets.symmetric(horizontal: 3.w),
           decoration: BoxDecoration(
-            border: Border.all(width: 0.2.h, color: textGrey),
+            border: Border.all(width: 0.2.h, color: textGrey2),
             color: Colors.white,
             borderRadius: BorderRadius.circular(7),
           ),
@@ -34,10 +32,10 @@ Widget referalMap() {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    h3Text('1.', primaryColor2),
-                    bodyText1(
-                        'Share referral link using Whatsapp, SMS, and more.',
-                        textBlack),
+                    Text('1.',
+                        style: h3TextStyle.copyWith(color: primaryColor)),
+                    Text('Share referral link using Whatsapp, SMS, and more.',
+                        style: body4TextStyle)
                   ],
                 ),
               )
@@ -50,7 +48,7 @@ Widget referalMap() {
           width: 100.w,
           padding: EdgeInsets.symmetric(horizontal: 3.w),
           decoration: BoxDecoration(
-            border: Border.all(width: 0.2.h, color: textGrey),
+            border: Border.all(width: 0.2.h, color: textGrey2),
             color: Colors.white,
             borderRadius: BorderRadius.circular(7),
           ),
@@ -64,10 +62,10 @@ Widget referalMap() {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    h3Text('2.', primaryColor2),
-                    bodyText1(
-                        'Your friend clicks on the link to download the nukkad app or uses your referral code!',
-                        textBlack),
+                    Text('2.',
+                        style: h3TextStyle.copyWith(color: primaryColor)),
+                    Text('Your friend clicks on the link to download the Nukkad app or uses your referral code!',
+                        style: body4TextStyle)
                   ],
                 ),
               ),
@@ -81,7 +79,7 @@ Widget referalMap() {
           width: 100.w,
           padding: EdgeInsets.symmetric(horizontal: 3.w),
           decoration: BoxDecoration(
-            border: Border.all(width: 0.2.h, color: textGrey),
+            border: Border.all(width: 0.2.h, color: textGrey2),
             color: Colors.white,
             borderRadius: BorderRadius.circular(7),
           ),
@@ -96,8 +94,10 @@ Widget referalMap() {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    h3Text('3.', primaryColor2),
-                    bodyText1('Friend places their first order.', textBlack),
+                    Text('3.',
+                        style: h3TextStyle.copyWith(color: primaryColor)),
+                    Text('Friend places their first order.',
+                        style: body4TextStyle)
                   ],
                 ),
               )
@@ -110,7 +110,7 @@ Widget referalMap() {
           width: 100.w,
           padding: EdgeInsets.symmetric(horizontal: 3.w),
           decoration: BoxDecoration(
-            border: Border.all(width: 0.2.h, color: textGrey),
+            border: Border.all(width: 0.2.h, color: textGrey2),
             color: Colors.white,
             borderRadius: BorderRadius.circular(7),
           ),
@@ -125,12 +125,10 @@ Widget referalMap() {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  h3Text('4.', primaryColor2),
+                  Text('4.', style: h3TextStyle.copyWith(color: primaryColor),),
                   SizedBox(
                     width: 75.w,
-                    child: bodyText1(
-                        'You both earn 50 nukkad coins each, that can be converted to wallet cash and can be used while placing orders. ',
-                        textBlack),
+                    child: Text('You both earn 50 wallet cash each, that can be used while placing orders. ', style: body4TextStyle),
                   )
                 ],
               ),

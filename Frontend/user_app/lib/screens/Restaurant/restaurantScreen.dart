@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/buttons/viewCartButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/customs/Food/searchBar.dart';
@@ -8,7 +8,7 @@ import 'package:user_app/Widgets/customs/Restaurants/foodItemWidget.dart';
 import 'package:user_app/Widgets/customs/Restaurants/foodTypeToggle.dart';
 
 class RestaurantScreen extends StatefulWidget {
-  const RestaurantScreen({super.key});
+  const RestaurantScreen({Key? key}) : super(key: key);
 
   @override
   State<RestaurantScreen> createState() => _RestaurantScreenState();
@@ -16,41 +16,56 @@ class RestaurantScreen extends StatefulWidget {
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
   List<bool> isSelected = [false, false, false, false, false];
+  int _cartCounter = 0;
+
   void toggleSelection(int index) {
     setState(() {
       isSelected[index] = !isSelected[index];
     });
   }
 
+  void updateCartCounter(int counter) {
+    setState(() {
+      // Increase or decrease the total counter based on the change
+      _cartCounter += counter;
+    });
+  }
+
+  void stateUpdate() {
+    setState(() {});
+  }
+
+  // Function for unselected text
+  Widget unSelectedText(String data) {
+    return Text(
+      data,
+      style: TextStyle(
+        fontFamily: 'Poppins',
+        fontWeight: FontWeight.normal,
+        fontSize: 10.sp,
+        color: textGrey2,
+      ),
+    );
+  }
+
+  // Function for selected text
+  Widget selectedText(String data) {
+    return Text(
+      data,
+      style: TextStyle(
+        fontFamily: 'Poppins',
+        fontWeight: FontWeight.bold,
+        fontSize: 12.sp,
+        color: primaryColor,
+      ),
+      maxLines: 2,
+      textAlign: TextAlign.center,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<bool> isMenuSelected = [false, false, false, false, false];
-
-    unSelectedText(data) {
-      return Text(
-        data,
-        style: TextStyle(
-          fontFamily: 'Poppins',
-          fontWeight: FontWeight.normal,
-          fontSize: 10.sp,
-          color: textGrey,
-        ),
-      );
-    }
-
-    selectedText(data) {
-      return Text(
-        data,
-        style: TextStyle(
-          fontFamily: 'Poppins',
-          fontWeight: FontWeight.bold,
-          fontSize: 12.sp,
-          color: primaryColor2,
-        ),
-        maxLines: 2,
-        textAlign: TextAlign.center,
-      );
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -60,13 +75,16 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
           },
           icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
-        title: h4Text('Shiva Chinese Wok', textBlack),
+        title: Text('Shiva Chinese Wok', style: h4TextStyle),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.favorite, color: primaryColor2),
+            icon: const Icon(Icons.favorite, color: primaryColor),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.share_outlined))
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.share_outlined),
+          )
         ],
         centerTitle: true,
       ),
@@ -77,61 +95,40 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             child: searchBar('Search in Shiva Chinese Wok'),
           ),
           foodTypeToggle(toggleSelection, isSelected),
-          Container(
-            height: 73.h,
-            margin: EdgeInsets.only(right: 2.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 22.w,
-                  // padding: EdgeInsets.symmetric(vertical: 2.h),
-                  child: ListView.builder(
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        height: 14.h,
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isMenuSelected[0] = !isMenuSelected[0];
-                                });
-                              },
-                              child: Container(
-                                height: 6.h,
-                                width: 20.w,
-                                margin: EdgeInsets.symmetric(vertical: 1.h),
-                                decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                      bottomRight: const Radius.circular(10),
-                                      topRight: Radius.circular(10),
-                                    ),
-                                    color: primaryColor2),
-                              ),
-                            ),
-                            isMenuSelected[0]
-                                ? selectedText('Main Course')
-                                : unSelectedText('Main Course'),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+          Stack(
+            children: [
+              Container(
+                height: 73.h,
+                margin: EdgeInsets.only(right: 1.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 76.w,
+                      child: ListView.builder(
+                        itemCount: 10,
+                        itemBuilder: (context, index) {
+                          return FoodItemWidget(
+                            onCounterChanged: updateCartCounter,
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 75.w,
-                  child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return FoodItemWidget();
-                    },
-                  ),
+              ),
+              Positioned(
+                bottom: 1.5.h,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: _cartCounter > 0
+                      ? viewCartButton(_cartCounter)
+                      : const SizedBox.shrink(),
                 ),
-              ],
-            ),
-          ),
+              ),
+            ],
+          )
         ],
       ),
     );

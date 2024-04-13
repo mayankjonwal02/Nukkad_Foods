@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/screens/homeScreen.dart';
 import 'package:user_app/widgets/buttons/mainButton.dart';
-import 'package:user_app/widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';
 
 class LocationSetupScreen extends StatefulWidget {
@@ -39,7 +39,10 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
           ),
           child: Column(
             children: [
-              h2Text("What’s your location?", primaryColor2),
+              Text(
+                "What’s your location?",
+                style: h2TextStyle,
+              ),
               SizedBox(height: 13.h),
               Text(
                 'Location needed to show stalls/ food trucks near you and deliver to you accurately.',
@@ -69,9 +72,9 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
                     ),
                   );
                 },
-                child: h5Text(
+                child: Text(
                   'Enter Location Manually',
-                  primaryColor2,
+                  style: h5TextStyle,
                 ),
               ),
             ],

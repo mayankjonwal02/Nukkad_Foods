@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget sectionGrid(String headerText, List names, List images) {
@@ -12,7 +11,7 @@ Widget sectionGrid(String headerText, List names, List images) {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        h5Text(headerText.toUpperCase(), textBlack),
+        Text(headerText.toUpperCase(), style: h5TextStyle),
         SizedBox(
           height: 30.h,
           child: GridView.builder(
@@ -32,7 +31,7 @@ Widget sectionGrid(String headerText, List names, List images) {
                       width: 8.5.h,
                       child: Image.asset('assets/images/bowl.png'),
                     ),
-                    h6Text('Waffle', textBlack)
+                    Text('Waffle', style: body4TextStyle),
                   ],
                 ),
               );

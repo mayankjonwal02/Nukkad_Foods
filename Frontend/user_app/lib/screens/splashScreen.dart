@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/onBoardingScreen.dart';
-import 'package:user_app/widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => OnBoardingScreen()),
+        MaterialPageRoute(builder: (context) => const OnBoardingScreen()),
       );
     });
   }
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 30.h,
                 width: 30.h,
                 decoration: BoxDecoration(
-                  color: textLightGrey,
+                  color: textGrey2,
                   border: Border.all(width: 3.w, color: Colors.white),
                   borderRadius: BorderRadius.circular(1000),
                 ),

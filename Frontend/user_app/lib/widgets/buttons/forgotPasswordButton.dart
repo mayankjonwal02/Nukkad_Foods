@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/PasswordScreens/forgotPasswordScreen.dart';
-import 'package:user_app/widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/widgets/constants/texts.dart';
 
 Widget forgotPassButton(String userNumber, BuildContext context) {
@@ -24,7 +24,7 @@ Widget forgotPassButton(String userNumber, BuildContext context) {
                 duration: Duration(seconds: 4),
                 content: SizedBox(
                   height: 3.h,
-                  child: bodyText1('Enter Phone Number', Colors.white),
+                  child: Text('Enter Phone Number', style: body4TextStyle,),
                 ),
                 backgroundColor: colorFailure,
               ),
@@ -34,7 +34,7 @@ Widget forgotPassButton(String userNumber, BuildContext context) {
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.all(Colors.transparent),
       ),
-      child: bodyText1('Forgot Password ?', primaryColor2),
+      child: Text('Forgot Password ?', style: body4TextStyle,),
     ),
   );
 }
