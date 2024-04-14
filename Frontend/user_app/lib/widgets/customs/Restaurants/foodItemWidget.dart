@@ -20,7 +20,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
   void _incrementCounter() {
     setState(() {
       _counter++;
-      widget.onCounterChanged(_counter);
+      widget.onCounterChanged(1);
     });
   }
 
@@ -28,7 +28,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
     setState(() {
       if (_counter > 0) {
         _counter--;
-        widget.onCounterChanged(_counter);
+        widget.onCounterChanged(-1);
       }
     });
   }
@@ -46,7 +46,6 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
           width: 72.w,
           padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
           decoration: BoxDecoration(
-            color: Colors.white,
             border: Border.all(
               width: 0.2.h,
               color: textGrey2,
@@ -130,14 +129,12 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                             )
                           : GestureDetector(
                               onTap: _incrementCounter,
-                              child: Text(
-                                'Add +',
-                                textAlign: TextAlign.center,
-                                style: body5TextStyle.copyWith(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                )
-                              ),
+                              child: Text('Add +',
+                                  textAlign: TextAlign.center,
+                                  style: body5TextStyle.copyWith(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  )),
                             ),
                     ),
                   ],

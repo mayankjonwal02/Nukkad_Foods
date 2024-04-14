@@ -15,5 +15,5 @@ const colorSuccess = Color(0xff35BA2A);
 const colorFailure = Color(0xffFB0000);
 
 //Background Color
-const bgColor = Color(0xF7F7F7);
+const bgColor = Color(0xFFF7F7F7);
 

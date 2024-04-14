@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
@@ -23,96 +24,136 @@ class _FoodBodyState extends State<FoodBody> {
   List restaurantNames = [];
   List restaurantImages = [];
   List foodCategories = [];
-  List foodImaqes = [];
+  List foodImages = [];
   List offerData = [];
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        margin: EdgeInsets.fromLTRB(3.w, 5.h, 2.w, 0),
-        child: Column(
-          children: [
-            customAppBar(),
-            searchBar("What are you looking for?"),
-            SizedBox(height: 2.h),
-            adsSlider(),
-            SizedBox(height: 1.h),
-            sectionSlider(
+      child: Column(
+        children: [
+          const customAppBar(),
+          Container(
+              margin: EdgeInsets.symmetric(horizontal: 2.w),
+              child: searchBar("What are you looking for?")),
+          SizedBox(height: 2.h),
+          Container(
+              margin: EdgeInsets.symmetric(horizontal: 2.w),
+              child: adsSlider()),
+          SizedBox(height: 1.h),
+          Container(
+            margin: EdgeInsets.only(left: 2.w),
+            child: sectionSlider(
                 'Favorite Merchants', restaurantNames, restaurantImages),
-            sectionGrid(
-                'Hey, What\'s on your mind?', foodCategories, foodImaqes),
-            offersSlider('Offers curated for you', offerData),
-            SizedBox(height: 1.h),
-            Align(
-              alignment: Alignment.centerLeft,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 4.w),
+            child: sectionGrid(
+                'Hey, What\'s on your mind?', foodCategories, foodImages),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 4.w),
+            child: offersSlider('Offers curated for you', offerData),
+          ),
+          SizedBox(height: 1.h),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 4.w),
               child: Text(
                 'Restaurants near me'.toUpperCase(),
                 style: titleTextStyle,
               ),
             ),
-            SizedBox(height: 2.h),
-            Align(
-              alignment: Alignment.centerLeft,
+          ),
+          SizedBox(height: 2.h),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 3.w),
               child: Text(
                 'Quick Delivery',
                 style: h5TextStyle,
               ),
             ),
-            SizedBox(height: 2.h),
-            restaurantSlider(context),
-            SizedBox(height: 3.h),
-            Align(
-              alignment: Alignment.centerLeft,
+          ),
+          SizedBox(height: 2.h),
+          Container(
+              height: 30.h,
+              padding: EdgeInsets.only(top: 3.h, left: 2.w, bottom: 3.h),
+              color: const Color(0xFFfee5ec),
+              child: restaurantSlider(context)),
+          SizedBox(height: 3.h),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 3.w),
               child: Text(
                 'Nearest Restaurants',
                 style: h5TextStyle,
               ),
             ),
-            SizedBox(height: 2.h),
-            restaurantSlider(context),
-            SizedBox(height: 3.h),
-            Align(
-              alignment: Alignment.centerLeft,
+          ),
+          SizedBox(height: 2.h),
+          Container(
+              height: 30.h,
+              color: const Color(0xFFfee5ec),
+              padding: EdgeInsets.only(top: 3.h, left: 2.w, bottom: 3.h),
+              child: restaurantSlider(context)),
+          SizedBox(height: 3.h),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 3.w),
               child: Text(
                 'Latest Restaurants',
                 style: h5TextStyle,
               ),
             ),
-            SizedBox(height: 2.h),
-            restaurantSlider(context),
-            SizedBox(height: 2.h),
-            Divider(color: textGrey2, thickness: 0.2.h),
-            SizedBox(height: 3.h),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'ALL RESTAURANTS',
-                  style: titleTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  '50 Restaurants delivering to you',
-                  style: body5TextStyle.copyWith(color: textGrey2),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-            SizedBox(height: 2.h),
-            SizedBox(
-              height: 70.h,
-              child: ListView.builder(
-                itemCount: 15,
-                itemBuilder: (context, index) {
-                  return restaurant(context);
-                },
+          ),
+          SizedBox(height: 2.h),
+          Container(
+              height: 30.h,
+              padding: EdgeInsets.only(top: 3.h, left: 2.w, bottom: 3.h),
+              color: const Color(0xFFfee5ec),
+              child: restaurantSlider(context)),
+          SizedBox(height: 2.h),
+          Divider(
+            color: textGrey3,
+            thickness: 0.2.h,
+            indent: 3.w,
+            endIndent: 3.w,
+          ),
+          SizedBox(height: 3.h),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'ALL RESTAURANTS',
+                style: titleTextStyle,
+                textAlign: TextAlign.center,
               ),
+              Text(
+                '50 Restaurants delivering to you',
+                style: body5TextStyle.copyWith(color: textGrey2),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          SizedBox(height: 2.h),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 3.w),
+            height: 70.h,
+            child: ListView.builder(
+              itemCount: 15,
+              itemBuilder: (context, index) {
+                return restaurant(context);
+              },
             ),
-            SizedBox(height: 1.h),
-          ],
-        ),
+          ),
+          SizedBox(height: 1.h),
+        ],
       ),
     );
   }

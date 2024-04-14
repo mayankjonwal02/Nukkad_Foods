@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Restaurant/restaurantScreen.dart';
@@ -8,7 +7,7 @@ import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/customs/Food/ratingWidget.dart';
 
 Widget allRestaurants(BuildContext context) {
-  return Container(
+  return SizedBox(
     height: 75.h,
     child: ListView.builder(
       itemCount: 15,
@@ -22,8 +21,8 @@ Widget allRestaurants(BuildContext context) {
 Widget restaurant(BuildContext context) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => RestaurantScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const RestaurantScreen()));
     },
     child: Container(
       margin: EdgeInsets.only(bottom: 2.h),
@@ -45,7 +44,7 @@ Widget restaurant(BuildContext context) {
                 children: [
                   Container(
                     height: 15.h,
-                    width: 30.w,
+                    width: 28.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -72,16 +71,16 @@ Widget restaurant(BuildContext context) {
                   ),
                 ],
               ),
-              SizedBox(width: 5.w),
-              SizedBox(
+              Container(
                 width: 50.w,
+                padding: EdgeInsets.only(left: 2.w, top: 2.h, bottom: 2.h),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Shiva Chinese Wok',
-                      style: h5TextStyle,
+                      style: h5TextStyle.copyWith(fontSize: 14.sp),
                       maxLines: 1,
                       textAlign: TextAlign.start,
                       overflow: TextOverflow.ellipsis,
@@ -115,11 +114,59 @@ Widget restaurant(BuildContext context) {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 1.h, right: 1.w),
-                child:
-                    GestureDetector(onTap: () {}, child: Icon(Icons.more_vert)),
-              )
+              PopupMenuButton(
+                color: const Color(0xFFB8B8B8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                onSelected: (value) {
+                  if (value == 'hide') {
+                    // Implement your edit action here
+                  } else if (value == 'share') {
+                    // Implement your delete action here
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 'hide',
+                    child: SizedBox(
+                      width: 40.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.visibility_off_outlined,
+                            color: textBlack,
+                            size: 15.sp,
+                          ),
+                          SizedBox(width: 1.5.w),
+                          Text('Hide Restaurant', style: body4TextStyle),
+                        ],
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'share',
+                    child: SizedBox(
+                      width: 42.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.share_outlined,
+                            color: textBlack,
+                            size: 15.sp,
+                          ),
+                          SizedBox(width: 1.5.w),
+                          Text('Share Restaurant', style: body4TextStyle),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

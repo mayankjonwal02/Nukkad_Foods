@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Screens/Restaurant/cartScreen.dart';
 import 'package:user_app/Widgets/buttons/viewCartButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
@@ -16,24 +17,37 @@ class RestaurantScreen extends StatefulWidget {
 }
 
 class _RestaurantScreenState extends State<RestaurantScreen> {
-  List<bool> isSelected = [false, false, false, false, false];
+  List<bool> isFilterSelected = [false, false, false, false, false];
   int _cartCounter = 0;
+
+  List<bool> isMenuSelected = [false, false, false, false, false, false, false];
+  int selectedMenuIndex = -1;
 
   void toggleSelection(int index) {
     setState(() {
-      isSelected[index] = !isSelected[index];
+      isFilterSelected[index] = !isFilterSelected[index];
     });
   }
 
   void updateCartCounter(int counter) {
     setState(() {
-      // Increase or decrease the total counter based on the change
       _cartCounter += counter;
     });
   }
 
-  void stateUpdate() {
-    setState(() {});
+  void handleMenuSelection(int index) {
+    setState(() {
+      if (selectedMenuIndex == index) {
+        isMenuSelected[index] = false;
+        selectedMenuIndex = -1;
+      } else {
+        if (selectedMenuIndex != -1) {
+          isMenuSelected[selectedMenuIndex] = false;
+        }
+        isMenuSelected[index] = true;
+        selectedMenuIndex = index;
+      }
+    });
   }
 
   // Function for unselected text
@@ -64,10 +78,17 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     );
   }
 
+  routeCart() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const CartScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<bool> isMenuSelected = [false, false, false, false, false];
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -95,7 +116,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             padding: EdgeInsets.symmetric(horizontal: 2.w),
             child: searchBar('Search in Shiva Chinese Wok'),
           ),
-          foodTypeToggle(toggleSelection, isSelected),
+          foodTypeToggle(toggleSelection, isFilterSelected),
           Stack(
             children: [
               Container(
@@ -104,9 +125,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    restaurantMenuScroll(isMenuSelected, () {}),
-                    SizedBox(
+                    restaurantMenuScroll(isMenuSelected, handleMenuSelection),
+                    Container(
                       width: 76.w,
+                      color: bgColor,
                       child: ListView.builder(
                         itemCount: 10,
                         itemBuilder: (context, index) {
@@ -120,18 +142,44 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 ),
               ),
               Positioned(
-                bottom: 1.5.h,
-                left: 0,
-                right: 0,
+                bottom: 1.h,
+                left: 1.w,
+                right: 1.w,
                 child: Center(
                   child: _cartCounter > 0
-                      ? viewCartButton(_cartCounter)
+                      ? viewCartButton(_cartCounter, routeCart)
                       : const SizedBox.shrink(),
                 ),
               ),
             ],
           )
         ],
+      ),
+      floatingActionButton: Padding(
+        padding:
+            EdgeInsets.only(right: 1.w, bottom: _cartCounter > 0 ? 7.h : 1.h),
+        child: SizedBox(
+          height: 5.h,
+          width: 20.w,
+          child: FloatingActionButton.extended(
+            backgroundColor: primaryColor,
+            foregroundColor: primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            onPressed: () {},
+            label: Row(
+              children: [
+                Image.asset('assets/icons/menu_icon.png'),
+                SizedBox(width: 2.w),
+                Text(
+                  'MENU',
+                  style: h6TextStyle.copyWith(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

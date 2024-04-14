@@ -1,60 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
-Widget restaurantMenuScroll(List<bool> isMenuSelected, Function() onTap) {
-  // Function for unselected text
-  Widget unSelectedText(String data) {
-    return Text(
-      data,
-      style: body5TextStyle.copyWith(
-        color: textGrey2,
-        fontWeight: FontWeight.normal,
-      ),
-    );
-  }
-
-  // Function for selected text
-  Widget selectedText(String data) {
-    return Text(
-      data,
-      style: body4TextStyle.copyWith(
-        color: primaryColor,
-      ),
-      textAlign: TextAlign.center,
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
-
+Widget restaurantMenuScroll(List<bool> isMenuSelected, Function(int) onTap) {
   return Container(
+    padding: EdgeInsets.only(right: 1.w),
     width: 23.w,
+    color: textWhite,
     child: ListView.builder(
-      itemCount: 6,
+      itemCount: isMenuSelected.length,
       itemBuilder: (context, index) {
         return SizedBox(
-          height: 14.h,
+          height: 15.h,
           child: Column(
             children: [
               GestureDetector(
-                onTap: onTap,
+                onTap: () {
+                  onTap(index);
+                },
                 child: Container(
                   height: 7.h,
                   width: 23.w,
                   margin: EdgeInsets.symmetric(vertical: 1.h),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
                       bottomRight: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
-                    color: primaryColor,
+                    color: isMenuSelected[index] ? primaryColor : textWhite,
                   ),
+                  child: Image.asset('assets/images/bowl.png'),
                 ),
               ),
-              isMenuSelected[0]
-                  ? selectedText('Main Course')
-                  : unSelectedText('Main Course'),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w),
+                child: Text(
+                  'Main Course',
+                  style: isMenuSelected[index]
+                      ? h6TextStyle.copyWith(color: primaryColor)
+                      : body5TextStyle.copyWith(color: textGrey2),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
         );
