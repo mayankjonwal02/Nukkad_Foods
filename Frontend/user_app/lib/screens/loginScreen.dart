@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/registerScreen.dart';
 import 'package:user_app/Screens/homeScreen.dart';
+import 'package:user_app/Widgets/buttons/mainButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/buttons/forgotPasswordButton.dart';
 import 'package:user_app/Widgets/buttons/socialLoginButtons.dart';
@@ -22,10 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String userPassword = '';
 
   void routeHome() {
-    print('User number: $userNumber');
-    print('Password: $userPassword');
     if (userNumber != '' && userPassword != '') {
-      print('Sign in successful');
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -72,29 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 2.h),
               forgotPassButton(userNumber, context),
               SizedBox(height: 2.h),
-              Center(
-                child: SizedBox(
-                  height: 7.h,
-                  width: 97.w,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => primaryColor,
-                      ),
-                      elevation:
-                          MaterialStateProperty.resolveWith((states) => 2.0),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                      ),
-                    ),
-                    child: Text('Sign In'.toUpperCase(),
-                        style: h5TextStyle.copyWith(color: textWhite)),
-                    onPressed: () => routeHome(),
-                  ),
-                ),
-              ),
+              mainButton('Sign In', textWhite, routeHome),
               SizedBox(height: 2.h),
               textRichButton(
                   'Don\'t have an account?', 'Sign Up', routeRegister),
@@ -105,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Center(
                 child: SizedBox(
-                  height: 8.h,
+                  height: 10.h,
                   width: 50.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

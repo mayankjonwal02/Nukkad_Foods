@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget searchBar(String barText) {
   return Container(
@@ -11,12 +12,7 @@ Widget searchBar(String barText) {
       decoration: InputDecoration(
         hintText: barText,
         contentPadding: EdgeInsets.symmetric(vertical: 1.h),
-        hintStyle: TextStyle(
-          fontFamily: 'Poppins',
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w400,
-          color: const Color(0xFF7E7E7E),
-        ),
+        hintStyle: body4TextStyle.copyWith(color: Color(0xFF7E7E7E)),
         prefixIcon: IconButton(
           onPressed: () {
             print('Search button pressed');

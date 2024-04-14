@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 import '../constants/colors.dart';
 
@@ -31,12 +32,7 @@ class _PasswordFieldState extends State<PasswordField> {
           onChanged: widget.onValueChanged,
           decoration: InputDecoration(
             labelText: widget.labelText.toUpperCase(),
-            labelStyle: TextStyle(
-              color: textGrey1,
-              fontFamily: 'Poppins',
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w400,
-            ),
+            labelStyle: body4TextStyle.copyWith(color: textGrey2),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7.0),
               borderSide: BorderSide(

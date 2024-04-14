@@ -55,12 +55,7 @@ Widget policyButton(String text) {
           children: [
             Text(
               text,
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 18.sp,
-                fontWeight: FontWeight.normal,
-                color: textBlack,
-              ),
+              style: h4TextStyle
             ),
             IconButton(
               onPressed: () {},

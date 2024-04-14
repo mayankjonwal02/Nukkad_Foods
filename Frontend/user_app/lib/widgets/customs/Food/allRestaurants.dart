@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Restaurant/restaurantScreen.dart';
@@ -25,91 +26,102 @@ Widget restaurant(BuildContext context) {
           context, MaterialPageRoute(builder: (context) => RestaurantScreen()));
     },
     child: Container(
-      margin: EdgeInsets.symmetric(vertical: 1.h),
+      margin: EdgeInsets.only(bottom: 2.h),
       child: Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(10),
-        child: Stack(
-          children: [
-            Container(
-              height: 15.h,
-              width: 100.w,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(width: 0.2.h, color: textGrey3),
-              ),
-              child: Row(
+        child: Container(
+          height: 15.h,
+          width: 100.w,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(width: 0.2.h, color: textGrey3),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
                 children: [
-                  Stack(
-                    children: [
-                      Container(
-                        height: 15.h,
-                        width: 30.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Image.asset(
-                          'assets/images/restaurantImage.png',
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 5,
-                        left: 5,
-                        right: 5,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/unlike_heart_icon.svg',
-                              height: 3.h,
-                            ),
-                            ratingWidget(4.1)
-                          ],
-                        ),
-                      ),
-                    ],
+                  Container(
+                    height: 15.h,
+                    width: 30.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Image.asset(
+                      'assets/images/restaurantImage.png',
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                  SizedBox(width: 5.w),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Shiva Chinese Wok', style: h4TextStyle),
-                      Text('Saket Nagar, Indore', style: body2TextStyle),
-                      SizedBox(height: 0.5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/timer_icon.svg',
-                            height: 3.h,
-                            color: primaryColor,
-                          ),
-                          SizedBox(width: 1.w),
-                          Text('30 MINS', style: body2TextStyle),
-                          SizedBox(width: 1.w),
-                          Image.asset('assets/icons/dot.png'),
-                          SizedBox(width: 1.w),
-                          Text('5.4 KM', style: body2TextStyle),
-                        ],
-                      ),
-                    ],
+                  Positioned(
+                    bottom: 1.h,
+                    left: 1.5.w,
+                    right: 1.5.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/unlike_heart_icon.svg',
+                          height: 3.h,
+                        ),
+                        ratingWidget(4.1)
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.more_vert),
+              SizedBox(width: 5.w),
+              SizedBox(
+                width: 50.w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Shiva Chinese Wok',
+                      style: h5TextStyle,
+                      maxLines: 1,
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 0.5.h),
+                    Text(
+                      'Saket Nagar, Indore',
+                      style: body4TextStyle.copyWith(color: textGrey2),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(height: 0.5.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/timer_icon.svg',
+                          height: 3.h,
+                          color: primaryColor,
+                        ),
+                        SizedBox(width: 1.5.w),
+                        Text('30 MINS', style: body5TextStyle),
+                        SizedBox(width: 1.5.w),
+                        Image.asset('assets/icons/dot.png'),
+                        SizedBox(width: 1.5.w),
+                        Text('5.4 KM', style: body5TextStyle),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.only(top: 1.h, right: 1.w),
+                child:
+                    GestureDetector(onTap: () {}, child: Icon(Icons.more_vert)),
+              )
+            ],
+          ),
         ),
       ),
     ),

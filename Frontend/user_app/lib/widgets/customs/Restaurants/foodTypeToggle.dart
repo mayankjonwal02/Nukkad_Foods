@@ -48,7 +48,7 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                     SizedBox(width: 2.w),
                     Text(
                       types[0],
-                      style: h5TextStyle.copyWith(color: textBlack),
+                      style: body4TextStyle.copyWith(fontSize: 14.sp),
                     ),
                   ],
                 ),
@@ -76,7 +76,7 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                     Image.asset(typeIcons[1], height: 4.h),
                     Text(
                       types[1],
-                      style: h5TextStyle.copyWith(color: textBlack),
+                      style: body4TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),
@@ -104,7 +104,7 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                     Image.asset(typeIcons[2], height: 4.h),
                     Text(
                       types[2],
-                      style: h5TextStyle.copyWith(color: textBlack),
+                      style: body4TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),
@@ -132,7 +132,7 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                     Image.asset(typeIcons[3], height: 4.h),
                     Text(
                       types[3],
-                      style: h5TextStyle.copyWith(color: textBlack),
+                      style: body4TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),
@@ -160,7 +160,7 @@ Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
                     Image.asset(typeIcons[4], height: 4.h),
                     Text(
                       types[4],
-                      style: h5TextStyle.copyWith(color: textBlack),
+                      style: body4TextStyle.copyWith(color: textBlack),
                     ),
                   ],
                 ),

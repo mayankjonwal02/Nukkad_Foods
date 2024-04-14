@@ -35,21 +35,20 @@ class _FoodBodyState extends State<FoodBody> {
           children: [
             customAppBar(),
             searchBar("What are you looking for?"),
+            SizedBox(height: 2.h),
             adsSlider(),
             SizedBox(height: 1.h),
             sectionSlider(
                 'Favorite Merchants', restaurantNames, restaurantImages),
-            Divider(color: textGrey2, thickness: 0.2.h),
             sectionGrid(
                 'Hey, What\'s on your mind?', foodCategories, foodImaqes),
-            Divider(color: textGrey2, thickness: 0.2.h),
             offersSlider('Offers curated for you', offerData),
             SizedBox(height: 1.h),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Restaurants near me'.toUpperCase(),
-                style: h5TextStyle,
+                style: titleTextStyle,
               ),
             ),
             SizedBox(height: 2.h),
@@ -60,7 +59,7 @@ class _FoodBodyState extends State<FoodBody> {
                 style: h5TextStyle,
               ),
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: 2.h),
             restaurantSlider(context),
             SizedBox(height: 3.h),
             Align(
@@ -70,14 +69,17 @@ class _FoodBodyState extends State<FoodBody> {
                 style: h5TextStyle,
               ),
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: 2.h),
             restaurantSlider(context),
             SizedBox(height: 3.h),
             Align(
               alignment: Alignment.centerLeft,
-              child: Text('Latest Restaurants', style: h5TextStyle,),
+              child: Text(
+                'Latest Restaurants',
+                style: h5TextStyle,
+              ),
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: 2.h),
             restaurantSlider(context),
             SizedBox(height: 2.h),
             Divider(color: textGrey2, thickness: 0.2.h),
@@ -88,26 +90,17 @@ class _FoodBodyState extends State<FoodBody> {
               children: [
                 Text(
                   'ALL RESTAURANTS',
-                  style: TextStyle(
-                    color: textBlack,
-                    fontFamily: 'Poppins',
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: titleTextStyle,
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   '50 Restaurants delivering to you',
-                  style: TextStyle(
-                    color: textGrey2,
-                    fontFamily: 'Poppins',
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: body5TextStyle.copyWith(color: textGrey2),
                   textAlign: TextAlign.center,
                 ),
               ],
             ),
+            SizedBox(height: 2.h),
             SizedBox(
               height: 70.h,
               child: ListView.builder(

@@ -18,7 +18,7 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => HomeScreen(),
+        builder: (context) => const HomeScreen(),
       ),
     );
   }
@@ -41,24 +41,23 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
             children: [
               Text(
                 "What’s your location?",
-                style: h2TextStyle,
+                style: h1TextStyle.copyWith(color: primaryColor),
               ),
-              SizedBox(height: 13.h),
+              SizedBox(height: 8.h),
               Text(
                 'Location needed to show stalls/ food trucks near you and deliver to you accurately.',
-                style: TextStyle(
-                  color: textBlack,
-                  fontFamily: 'Poppins',
+                style: body2TextStyle.copyWith(
                   fontSize: 17.sp,
-                  fontWeight: FontWeight.w300,
+                  color: textBlack,
+                  fontWeight: FontWeight.w100,
                 ),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 9.h),
+              SizedBox(height: 6.h),
               mainButton('Allow Location Access', Colors.white, routeHome),
-              SizedBox(height: 2.h),
+              SizedBox(height: 1.h),
               TextButton(
                 style: ButtonStyle(
                     overlayColor: MaterialStateColor.resolveWith(
@@ -68,13 +67,13 @@ class _LocationSetupScreenState extends State<LocationSetupScreen> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
+                      builder: (context) => const LoginScreen(),
                     ),
                   );
                 },
                 child: Text(
                   'Enter Location Manually',
-                  style: h5TextStyle,
+                  style: h5TextStyle.copyWith(color: primaryColor),
                 ),
               ),
             ],

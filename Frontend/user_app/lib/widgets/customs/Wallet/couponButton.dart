@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget couponButton() {
   return Container(
@@ -15,14 +16,14 @@ Widget couponButton() {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text('Copy your code', style: TextStyle(color: textWhite)),
-        const Text('58vt3x1', style: TextStyle(color: textBlack)),
+        Text('Copy your code', style: h5TextStyle.copyWith(color: textWhite)),
+        Text('58vt3x1', style: h5TextStyle),
         IconButton(
           onPressed: () {},
           icon: Icon(
             Icons.copy_outlined,
             color: textWhite,
-            size: 22.sp,
+            size: 20.sp,
           ),
         ),
       ],

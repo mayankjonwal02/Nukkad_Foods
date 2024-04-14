@@ -37,7 +37,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
               itemBuilder: (context, index) {
                 final message = _messages[index];
                 final isSupport = message['isSupport'] as bool;
-                final color = isSupport ? Colors.grey : primaryColor;
+                final color = isSupport ? Color(0xFFd6d6d6) : primaryColor;
                 final textColor = isSupport ? textBlack : Colors.white;
                 final borderRadius = BorderRadius.circular(15);
                 return Container(
@@ -73,12 +73,7 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
               controller: _messageController,
               decoration: InputDecoration(
                 hintText: 'Start typing your query...',
-                hintStyle: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: textBlack,
-                ),
+                hintStyle: body4TextStyle,
                 suffixIcon: IconButton(
                   icon: SvgPicture.asset(
                     'assets/icons/message_icon.svg',
@@ -91,9 +86,11 @@ class _ChatSupportScreenState extends State<ChatSupportScreen> {
                       setState(() {
                         _messages.add({'text': text, 'isSupport': false});
                         _messageController.clear();
-
-                        _messages.add(
-                            {'text': 'Support message', 'isSupport': true});
+                        _messages.add({
+                          'text':
+                              'Hi Apeksha, I am your costumer care representive, Vinod. How can I help you today?',
+                          'isSupport': true
+                        });
                       });
                     }
                   },

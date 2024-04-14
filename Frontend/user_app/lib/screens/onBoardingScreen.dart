@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
+import 'package:user_app/Widgets/buttons/mainButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
@@ -44,7 +45,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     final pageDecoration = PageDecoration(
-      titleTextStyle: h3TextStyle,
+      titleTextStyle: h3TextStyle.copyWith(color: primaryColor),
       bodyTextStyle: body2TextStyle,
       bodyPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
@@ -71,7 +72,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                     onPressed: () => routeLogin(),
                     child: Text(
                       'Skip',
-                      style: h4TextStyle.copyWith(color: textGrey2),
+                      style: h5TextStyle.copyWith(color: textGrey2),
                     ),
                   )
                 : null,
@@ -80,32 +81,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
       globalFooter: currentPageIndex == 2
           ? Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 20, 50),
-              child: SizedBox(
-                width: double.infinity,
-                height: 60,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor,
-                    ),
-                    elevation:
-                        MaterialStateProperty.resolveWith((states) => 2.0),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'NEXT'.toUpperCase(),
-                    style: h5TextStyle.copyWith(color: textWhite),
-                  ),
-                  onPressed: () => routeLogin(),
-                ),
-              ),
-            )
-          : SizedBox(
+            padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
+            child: mainButton('Next', textWhite, routeLogin),
+          ) 
+          :SizedBox(
               height: 15.2.h,
             ),
       pages: [

@@ -6,6 +6,7 @@ import 'package:user_app/Screens/NavBarWidgets/orderBody.dart';
 import 'package:user_app/Screens/NavBarWidgets/profileBody.dart';
 import 'package:user_app/Screens/NavBarWidgets/walletBody.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -37,22 +38,25 @@ class _HomeScreenState extends State<HomeScreen> {
         child: _widgetOptions[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedLabelStyle: body4TextStyle.copyWith(color: primaryColor),
+        unselectedLabelStyle: body4TextStyle.copyWith(color: textGrey2),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/food_home_icon.svg',
               color: _selectedIndex == 0 ? primaryColor : textGrey2,
-              height: 4.h,
-              width: 4.h,
+              height: 3.5.h,
+              width: 3.5.h,
             ),
             label: 'Food',
+            
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/orders_icon.svg',
               color: _selectedIndex == 1 ? primaryColor : textGrey2,
-              height: 4.h,
-              width: 4.h,
+              height: 3.5.h,
+              width: 3.5.h,
             ),
             label: 'Orders',
           ),
@@ -60,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: SvgPicture.asset(
               'assets/icons/wallet_icon.svg',
               color: _selectedIndex == 2 ? primaryColor : textGrey2,
-              height: 4.h,
-              width: 4.h,
+              height: 3.5.h,
+              width: 3.5.h,
             ),
             label: 'Wallet',
           ),
@@ -69,8 +73,8 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: SvgPicture.asset(
               'assets/icons/profile_icon.svg',
               color: _selectedIndex == 3 ? primaryColor : textGrey2,
-              height: 4.h,
-              width: 4.h,
+              height: 3.5.h,
+              width: 3.5.h,
             ),
             label: 'Profile',
           ),

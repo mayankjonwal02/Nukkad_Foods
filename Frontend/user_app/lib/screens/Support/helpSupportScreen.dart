@@ -17,7 +17,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ChatSupportScreen(),
+        builder: (context) => const ChatSupportScreen(),
       ),
     );
   }
@@ -76,7 +76,8 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                     'In order to cancel your order, please click on "Help" and then "I want to cancel my order". Please note that we may charge you a cancellation fee as it helps us to minimise food wastage and also compensate our restaurant partners for cancelled orders.',
               ),
               SizedBox(height: 5.h),
-              Text('Still need help?', style: h4TextStyle),
+              Text('Still need help?',
+                  style: h6TextStyle.copyWith(color: primaryColor)),
               SizedBox(height: 4.h),
               mainButton('chat with us', Colors.white, routeChat)
             ],
@@ -112,13 +113,6 @@ class _ExpandableBoxState extends State<ExpandableBox> {
     });
   }
 
-  final titleTextStyle = TextStyle(
-    fontFamily: 'Inter',
-    fontWeight: FontWeight.normal,
-    fontSize: 13.sp,
-    color: textBlack,
-  );
-
   final iconExpand = Icon(
     Icons.keyboard_arrow_down_rounded,
     color: Colors.black,
@@ -151,9 +145,15 @@ class _ExpandableBoxState extends State<ExpandableBox> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    widget.titleText,
-                    style: titleTextStyle,
+                  SizedBox(
+                    width: 70.w,
+                    child: Text(
+                      widget.titleText,
+                      style: body3TextStyle.copyWith(fontSize: 14.sp),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
                   ),
                   IconButton(
                     icon: _isExpanded ? iconCollapse : iconExpand,
@@ -163,7 +163,7 @@ class _ExpandableBoxState extends State<ExpandableBox> {
               ),
               if (_isExpanded)
                 Expanded(
-                  child: Text(widget.contentText, style: body3TextStyle),
+                  child: Text(widget.contentText, style: body6TextStyle),
                 ),
             ],
           ),

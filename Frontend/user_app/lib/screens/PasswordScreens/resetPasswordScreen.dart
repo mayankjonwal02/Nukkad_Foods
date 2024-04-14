@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/buttons/mainButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/input_fields/passwordField.dart';
@@ -17,6 +18,51 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   String confirmPassword = '';
 
   bool obscureText = true;
+
+  void routeContinue() {
+    {
+      print('Password: $newPassword && Confirm Password: $confirmPassword');
+      if (newPassword != confirmPassword) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              duration: Duration(seconds: 4),
+              content: Container(
+                height: 3.h,
+                child: Text(
+                  'Entered passwords do not match',
+                  style: body4TextStyle,
+                ),
+              ),
+              backgroundColor: colorFailure,
+            ),
+          );
+      } else if (newPassword == '' || confirmPassword == '') {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              duration: Duration(seconds: 4),
+              content: Container(
+                height: 3.h,
+                child: Text('Please enter data', style: body4TextStyle),
+              ),
+              backgroundColor: colorFailure,
+            ),
+          );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SuccessPage()),
+        );
+      }
+      setState(() {
+        newPassword = '';
+        confirmPassword = '';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,71 +109,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               },
             ),
             SizedBox(height: 5.h),
-            SizedBox(
-              height: 7.h,
-              width: 97.w,
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor,
-                    ),
-                    elevation:
-                        MaterialStateProperty.resolveWith((states) => 2.0),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    'Continue'.toUpperCase(),
-                    style: h4TextStyle,
-                  ),
-                  onPressed: () {
-                    print(
-                        'Password: $newPassword && Confirm Password: $confirmPassword');
-                    if (newPassword != confirmPassword) {
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          SnackBar(
-                            duration: Duration(seconds: 4),
-                            content: Container(
-                              height: 3.h,
-                              child: Text(
-                                'Entered passwords do not match',
-                                style: body4TextStyle,
-                              ),
-                            ),
-                            backgroundColor: colorFailure,
-                          ),
-                        );
-                    } else if (newPassword == '' || confirmPassword == '') {
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          SnackBar(
-                            duration: Duration(seconds: 4),
-                            content: Container(
-                              height: 3.h,
-                              child: Text('Please enter data',
-                                  style: body4TextStyle),
-                            ),
-                            backgroundColor: colorFailure,
-                          ),
-                        );
-                    } else {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => SuccessPage()),
-                      );
-                    }
-                    setState(() {
-                      newPassword = '';
-                      confirmPassword = '';
-                    });
-                  }),
-            ),
+            mainButton('Continue', textWhite, () => routeContinue()),
           ],
         ),
       ),
@@ -146,7 +128,13 @@ class SuccessPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('Your Password has been reset!', style: h1TextStyle),
+              Text(
+                'Your Password has been reset!',
+                style: h1TextStyle.copyWith(color: primaryColor),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
               SizedBox(height: 5.h),
               Center(
                 child: Image.asset(
@@ -162,18 +150,14 @@ class SuccessPage extends StatelessWidget {
                 children: [
                   Text(
                     'Redirect to',
-                    style: TextStyle(
-                      color: textBlack,
-                      fontFamily: 'Poppins',
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.w300,
-                    ),
+                    style: body2TextStyle.copyWith(fontWeight: FontWeight.w100),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
                       );
                     },
                     style: ButtonStyle(
@@ -182,11 +166,9 @@ class SuccessPage extends StatelessWidget {
                     ),
                     child: Text(
                       'Login Page',
-                      style: TextStyle(
+                      style: body2TextStyle.copyWith(
                         color: primaryColor,
-                        fontFamily: 'Poppins',
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   )

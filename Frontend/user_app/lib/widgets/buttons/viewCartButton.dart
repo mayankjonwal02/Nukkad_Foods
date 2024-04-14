@@ -23,7 +23,7 @@ Widget viewCartButton(counter) {
           children: [
             Text(
               counter == 1 ? '${counter} item' : '${counter} items',
-              style: h5TextStyle,
+              style: h5TextStyle.copyWith(color: textWhite),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 2.w),
@@ -31,19 +31,25 @@ Widget viewCartButton(counter) {
               width: 0.4.w,
               color: Colors.white,
             ),
-            Text('₹ 200', style: h5TextStyle),
+            Text(
+              '₹ 200',
+              style: h5TextStyle.copyWith(color: textWhite),
+            ),
             const Spacer(),
-            Text('View Cart', style: h5TextStyle),
+            Text(
+              'View Cart',
+              style: h5TextStyle.copyWith(color: textWhite),
+            ),
             SizedBox(width: 2.w),
             Icon(
               Icons.shopping_cart_rounded,
               color: Colors.white,
-              size: 20.sp,
+              size: 18.sp,
             ),
             Icon(
               Icons.keyboard_arrow_right_rounded,
               color: Colors.white,
-              size: 25.sp,
+              size: 22.sp,
             ),
           ],
         ),

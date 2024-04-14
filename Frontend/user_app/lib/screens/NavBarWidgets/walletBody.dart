@@ -22,14 +22,20 @@ class _WalletBodyState extends State<WalletBody> {
         children: [
           walletHeader(),
           SizedBox(height: 4.h),
-          Text('Refer and Earn program', style: h3TextStyle,),
+          Text('Refer and Earn program', style: h3TextStyle),
           referalNotification(),
           SizedBox(height: 2.h),
           couponButton(),
-          SizedBox(height: 2.h),
+          SizedBox(height: 4.h),
           inviteButton(),
-          SizedBox(height: 1.h),
-          Text('How do refer and earn work?'.toUpperCase(), style: h5TextStyle,),
+          SizedBox(height: 2.h),
+          Text(
+            'How do refer and earn work?'.toUpperCase(),
+            style: body3TextStyle.copyWith(
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          SizedBox(height: 2.h),
           referalMap()
         ],
       ),
@@ -53,6 +59,9 @@ Widget inviteButton() {
       ),
     ),
     onPressed: () {},
-    child: Text('Invite'.toUpperCase(), style: h5TextStyle,),
+    child: Text(
+      'Invite'.toUpperCase(),
+      style: body3TextStyle.copyWith(fontWeight: FontWeight.w300, color: primaryColor),
+    ),
   );
 }

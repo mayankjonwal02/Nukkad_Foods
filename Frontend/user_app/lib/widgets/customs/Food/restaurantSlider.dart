@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Restaurant/restaurantScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/customs/Food/ratingWidget.dart';
 
 Widget restaurantSlider(BuildContext context) {
@@ -12,13 +13,13 @@ Widget restaurantSlider(BuildContext context) {
           context, MaterialPageRoute(builder: (context) => RestaurantScreen()));
     },
     child: SizedBox(
-      height: 20.h,
+      height: 21.h,
       child: ListView.builder(
         itemCount: 6,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return Container(
-            height: 20.h,
+            height: 21.h,
             width: 30.w,
             margin: EdgeInsets.only(right: 3.w),
             decoration: BoxDecoration(
@@ -30,19 +31,24 @@ Widget restaurantSlider(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 13.5.h,
+                  height: 14.5.h,
                   width: 20.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Stack(
                     children: [
-                      Image.asset('assets/images/restaurantImage.png',
-                          fit: BoxFit.fill),
+                      SizedBox(
+                        height: 14.h,
+                        child: Image.asset(
+                          'assets/images/restaurantImage.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                       Positioned(
-                        bottom: 5,
-                        left: 5,
-                        right: 5,
+                        bottom: 1.h,
+                        left: 1.w,
+                        right: 1.w,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,12 +65,9 @@ Widget restaurantSlider(BuildContext context) {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 0.5.h,
-                ),
                 Divider(
-                  height: 0.05.h,
-                  color: textGrey1,
+                  height: 0.03.h,
+                  color: textGrey2,
                   indent: 1.w,
                   endIndent: 1.w,
                 ),
@@ -72,18 +75,14 @@ Widget restaurantSlider(BuildContext context) {
                   padding: EdgeInsets.symmetric(horizontal: 1.w),
                   child: Text(
                     'Shiva Chinese',
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.bold,
-                        color: textBlack),
+                    style: h6TextStyle,
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SvgPicture.asset(
@@ -93,25 +92,21 @@ Widget restaurantSlider(BuildContext context) {
                     ),
                     Text(
                       '20 Mins',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 8.sp,
-                        fontWeight: FontWeight.w600,
-                        color: textGrey2,
-                      ),
+                      style: body6TextStyle.copyWith(
+                          color: textGrey2, fontWeight: FontWeight.w200),
                       textAlign: TextAlign.start,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    SizedBox(
+                      width: 1.w,
+                    ),
                     Image.asset('assets/icons/dot.png'),
+                    SizedBox(width: 1.w),
                     Text(
                       '4 KM',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 8.sp,
-                        fontWeight: FontWeight.w600,
-                        color: textGrey2,
-                      ),
+                      style: body6TextStyle.copyWith(
+                          color: textGrey2, fontWeight: FontWeight.w200),
                       textAlign: TextAlign.start,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

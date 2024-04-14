@@ -38,7 +38,8 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border(
-                        bottom: BorderSide(width: 0.2.h, color: textGrey3)),
+                      bottom: BorderSide(width: 0.2.h, color: textGrey3),
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -54,46 +55,73 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                         ),
                       ),
                       SizedBox(width: 3.w),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Shiva Chinese Wok', style: h5TextStyle),
-                          Text('Saket Nagar, Indore', style: body3TextStyle),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 1.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/timer_icon.svg',
-                                  height: 3.h,
-                                  color: primaryColor,
-                                ),
-                                SizedBox(width: 1.w),
-                                Text('25 min', style: body3TextStyle),
-                                SizedBox(width: 1.w),
-                                Image.asset('assets/icons/dot.png'),
-                                SizedBox(width: 1.w),
-                                Text('4.5', style: body3TextStyle),
-                              ],
+                      SizedBox(
+                        width: 50.w,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Shiva Chinese Wok',
+                              style: h5TextStyle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
                             ),
-                          ),
-                        ],
+                            Text(
+                              'Saket Nagar, Indore',
+                              style: body5TextStyle.copyWith(
+                                color: textGrey2,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 1.h),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/timer_icon.svg',
+                                    height: 3.h,
+                                    color: primaryColor,
+                                  ),
+                                  SizedBox(width: 1.w),
+                                  Text(
+                                    '25 min',
+                                    style: body5TextStyle.copyWith(
+                                      color: const Color(0xFF7E7E7E),
+                                    ),
+                                  ),
+                                  SizedBox(width: 1.w),
+                                  Image.asset('assets/icons/dot.png'),
+                                  SizedBox(width: 1.w),
+                                  Text(
+                                    '4.5',
+                                    style: body5TextStyle.copyWith(
+                                      color: const Color(0xFF7E7E7E),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Positioned(
-                  top: 5,
-                  right: 5,
+                  top: 1.h,
+                  right: 1.w,
                   child: Container(
                     height: 3.5.h,
                     width: 25.w,
                     decoration: BoxDecoration(
                         color: _isOngoing ? Colors.green : textGrey2,
-                        borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(7)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,7 +133,12 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                           height: _isOngoing ? 3.h : 2.h,
                           color: Colors.white,
                         ),
-                        Text(_isOngoing ? 'Preparing' : 'Delivered',style: body4TextStyle),
+                        Text(
+                          _isOngoing ? 'Preparing' : 'Delivered',
+                          style: body5TextStyle.copyWith(
+                            color: textWhite,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -127,11 +160,11 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                   ),
                   Row(
                     children: [
-                      Text('Total', style: body4TextStyle),
-                      Spacer(),
-                      Spacer(),
-                      Text('₹ 250', style: body4TextStyle),
-                      Spacer()
+                      Text('Total', style: body5TextStyle),
+                      const Spacer(),
+                      const Spacer(),
+                      Text('₹ 250', style: h6TextStyle),
+                      const Spacer()
                     ],
                   ),
                   DottedLine(
@@ -152,8 +185,13 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 1.h),
-                          Text('Estimated delivery time', style: body4TextStyle),
-                          Text('18:56 PM', style: body4TextStyle),
+                          Text(
+                            'Estimated delivery time',
+                            style: body4TextStyle.copyWith(
+                              color: textGrey2,
+                            ),
+                          ),
+                          Text('18:56 PM', style: body5TextStyle),
                         ],
                       ),
                       GestureDetector(
@@ -166,8 +204,9 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                             height: 3.5.h,
                             width: 25.w,
                             decoration: BoxDecoration(
-                                color: primaryColor,
-                                borderRadius: BorderRadius.circular(10)),
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(7),
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -182,7 +221,7 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                                 Text(
                                   _isOngoing ? 'Track' : 'Reorder',
                                   style:
-                                      body2TextStyle.copyWith(color: textWhite),
+                                      body4TextStyle.copyWith(color: textWhite),
                                 ),
                               ],
                             ),
@@ -200,5 +239,3 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
     ),
   );
 }
-
-class _isOngoing {}

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget referalNotification() {
-  return Container(
+  return SizedBox(
     height: 20.h,
     width: 100.w,
     child: Row(
@@ -15,12 +15,7 @@ Widget referalNotification() {
           width: 50.w,
           child: Text(
             'Refer a friend  to Nukkad foods and you both earn ₹50 when they place their first order! ',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
-              color: textBlack,
-            ),
+            style:body4TextStyle.copyWith(fontSize: 11.sp),
             textAlign: TextAlign.start,
             maxLines: 4,
             overflow: TextOverflow.ellipsis,

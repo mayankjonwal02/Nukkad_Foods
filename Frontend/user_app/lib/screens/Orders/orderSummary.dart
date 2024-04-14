@@ -50,9 +50,14 @@ class _OrderSummaryState extends State<OrderSummary> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'Shiva Chinese',
-                        style: h5TextStyle,
+                      SizedBox(
+                        width: 65.w,
+                        child: Text(
+                          'Shiva Chinese',
+                          style: h5TextStyle.copyWith(color: primaryColor),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       Container(
                         height: 3.5.h,
@@ -73,20 +78,30 @@ class _OrderSummaryState extends State<OrderSummary> {
                             ),
                             Text(
                               _isOngoing ? 'Preparing' : 'Delivered',
-                              style: body2TextStyle,
+                              style: body5TextStyle.copyWith(color: textWhite),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  Text(
-                    'Tilak Nagar, sanvid nagar, indore',
-                    style: body2TextStyle,
+                  SizedBox(
+                    width: 100.w,
+                    child: Text(
+                      'Tilak Nagar, sanvid nagar, indore',
+                      style: body4TextStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                  Text(
-                    'Order Number #256478316641',
-                    style: body2TextStyle,
+                  SizedBox(
+                    width: 100.w,
+                    child: Text(
+                      'Order Number #256478316641',
+                      style: body4TextStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -100,7 +115,7 @@ class _OrderSummaryState extends State<OrderSummary> {
             Container(
               height: 25.h,
               padding: EdgeInsets.only(
-                  top: 3.h, bottom: 3.h, right: 10.w, left: 2.w),
+                  top: 2.h, bottom: 3.h, right: 10.w, left: 2.w),
               margin: EdgeInsets.only(left: 5.w, right: 5.w),
               color: Color(0xFFf7f7f7),
               child: Column(
@@ -109,7 +124,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                 children: [
                   Text(
                     'Your Order',
-                    style: h5TextStyle,
+                    style: h5TextStyle.copyWith(color: primaryColor),
                   ),
                   SizedBox(height: 2.h),
                   Text(
@@ -122,7 +137,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                     children: [
                       Text(
                         '1 x ₹70',
-                        style: body2TextStyle,
+                        style: body4TextStyle.copyWith(color: textGrey2),
                       ),
                       Text(
                         '₹ 70',
@@ -141,7 +156,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                     children: [
                       Text(
                         '2 x ₹50',
-                        style: body2TextStyle,
+                        style: body4TextStyle.copyWith(color: textGrey2),
                       ),
                       Text(
                         '₹ 100',
@@ -200,7 +215,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                       ),
                       Text(
                         'For 5.4 KM',
-                        style: body2TextStyle,
+                        style: body5TextStyle.copyWith(color: textGrey2),
                       ),
                     ],
                   ),
@@ -227,11 +242,11 @@ class _OrderSummaryState extends State<OrderSummary> {
                 children: [
                   Text(
                     'Grand Total',
-                    style: h4TextStyle,
+                    style: h4TextStyle.copyWith(color: colorSuccess),
                   ),
                   Text(
                     '₹ 202',
-                    style: h4TextStyle,
+                    style: h4TextStyle.copyWith(color: colorSuccess),
                   ),
                 ],
               ),
@@ -254,7 +269,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                 },
                 child: Text(
                   'Need help with the orders?',
-                  style: body3TextStyle,
+                  style: h6TextStyle.copyWith(color: primaryColor),
                 ),
               ),
             ),
@@ -273,11 +288,12 @@ class _OrderSummaryState extends State<OrderSummary> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('Rate Your Order', style: h5TextStyle),
+                  Text('Rate Your Order', style: h4TextStyle),
                   Text(
                     'From shiva chinese wok',
-                    style: body2TextStyle,
+                    style: body4TextStyle.copyWith(color: textGrey2),
                   ),
+                  SizedBox(height: 1.h),
                   ratingButton(),
                   TextButton(
                     style: ButtonStyle(
@@ -293,7 +309,8 @@ class _OrderSummaryState extends State<OrderSummary> {
                         ),
                       );
                     },
-                    child: Text('Tell Us More', style: h5TextStyle),
+                    child: Text('Tell Us More',
+                        style: h6TextStyle.copyWith(color: primaryColor)),
                   ),
                 ],
               ),

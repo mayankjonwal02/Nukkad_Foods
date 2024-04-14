@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 
 Widget textInputField(String labelText, TextEditingController controller,
@@ -24,12 +25,7 @@ Widget textInputField(String labelText, TextEditingController controller,
         ),
         contentPadding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         labelText: labelText.toUpperCase(),
-        labelStyle: TextStyle(
-          color: textGrey2,
-          fontFamily: 'Poppins',
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w400,
-        ),
+        labelStyle: body4TextStyle.copyWith(color: textGrey2),
       ),
       onChanged: (value) {
         onInputChanged(value);

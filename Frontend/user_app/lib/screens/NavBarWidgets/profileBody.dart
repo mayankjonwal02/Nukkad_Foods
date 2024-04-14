@@ -31,13 +31,11 @@ class _ProfileBodyState extends State<ProfileBody> {
           Container(
             height: 50.5.h,
             width: 100.w,
-            color: Color(0xFFf7f7f7),
+            color: const Color(0xFFf7f7f7),
             child: ListView(
               scrollDirection: Axis.vertical,
               children: [
-                Container(
-                  color: const Color(0xFFf7f7f7),
-                  child: Column(
+                Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -52,7 +50,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EditProfile()),
+                                builder: (context) => const EditProfile()),
                           );
                         },
                       ),
@@ -76,7 +74,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => FavouriteRestaurants()),
+                                builder: (context) => const FavouriteRestaurants()),
                           );
                         },
                       ),
@@ -97,7 +95,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HiddenRestaurants()),
+                                builder: (context) => const HiddenRestaurants()),
                           );
                         },
                       ),
@@ -118,7 +116,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SavedAddresses()),
+                                builder: (context) => const SavedAddresses()),
                           );
                         },
                       ),
@@ -139,7 +137,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AboutPage()),
+                                builder: (context) => const AboutPage()),
                           );
                         },
                       ),
@@ -160,7 +158,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => FeedbackScreen()),
+                                builder: (context) => const FeedbackScreen()),
                           );
                         },
                       ),
@@ -196,13 +194,12 @@ class _ProfileBodyState extends State<ProfileBody> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
+                                builder: (context) => const LoginScreen()),
                           );
                         },
                       ),
                     ],
                   ),
-                ),
               ],
             ),
           ),

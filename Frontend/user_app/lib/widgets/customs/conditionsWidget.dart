@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 
 Widget privacyPolicyLinkAndTermsOfService() {
@@ -19,21 +20,13 @@ Widget privacyPolicyLinkAndTermsOfService() {
       textAlign: TextAlign.center,
       TextSpan(
         text: 'By clicking Sign In, I agree to the ',
-        style: TextStyle(
-          fontSize: 8.sp,
-          color: textBlack,
-          fontFamily: 'Poppins',
-          fontWeight: FontWeight.w300,
-        ),
+        style: body6TextStyle,
         children: <TextSpan>[
           TextSpan(
-            text: 'Terms of Service',
-            style: TextStyle(
-              fontSize: 8.sp,
-              color: textBlack,
+            text: 'terms of service',
+            style: body6TextStyle.copyWith(
+              fontWeight: FontWeight.bold,
               decoration: TextDecoration.underline,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w500,
             ),
             recognizer: termsOfServiceTap,
           ),
@@ -46,13 +39,10 @@ Widget privacyPolicyLinkAndTermsOfService() {
                 fontWeight: FontWeight.w300),
           ),
           TextSpan(
-            text: 'Privacy Policy',
-            style: TextStyle(
-              fontSize: 8.sp,
-              color: textBlack,
+            text: 'privacy policy',
+            style: body6TextStyle.copyWith(
+              fontWeight: FontWeight.bold,
               decoration: TextDecoration.underline,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w500,
             ),
             recognizer: privacyPolicyTap,
           ),

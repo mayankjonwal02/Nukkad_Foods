@@ -39,10 +39,17 @@ final h6TextStyle = GoogleFonts.poppins(
   color: textBlack,
 );
 
-final titleTextStyle = GoogleFonts.inter(
-  fontSize: 15.sp,
+final buttonTextStyle = GoogleFonts.poppins(
+  fontSize: 16.sp,
   fontWeight: FontWeight.w600,
+  color: textWhite,
+);
+
+final titleTextStyle = GoogleFonts.interTight(
+  fontSize: 15.sp,
+  fontWeight: FontWeight.normal,
   color: textBlack,
+  letterSpacing: 1.5,
 );
 
 final body1TextStyle = GoogleFonts.poppins(

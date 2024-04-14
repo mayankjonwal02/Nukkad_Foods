@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Support/helpSupportScreen.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/customs/Orders/orderTypeSelector.dart';
 import 'package:user_app/Widgets/customs/Orders/placedOrderDetails.dart';
@@ -30,11 +31,11 @@ class _OrdersBodyState extends State<OrdersBody> {
           Center(
             child: Text(
               'Orders',
-              style: h2TextStyle,
+              style: h1TextStyle,
             ),
           ),
           OrderTypeSelector(onOrderTypeChanged: _handleOrderTypeChanged),
-          SizedBox(height: 1.h),
+          SizedBox(height: 2.h),
           Stack(
             children: [
               Padding(
@@ -66,7 +67,7 @@ class _OrdersBodyState extends State<OrdersBody> {
                       },
                       child: Text(
                         'Need help with the orders?',
-                        style: body2TextStyle,
+                        style: body4TextStyle.copyWith(color: primaryColor),
                       ),
                     ),
                   ),
@@ -83,7 +84,7 @@ class _OrdersBodyState extends State<OrdersBody> {
 Widget previousOrders(isOngoing) {
   return SingleChildScrollView(
     child: SizedBox(
-      height: 73.h,
+      height: 71.5.h,
       child: ListView.builder(
         itemCount: 5,
         itemBuilder: (context, index) {
@@ -100,7 +101,7 @@ Widget previousOrders(isOngoing) {
 Widget ongoingOrders(isOngoing) {
   return SingleChildScrollView(
     child: SizedBox(
-      height: 73.h,
+      height: 71.5.h,
       child: ListView.builder(
         itemCount: 2,
         itemBuilder: (context, index) {

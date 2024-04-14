@@ -6,9 +6,10 @@ import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget addressCard(assetName, String mainText, String address) {
   return Container(
-    height: 20.h,
+    height: 25.h,
     width: 100.w,
     margin: EdgeInsets.symmetric(vertical: 2.h),
+    padding: EdgeInsets.symmetric(horizontal: 2.w),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       border: Border.all(width: 0.2.h, color: textGrey3),
@@ -18,7 +19,7 @@ Widget addressCard(assetName, String mainText, String address) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-            padding: EdgeInsets.only(top: 1.h),
+            padding: EdgeInsets.only(left: 2.w, top: 2.h),
             child: SvgPicture.asset(
               assetName,
               color: textBlack,
@@ -32,18 +33,13 @@ Widget addressCard(assetName, String mainText, String address) {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(mainText, style: body4TextStyle),
+            Text(mainText, style: h4TextStyle),
             SizedBox(
               width: 70.w,
               child: Text(
                 address,
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: textBlack,
-                ),
-                maxLines: 3,
+                style: body4TextStyle,
+                maxLines: 4,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
               ),
@@ -54,11 +50,13 @@ Widget addressCard(assetName, String mainText, String address) {
               children: [
                 TextButton(
                   onPressed: () {},
-                  child: Text('EDIT', style: h5TextStyle),
+                  child: Text('EDIT',
+                      style: h6TextStyle.copyWith(color: primaryColor)),
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: Text('DELETE', style: h5TextStyle),
+                  child: Text('DELETE',
+                      style: h6TextStyle.copyWith(color: primaryColor)),
                 ),
               ],
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget button(String text, icon, Null Function() route) {
   return Padding(
@@ -11,12 +11,8 @@ Widget button(String text, icon, Null Function() route) {
       children: [
         Text(
           text,
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontSize: 20.sp,
-            fontWeight: FontWeight.normal,
-            color: textBlack,
-          ),
+          style: body1TextStyle.copyWith(
+              fontWeight: FontWeight.w400, fontSize: 20.sp),
         ),
         IconButton(onPressed: route, icon: icon)
       ],

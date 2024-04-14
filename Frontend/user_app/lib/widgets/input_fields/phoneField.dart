@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/constants/colors.dart';
 
 Widget phoneField(Function(String) onPhoneNumberChanged) {
@@ -23,12 +24,7 @@ Widget phoneField(Function(String) onPhoneNumberChanged) {
         ),
         decoration: InputDecoration(
           labelText: 'Mobile'.toString().toUpperCase(),
-          labelStyle: TextStyle(
-            color: textGrey1,
-            fontFamily: 'Poppins',
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w400,
-          ),
+          labelStyle: body4TextStyle.copyWith(color: textGrey2),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(7.0),
             borderSide: BorderSide(color: textGrey2, width: 0.1.h),

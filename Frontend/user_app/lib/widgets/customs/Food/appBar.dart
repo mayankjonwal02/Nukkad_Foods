@@ -42,24 +42,14 @@ class _customAppBarState extends State<customAppBar> {
                 children: [
                   Text(
                     'Home',
-                    style: TextStyle(
-                      color: textBlack,
-                      fontFamily: 'Poppins',
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: h5TextStyle,
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     '506 B, kanadiya road main road',
-                    style: TextStyle(
-                      color: textBlack,
-                      fontFamily: 'Poppins',
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: body5TextStyle,
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -72,13 +62,13 @@ class _customAppBarState extends State<customAppBar> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SavedAddresses(),
+                    builder: (context) => const SavedAddresses(),
                   ),
                 );
               },
               icon: SvgPicture.asset(
                 'assets/icons/dropdown_icon.svg',
-                height: 3.h,
+                height: 3.5.h,
               ),
             ),
           ],
@@ -110,7 +100,7 @@ class _customAppBarState extends State<customAppBar> {
           ),
         ),
         TextButton(
-          style: ButtonStyle(
+          style: const ButtonStyle(
             overlayColor: MaterialStatePropertyAll(Colors.transparent),
             foregroundColor: MaterialStatePropertyAll(primaryColor),
           ),
@@ -122,7 +112,7 @@ class _customAppBarState extends State<customAppBar> {
               ),
             );
           },
-          child: Text('Help', style: h6TextStyle),
+          child: Text('Help', style: h6TextStyle.copyWith(color: primaryColor)),
         ),
       ],
     );

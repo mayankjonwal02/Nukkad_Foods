@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
-import 'package:user_app/widgets/constants/texts.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget mainButton(String buttonText, Color buttonTextColor, Function() route) {
   return Center(
@@ -20,7 +20,9 @@ Widget mainButton(String buttonText, Color buttonTextColor, Function() route) {
             ),
           ),
         ),
-        child: Text(buttonText.toUpperCase(), style: h4TextStyle),
+        child: Text(buttonText.toUpperCase(),
+            style: buttonTextStyle.copyWith(
+                color: buttonTextColor, fontWeight: FontWeight.w600)),
         onPressed: () => route(),
       ),
     ),

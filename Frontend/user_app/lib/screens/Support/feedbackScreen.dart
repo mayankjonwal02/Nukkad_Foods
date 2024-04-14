@@ -15,13 +15,6 @@ class FeedbackScreen extends StatefulWidget {
 }
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
-  final textstyle = TextStyle(
-    fontFamily: 'Inter',
-    fontSize: 15.sp,
-    fontWeight: FontWeight.normal,
-    color: textBlack,
-  );
-
   List<bool> isSelected = [false, false, false, false, false];
   List<String> overallParams = [
     'Taste',
@@ -94,7 +87,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 margin: EdgeInsets.only(
                     top: 3.h, left: 5.w, right: 5.w, bottom: 1.5.h),
                 decoration: BoxDecoration(
-                    color: Color(0xFFf7f7f7),
+                    color: const Color(0xFFf7f7f7),
                     border: Border.all(
                       color: textGrey2,
                       width: 0.2.h,
@@ -105,7 +98,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text('Overall Experience', style: h4TextStyle),
-                    Text('From shiva chinese wok', style: body2TextStyle),
+                    Text('From shiva chinese wok',
+                        style: body4TextStyle.copyWith(color: textGrey2)),
+                    SizedBox(height: 1.h),
                     ratingButton(),
                   ],
                 ),
@@ -121,7 +116,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 margin: EdgeInsets.only(
                     top: 1.5.h, left: 5.w, right: 5.w, bottom: 1.5.h),
                 decoration: BoxDecoration(
-                    color: Color(0xFFf7f7f7),
+                    color: const Color(0xFFf7f7f7),
                     border: Border.all(
                       color: textGrey2,
                       width: 0.2.h,
@@ -143,7 +138,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         )
                       ],
                     ),
-                    Text('From shiva chinese wok', style: body2TextStyle),
+                    Text(
+                      'From shiva chinese wok',
+                      style: body4TextStyle.copyWith(color: textGrey2),
+                    ),
                     SizedBox(height: 2.h),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -151,13 +149,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Schezwan Noodles', style: textstyle),
+                          Text('Schezwan Noodles', style: titleTextStyle),
                           rating(),
                           Divider(
                             color: textGrey2,
                             thickness: 0.2.h,
                           ),
-                          Text('Fried Rice', style: textstyle),
+                          Text('Fried Rice', style: titleTextStyle),
                           rating(),
                         ],
                       ),
@@ -176,7 +174,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 margin: EdgeInsets.only(
                     top: 1.5.h, left: 5.w, right: 5.w, bottom: 3.h),
                 decoration: BoxDecoration(
-                    color: Color(0xFFf7f7f7),
+                    color: const Color(0xFFf7f7f7),
                     border: Border.all(
                       color: textGrey2,
                       width: 0.2.h,
@@ -198,7 +196,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         )
                       ],
                     ),
-                    Text('From shiva chinese wok', style: body2TextStyle),
+                    Text(
+                      'From shiva chinese wok',
+                      style: body4TextStyle.copyWith(color: textGrey2),
+                    ),
                     SizedBox(height: 2.h),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -206,13 +207,14 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Delivery time', style: textstyle),
+                          Text('Delivery time', style: titleTextStyle),
                           rating(),
                           Divider(
                             color: textGrey2,
                             thickness: 0.2.h,
                           ),
-                          Text('Delivery Partner behavior ', style: textstyle),
+                          Text('Delivery Partner behavior ',
+                              style: titleTextStyle),
                           rating(),
                         ],
                       ),
@@ -228,7 +230,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               padding: EdgeInsets.symmetric(horizontal: 5.w),
               child: mainButton(
                 'Submit Feedback',
-                Colors.white,
+                textWhite,
                 () {
                   Navigator.pop(context);
                 },
@@ -245,10 +247,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 Widget toggles(
     List<String> namesList, List<bool> isSelected, Function(int) onTap) {
   return Container(
-    height: 15.h,
+    height: 17.h,
     width: 100.w,
+    padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
     decoration: BoxDecoration(
-      color: Color(0xFFe7ffe5),
+      color: const Color(0xFFe7ffe5),
       border: Border(
         top: BorderSide(
           color: textGrey2,
@@ -276,7 +279,7 @@ Widget toggles(
           ),
         ),
         Container(
-          height: 6.h,
+          height: 7.h,
           margin: EdgeInsets.symmetric(vertical: 2.h),
           child: ListView.builder(
             itemCount: namesList.length,
@@ -287,8 +290,9 @@ Widget toggles(
                   onTap(index);
                 },
                 child: Container(
-                  width: 25.w,
+                  width: 30.w,
                   margin: EdgeInsets.symmetric(horizontal: 2.w),
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                   decoration: BoxDecoration(
                     color: isSelected[index] ? primaryColor : Colors.white,
                     border: Border.all(
@@ -300,7 +304,8 @@ Widget toggles(
                   child: Center(
                     child: Text(
                       namesList[index],
-                      style: body5TextStyle,
+                      style: h5TextStyle.copyWith(
+                          color: isSelected[index] ? textWhite : textBlack),
                     ),
                   ),
                 ),

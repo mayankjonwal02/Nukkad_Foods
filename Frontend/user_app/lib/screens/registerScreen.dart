@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/Screens/otpScreen.dart';
+import 'package:user_app/Widgets/buttons/mainButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
-import 'package:user_app/Widgets/constants/conditionsWidget.dart';
+import 'package:user_app/Widgets/customs/conditionsWidget.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/widgets/buttons/socialLoginButtons.dart';
 import 'package:user_app/widgets/input_fields/passwordField.dart';
@@ -40,6 +41,36 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       confirmPassword = password;
     });
     print('Password changed: $confirmPassword');
+  }
+
+  routeSignUp() {
+    if (userName != '' &&
+        userEmail != '' &&
+        userNumber != '' &&
+        newPassword != '' &&
+        confirmPassword != '' &&
+        newPassword == confirmPassword) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OTPScreen(userNumber: userNumber, option: 2),
+        ),
+      );
+      setState(() {
+        userName = '';
+        userEmail = '';
+        userNumber = '';
+        newPassword = '';
+        confirmPassword = '';
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter all details'),
+          backgroundColor: colorFailure,
+        ),
+      );
+    }
   }
 
   @override
@@ -84,65 +115,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               onValueChanged: handleConfirmPasswordChange,
             ),
             SizedBox(height: 2.h),
-            Center(
-              child: SizedBox(
-                height: 7.h,
-                width: 97.w,
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => primaryColor,
-                      ),
-                      elevation:
-                          MaterialStateProperty.resolveWith((states) => 2.0),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                      ),
-                    ),
-                    child: Text(
-                      'Sign Up'.toUpperCase(),
-                      style: h4TextStyle,
-                    ),
-                    onPressed: () {
-                      if (userName != '' &&
-                          userEmail != '' &&
-                          userNumber != '' &&
-                          newPassword != '' &&
-                          confirmPassword != '' &&
-                          newPassword == confirmPassword) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                OTPScreen(userNumber: userNumber, option: 2),
-                          ),
-                        );
-                        setState(() {
-                          userName = '';
-                          userEmail = '';
-                          userNumber = '';
-                          newPassword = '';
-                          confirmPassword = '';
-                        });
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please enter all details'),
-                            backgroundColor: colorFailure,
-                          ),
-                        );
-                      }
-                    }),
-              ),
-            ),
+            mainButton('Sign Up', textWhite, () => routeSignUp()),
             SizedBox(height: 2.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text('Already have an account?', style: h6TextStyle),
+                Text('Already have an account?', style: body4TextStyle),
                 TextButton(
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -157,7 +136,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           MaterialStatePropertyAll(Colors.transparent)),
                   child: Text(
                     'Login',
-                    style: h6TextStyle,
+                    style: body4TextStyle.copyWith(color: primaryColor, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -166,7 +145,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             Center(
               child: Text(
                 'Sign In with',
-                style: h6TextStyle,
+                style: body4TextStyle.copyWith(color: textGrey2),
               ),
             ),
             Center(

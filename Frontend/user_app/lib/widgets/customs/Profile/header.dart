@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget profileHeader() {
@@ -21,7 +22,7 @@ Widget profileHeader() {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset('assets/images/profile.png'),
-                  Text('Username'.toUpperCase(), style: h3TextStyle)
+                  Text('Username'.toUpperCase(), style: h3TextStyle.copyWith(color: textWhite))
                 ],
               ),
             ),

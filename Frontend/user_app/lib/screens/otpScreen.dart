@@ -4,14 +4,14 @@ import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/PasswordScreens/resetPasswordScreen.dart';
 import 'package:user_app/Screens/locationSetupScreen.dart';
 import 'package:user_app/Screens/loginScreen.dart';
+import 'package:user_app/Widgets/buttons/mainButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
 class OTPScreen extends StatefulWidget {
   final String userNumber;
   final int option;
-  const OTPScreen({Key? key, required this.userNumber, required this.option})
-      : super(key: key);
+  const OTPScreen({super.key, required this.userNumber, required this.option});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -30,17 +30,26 @@ class _OTPScreenState extends State<OTPScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ResetPasswordScreen(),
+            builder: (context) => const ResetPasswordScreen(),
           ),
         );
       } else if (option == 2) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => LocationSetupScreen(),
+            builder: (context) => const LocationSetupScreen(),
           ),
         );
       }
+    }
+
+    void routeLogin() {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
     }
 
     return Scaffold(
@@ -49,14 +58,7 @@ class _OTPScreenState extends State<OTPScreen> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginScreen(),
-              ),
-            );
-          },
+          onPressed: () => routeLogin(),
           icon: Icon(
             Icons.arrow_back_ios,
             size: 19.sp,
@@ -86,63 +88,20 @@ class _OTPScreenState extends State<OTPScreen> {
                 },
               ),
               SizedBox(height: 8.h),
-              SizedBox(
-                height: 7.h,
-                width: 97.w,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor,
-                    ),
-                    elevation:
-                        MaterialStateProperty.resolveWith((states) => 2.0),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                    ),
-                  ),
-                  child: Text('Continue'.toUpperCase(), style: h4TextStyle),
-                  onPressed: () {
-                    if (enteredpin == '8888') {
-                      chooseRoute();
-                    } else {
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          SnackBar(
-                            duration: Duration(seconds: 4),
-                            content: SizedBox(
-                              height: 3.h,
-                              child: Text('Entered OTP is incorrect',
-                                  style: body4TextStyle),
-                            ),
-                            backgroundColor: colorFailure,
-                          ),
-                        );
-                    }
-                    setState(() {
-                      enteredpin = '';
-                    });
-                  },
-                ),
-              ),
-              SizedBox(height: 3.h),
+              mainButton('Continue', textWhite, () => chooseRoute()),
+              SizedBox(height: 2.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Didn't receive OTP?", style: body2TextStyle,),
+                  Text(
+                    "Didn't receive OTP?",
+                    style: body4TextStyle,
+                  ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginScreen(),
-                        ),
-                      );
-                    },
-                    child: Text('Resend', style: h6TextStyle),
+                    onPressed: () => routeLogin(),
+                    child: Text('Resend',
+                        style: body4TextStyle.copyWith(color: primaryColor)),
                   ),
                 ],
               ),

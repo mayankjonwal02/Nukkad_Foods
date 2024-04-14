@@ -6,6 +6,7 @@ import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/customs/Food/searchBar.dart';
 import 'package:user_app/Widgets/customs/Restaurants/foodItemWidget.dart';
 import 'package:user_app/Widgets/customs/Restaurants/foodTypeToggle.dart';
+import 'package:user_app/Widgets/customs/Restaurants/restaurantMenuScroll.dart';
 
 class RestaurantScreen extends StatefulWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
@@ -103,6 +104,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    restaurantMenuScroll(isMenuSelected, () {}),
                     SizedBox(
                       width: 76.w,
                       child: ListView.builder(

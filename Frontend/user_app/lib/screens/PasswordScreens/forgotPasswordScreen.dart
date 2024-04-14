@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Widgets/buttons/mainButton.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/screens/otpScreen.dart';
@@ -41,7 +42,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => LoginScreen(),
+                builder: (context) => const LoginScreen(),
               ),
             );
           },
@@ -63,12 +64,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             children: [
               Text(
                 'Verify your phone number ${'XXXXXXX' + userNumber.substring(userNumber.length - 3)} linked to your account and enter otp to recover your account.',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                ),
+                style: body4TextStyle,
                 textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 10.h),
               phoneField((String number) {
@@ -77,43 +76,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 });
               }),
               SizedBox(height: 8.h),
-              SizedBox(
-                height: 7.h,
-                width: 97.w,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => primaryColor,
-                    ),
-                    elevation:
-                        MaterialStateProperty.resolveWith((states) => 2.0),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                    ),
-                  ),
-                  child: Text('Send OTP'.toUpperCase(), style: h4TextStyle),
-                  onPressed: () {
-                    if (userNumber == enteredNumber) {
-                      routeNext(userNumber);
-                    } else {
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          SnackBar(
-                            duration: Duration(seconds: 4),
-                            content: SizedBox(
-                              height: 3.h,
-                              child: Text('Please enter correct mobile number',
-                                  style: body4TextStyle),
-                            ),
-                            backgroundColor: colorFailure,
-                          ),
-                        );
-                    }
-                  },
-                ),
+              mainButton(
+                'Send OTP',
+                textWhite,
+                () => routeNext(enteredNumber),
               ),
             ],
           ),

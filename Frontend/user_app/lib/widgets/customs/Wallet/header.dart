@@ -38,7 +38,11 @@ Widget walletHeader() {
           child: Center(
             child: Text(
               'Available Balance'.toUpperCase(),
-              style: h4TextStyle.copyWith(color: primaryColor),
+              style: body3TextStyle.copyWith(
+                color: primaryColor,
+                fontSize: 17.sp,
+                fontWeight: FontWeight.bold
+              ),
             ),
           ),
         ),

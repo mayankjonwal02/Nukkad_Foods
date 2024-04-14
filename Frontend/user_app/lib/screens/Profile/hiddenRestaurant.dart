@@ -26,7 +26,7 @@ class _HiddenRestaurantsState extends State<HiddenRestaurants> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
         child: Column(
           children: [
             restaurant(context),
