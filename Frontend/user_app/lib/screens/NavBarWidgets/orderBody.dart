@@ -3,7 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Support/helpSupportScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/Widgets/customs/Orders/orderTypeSelector.dart';
+import 'package:user_app/Widgets/customs/Orders/orderStatusSelector.dart';
 import 'package:user_app/Widgets/customs/Orders/placedOrderDetails.dart';
 
 class OrdersBody extends StatefulWidget {
@@ -34,7 +34,7 @@ class _OrdersBodyState extends State<OrdersBody> {
               style: h1TextStyle,
             ),
           ),
-          OrderTypeSelector(onOrderTypeChanged: _handleOrderTypeChanged),
+          OrderStatusSelector(onOrderStatusChanged: _handleOrderTypeChanged),
           SizedBox(height: 2.h),
           Stack(
             children: [

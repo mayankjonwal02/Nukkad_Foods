@@ -6,68 +6,93 @@ import 'package:user_app/Widgets/constants/texts.dart';
 
 class OrderTypeSelector extends StatefulWidget {
   final Function(bool) onOrderTypeChanged;
-
-  OrderTypeSelector({Key? key, required this.onOrderTypeChanged})
+  const OrderTypeSelector({Key? key, required this.onOrderTypeChanged})
       : super(key: key);
 
   @override
-  _OrderTypeSelectorState createState() => _OrderTypeSelectorState();
+  State<OrderTypeSelector> createState() => _OrderTypeSelectorState();
 }
 
 class _OrderTypeSelectorState extends State<OrderTypeSelector> {
-  bool _isOngoing = true;
+  bool _isDelivery = true;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ElevatedButton.icon(
-          onPressed: () {
-            setState(() {
-              _isOngoing = !_isOngoing;
-            });
-            widget.onOrderTypeChanged(_isOngoing);
-          },
-          icon: SvgPicture.asset('assets/icons/ongoing_orders_icon.svg',height: 4.h,
-          color: _isOngoing ? Colors.white : primaryColor,),
-          label: Text('Ongoing', style: h4TextStyle.copyWith(color: _isOngoing ? Colors.white : primaryColor)),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: _isOngoing ? Colors.white : primaryColor,
-            backgroundColor: _isOngoing ? primaryColor : Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: primaryColor,
-                width: 0.2.h,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 3.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: ElevatedButton.icon(
+              onPressed: () {
+                setState(() {
+                  _isDelivery = true;
+                });
+                widget.onOrderTypeChanged(_isDelivery);
+              },
+              icon: SvgPicture.asset(
+                'assets/icons/delivering_icon.svg',
+                height: 3.h,
+                color: _isDelivery ? Colors.white : primaryColor,
+              ),
+              label: Text('Delivery',
+                  style: h5TextStyle.copyWith(
+                      color: _isDelivery ? Colors.white : primaryColor)),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                foregroundColor: _isDelivery ? Colors.white : primaryColor,
+                backgroundColor: _isDelivery ? primaryColor : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
+                  side: BorderSide(
+                    color: primaryColor,
+                    width: 0.2.h,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-        ElevatedButton.icon(
-          onPressed: () {
-            setState(() {
-              _isOngoing = !_isOngoing;
-            });
-            widget.onOrderTypeChanged(_isOngoing);
-          },
-          icon: SvgPicture.asset('assets/icons/previous_orders_icon.svg', height: 3.h,
-          color: _isOngoing ? primaryColor : Colors.white,),
-          label: Text('Previous', style: h4TextStyle.copyWith(color: _isOngoing ? primaryColor : Colors.white)),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: _isOngoing ? primaryColor : Colors.white,
-            backgroundColor: _isOngoing ? Colors.white : primaryColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: primaryColor,
-                width: 0.2.h,
+          SizedBox(width: 1.w),
+          Expanded(
+            child: ElevatedButton.icon(
+              onPressed: () {
+                setState(() {
+                  _isDelivery = false;
+                });
+                widget.onOrderTypeChanged(_isDelivery);
+              },
+              icon: SvgPicture.asset(
+                'assets/icons/takeaway_icon.svg',
+                height: 3.h,
+                color: _isDelivery ? primaryColor : Colors.white,
+              ),
+              label: Text('Take Away',
+                  style: h5TextStyle.copyWith(
+                      color: _isDelivery ? primaryColor : Colors.white)),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                foregroundColor: _isDelivery ? primaryColor : Colors.white,
+                backgroundColor: _isDelivery ? Colors.white : primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                  side: BorderSide(
+                    color: primaryColor,
+                    width: 0.2.h,
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

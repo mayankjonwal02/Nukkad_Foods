@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/Widgets/customs/Orders/orderTypeSelector.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -10,6 +11,10 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  void _handleOrderTypeChanged(bool isDelivery) {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +27,11 @@ class _CartScreenState extends State<CartScreen> {
         ),
         title: Text('Shiva Chinese Wok', style: h4TextStyle),
         centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          OrderTypeSelector(onOrderTypeChanged: _handleOrderTypeChanged),
+        ],
       ),
     );
   }
