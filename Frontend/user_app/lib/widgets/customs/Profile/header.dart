@@ -15,15 +15,19 @@ Widget profileHeader() {
           children: [
             Image.asset('assets/images/profile_bg.png'),
             Positioned(
-              top: 10,
-              left: 80,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/profile.png'),
-                  Text('Username'.toUpperCase(), style: h3TextStyle.copyWith(color: textWhite))
-                ],
+              left: 25.w,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 0.5.h),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/profile.png'),
+                    SizedBox(height: 1.h),
+                    Text('Username'.toUpperCase(),
+                        style: h4TextStyle.copyWith(color: textWhite))
+                  ],
+                ),
               ),
             ),
           ],

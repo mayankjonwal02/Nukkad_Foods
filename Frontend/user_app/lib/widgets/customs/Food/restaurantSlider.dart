@@ -9,8 +9,8 @@ import 'package:user_app/Widgets/customs/Food/ratingWidget.dart';
 Widget restaurantSlider(BuildContext context) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const RestaurantScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const RestaurantScreen()));
     },
     child: ListView.builder(
       itemCount: 6,
@@ -93,20 +93,20 @@ Widget restaurantSlider(BuildContext context) {
                   Text(
                     '20 Mins',
                     style: body6TextStyle.copyWith(
-                        color: textGrey2, fontWeight: FontWeight.w200),
+                        color: textGrey1, fontWeight: FontWeight.w200),
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(
-                    width: 1.w,
+                  SvgPicture.asset(
+                    'assets/icons/dot.svg',
+                    height: 2.h,
+                    color: textGrey1,
                   ),
-                  Image.asset('assets/icons/dot.png'),
-                  SizedBox(width: 1.w),
                   Text(
                     '4 KM',
                     style: body6TextStyle.copyWith(
-                        color: textGrey2, fontWeight: FontWeight.w200),
+                        color: textGrey1, fontWeight: FontWeight.w200),
                     textAlign: TextAlign.start,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

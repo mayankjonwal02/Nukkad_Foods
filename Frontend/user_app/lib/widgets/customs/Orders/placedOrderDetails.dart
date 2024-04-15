@@ -6,7 +6,7 @@ import 'package:user_app/Screens/Orders/orderSummary.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
-Widget placedOrderDetails(_isOngoing, BuildContext context) {
+Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
   return GestureDetector(
     onTap: () {
       Navigator.push(
@@ -22,7 +22,7 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
       elevation: 5,
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: 35.5.h,
+        height: 35.h,
         width: 100.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -33,7 +33,7 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
             Stack(
               children: [
                 Container(
-                  height: 15.h,
+                  height: 14.h,
                   width: 100.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -43,20 +43,13 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                   ),
                   child: Row(
                     children: [
-                      Container(
-                        height: 15.h,
-                        width: 30.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Image.asset(
-                          'assets/images/restaurantImage.png',
-                          fit: BoxFit.fill,
-                        ),
+                      Image.asset(
+                        'assets/images/restaurantImage.png',
+                        fit: BoxFit.fill,
+                        width: 20.w,
                       ),
                       SizedBox(width: 3.w),
-                      SizedBox(
-                        width: 50.w,
+                      Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,16 +85,18 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                                   Text(
                                     '25 min',
                                     style: body5TextStyle.copyWith(
-                                      color: const Color(0xFF7E7E7E),
+                                      color: textGrey1,
                                     ),
                                   ),
-                                  SizedBox(width: 1.w),
-                                  Image.asset('assets/icons/dot.png'),
-                                  SizedBox(width: 1.w),
+                                  SvgPicture.asset(
+                                    'assets/icons/dot.svg',
+                                    height: 2.h,
+                                    color: textGrey1,
+                                  ),
                                   Text(
                                     '4.5',
                                     style: body5TextStyle.copyWith(
-                                      color: const Color(0xFF7E7E7E),
+                                      color: textGrey1,
                                     ),
                                   ),
                                 ],
@@ -114,14 +109,14 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                   ),
                 ),
                 Positioned(
-                  top: 1.h,
+                  top: 1.w,
                   right: 1.w,
                   child: Container(
                     height: 3.5.h,
                     width: 25.w,
                     decoration: BoxDecoration(
                         color: _isOngoing ? Colors.green : textGrey2,
-                        borderRadius: BorderRadius.circular(7)),
+                        borderRadius: BorderRadius.circular(6)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,7 +141,7 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.h),
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,16 +151,19 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                   Divider(
                     thickness: 0.2.h,
                     color: textGrey3,
-                    endIndent: 40.w,
+                    endIndent: 35.w,
                   ),
-                  Row(
-                    children: [
-                      Text('Total', style: body5TextStyle),
-                      const Spacer(),
-                      const Spacer(),
-                      Text('₹ 250', style: h6TextStyle),
-                      const Spacer()
-                    ],
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 0.5.h),
+                    child: Row(
+                      children: [
+                        Text('Total', style: body5TextStyle),
+                        Spacer(),
+                        Spacer(),
+                        Text('₹ 250', style: h6TextStyle),
+                        Spacer()
+                      ],
+                    ),
                   ),
                   DottedLine(
                     direction: Axis.horizontal,
@@ -176,59 +174,64 @@ Widget placedOrderDetails(_isOngoing, BuildContext context) {
                     dashGapLength: 1.w,
                     dashGapColor: Colors.transparent,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 1.h),
-                          Text(
-                            'Estimated delivery time',
-                            style: body4TextStyle.copyWith(
-                              color: textGrey2,
+                  Container(
+                    height: 6.5.h,
+                    padding: EdgeInsets.only(top: 1.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Estimated delivery time',
+                              style: body4TextStyle.copyWith(
+                                fontSize: 11.sp,
+                                color: textGrey2,
+                              ),
                             ),
-                          ),
-                          Text('18:56 PM', style: body5TextStyle),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Material(
-                          elevation: 3,
-                          borderRadius: BorderRadius.circular(10),
-                          color: primaryColor,
-                          child: Container(
-                            height: 3.5.h,
-                            width: 25.w,
-                            decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  _isOngoing
-                                      ? 'assets/icons/track_order_icon.svg'
-                                      : 'assets/icons/repeat_order_icon.svg',
-                                  color: Colors.white,
-                                  height: 2.5.h,
-                                ),
-                                Text(
-                                  _isOngoing ? 'Track' : 'Reorder',
-                                  style:
-                                      body4TextStyle.copyWith(color: textWhite),
-                                ),
-                              ],
-                            ),
-                          ),
+                            Text('18:56 PM', style: body5TextStyle),
+                          ],
                         ),
-                      )
-                    ],
+                        GestureDetector(
+                          onTap: () {},
+                          child: Material(
+                            elevation: 3,
+                            borderRadius: BorderRadius.circular(10),
+                            color: primaryColor,
+                            child: Container(
+                              height: 3.5.h,
+                              width: 25.w,
+                              decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    _isOngoing
+                                        ? 'assets/icons/track_order_icon.svg'
+                                        : 'assets/icons/repeat_order_icon.svg',
+                                    color: Colors.white,
+                                    height: 2.5.h,
+                                  ),
+                                  Text(
+                                    _isOngoing ? 'Track' : 'Reorder',
+                                    style: body4TextStyle.copyWith(
+                                        color: textWhite),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
