@@ -81,30 +81,29 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
       globalFooter: currentPageIndex == 2
           ? Padding(
-            padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
-            child: mainButton('Next', textWhite, routeLogin),
-          ) 
-          :SizedBox(
+              padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
+              child: mainButton('Next', textWhite, routeLogin),
+            )
+          : SizedBox(
               height: 15.2.h,
             ),
       pages: [
         PageViewModel(
-          title: "Find Food Stalls",
-          body:
-              "Order from your nearby food vendors and restaurants, while relaxing at your home.",
+          title: "List Your Stall",
+          body: "List you stall/ food truck/ Restaurant on nukkad foods.",
           image: _buildImage('page_1.png'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Browse Menu",
-          body: "Find what you are craving for, and click order.",
+          title: "Accept Orders",
+          body: "Fix your menu, and accept orders from customers ",
           image: _buildImage('page_2.png'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Relax!",
           body:
-              "Sit back and relax while our delivery captain reaches you with your favorite food.",
+              "Prepare order and hand over to the delivery partner to deliver deliciousness.",
           image: _buildImage('page_3.png'),
           decoration: pageDecoration,
         ),

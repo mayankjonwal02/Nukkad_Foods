@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/Screens/User/loginScreen.dart';
+import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/Screens/otpScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
-import 'package:restaurant_app/Widgets/buttons/socialLoginButtons.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
-import 'package:restaurant_app/Widgets/input_fields/passwordField.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
+import 'package:restaurant_app/Widgets/noteWidget.dart';
 import 'package:sizer/sizer.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -18,159 +17,255 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  String userName = '';
-  String userEmail = '';
-  String userNumber = '';
-  String newPassword = '';
+  String nukkadCity = '';
+  String nukkadAddress = '';
+  String nukkadPincode = '';
+  String nukkadLandmark = '';
+
+  final nukkadCityController = TextEditingController();
+  final nukkadAddressController = TextEditingController();
+  final nukkadPincodeController = TextEditingController();
+  final nukkadLandmarkController = TextEditingController();
+
+  String accountNumber = '';
+  String ifscCode = '';
+  String bankBranchCode = '';
+
+  final accountNumberController = TextEditingController();
+  final ifscCodeController = TextEditingController();
+  final bankBranchCodeController = TextEditingController();
+
+  String nukkadContact = '';
+  String password = '';
   String confirmPassword = '';
 
-  final userNameController = TextEditingController();
-  final userEmailController = TextEditingController();
-  bool obscureText = true;
+  final nukkadContactController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  void handlePasswordChange(String password) {
-    setState(() {
-      newPassword = password;
-    });
-    print('Password changed: $password');
-  }
-
-  void handleConfirmPasswordChange(String password) {
-    setState(() {
-      confirmPassword = password;
-    });
-    print('Password changed: $confirmPassword');
-  }
-
-  routeSignUp() {
-    if (userName != '' &&
-        userEmail != '' &&
-        userNumber != '' &&
-        newPassword != '' &&
-        confirmPassword != '' &&
-        newPassword == confirmPassword) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OTPScreen(userNumber: userNumber, option: 2),
-        ),
+  void routeOTP() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return OTPScreen(
+        userNumber: nukkadContact,
+        option: 2,
       );
-      setState(() {
-        userName = '';
-        userEmail = '';
-        userNumber = '';
-        newPassword = '';
-        confirmPassword = '';
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter all details'),
-          backgroundColor: colorFailure,
-        ),
-      );
-    }
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.fromLTRB(5.w, 10.h, 5.w, 2.h),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Sign Up', style: h1TextStyle),
-            SizedBox(height: 3.h),
-            textInputField(
-                'Name',
-                userNameController,
-                (String name) => {
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.only(top: 8.h),
+                child: Text(
+                  'Register with us!',
+                  style: h1TextStyle,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 2.h),
+                child: Text(
+                  'Nukkad Information'.toUpperCase(),
+                  style: h4TextStyle.copyWith(color: primaryColor),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: textGrey2, width: 0.2.w)),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField(
+                        'City'.toUpperCase(), nukkadCityController,
+                        (String input) {
                       setState(() {
-                        userName = name;
-                      })
+                        nukkadCity = input;
+                      });
                     }),
-            SizedBox(height: 2.h),
-            textInputField('Email', userEmailController, (String email) {
-              setState(() {
-                userEmail = email;
-              });
-            }),
-            SizedBox(height: 2.h),
-            phoneField((String number) {
-              setState(() {
-                userNumber = number;
-              });
-            }),
-            SizedBox(height: 2.h),
-            PasswordField(
-              labelText: 'Password',
-              onValueChanged: handlePasswordChange,
-            ),
-            SizedBox(height: 2.h),
-            PasswordField(
-              labelText: 'Confirm Password',
-              onValueChanged: handleConfirmPasswordChange,
-            ),
-            SizedBox(height: 2.h),
-            mainButton('Sign Up', textWhite, () => routeSignUp()),
-            SizedBox(height: 2.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Already have an account?', style: body4TextStyle),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                    );
-                  },
-                  style: const ButtonStyle(
-                      overlayColor:
-                          MaterialStatePropertyAll(Colors.transparent)),
-                  child: Text(
-                    'Login',
-                    style: body4TextStyle.copyWith(color: primaryColor, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 1.h),
-            Center(
-              child: Text(
-                'Sign In with',
-                style: body4TextStyle.copyWith(color: textGrey2),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField(
+                        'Address'.toUpperCase(), nukkadAddressController,
+                        (String input) {
+                      setState(() {
+                        nukkadAddress = input;
+                      });
+                    }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField(
+                        'PINCODE'.toUpperCase(), nukkadPincodeController,
+                        (String input) {
+                      setState(() {
+                        nukkadPincode = input;
+                      });
+                    }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField(
+                        'Landmark'.toUpperCase(), nukkadLandmarkController,
+                        (String input) {
+                      setState(() {
+                        nukkadLandmark = input;
+                      });
+                    }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 3.h, bottom: 2.h),
+                    child: noteWidget(
+                        'Please enter the same address as in the documentations.'),
+                  ),
+                ],
               ),
             ),
-            Center(
-              child: SizedBox(
-                height: 10.h,
-                width: 50.w,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    socialLoginButton('google.png', onGoogleTap),
-                    socialLoginButton('facebook.png', onFacebookTap),
-                    socialLoginButton('twitter.png', onTwitterTap),
-                  ],
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                child: Text(
+                  'Select your location on map'.toUpperCase(),
+                  style: titleTextStyle,
                 ),
               ),
+            ),
+            Container(
+              height: 40.h,
+              color: colorSuccess,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                child: Text(
+                  'BANK DETAILS'.toUpperCase(),
+                  style: titleTextStyle,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: textGrey2, width: 0.2.w)),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField(
+                        'Account Number'.toUpperCase(), accountNumberController,
+                        (String input) {
+                      setState(() {
+                        accountNumber = input;
+                      });
+                    }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField(
+                        'IFSC Code'.toUpperCase(), ifscCodeController,
+                        (String input) {
+                      setState(() {
+                        ifscCode = input;
+                      });
+                    }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField('Bank Branch Code'.toUpperCase(),
+                        bankBranchCodeController, (String input) {
+                      setState(() {
+                        bankBranchCode = input;
+                      });
+                    }),
+                  ),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                child: Text(
+                  'Nukkad Contact'.toUpperCase(),
+                  style: titleTextStyle,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: textGrey2, width: 0.2.w)),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 2.h, bottom: 1.h),
+                    child: phoneField((String input) {
+                      setState(() {
+                        nukkadContact = input;
+                      });
+                    }),
+                  ),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 1.w),
+                      child: Text(
+                        'An otp will be sent to your  registered mobile number',
+                        style: body6TextStyle.copyWith(color: textGrey2),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField(
+                        'Create Password'.toUpperCase(), passwordController,
+                        (String input) {
+                      setState(() {
+                        password = input;
+                      });
+                    }),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: textInputField('Confirm Password'.toUpperCase(),
+                        confirmPasswordController, (String input) {
+                      setState(() {
+                        confirmPassword = input;
+                      });
+                    }),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 7.w),
+              child: mainButton('Next', textWhite, routeOTP),
             ),
           ],
         ),
       ),
-    ));
+    );
   }
 }
-
-onGoogleTap() {}
-
-onFacebookTap() {}
-
-onTwitterTap() {}

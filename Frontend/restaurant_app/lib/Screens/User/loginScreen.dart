@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/Screens/User/registerScreen.dart';
+import 'package:restaurant_app/Screens/User/getStartedScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/forgotPasswordButton.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/buttons/socialLoginButtons.dart';
-import 'package:restaurant_app/Widgets/buttons/textRichButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/input_fields/passwordField.dart';
@@ -36,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const RegistrationScreen(),
+        builder: (context) => const GetStartedScreen(),
       ),
     );
   }
@@ -71,9 +70,21 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 2.h),
               mainButton('Sign In', textWhite, routeHome),
               SizedBox(height: 2.h),
-              textRichButton(
-                  'Don\'t have an account?', 'Sign Up', routeRegister),
-              SizedBox(height: 2.h),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 3.h, bottom: 2.h),
+                  child: Text(
+                    'Have not listed with us yet?',
+                    style: body4TextStyle.copyWith(fontSize: 15.sp, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: mainButton('Register Now!', textWhite, routeRegister),
+              ),
+              SizedBox(height: 3.h),
               Center(
                 child: Text('Sign in with',
                     style: body4TextStyle.copyWith(color: textGrey2)),
