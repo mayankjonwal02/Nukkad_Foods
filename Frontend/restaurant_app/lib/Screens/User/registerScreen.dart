@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/Screens/otpScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
@@ -43,8 +42,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  // GoogleMapController? _mapController;
+
+  // void _onMapCreated(GoogleMapController controller) {
+  //   setState(() {
+  //     _mapController = controller;
+  //   });
+  // }
+
   void routeOTP() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
       return OTPScreen(
         userNumber: nukkadContact,
         option: 2,
@@ -147,7 +154,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             Container(
               height: 40.h,
-              color: colorSuccess,
+              color: bgColor,
+              // child: GoogleMap(
+              //   onMapCreated: _onMapCreated,
+              //   initialCameraPosition: const CameraPosition(
+              //     target: LatLng(0.0, 0.0),
+              //     zoom: 12.0,
+              //   ),
+              //   markers: Set.from([]),
+              // ),
             ),
             Align(
               alignment: Alignment.center,
@@ -232,7 +247,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(left: 1.w),
                       child: Text(
-                        'An otp will be sent to your  registered mobile number',
+                        'An otp will be sent to your registered mobile number',
                         style: body6TextStyle.copyWith(color: textGrey2),
                       ),
                     ),

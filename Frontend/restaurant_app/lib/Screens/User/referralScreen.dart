@@ -49,7 +49,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
             padding: EdgeInsets.symmetric(vertical: 2.h),
             child: Column(
               children: [
-                buildFriendRadioButton(0, "Nukkad Foods Executive"),
+                buildRadioButton(0, "Nukkad Foods Executive"),
                 Padding(
                   padding: EdgeInsets.only(
                       top: 2.h, right: 5.w, left: 5.w, bottom: 2.h),
@@ -70,8 +70,8 @@ class _ReferralScreenState extends State<ReferralScreen> {
                     });
                   }),
                 ),
-                buildFriendRadioButton(1, "A Friend"),
-                buildFriendRadioButton(2, "Self Registration"),
+                buildRadioButton(1, "A Friend"),
+                buildRadioButton(2, "Self Registration"),
               ],
             ),
           ),
@@ -84,7 +84,7 @@ class _ReferralScreenState extends State<ReferralScreen> {
     );
   }
 
-  Widget buildFriendRadioButton(int value, String title) {
+  Widget buildRadioButton(int value, String title) {
     return RadioListTile<int>(
       value: value,
       groupValue: _selectedOption,
