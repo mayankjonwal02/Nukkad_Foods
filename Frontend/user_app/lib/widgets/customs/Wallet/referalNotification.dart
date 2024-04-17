@@ -15,7 +15,7 @@ Widget referalNotification() {
           width: 50.w,
           child: Text(
             'Refer a friend  to Nukkad foods and you both earn ₹50 when they place their first order! ',
-            style:body4TextStyle.copyWith(fontSize: 11.sp),
+            style: body4TextStyle.copyWith(fontSize: 11.sp),
             textAlign: TextAlign.start,
             maxLines: 4,
             overflow: TextOverflow.ellipsis,

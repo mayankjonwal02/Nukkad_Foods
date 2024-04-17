@@ -49,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 3.5.h,
             ),
             label: 'Food',
-            
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(

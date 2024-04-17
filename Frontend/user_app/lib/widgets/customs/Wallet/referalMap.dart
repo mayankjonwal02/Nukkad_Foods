@@ -64,7 +64,8 @@ Widget referalMap() {
                   children: [
                     Text('2.',
                         style: h3TextStyle.copyWith(color: primaryColor)),
-                    Text('Your friend clicks on the link to download the Nukkad app or uses your referral code!',
+                    Text(
+                        'Your friend clicks on the link to download the Nukkad app or uses your referral code!',
                         style: body4TextStyle)
                   ],
                 ),
@@ -125,10 +126,15 @@ Widget referalMap() {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('4.', style: h3TextStyle.copyWith(color: primaryColor),),
+                  Text(
+                    '4.',
+                    style: h3TextStyle.copyWith(color: primaryColor),
+                  ),
                   SizedBox(
                     width: 75.w,
-                    child: Text('You both earn 50 wallet cash each, that can be used while placing orders. ', style: body4TextStyle),
+                    child: Text(
+                        'You both earn 50 wallet cash each, that can be used while placing orders. ',
+                        style: body4TextStyle),
                   )
                 ],
               ),

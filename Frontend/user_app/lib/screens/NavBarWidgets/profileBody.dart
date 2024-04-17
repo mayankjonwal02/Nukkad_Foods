@@ -36,170 +36,171 @@ class _ProfileBodyState extends State<ProfileBody> {
               scrollDirection: Axis.vertical,
               children: [
                 Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      button(
-                        'Edit Profile',
-                        SvgPicture.asset(
-                          'assets/icons/edit_icon.svg',
-                          height: 3.h,
-                          color: textBlack,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    button(
+                      'Edit Profile',
+                      SvgPicture.asset(
+                        'assets/icons/edit_icon.svg',
+                        height: 3.h,
+                        color: textBlack,
+                      ),
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EditProfile()),
+                        );
+                      },
+                    ),
+                    Divider(
+                      color: textGrey2,
+                      thickness: 0.2.h,
+                      endIndent: 10.w,
+                      indent: 10.w,
+                    ),
+                    button(
+                      'Favourites',
+                      Container(
+                        height: 3.h,
+                        width: 3.h,
+                        child: Image.asset(
+                          'assets/icons/heart.png',
+                          fit: BoxFit.fill,
                         ),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const EditProfile()),
-                          );
-                        },
                       ),
-                      Divider(
-                        color: textGrey2,
-                        thickness: 0.2.h,
-                        endIndent: 10.w,
-                        indent: 10.w,
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const FavouriteRestaurants()),
+                        );
+                      },
+                    ),
+                    Divider(
+                      color: textGrey2,
+                      thickness: 0.2.h,
+                      endIndent: 10.w,
+                      indent: 10.w,
+                    ),
+                    button(
+                      'Hidden Restaurants',
+                      Icon(
+                        Icons.visibility_off_outlined,
+                        size: 22.sp,
+                        color: textBlack,
                       ),
-                      button(
-                        'Favourites',
-                        Container(
-                          height: 3.h,
-                          width: 3.h,
-                          child: Image.asset(
-                            'assets/icons/heart.png',
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const FavouriteRestaurants()),
-                          );
-                        },
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HiddenRestaurants()),
+                        );
+                      },
+                    ),
+                    Divider(
+                      color: textGrey2,
+                      thickness: 0.2.h,
+                      endIndent: 10.w,
+                      indent: 10.w,
+                    ),
+                    button(
+                      'Saved Addresses',
+                      SvgPicture.asset(
+                        'assets/icons/address_book_icon.svg',
+                        height: 3.h,
+                        color: textBlack,
                       ),
-                      Divider(
-                        color: textGrey2,
-                        thickness: 0.2.h,
-                        endIndent: 10.w,
-                        indent: 10.w,
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SavedAddresses()),
+                        );
+                      },
+                    ),
+                    Divider(
+                      color: textGrey2,
+                      thickness: 0.2.h,
+                      endIndent: 10.w,
+                      indent: 10.w,
+                    ),
+                    button(
+                      'About',
+                      SvgPicture.asset(
+                        'assets/icons/about_icon.svg',
+                        height: 3.5.h,
+                        color: textBlack,
                       ),
-                      button(
-                        'Hidden Restaurants',
-                        Icon(
-                          Icons.visibility_off_outlined,
-                          size: 22.sp,
-                          color: textBlack,
-                        ),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HiddenRestaurants()),
-                          );
-                        },
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AboutPage()),
+                        );
+                      },
+                    ),
+                    Divider(
+                      color: textGrey2,
+                      thickness: 0.2.h,
+                      endIndent: 10.w,
+                      indent: 10.w,
+                    ),
+                    button(
+                      'Send Feedback',
+                      SvgPicture.asset(
+                        'assets/icons/feedback_icon.svg',
+                        height: 3.h,
+                        color: textBlack,
                       ),
-                      Divider(
-                        color: textGrey2,
-                        thickness: 0.2.h,
-                        endIndent: 10.w,
-                        indent: 10.w,
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const FeedbackScreen()),
+                        );
+                      },
+                    ),
+                    Divider(
+                      color: textGrey2,
+                      thickness: 0.2.h,
+                      endIndent: 10.w,
+                      indent: 10.w,
+                    ),
+                    button(
+                      'Report',
+                      SvgPicture.asset(
+                        'assets/icons/report.svg',
+                        semanticsLabel: 'Report',
+                        color: textBlack,
                       ),
-                      button(
-                        'Saved Addresses',
-                        SvgPicture.asset(
-                          'assets/icons/address_book_icon.svg',
-                          height: 3.h,
-                          color: textBlack,
-                        ),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SavedAddresses()),
-                          );
-                        },
+                      () {},
+                    ),
+                    Divider(
+                      color: textGrey2,
+                      thickness: 0.2.h,
+                      endIndent: 10.w,
+                      indent: 10.w,
+                    ),
+                    button(
+                      'Logout',
+                      Icon(
+                        Icons.logout,
+                        size: 20.sp,
+                        color: textBlack,
                       ),
-                      Divider(
-                        color: textGrey2,
-                        thickness: 0.2.h,
-                        endIndent: 10.w,
-                        indent: 10.w,
-                      ),
-                      button(
-                        'About',
-                        SvgPicture.asset(
-                          'assets/icons/about_icon.svg',
-                          height: 3.5.h,
-                          color: textBlack,
-                        ),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AboutPage()),
-                          );
-                        },
-                      ),
-                      Divider(
-                        color: textGrey2,
-                        thickness: 0.2.h,
-                        endIndent: 10.w,
-                        indent: 10.w,
-                      ),
-                      button(
-                        'Send Feedback',
-                        SvgPicture.asset(
-                          'assets/icons/feedback_icon.svg',
-                          height: 3.h,
-                          color: textBlack,
-                        ),
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const FeedbackScreen()),
-                          );
-                        },
-                      ),
-                      Divider(
-                        color: textGrey2,
-                        thickness: 0.2.h,
-                        endIndent: 10.w,
-                        indent: 10.w,
-                      ),
-                      button(
-                        'Report',
-                        SvgPicture.asset(
-                          'assets/icons/report.svg',
-                          semanticsLabel: 'Report',
-                          color: textBlack,
-                        ),
-                        () {},
-                      ),
-                      Divider(
-                        color: textGrey2,
-                        thickness: 0.2.h,
-                        endIndent: 10.w,
-                        indent: 10.w,
-                      ),
-                      button(
-                        'Logout',
-                        Icon(
-                          Icons.logout,
-                          size: 20.sp,
-                          color: textBlack,
-                        ),
-                        () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                      () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

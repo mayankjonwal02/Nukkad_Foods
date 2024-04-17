@@ -53,10 +53,7 @@ Widget policyButton(String text) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              text,
-              style: h4TextStyle
-            ),
+            Text(text, style: h4TextStyle),
             IconButton(
               onPressed: () {},
               icon: Icon(

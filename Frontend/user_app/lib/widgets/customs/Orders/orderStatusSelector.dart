@@ -29,9 +29,14 @@ class _OrderStatusSelectorState extends State<OrderStatusSelector> {
             });
             widget.onOrderStatusChanged(_isOngoing);
           },
-          icon: SvgPicture.asset('assets/icons/ongoing_orders_icon.svg',height: 4.h,
-          color: _isOngoing ? Colors.white : primaryColor,),
-          label: Text('Ongoing', style: h4TextStyle.copyWith(color: _isOngoing ? Colors.white : primaryColor)),
+          icon: SvgPicture.asset(
+            'assets/icons/ongoing_orders_icon.svg',
+            height: 4.h,
+            color: _isOngoing ? Colors.white : primaryColor,
+          ),
+          label: Text('Ongoing',
+              style: h4TextStyle.copyWith(
+                  color: _isOngoing ? Colors.white : primaryColor)),
           style: ElevatedButton.styleFrom(
             foregroundColor: _isOngoing ? Colors.white : primaryColor,
             backgroundColor: _isOngoing ? primaryColor : Colors.white,
@@ -51,9 +56,14 @@ class _OrderStatusSelectorState extends State<OrderStatusSelector> {
             });
             widget.onOrderStatusChanged(_isOngoing);
           },
-          icon: SvgPicture.asset('assets/icons/previous_orders_icon.svg', height: 3.h,
-          color: _isOngoing ? primaryColor : Colors.white,),
-          label: Text('Previous', style: h4TextStyle.copyWith(color: _isOngoing ? primaryColor : Colors.white)),
+          icon: SvgPicture.asset(
+            'assets/icons/previous_orders_icon.svg',
+            height: 3.h,
+            color: _isOngoing ? primaryColor : Colors.white,
+          ),
+          label: Text('Previous',
+              style: h4TextStyle.copyWith(
+                  color: _isOngoing ? primaryColor : Colors.white)),
           style: ElevatedButton.styleFrom(
             foregroundColor: _isOngoing ? primaryColor : Colors.white,
             backgroundColor: _isOngoing ? Colors.white : primaryColor,

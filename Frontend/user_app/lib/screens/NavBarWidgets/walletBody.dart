@@ -61,7 +61,8 @@ Widget inviteButton() {
     onPressed: () {},
     child: Text(
       'Invite'.toUpperCase(),
-      style: body3TextStyle.copyWith(fontWeight: FontWeight.w300, color: primaryColor),
+      style: body3TextStyle.copyWith(
+          fontWeight: FontWeight.w300, color: primaryColor),
     ),
   );
 }

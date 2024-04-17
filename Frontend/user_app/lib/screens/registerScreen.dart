@@ -136,7 +136,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           MaterialStatePropertyAll(Colors.transparent)),
                   child: Text(
                     'Login',
-                    style: body4TextStyle.copyWith(color: primaryColor, fontWeight: FontWeight.bold),
+                    style: body4TextStyle.copyWith(
+                        color: primaryColor, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
