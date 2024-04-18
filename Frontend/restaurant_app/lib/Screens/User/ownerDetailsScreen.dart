@@ -6,6 +6,7 @@ import 'package:restaurant_app/Screens/User/registerScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
+import 'package:restaurant_app/Widgets/customs/User/registrationTimeline.dart';
 import 'package:restaurant_app/Widgets/customs/User/uploadWidget.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
@@ -41,20 +42,6 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   bool whatsappConfirmation = false;
   bool isSignatureUploaded = false;
 
-  void _uploadSignature() async {
-    // final ImagePicker _picker = ImagePicker();
-    // // Pick an image
-    // final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    // if (image != null) {
-    //   setState(() {
-    //   });
-    // }
-    print('Signature Uploaded');
-    setState(() {
-      isSignatureUploaded = true;
-    });
-  }
-
   routeDocumentation() {
     Navigator.push(
       context,
@@ -87,10 +74,11 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const RegistrationTimeline(pageIndex: 1),
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                padding: EdgeInsets.fromLTRB(5.w, 1.h, 5.w, 2.h),
                 child:
                     Text('Owner Details'.toUpperCase(), style: titleTextStyle),
               ),
@@ -261,7 +249,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(() => _uploadSignature()),
+                  uploadWidget(),
                   isSignatureUploaded
                       ? Text(
                           'img123.jpg selected!',

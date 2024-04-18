@@ -5,6 +5,7 @@ import 'package:restaurant_app/Screens/User/setOrderingScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
+import 'package:restaurant_app/Widgets/customs/User/registrationTimeline.dart';
 import 'package:restaurant_app/Widgets/customs/User/uploadWidget.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
 import 'package:restaurant_app/Widgets/noteWidget.dart';
@@ -64,10 +65,11 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const RegistrationTimeline(pageIndex: 2),
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
+                padding: EdgeInsets.fromLTRB(5.w, 1.h, 5.w, 2.h),
                 child: Text('GST Details'.toUpperCase(), style: titleTextStyle),
               ),
             ),
@@ -94,7 +96,7 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
                       style: h6TextStyle.copyWith(color: primaryColor),
                     ),
                   ),
-                  uploadWidget(() => null),
+                  uploadWidget(),
                   _isGSTUploaded
                       ? Text(
                           'img123.jpg selected!',
@@ -150,7 +152,7 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
                       style: h6TextStyle.copyWith(color: primaryColor),
                     ),
                   ),
-                  uploadWidget(() => null),
+                  uploadWidget(),
                   _isFSSAIUploaded
                       ? Text(
                           'img123.jpg selected!',

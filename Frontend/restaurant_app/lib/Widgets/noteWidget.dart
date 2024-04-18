@@ -30,7 +30,7 @@ Widget noteWidget(String message) {
           ),
         ],
       ),
-      maxLines: 2,
+      maxLines: 4,
       textAlign: TextAlign.start,
     ),
   );

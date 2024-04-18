@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:restaurant_app/Screens/PasswordScreens/resetPasswordScreen.dart';
-import 'package:restaurant_app/Screens/User/loginScreen.dart';
 import 'package:restaurant_app/Screens/User/ownerDetailsScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
@@ -43,13 +42,8 @@ class _OTPScreenState extends State<OTPScreen> {
       }
     }
 
-    void routeLogin() {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-      );
+    void routeBack() {
+      Navigator.pop(context);
     }
 
     return Scaffold(
@@ -58,7 +52,7 @@ class _OTPScreenState extends State<OTPScreen> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          onPressed: () => routeLogin(),
+          onPressed: () => routeBack(),
           icon: Icon(
             Icons.arrow_back_ios,
             size: 19.sp,
@@ -99,7 +93,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     style: body4TextStyle,
                   ),
                   TextButton(
-                    onPressed: () => routeLogin(),
+                    onPressed: () => routeBack(),
                     child: Text('Resend',
                         style: body4TextStyle.copyWith(color: primaryColor)),
                   ),

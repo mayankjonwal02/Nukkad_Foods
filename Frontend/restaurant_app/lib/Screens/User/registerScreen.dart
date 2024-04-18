@@ -3,6 +3,7 @@ import 'package:restaurant_app/Screens/otpScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
+import 'package:restaurant_app/Widgets/customs/User/registrationTimeline.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
 import 'package:restaurant_app/Widgets/noteWidget.dart';
@@ -42,14 +43,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  // GoogleMapController? _mapController;
-
-  // void _onMapCreated(GoogleMapController controller) {
-  //   setState(() {
-  //     _mapController = controller;
-  //   });
-  // }
-
   void routeOTP() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return OTPScreen(
@@ -75,10 +68,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
             ),
+            const RegistrationTimeline(pageIndex: 0),
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 2.h),
+                padding: EdgeInsets.only(top: 1.h, bottom: 2.h),
                 child: Text(
                   'Nukkad Information'.toUpperCase(),
                   style: h4TextStyle.copyWith(color: primaryColor),
