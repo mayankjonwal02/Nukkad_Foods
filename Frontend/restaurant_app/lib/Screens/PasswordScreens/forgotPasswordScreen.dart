@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/Screens/User/loginScreen.dart';
+import 'package:restaurant_app/Screens/UserScreens/loginScreen.dart';
 import 'package:restaurant_app/Screens/otpScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';

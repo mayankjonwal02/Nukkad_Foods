@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/Screens/User/documentationScreen.dart';
-import 'package:restaurant_app/Screens/User/registrationCompleteScreen.dart';
+import 'package:restaurant_app/Screens/UserScreens/documentationScreen.dart';
+import 'package:restaurant_app/Screens/UserScreens/registrationCompleteScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
