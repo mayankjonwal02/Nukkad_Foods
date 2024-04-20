@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Screens/OrderScreens/OrdersScreen.dart';
 import 'package:restaurant_app/Screens/UserScreens/getStartedScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/forgotPasswordButton.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
+          builder: (context) => const OrdersScreen(),
         ),
       );
     }
@@ -76,7 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.only(top: 3.h, bottom: 2.h),
                   child: Text(
                     'Have not listed with us yet?',
-                    style: body4TextStyle.copyWith(fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    style: body4TextStyle.copyWith(
+                        fontSize: 15.sp, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

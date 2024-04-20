@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/Widgets/customs/Order/orderStatusSelector.dart';
+import 'package:sizer/sizer.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -9,10 +11,8 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-
   void _handleOrderTypeChanged(bool isOngoing) {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -22,8 +22,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              OrderStatusSelector(onOrderStatusChanged: _handleOrderTypeChanged),
-              ],
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                child: OrderStatusSelector(
+                    onOrderStatusChanged: _handleOrderTypeChanged),
+              ),
+              
+            ],
           ),
         ),
       ),
