@@ -410,7 +410,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                     ],
                   ),
                   SizedBox(
-                    width: 90.w, // Adjusted width to prevent overflow
+                    width: 90.w, 
                     child: Text(
                       'Tilak Nagar, sanvid nagar, indore',
                       style: body4TextStyle,
@@ -419,7 +419,7 @@ class _OrderSummaryState extends State<OrderSummary> {
                     ),
                   ),
                   SizedBox(
-                    width: 90.w, // Adjusted width to prevent overflow
+                    width: 90.w, 
                     child: Text(
                       'Order Number #256478316641',
                       style: body4TextStyle,
@@ -600,7 +600,7 @@ class _OrderSummaryState extends State<OrderSummary> {
             ),
             Container(
               height: 21.h,
-              width: 90.w, // Adjusted width to prevent overflow
+              width: 90.w,
               margin: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 3.h),
               decoration: BoxDecoration(
                   color: Color(0xFFf7f7f7),

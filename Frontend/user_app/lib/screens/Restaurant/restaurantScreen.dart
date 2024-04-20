@@ -82,7 +82,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const CartScreen(),
+        builder: (context) => CartScreen(counter: _cartCounter),
       ),
     );
   }

@@ -19,9 +19,9 @@ class _OrderTypeSelectorState extends State<OrderTypeSelector> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 3.w),
+      padding: EdgeInsets.symmetric(horizontal: 5.w),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
@@ -37,9 +37,11 @@ class _OrderTypeSelectorState extends State<OrderTypeSelector> {
                 height: 3.h,
                 color: _isDelivery ? Colors.white : primaryColor,
               ),
-              label: Text('Delivery',
-                  style: h5TextStyle.copyWith(
-                      color: _isDelivery ? Colors.white : primaryColor)),
+              label: Text(
+                'Delivery',
+                style: h5TextStyle.copyWith(
+                    color: _isDelivery ? Colors.white : primaryColor),
+              ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.zero,
                 foregroundColor: _isDelivery ? Colors.white : primaryColor,
@@ -71,9 +73,11 @@ class _OrderTypeSelectorState extends State<OrderTypeSelector> {
                 height: 3.h,
                 color: _isDelivery ? primaryColor : Colors.white,
               ),
-              label: Text('Take Away',
-                  style: h5TextStyle.copyWith(
-                      color: _isDelivery ? primaryColor : Colors.white)),
+              label: Text(
+                'Take Away',
+                style: h5TextStyle.copyWith(
+                    color: _isDelivery ? primaryColor : Colors.white),
+              ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.zero,
                 foregroundColor: _isDelivery ? primaryColor : Colors.white,
