@@ -9,7 +9,6 @@ Widget forgotPassButton(String userNumber, BuildContext context) {
     child: TextButton(
       onPressed: () {
         if (userNumber != '') {
-          print('User number: $userNumber');
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) =>
@@ -21,7 +20,7 @@ Widget forgotPassButton(String userNumber, BuildContext context) {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                duration: Duration(seconds: 4),
+                duration: const Duration(seconds: 4),
                 content: SizedBox(
                   height: 3.h,
                   child: Text(
@@ -37,8 +36,10 @@ Widget forgotPassButton(String userNumber, BuildContext context) {
       style: ButtonStyle(
         overlayColor: MaterialStateProperty.all(Colors.transparent),
       ),
-      child: Text('Forgot Password ?',
-          style: body4TextStyle.copyWith(color: primaryColor)),
+      child: Text(
+        'Forgot Password ?',
+        style: body4TextStyle.copyWith(color: primaryColor),
+      ),
     ),
   );
 }

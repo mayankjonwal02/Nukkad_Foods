@@ -81,12 +81,10 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
       ),
       globalFooter: currentPageIndex == 2
           ? Padding(
-              padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
+              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
               child: mainButton('Next', textWhite, routeLogin),
             )
-          : SizedBox(
-              height: 15.2.h,
-            ),
+          : SizedBox(height: 17.h),
       pages: [
         PageViewModel(
           title: "Find Food Stalls",
@@ -109,8 +107,6 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
           decoration: pageDecoration,
         ),
       ],
-      onDone: () {},
-      onSkip: () {},
       showSkipButton: false,
       skipOrBackFlex: 0,
       nextFlex: 0,

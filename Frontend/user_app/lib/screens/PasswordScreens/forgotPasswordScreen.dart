@@ -9,8 +9,7 @@ import '../loginScreen.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   final String userNumber;
-  const ForgotPasswordScreen({Key? key, required this.userNumber})
-      : super(key: key);
+  const ForgotPasswordScreen({super.key, required this.userNumber});
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
@@ -63,19 +62,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'Verify your phone number ${'XXXXXXX' + userNumber.substring(userNumber.length - 3)} linked to your account and enter otp to recover your account.',
+                'Verify your phone number ${'${userNumber.substring(userNumber.length - 3)}XXXXXXX'} linked to your account and enter otp to recover your account.',
                 style: body4TextStyle,
                 textAlign: TextAlign.center,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 10.h),
-              phoneField((String number) {
-                setState(() {
-                  enteredNumber = number;
-                });
-              }),
-              SizedBox(height: 8.h),
+              Padding(
+                padding: EdgeInsets.only(top: 10.h, bottom: 8.h),
+                child: phoneField((String number) {
+                  setState(() {
+                    enteredNumber = number;
+                  });
+                }),
+              ),
               mainButton(
                 'Send OTP',
                 textWhite,

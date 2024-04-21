@@ -9,7 +9,7 @@ Widget textRichButton(String text1, String text2, Function() route) {
     children: [
       Text(text1, style: body4TextStyle.copyWith(color: textGrey2)),
       TextButton(
-        onPressed: () => route(),
+        onPressed: route,
         style: const ButtonStyle(
           overlayColor: MaterialStatePropertyAll(Colors.transparent),
         ),

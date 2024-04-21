@@ -27,12 +27,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              duration: Duration(seconds: 4),
-              content: Container(
+              duration: const Duration(seconds: 4),
+              content: SizedBox(
                 height: 3.h,
                 child: Text(
                   'Entered passwords do not match',
-                  style: body4TextStyle,
+                  style: body4TextStyle.copyWith(color: textWhite),
                 ),
               ),
               backgroundColor: colorFailure,
@@ -43,10 +43,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              duration: Duration(seconds: 4),
-              content: Container(
+              duration: const Duration(seconds: 4),
+              content: SizedBox(
                 height: 3.h,
-                child: Text('Please enter data', style: body4TextStyle),
+                child: Text(
+                  'Please enter data',
+                  style: body4TextStyle.copyWith(color: textWhite),
+                ),
               ),
               backgroundColor: colorFailure,
             ),
@@ -76,7 +79,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => LoginScreen(),
+                builder: (context) => const LoginScreen(),
               ),
             );
           },
@@ -91,24 +94,28 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 10.h),
         child: Column(
           children: [
-            PasswordField(
-              labelText: 'New Password',
-              onValueChanged: (value) {
-                setState(() {
-                  newPassword = value;
-                });
-              },
+            Padding(
+              padding: EdgeInsets.only(bottom: 2.h),
+              child: PasswordField(
+                labelText: 'New Password',
+                onValueChanged: (value) {
+                  setState(() {
+                    newPassword = value;
+                  });
+                },
+              ),
             ),
-            SizedBox(height: 2.h),
-            PasswordField(
-              labelText: 'Confirm Password',
-              onValueChanged: (value) {
-                setState(() {
-                  confirmPassword = value;
-                });
-              },
+            Padding(
+              padding: EdgeInsets.only(bottom: 5.h),
+              child: PasswordField(
+                labelText: 'Confirm Password',
+                onValueChanged: (value) {
+                  setState(() {
+                    confirmPassword = value;
+                  });
+                },
+              ),
             ),
-            SizedBox(height: 5.h),
             mainButton('Continue', textWhite, () => routeContinue()),
           ],
         ),
@@ -118,6 +125,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 }
 
 class SuccessPage extends StatelessWidget {
+  const SuccessPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,22 +137,26 @@ class SuccessPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Your Password has been reset!',
-                style: h1TextStyle.copyWith(color: primaryColor),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: 5.h),
-              Center(
-                child: Image.asset(
-                  'assets/images/passwordSuccess.png',
-                  height: 40.h,
-                  width: 90.w,
+              Padding(
+                padding: EdgeInsets.only(bottom: 5.h),
+                child: Text(
+                  'Your Password has been reset!',
+                  style: h1TextStyle.copyWith(color: primaryColor),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              SizedBox(height: 5.h),
+              Padding(
+                padding: EdgeInsets.only(bottom: 5.h),
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/passwordSuccess.png',
+                    height: 40.h,
+                    width: 90.w,
+                  ),
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,7 +170,8 @@ class SuccessPage extends StatelessWidget {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
+                          builder: (context) => const LoginScreen(),
+                        ),
                       );
                     },
                     style: ButtonStyle(

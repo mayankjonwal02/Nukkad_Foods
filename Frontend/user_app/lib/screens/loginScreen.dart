@@ -47,42 +47,53 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
+          margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Sign In', style: h1TextStyle),
-              SizedBox(height: 6.h),
-              phoneField((String number) {
-                setState(() {
-                  userNumber = number;
-                });
-              }),
-              SizedBox(height: 2.h),
-              PasswordField(
-                labelText: 'Password',
-                onValueChanged: (String password) {
-                  setState(() {
-                    userPassword = password;
-                  });
-                },
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 6.h),
+                child: Text('Sign In', style: h1TextStyle),
               ),
-              SizedBox(height: 2.h),
-              forgotPassButton(userNumber, context),
-              SizedBox(height: 2.h),
-              mainButton('Sign In', textWhite, routeHome),
-              SizedBox(height: 2.h),
-              textRichButton(
-                  'Don\'t have an account?', 'Sign Up', routeRegister),
-              SizedBox(height: 2.h),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.h),
+                child: phoneField((String number) {
+                  setState(() {
+                    userNumber = number;
+                  });
+                }),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.h),
+                child: PasswordField(
+                  labelText: 'Password',
+                  onValueChanged: (String password) {
+                    setState(() {
+                      userPassword = password;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.h),
+                child: forgotPassButton(userNumber, context),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.h),
+                child: mainButton('Sign In', textWhite, routeHome),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.h),
+                child: textRichButton(
+                    'Don\'t have an account?', 'Sign Up', routeRegister),
+              ),
               Center(
                 child: Text('Sign in with',
                     style: body4TextStyle.copyWith(color: textGrey2)),
               ),
               Center(
-                child: SizedBox(
-                  height: 10.h,
-                  width: 50.w,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 15.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,

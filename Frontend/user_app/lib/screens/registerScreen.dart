@@ -83,40 +83,52 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Sign Up', style: h1TextStyle),
-            SizedBox(height: 3.h),
-            textInputField(
-                'Name',
-                userNameController,
-                (String name) => {
-                      setState(() {
-                        userName = name;
-                      })
-                    }),
-            SizedBox(height: 2.h),
-            textInputField('Email', userEmailController, (String email) {
-              setState(() {
-                userEmail = email;
-              });
-            }),
-            SizedBox(height: 2.h),
-            phoneField((String number) {
-              setState(() {
-                userNumber = number;
-              });
-            }),
-            SizedBox(height: 2.h),
-            PasswordField(
-              labelText: 'Password',
-              onValueChanged: handlePasswordChange,
+            Padding(
+              padding: EdgeInsets.only(top: 3.h, bottom: 2.h),
+              child: textInputField(
+                  'Name',
+                  userNameController,
+                  (String name) => {
+                        setState(() {
+                          userName = name;
+                        })
+                      }),
             ),
-            SizedBox(height: 2.h),
-            PasswordField(
-              labelText: 'Confirm Password',
-              onValueChanged: handleConfirmPasswordChange,
+            Padding(
+              padding: EdgeInsets.only(bottom: 2.h),
+              child:
+                  textInputField('Email', userEmailController, (String email) {
+                setState(() {
+                  userEmail = email;
+                });
+              }),
             ),
-            SizedBox(height: 2.h),
-            mainButton('Sign Up', textWhite, () => routeSignUp()),
-            SizedBox(height: 2.h),
+            Padding(
+              padding: EdgeInsets.only(bottom: 2.h),
+              child: phoneField((String number) {
+                setState(() {
+                  userNumber = number;
+                });
+              }),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 2.h),
+              child: PasswordField(
+                labelText: 'Password',
+                onValueChanged: handlePasswordChange,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 3.h),
+              child: PasswordField(
+                labelText: 'Confirm Password',
+                onValueChanged: handleConfirmPasswordChange,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 2.h),
+              child: mainButton('Sign Up', textWhite, () => routeSignUp()),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,7 +139,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
+                        builder: (context) => const LoginScreen(),
                       ),
                     );
                   },

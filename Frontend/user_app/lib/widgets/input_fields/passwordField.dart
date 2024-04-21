@@ -24,40 +24,37 @@ class _PasswordFieldState extends State<PasswordField> {
     return Material(
       elevation: 3.0,
       borderRadius: BorderRadius.circular(7.0),
-      child: SizedBox(
-        height: 7.5.h,
-        child: TextField(
-          controller: _controller,
-          obscureText: _isObscured,
-          onChanged: widget.onValueChanged,
-          decoration: InputDecoration(
-            labelText: widget.labelText.toUpperCase(),
-            labelStyle: body4TextStyle.copyWith(color: textGrey2),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(7.0),
-              borderSide: BorderSide(
-                color: textGrey2,
-                width: 0.1.h,
-              ),
+      child: TextField(
+        controller: _controller,
+        obscureText: _isObscured,
+        onChanged: widget.onValueChanged,
+        decoration: InputDecoration(
+          labelText: widget.labelText.toUpperCase(),
+          labelStyle: body4TextStyle.copyWith(color: textGrey2),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(7.0),
+            borderSide: BorderSide(
+              color: textGrey2,
+              width: 0.1.h,
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(7.0),
-              borderSide: BorderSide(
-                color: textGrey2,
-                width: 0.1.h,
-              ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(7.0),
+            borderSide: BorderSide(
+              color: textGrey2,
+              width: 0.1.h,
             ),
-            suffixIcon: IconButton(
-              icon: Icon(
-                _isObscured ? Icons.visibility : Icons.visibility_off,
-                color: primaryColor,
-              ),
-              onPressed: () {
-                setState(() {
-                  _isObscured = !_isObscured;
-                });
-              },
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isObscured ? Icons.visibility : Icons.visibility_off,
+              color: primaryColor,
             ),
+            onPressed: () {
+              setState(() {
+                _isObscured = !_isObscured;
+              });
+            },
           ),
         ),
       ),
@@ -66,7 +63,7 @@ class _PasswordFieldState extends State<PasswordField> {
 
   @override
   void dispose() {
-    _controller.dispose(); // Dispose the controller when widget is disposed
+    _controller.dispose();
     super.dispose();
   }
 }

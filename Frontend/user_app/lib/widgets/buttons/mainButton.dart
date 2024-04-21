@@ -20,10 +20,12 @@ Widget mainButton(String buttonText, Color buttonTextColor, Function() route) {
             ),
           ),
         ),
-        child: Text(buttonText.toUpperCase(),
-            style: buttonTextStyle.copyWith(
-                color: buttonTextColor, fontWeight: FontWeight.w600)),
-        onPressed: () => route(),
+        onPressed: route,
+        child: Text(
+          buttonText.toUpperCase(),
+          style: buttonTextStyle.copyWith(
+              color: buttonTextColor, fontWeight: FontWeight.w600),
+        ),
       ),
     ),
   );
