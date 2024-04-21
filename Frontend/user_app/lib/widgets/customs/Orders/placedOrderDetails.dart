@@ -22,7 +22,6 @@ Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
       elevation: 5,
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: 35.h,
         width: 100.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -33,7 +32,6 @@ Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
             Stack(
               children: [
                 Container(
-                  height: 14.h,
                   width: 100.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -46,63 +44,67 @@ Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
                       Image.asset(
                         'assets/images/restaurantImage.png',
                         fit: BoxFit.fill,
-                        width: 20.w,
+                        height: 14.h,
+                        width: 28.w,
                       ),
                       SizedBox(width: 3.w),
                       Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Shiva Chinese Wok',
-                              style: h5TextStyle,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                            ),
-                            Text(
-                              'Saket Nagar, Indore',
-                              style: body5TextStyle.copyWith(
-                                color: textGrey2,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 4.h),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Shiva Chinese Wok',
+                                style: h5TextStyle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 1.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/icons/timer_icon.svg',
-                                    height: 3.h,
-                                    color: primaryColor,
-                                  ),
-                                  SizedBox(width: 1.w),
-                                  Text(
-                                    '25 min',
-                                    style: body5TextStyle.copyWith(
+                              Text(
+                                'Saket Nagar, Indore',
+                                style: body5TextStyle.copyWith(
+                                  color: textGrey2,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 1.h),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/timer_icon.svg',
+                                      height: 3.h,
+                                      color: primaryColor,
+                                    ),
+                                    SizedBox(width: 1.w),
+                                    Text(
+                                      '25 min',
+                                      style: body5TextStyle.copyWith(
+                                        color: textGrey1,
+                                      ),
+                                    ),
+                                    SvgPicture.asset(
+                                      'assets/icons/dot.svg',
+                                      height: 2.h,
                                       color: textGrey1,
                                     ),
-                                  ),
-                                  SvgPicture.asset(
-                                    'assets/icons/dot.svg',
-                                    height: 2.h,
-                                    color: textGrey1,
-                                  ),
-                                  Text(
-                                    '4.5',
-                                    style: body5TextStyle.copyWith(
-                                      color: textGrey1,
+                                    Text(
+                                      '4.5',
+                                      style: body5TextStyle.copyWith(
+                                        color: textGrey1,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

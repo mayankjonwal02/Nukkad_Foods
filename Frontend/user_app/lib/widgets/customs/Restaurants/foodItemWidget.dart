@@ -89,7 +89,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/bowl.png', height: 9.h),
+                    Image.asset('assets/images/bowl_3.png', height: 9.h),
                     Container(
                       height: 3.h,
                       width: 15.w,

@@ -3,9 +3,9 @@ import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
-Widget textIconButton(String text) {
+Widget textIconButton(String text, Function() onTap) {
   return GestureDetector(
-    onTap: null,
+    onTap: onTap,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

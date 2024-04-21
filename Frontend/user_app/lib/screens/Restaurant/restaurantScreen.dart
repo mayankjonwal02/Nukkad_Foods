@@ -10,7 +10,7 @@ import 'package:user_app/Widgets/customs/Restaurants/foodTypeToggle.dart';
 import 'package:user_app/Widgets/customs/Restaurants/restaurantMenuScroll.dart';
 
 class RestaurantScreen extends StatefulWidget {
-  const RestaurantScreen({Key? key}) : super(key: key);
+  const RestaurantScreen({super.key});
 
   @override
   State<RestaurantScreen> createState() => _RestaurantScreenState();

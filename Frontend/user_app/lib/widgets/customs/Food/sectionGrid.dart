@@ -6,7 +6,6 @@ import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget sectionGrid(String headerText, List names, List images) {
   return Container(
-    height: 38.h,
     decoration: BoxDecoration(
       border: Border(
         top: BorderSide(color: textGrey2, width: 0.2.h),
@@ -29,18 +28,15 @@ Widget sectionGrid(String headerText, List names, List images) {
             ),
             itemCount: 8,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 2.w),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 8.5.h,
-                      width: 8.5.h,
-                      child: Image.asset('assets/images/bowl.png'),
-                    ),
-                    Text('Waffle', style: h6TextStyle),
-                  ],
-                ),
+              return Column(
+                children: [
+                  Image.asset(
+                    images[index],
+                    height: 8.5.h,
+                    scale: 0.6,
+                  ),
+                  Text(names[index], style: h6TextStyle),
+                ],
               );
             },
           ),
@@ -49,3 +45,17 @@ Widget sectionGrid(String headerText, List names, List images) {
     ),
   );
 }
+
+// Padding(
+//                 padding: EdgeInsets.symmetric(horizontal: 2.w),
+//                 child: Column(
+//                   children: [
+//                     SizedBox(
+//                       height: 8.5.h,
+//                       width: 8.5.h,
+//                       child: Image.asset('assets/images/bowl.png'),
+//                     ),
+//                     Text('Waffle', style: h6TextStyle),
+//                   ],
+//                 ),
+//               );

@@ -31,7 +31,7 @@ Widget restaurantMenuScroll(List<bool> isMenuSelected, Function(int) onTap) {
                     ),
                     color: isMenuSelected[index] ? primaryColor : textWhite,
                   ),
-                  child: Image.asset('assets/images/bowl.png'),
+                  child: Image.asset('assets/images/bowl_2.png'),
                 ),
               ),
               Padding(
