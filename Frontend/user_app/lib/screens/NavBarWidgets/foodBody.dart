@@ -23,8 +23,26 @@ class FoodBody extends StatefulWidget {
 class _FoodBodyState extends State<FoodBody> {
   List restaurantNames = [];
   List restaurantImages = [];
-  List foodCategories = [];
-  List foodImages = [];
+  List foodCategories = [
+    'Bowl1',
+    'Bowl2',
+    'Bowl3',
+    'Bowl4',
+    'Bowl5',
+    'Bowl6',
+    'Bowl7',
+    'Bowl8'
+  ];
+  List foodImages = [
+    'assets/images/bowl1.png',
+    'assets/images/bowl2.png',
+    'assets/images/bowl3.png',
+    'assets/images/bowl1.png',
+    'assets/images/bowl2.png',
+    'assets/images/bowl3.png',
+    'assets/images/bowl1.png',
+    'assets/images/bowl2.png',
+  ];
   List offerData = [];
 
   @override
@@ -34,8 +52,9 @@ class _FoodBodyState extends State<FoodBody> {
         children: [
           const customAppBar(),
           Container(
-              margin: EdgeInsets.symmetric(horizontal: 2.w),
-              child: searchBar("What are you looking for?")),
+            margin: EdgeInsets.symmetric(horizontal: 2.w),
+            child: searchBar("What are you looking for?"),
+          ),
           SizedBox(height: 2.h),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 2.w),
