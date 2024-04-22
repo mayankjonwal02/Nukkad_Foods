@@ -18,81 +18,88 @@ Widget AddressWidget(BuildContext context) {
     ),
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-      child: Row(
-        children: [
-          SvgPicture.asset(
-            'assets/icons/location_pin_icon.svg',
-            height: 4.h,
-            color: primaryColor,
-          ),
-          SizedBox(width: 2.w),
-          SizedBox(
-            width: 55.w,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Home',
-                      style: h5TextStyle,
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SavedAddresses(),
-                          ),
-                        );
-                      },
-                      child: SvgPicture.asset(
-                        'assets/icons/dropdown_icon.svg',
-                        height: 3.5.h,
+      child: IntrinsicHeight(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/icons/location_pin_icon.svg',
+              height: 3.5.h,
+              color: primaryColor,
+            ),
+            SizedBox(width: 1.w),
+            SizedBox(
+              width: 53.w,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Home',
+                        style: h5TextStyle,
+                        textAlign: TextAlign.start,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-                ),
-                Text(
-                  '506 B, kanadiya road main road',
-                  style: body5TextStyle,
-                  textAlign: TextAlign.start,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SavedAddresses(),
+                            ),
+                          );
+                        },
+                        child: SvgPicture.asset(
+                          'assets/icons/dropdown_icon.svg',
+                          height: 3.5.h,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    '506 B, kanadiya road main road',
+                    style: body5TextStyle,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
-          ),
-          VerticalDivider(color: textGrey2, thickness: 0.2.h),
-          SizedBox(
-            width: 25.w,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Pickup in ',
-                  style: body5TextStyle,
-                  textAlign: TextAlign.start,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  '25 mins',
-                  style: h5TextStyle,
-                  textAlign: TextAlign.start,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 2.w),
+              child: VerticalDivider(color: textGrey2, thickness: 0.5.w),
             ),
-          )
-        ],
+            SizedBox(
+              width: 25.w,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Pickup in ',
+                    style: body5TextStyle,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    '25 mins',
+                    style: h5TextStyle,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     ),
   );

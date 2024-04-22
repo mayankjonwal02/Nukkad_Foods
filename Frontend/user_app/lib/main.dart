@@ -20,6 +20,11 @@ class MainApp extends StatelessWidget {
             useMaterial3: true,
             timePickerTheme: const TimePickerThemeData(
               dialHandColor: primaryColor,
+              backgroundColor: textWhite,
+              dayPeriodColor: textGrey3,
+              dialBackgroundColor: textGrey2,
+              hourMinuteColor: bgColor,
+              entryModeIconColor: textBlack,
             ),
           ),
           debugShowCheckedModeBanner: false,
