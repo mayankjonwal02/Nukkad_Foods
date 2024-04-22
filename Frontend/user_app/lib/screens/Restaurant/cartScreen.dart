@@ -84,20 +84,19 @@ class _CartScreenState extends State<CartScreen> {
                 Container(
                   padding:
                       EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      textIconButton('Add Items', routeRestaurant),
-                      const VerticalDivider(
-                        color: Colors.black,
-                        width: 10,
-                        thickness: 3,
-                        indent: 10,
-                        endIndent: 10,
-                      ),
-                      textIconButton('Cooking Request', () {}),
-                    ],
+                  child: IntrinsicHeight(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        textIconButton('Add Items', routeRestaurant),
+                        VerticalDivider(
+                          color: textGrey2,
+                          thickness: 0.5.w,
+                        ),
+                        textIconButton('Cooking Request', () {}),
+                      ],
+                    ),
                   ),
                 ),
               ],

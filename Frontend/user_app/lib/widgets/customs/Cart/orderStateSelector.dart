@@ -7,6 +7,7 @@ import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget OrderStateSelector(BuildContext context) {
   DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
 
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -14,7 +15,7 @@ Widget OrderStateSelector(BuildContext context) {
     children: [
       GestureDetector(
         onTap: () {
-          _showScheduleOrderDialog(context, selectedDate);
+          _showScheduleOrderDialog(context, selectedDate, selectedTime);
         },
         child: Container(
           width: 47.w,
@@ -87,7 +88,8 @@ Widget OrderStateSelector(BuildContext context) {
   );
 }
 
-void _showScheduleOrderDialog(BuildContext context, DateTime date) {
+void _showScheduleOrderDialog(
+    BuildContext context, DateTime date, TimeOfDay time) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -163,10 +165,20 @@ void _showScheduleOrderDialog(BuildContext context, DateTime date) {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Row(
-                        children: [
-                          //
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          _selectTime(context, date, time);
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              '${time.format(context)}',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                            SizedBox(width: 1.w),
+                            Icon(Icons.access_time),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -245,5 +257,27 @@ Future<void> _selectDate(BuildContext context, DateTime date) async {
   );
   if (pickedDate != null) {
     date = pickedDate;
+  }
+}
+
+Future<void> _selectTime(
+    BuildContext context, DateTime date, TimeOfDay selectedTime) async {
+  final TimeOfDay? pickedTime = await showTimePicker(
+    context: context,
+    initialTime: selectedTime,
+    builder: (BuildContext context, Widget? child) {
+      return MediaQuery(
+        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+        child: child!,
+      );
+    },
+    helpText: 'Select Time',
+    cancelText: 'Cancel',
+    confirmText: 'Confirm',
+    initialEntryMode: TimePickerEntryMode.dial,
+  );
+
+  if (pickedTime != null) {
+    selectedTime = pickedTime;
   }
 }
