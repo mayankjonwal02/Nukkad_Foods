@@ -44,69 +44,78 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Sign In', style: h1TextStyle),
-              SizedBox(height: 6.h),
-              phoneField((String number) {
-                setState(() {
-                  userNumber = number;
-                });
-              }),
-              SizedBox(height: 2.h),
-              PasswordField(
-                labelText: 'Password',
-                onValueChanged: (String password) {
-                  setState(() {
-                    userPassword = password;
-                  });
-                },
-              ),
-              SizedBox(height: 2.h),
-              forgotPassButton(userNumber, context),
-              SizedBox(height: 2.h),
-              mainButton('Sign In', textWhite, routeHome),
-              SizedBox(height: 2.h),
-              Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: EdgeInsets.only(top: 3.h, bottom: 2.h),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 6.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Sign In', style: h1TextStyle),
+                Padding(
+                  padding: EdgeInsets.only(top: 6.h, bottom: 4.h),
+                  child: phoneField((String number) {
+                    setState(() {
+                      userNumber = number;
+                    });
+                  }),
+                ),
+                PasswordField(
+                  labelText: 'Password',
+                  onValueChanged: (String password) {
+                    setState(() {
+                      userPassword = password;
+                    });
+                  },
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 2.h),
+                  child: forgotPassButton(userNumber, context),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 2.h),
+                  child: mainButton('Sign In', textWhite, routeHome),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 6.h, bottom: 2.h),
+                    child: Text(
+                      'Have not listed with us yet?',
+                      style: body4TextStyle.copyWith(
+                          fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  child: mainButton('Register Now!', textWhite, routeRegister),
+                ),
+                SizedBox(height: 3.h),
+                Center(
                   child: Text(
-                    'Have not listed with us yet?',
-                    style: body4TextStyle.copyWith(
-                        fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    'Sign in with',
+                    style: body4TextStyle.copyWith(color: textGrey2),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.w),
-                child: mainButton('Register Now!', textWhite, routeRegister),
-              ),
-              SizedBox(height: 3.h),
-              Center(
-                child: Text('Sign in with',
-                    style: body4TextStyle.copyWith(color: textGrey2)),
-              ),
-              Center(
-                child: SizedBox(
-                  height: 10.h,
-                  width: 50.w,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      socialLoginButton('google.png', onGoogleTap),
-                      socialLoginButton('facebook.png', onFacebookTap),
-                      socialLoginButton('twitter.png', onTwitterTap),
-                    ],
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 2.h, bottom: 3.h),
+                    height: 12.h,
+                    width: 50.w,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        socialLoginButton('google.png', onGoogleTap),
+                        socialLoginButton('facebook.png', onFacebookTap),
+                        socialLoginButton('twitter.png', onTwitterTap),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

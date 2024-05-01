@@ -27,13 +27,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              duration: Duration(seconds: 4),
-              content: Container(
-                height: 3.h,
-                child: Text(
-                  'Entered passwords do not match',
-                  style: body4TextStyle,
-                ),
+              duration: const Duration(seconds: 4),
+              content: Text(
+                'Entered passwords do not match',
+                style: body4TextStyle,
               ),
               backgroundColor: colorFailure,
             ),
@@ -43,10 +40,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              duration: Duration(seconds: 4),
-              content: Container(
-                height: 3.h,
-                child: Text('Please enter data', style: body4TextStyle),
+              duration: const Duration(seconds: 4),
+              content: Text(
+                'Please enter data',
+                style: body4TextStyle.copyWith(color: textWhite),
               ),
               backgroundColor: colorFailure,
             ),
@@ -57,10 +54,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           MaterialPageRoute(builder: (context) => SuccessPage()),
         );
       }
-      setState(() {
-        newPassword = '';
-        confirmPassword = '';
-      });
+      setState(
+        () {
+          newPassword = '';
+          confirmPassword = '';
+        },
+      );
     }
   }
 
@@ -76,7 +75,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => LoginScreen(),
+                builder: (context) => const LoginScreen(),
               ),
             );
           },
@@ -99,17 +98,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 });
               },
             ),
-            SizedBox(height: 2.h),
-            PasswordField(
-              labelText: 'Confirm Password',
-              onValueChanged: (value) {
-                setState(() {
-                  confirmPassword = value;
-                });
-              },
+            Padding(
+              padding: EdgeInsets.only(top: 3.h, bottom: 5.h),
+              child: PasswordField(
+                labelText: 'Confirm Password',
+                onValueChanged: (value) {
+                  setState(() {
+                    confirmPassword = value;
+                  });
+                },
+              ),
             ),
-            SizedBox(height: 5.h),
-            mainButton('Continue', textWhite, () => routeContinue()),
+            mainButton(
+              'Continue',
+              textWhite,
+              () => routeContinue(),
+            ),
           ],
         ),
       ),

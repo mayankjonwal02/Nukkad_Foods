@@ -19,8 +19,12 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
   final nukkadNameController = TextEditingController();
 
   routeReferral() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const ReferralScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ReferralScreen(),
+      ),
+    );
   }
 
   @override
@@ -50,43 +54,56 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 5.w),
-            decoration: BoxDecoration(
-              color: bgColor,
+            child: Material(
+              elevation: 2,
               borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
-                    child: Text(
-                      'Choose how people will see your stall',
-                      style: body4TextStyle.copyWith(color: textGrey1),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 1.h, horizontal: 2.w),
+                        child: Text(
+                          'Choose how people will see your stall',
+                          style: body4TextStyle.copyWith(
+                            color: textGrey2,
+                            fontWeight: FontWeight.w200,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
+                      child: Image.asset('assets/images/get_started.png'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 2.h),
+                      child: textInputField(
+                          'Nukkad Name'.toUpperCase(), nukkadNameController,
+                          (String name) {
+                        setState(() {
+                          nukkadName = name;
+                        });
+                      }),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 3.h, bottom: 5.h),
+                      child: noteWidget(
+                          'This is the name and picture that customers will see on the app.'),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
-                  child: Image.asset('assets/images/get_started.png'),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 2.h),
-                  child: textInputField(
-                      'Nukkad Name'.toUpperCase(), nukkadNameController,
-                      (String name) {
-                    setState(() {
-                      nukkadName = name;
-                    });
-                  }),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 3.h, bottom: 5.h),
-                  child: noteWidget(
-                      'This is the name and picture that customers will see on the app.'),
-                ),
-              ],
+              ),
             ),
           ),
           Padding(

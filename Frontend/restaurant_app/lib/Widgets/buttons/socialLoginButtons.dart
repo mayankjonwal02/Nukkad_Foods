@@ -8,15 +8,14 @@ Widget socialLoginButton(String assetName, Function() onTap) {
     child: GestureDetector(
       onTap: () => onTap(),
       child: Container(
-        height: 6.h,
-        width: 6.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
         ),
         child: Image.asset(
           'assets/images/socials/$assetName',
           fit: BoxFit.fill,
-          scale: 1.6,
+          height: 6.h,
+          scale: 0.8,
         ),
       ),
     ),

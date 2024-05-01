@@ -66,24 +66,31 @@ class _OTPScreenState extends State<OTPScreen> {
           child: Column(
             children: [
               Text('Verify with OTP sent to $userNumber', style: h3TextStyle),
-              SizedBox(height: 8.h),
-              OtpTextField(
-                fieldHeight: 8.h,
-                fieldWidth: 15.w,
-                numberOfFields: 4,
-                borderColor: Colors.grey.shade600,
-                focusedBorderColor: Colors.black,
-                cursorColor: Colors.black,
-                borderRadius: BorderRadius.circular(7),
-                showFieldAsBox: true,
-                clearText: true,
-                onSubmit: (String verificationCode) {
-                  enteredpin = verificationCode;
-                },
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h),
+                child: OtpTextField(
+                  fieldHeight: 8.h,
+                  fieldWidth: 15.w,
+                  numberOfFields: 4,
+                  borderColor: Colors.grey.shade600,
+                  focusedBorderColor: Colors.black,
+                  cursorColor: Colors.black,
+                  borderRadius: BorderRadius.circular(7),
+                  showFieldAsBox: true,
+                  clearText: true,
+                  onSubmit: (String verificationCode) {
+                    enteredpin = verificationCode;
+                  },
+                ),
               ),
-              SizedBox(height: 8.h),
-              mainButton('Continue', textWhite, () => chooseRoute()),
-              SizedBox(height: 2.h),
+              Padding(
+                padding: EdgeInsets.only(bottom: 2.h),
+                child: mainButton(
+                  'Continue',
+                  textWhite,
+                  () => chooseRoute(),
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,8 +101,10 @@ class _OTPScreenState extends State<OTPScreen> {
                   ),
                   TextButton(
                     onPressed: () => routeBack(),
-                    child: Text('Resend',
-                        style: body4TextStyle.copyWith(color: primaryColor)),
+                    child: Text(
+                      'Resend',
+                      style: body4TextStyle.copyWith(color: primaryColor),
+                    ),
                   ),
                 ],
               ),
