@@ -9,7 +9,7 @@ router.get("/test",(req,res)=> {
 
 
 router.post("/signup", async (req,res) => {
-    let userid = req.body.userid 
+    let phonenumber = req.body.phonenumber
     let password = req.body.password
 
  try {
@@ -20,7 +20,7 @@ router.post("/signup", async (req,res) => {
         if(!user)
         {
             DB.collection("users").insertOne({
-                userid : userid,
+                phonenumber : phonenumber,
                 password : password
             })
             .then(()=> {
@@ -57,14 +57,14 @@ router.post("/signup", async (req,res) => {
 
 router.post("/login",async (req,res) => {
     
-    let userid = req.body.userid
+    let phonenumber = req.body.phonenumber
     let password = req.body.password
 
     try {
         let DB = mongoose.connection.useDb("NukkadFoods")
         let collection = DB.collection("users")
 
-        collection.findOne({userid: userid})
+        collection.findOne({phonenumber: phonenumber})
         .then((user) => {
             if(!user)
             {
