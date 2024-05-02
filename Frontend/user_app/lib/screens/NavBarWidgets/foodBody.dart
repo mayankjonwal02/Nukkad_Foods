@@ -19,8 +19,92 @@ class FoodBody extends StatefulWidget {
 }
 
 class _FoodBodyState extends State<FoodBody> {
-  List restaurantNames = [];
-  List restaurantImages = [];
+  List<String> restaurantNames = [
+    'The Hungry Panda',
+    'Casa di Pizza',
+    'Taste of India',
+    'The Burger Joint',
+    'Sushi Heaven',
+    'Mama Mia Pizzeria',
+    'Golden Dragon',
+    'Café Paris',
+    'Thai Orchid',
+    'Mexican Grill',
+    'Sunrise Diner',
+    'Noodle House',
+    'Deli Delight',
+    'Taco Time',
+    'The Cheesesteak Shop',
+    'Pizza Palace',
+    'Burger Barn',
+    'Tandoori Palace',
+    'The Sandwich Spot',
+    'Falafel House',
+    'Wok & Roll',
+    'Grill House',
+    'Sizzling Steaks',
+    'Fried Chicken Co.',
+    'The Pasta House',
+    'Taco Haven',
+    'Sushi Samurai',
+    'Peking Duck House',
+    'Mediterranean Grill',
+    'Bagel Bistro',
+    'Curry Express',
+    'Seafood Shack',
+    'Veggie Delight',
+    'Hot Wok',
+    'Ramen Ramble',
+    'Wrap It Up',
+    'Gourmet Garden',
+    'Pita Pit',
+    'Crepe Café',
+    'Crispy Crust Pizza',
+    'Waffle House',
+    'Dim Sum Palace',
+    'BBQ Junction',
+    'Soup Station',
+    'Cajun Cookhouse',
+    'Greek Taverna',
+    'The Vegan Café',
+    'Taste of China',
+    'Szechuan Spice',
+    'French Bistro',
+    'Dumpling Dynasty',
+    'Nacho Nation',
+    'Fusion Fare',
+    'Fajita Fiesta',
+    'Pancake Paradise',
+    'Kebab Corner',
+    'Rice Bowl',
+    'Sizzling Sausages',
+    'Dosa Diner',
+    'Smoothie Station',
+    'Burrito Bar',
+    'Falafel Factory',
+    'Baguette Bakery',
+    'Poke Paradise',
+    'Sushi Samba',
+    'Tandoori Twist',
+    'Pita Palace',
+    'Deli Supreme',
+    'Wok Star',
+    'The Hotdog Hut',
+    'Thai Terrace',
+    'Baklava Bistro',
+    'Pancake Place',
+    'Mongolian Grill',
+    'Grill Master',
+    'The Wrap Shack',
+    'Samosa Stop',
+    'Banh Mi Bistro',
+    'Pizza Pit',
+    'The Burrito Bowl',
+    'Noodle Nook',
+  ];
+
+  List<String> restaurantImages = List.filled(85, 'assets/images/bowl.png');
+
   List foodCategories = [
     'Bowl1',
     'Bowl2',
@@ -43,9 +127,52 @@ class _FoodBodyState extends State<FoodBody> {
   ];
   List offerData = [];
 
+  final ScrollController _scrollController = ScrollController();
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+    _loadMoreRestaurants();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !_isLoading) {
+      _loadMoreRestaurants();
+    }
+  }
+
+  void _loadMoreRestaurants() async {
+    if (!_isLoading) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      await Future.delayed(const Duration(seconds: 2));
+      setState(() {
+        restaurantNames.addAll([
+          'New Restaurant ${restaurantNames.length + 1}',
+          'New Restaurant ${restaurantNames.length + 2}',
+        ]);
+        restaurantImages.addAll(['new_image_url1', 'new_image_url2']);
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Column(
         children: [
           const customAppBar(),
@@ -53,7 +180,7 @@ class _FoodBodyState extends State<FoodBody> {
             padding: EdgeInsets.only(bottom: 2.h),
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 2.w),
-              child: searchBar("What are you looking for?"),
+              child: searchBar('What are you looking for?'),
             ),
           ),
           Padding(
@@ -68,7 +195,10 @@ class _FoodBodyState extends State<FoodBody> {
             child: Container(
               margin: EdgeInsets.only(left: 2.w),
               child: sectionSlider(
-                  'Favorite Merchants', restaurantNames, restaurantImages),
+                'Favorite Merchants',
+                restaurantNames,
+                restaurantImages,
+              ),
             ),
           ),
           Padding(
@@ -76,15 +206,15 @@ class _FoodBodyState extends State<FoodBody> {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 4.w),
               child: sectionGrid(
-                  'Hey, What\'s on your mind?', foodCategories, foodImages),
+                'Hey, What\'s on your mind?',
+                foodCategories,
+                foodImages,
+              ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 2.h),
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 4.w),
-              child: offersSlider('Offers curated for you', offerData),
-            ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 4.w),
+            child: offersSlider('Curated for you', offerData),
           ),
           Align(
             alignment: Alignment.centerLeft,
@@ -118,7 +248,7 @@ class _FoodBodyState extends State<FoodBody> {
             alignment: Alignment.centerLeft,
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 3.w),
-              padding: EdgeInsets.only(top: 3.h,bottom: 2.h),
+              padding: EdgeInsets.only(top: 3.h, bottom: 2.h),
               child: Text(
                 'Nearest Restaurants',
                 style: h5TextStyle,
@@ -169,7 +299,7 @@ class _FoodBodyState extends State<FoodBody> {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  '50 Restaurants delivering to you',
+                  '${restaurantNames.length} Restaurants delivering to you',
                   style: body5TextStyle.copyWith(color: textGrey2),
                   textAlign: TextAlign.center,
                 ),
@@ -180,9 +310,22 @@ class _FoodBodyState extends State<FoodBody> {
             margin: EdgeInsets.symmetric(horizontal: 3.w),
             height: 70.h,
             child: ListView.builder(
-              itemCount: 15,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: restaurantNames.length,
               itemBuilder: (context, index) {
-                return restaurant(context);
+                if (index == restaurantNames.length) {
+                  {
+                    return Column(
+                      children: [
+                        restaurant(context, restaurantNames[index]),
+                        const CircularProgressIndicator(),
+                      ],
+                    );
+                  }
+                } else {
+                  return restaurant(context, restaurantNames[index]);
+                }
               },
             ),
           ),

@@ -1,8 +1,10 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/Profile/savedAddresses.dart';
+import 'package:user_app/Screens/Subscriptions/planScreen.dart';
 import 'package:user_app/Screens/Support/helpSupportScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
@@ -15,7 +17,6 @@ class customAppBar extends StatefulWidget {
 }
 
 class _customAppBarState extends State<customAppBar> {
-  bool _darkMode = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,7 +38,7 @@ class _customAppBarState extends State<customAppBar> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: 45.w,
+                width: 49.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,31 +76,20 @@ class _customAppBarState extends State<customAppBar> {
               ),
             ],
           ),
+          const Spacer(),
           GestureDetector(
             onTap: () {
-              setState(() {
-                _darkMode = !_darkMode;
-              });
-            },
-            child: Container(
-              height: 5.h,
-              width: 5.h,
-              margin: EdgeInsets.fromLTRB(1.w, 0, 0.w, 0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                border: Border.all(color: primaryColor, width: 0.2.h),
-                color:
-                    _darkMode == true ? const Color(0xFF4d4d4d) : Colors.white,
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  _darkMode
-                      ? 'assets/icons/dark_mode_icon.svg'
-                      : 'assets/icons/light_mode_icon.svg',
-                  height: 3.h,
-                  color: _darkMode ? textGrey3 : textGrey2,
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PlanScreen(),
                 ),
-              ),
+              );
+            },
+            child: SvgPicture.asset(
+              'assets/icons/rewards_icon.svg',
+              height: 4.5.h,
+              width: 4.5.h,
             ),
           ),
           TextButton(

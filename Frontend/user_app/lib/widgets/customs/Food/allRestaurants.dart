@@ -6,19 +6,19 @@ import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/customs/Food/ratingWidget.dart';
 
-Widget allRestaurants(BuildContext context) {
+Widget allRestaurants(BuildContext context, String restaurantName) {
   return SizedBox(
     height: 75.h,
     child: ListView.builder(
       itemCount: 15,
       itemBuilder: (context, index) {
-        return restaurant(context);
+        return restaurant(context, restaurantName);
       },
     ),
   );
 }
 
-Widget restaurant(BuildContext context) {
+Widget restaurant(BuildContext context, String restaurantName) {
   return GestureDetector(
     onTap: () {
       Navigator.push(context,
@@ -79,7 +79,7 @@ Widget restaurant(BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Shiva Chinese Wok',
+                      restaurantName,
                       style: h5TextStyle.copyWith(fontSize: 14.sp),
                       maxLines: 1,
                       textAlign: TextAlign.start,
