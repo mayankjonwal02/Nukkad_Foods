@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:restaurant_app/Screens/OrderScreens/OrdersScreen.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/customs/User/registrationTimeline.dart';
 import 'package:restaurant_app/Widgets/noteWidget.dart';
+import 'package:restaurant_app/homeScreen.dart';
 import 'package:sizer/sizer.dart';
 
 class RegistrationCompleteScreen extends StatefulWidget {
@@ -25,7 +23,7 @@ class _RegistrationCompleteScreenState
     Future.delayed(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const OrdersScreen()),
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
     });
   }

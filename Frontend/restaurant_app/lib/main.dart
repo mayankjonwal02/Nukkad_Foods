@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Screens/splashScreen.dart';
+import 'package:restaurant_app/homeScreen.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MainApp extends StatelessWidget {
         return const MaterialApp(
           title: 'Nukkad Foods',
           debugShowCheckedModeBanner: false,
-          home: SplashScreen(),
+          home: HomeScreen(),
         );
       },
     );

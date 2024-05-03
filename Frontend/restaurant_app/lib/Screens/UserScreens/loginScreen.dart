@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/Screens/OrderScreens/OrdersScreen.dart';
 import 'package:restaurant_app/Screens/UserScreens/getStartedScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/forgotPasswordButton.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
@@ -8,6 +7,7 @@ import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/input_fields/passwordField.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
+import 'package:restaurant_app/homeScreen.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const OrdersScreen(),
+          builder: (context) => const HomeScreen(),
         ),
       );
     }
