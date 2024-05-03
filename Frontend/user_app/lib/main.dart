@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Screens/homeScreen.dart';
 import 'package:user_app/Screens/splashScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 
