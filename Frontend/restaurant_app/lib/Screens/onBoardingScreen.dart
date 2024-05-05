@@ -7,7 +7,7 @@ import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:sizer/sizer.dart';
 
 class OnBoardingScreen extends StatefulWidget {
-  const OnBoardingScreen({Key? key}) : super(key: key);
+  const OnBoardingScreen({super.key});
 
   @override
   OnBoardingScreenState createState() => OnBoardingScreenState();

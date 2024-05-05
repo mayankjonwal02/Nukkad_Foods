@@ -61,7 +61,7 @@ class _HomeBodyState extends State<HomeBody> {
                 child: const SalesGraph(),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(10.w, 0, 10.w, 2.h),
+                padding: EdgeInsets.fromLTRB(10.w, 0, 10.w, 0),
                 child: const AnalyticsData(),
               ),
             ],

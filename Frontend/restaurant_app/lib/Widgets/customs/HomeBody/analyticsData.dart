@@ -35,13 +35,13 @@ class _AnalyticsDataState extends State<AnalyticsData> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60.h,
+      height: 56.h,
       child: GridView.count(
         physics: const NeverScrollableScrollPhysics(),
         crossAxisCount: 2,
         children: List.generate(6, (index) {
           return Container(
-            padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.5.h),
+            padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 0.4.h),
             child: Material(
               elevation: 2,
               borderRadius: BorderRadius.circular(8),
