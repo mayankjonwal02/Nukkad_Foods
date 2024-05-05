@@ -126,7 +126,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                               vertical: 0.4.h, horizontal: 3.w),
                           child: Text(
                             'COD',
-                            style: body5TextStyle.copyWith(color: textGrey2),
+                            style: body5TextStyle.copyWith(color: textBlack, fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.end,

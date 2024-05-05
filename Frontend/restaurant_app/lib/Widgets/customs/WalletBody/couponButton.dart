@@ -7,18 +7,30 @@ import '../../constants/texts.dart';
 Widget couponButton() {
   return Container(
     height: 8.h,
-    width: 80.w,
+    padding: EdgeInsets.symmetric(horizontal: 4.w),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       color: primaryColor,
       border: Border.all(width: 0.2.h, color: primaryColor),
     ),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text('Copy your code', style: h5TextStyle.copyWith(color: textWhite)),
-        Text('58vt3x1', style: h5TextStyle),
+        Text(
+          'Copy your code',
+          style: h5TextStyle.copyWith(
+            color: textWhite,
+            fontSize: 14.sp,
+          ),
+        ),
+        SizedBox(width: 2.w),
+        Text(
+          '58vt3x1',
+          style: h5TextStyle.copyWith(
+            fontSize: 14.sp
+          ),
+        ),
         IconButton(
           onPressed: () {},
           icon: Icon(
