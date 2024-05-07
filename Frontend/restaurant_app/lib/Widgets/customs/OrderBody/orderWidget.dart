@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
@@ -38,7 +37,6 @@ class _OrderWidgetState extends State<OrderWidget> {
           child: Column(
             children: [
               Container(
-                height: 18.h,
                 padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -109,7 +107,10 @@ class _OrderWidgetState extends State<OrderWidget> {
                           padding: EdgeInsets.symmetric(vertical: 0.4.h),
                           child: Text(
                             'Order total : ₹202',
-                            style: body5TextStyle.copyWith(color: textGrey2),
+                            style: body5TextStyle.copyWith(
+                              color: textBlack,
+                              fontWeight: FontWeight.bold,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.start,
@@ -123,16 +124,30 @@ class _OrderWidgetState extends State<OrderWidget> {
                             color: textGrey2,
                           ),
                           padding: EdgeInsets.symmetric(
-                              vertical: 0.4.h, horizontal: 3.w),
+                              vertical: 0.2.h, horizontal: 3.w),
                           child: Text(
                             'COD',
-                            style: body5TextStyle.copyWith(color: textBlack, fontWeight: FontWeight.bold),
+                            style: body5TextStyle.copyWith(
+                                color: textBlack, fontWeight: FontWeight.bold),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.end,
                           ),
                         ),
                       ],
+                    ),
+                    Divider(
+                      color: textGrey2,
+                      thickness: 0.2.h,
+                    ),
+                    SizedBox(
+                      height: 12.h,
+                      child: ListView.builder(
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return _buildOrderDetailsWidget();
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -187,6 +202,27 @@ class _OrderWidgetState extends State<OrderWidget> {
     } else {
       return _buildTrackRideWidget();
     }
+  }
+
+  Widget _buildOrderDetailsWidget() {
+    return SizedBox(
+      width: 45.w,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            '1 x',
+            style: body4TextStyle,
+          ),
+          SizedBox(width: 6.w),
+          Text(
+            'Chicken Burger',
+            style: body4TextStyle,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildDeclinedWidget() {

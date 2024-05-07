@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
+import 'package:restaurant_app/Widgets/customs/WalletBody/viewEarningButton.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../Widgets/customs/WalletBody/couponButton.dart';
@@ -31,6 +32,10 @@ class _WalletBodyState extends State<WalletBody> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 5.w),
                 child: const WalletWidget(),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(5.w, 1.h, 5.w, 3.h),
+                child: viewEarningButton(context),
               ),
               Text('Refer and Earn program', style: h4TextStyle),
               referalNotification(),
