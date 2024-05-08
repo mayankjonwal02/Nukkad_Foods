@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:restaurant_app/Screens/PasswordScreens/resetPasswordScreen.dart';
-import 'package:restaurant_app/Screens/UserScreens/ownerDetailsScreen.dart';
+import 'package:restaurant_app/Screens/Password/resetPasswordScreen.dart';
+import 'package:restaurant_app/Screens/User/ownerDetailsScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';

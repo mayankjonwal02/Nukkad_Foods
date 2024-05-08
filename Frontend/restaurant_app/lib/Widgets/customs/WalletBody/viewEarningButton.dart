@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/Screens/WalletScreens/viewEarningsScreen.dart';
+import 'package:restaurant_app/Screens/Wallet/viewEarningsScreen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../constants/colors.dart';

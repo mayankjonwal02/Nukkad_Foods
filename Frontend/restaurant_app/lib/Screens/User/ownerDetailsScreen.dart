@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:restaurant_app/Screens/UserScreens/documentationScreen.dart';
-import 'package:restaurant_app/Screens/UserScreens/registerScreen.dart';
+import 'package:restaurant_app/Screens/User/documentationScreen.dart';
+import 'package:restaurant_app/Screens/User/registerScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';

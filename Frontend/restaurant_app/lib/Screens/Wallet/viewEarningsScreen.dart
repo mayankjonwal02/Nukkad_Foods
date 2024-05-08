@@ -82,12 +82,14 @@ class _viewEarningScreenState extends State<viewEarningScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
+              margin: EdgeInsets.fromLTRB(5.w, 1.h, 5.w, 3.h),
               decoration: BoxDecoration(
-                  color: textWhite,
-                  border: Border.all(color: textGrey2, width: 0.2.h),
-                  borderRadius: BorderRadius.circular(10)),
+                color: textWhite,
+                border: Border.all(color: textGrey2, width: 0.2.h),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: 8,
                 itemBuilder: (context, index) {

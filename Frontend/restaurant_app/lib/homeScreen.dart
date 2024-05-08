@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 
-import 'Screens/NavbarWidgets/MenuBody.dart';
-import 'Screens/NavbarWidgets/homeBody.dart';
-import 'Screens/NavbarWidgets/orderBody.dart';
-import 'Screens/NavbarWidgets/walletBody.dart';
+import 'Screens/Navbar/MenuBody.dart';
+import 'Screens/Navbar/homeBody.dart';
+import 'Screens/Navbar/orderBody.dart';
+import 'Screens/Navbar/walletBody.dart';
 
 import 'Widgets/constants/colors.dart';
 import 'Widgets/constants/texts.dart';

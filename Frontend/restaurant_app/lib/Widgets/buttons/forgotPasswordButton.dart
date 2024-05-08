@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/Screens/PasswordScreens/forgotPasswordScreen.dart';
+import 'package:restaurant_app/Screens/Password/forgotPasswordScreen.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:sizer/sizer.dart';

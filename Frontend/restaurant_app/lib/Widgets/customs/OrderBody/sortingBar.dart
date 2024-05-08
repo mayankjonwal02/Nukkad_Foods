@@ -25,6 +25,27 @@ class _SortingBarState extends State<SortingBar> {
   ];
   String? selectedSortOption;
 
+  selectorButton(
+      Color color, Color borderColor, String buttonText, Color textColor) {
+    return SizedBox(
+      child: Material(
+        elevation: 3,
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: color,
+            border: Border.all(color: borderColor, width: 0.2.h),
+          ),
+          child: Text(
+            buttonText,
+            style: h6TextStyle.copyWith(color: textColor),
+          ),
+        ),
+      ),
+    );
+  }
+
   void _showSortingBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -66,7 +87,7 @@ class _SortingBarState extends State<SortingBar> {
                 endIndent: 2.w,
               ),
               Container(
-                height: 44.h,
+                height: 50.h,
                 padding: EdgeInsets.fromLTRB(10.w, 0, 12.w, 2.h),
                 child: ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
@@ -111,6 +132,17 @@ class _SortingBarState extends State<SortingBar> {
                     );
                   },
                 ),
+              ),
+              SizedBox(height: 2.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  selectorButton(
+                      textWhite, primaryColor, 'Cancel', primaryColor),
+                  selectorButton(
+                      primaryColor, primaryColor, 'Apply Filters', textWhite),
+                ],
               ),
             ],
           ),

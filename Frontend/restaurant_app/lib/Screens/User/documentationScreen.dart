@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:restaurant_app/Screens/UserScreens/ownerDetailsScreen.dart';
-import 'package:restaurant_app/Screens/UserScreens/setOrderingScreen.dart';
+import 'package:restaurant_app/Screens/User/ownerDetailsScreen.dart';
+import 'package:restaurant_app/Screens/User/setOrderingScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';

@@ -4,7 +4,7 @@ import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../Screens/OrderScreens/trackRiderScreen.dart';
+import '../../../Screens/Orders/trackRiderScreen.dart';
 
 class OrderWidget extends StatefulWidget {
   final bool type;
@@ -141,9 +141,10 @@ class _OrderWidgetState extends State<OrderWidget> {
                       thickness: 0.2.h,
                     ),
                     SizedBox(
-                      height: 12.h,
                       child: ListView.builder(
-                        itemCount: 4,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 5,
+                        shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return _buildOrderDetailsWidget();
                         },

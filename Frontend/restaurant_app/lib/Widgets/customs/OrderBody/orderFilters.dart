@@ -51,7 +51,6 @@ class _OrderFilterState extends State<OrderFilter> {
               padding: EdgeInsets.symmetric(horizontal: 2.w),
               child: GestureDetector(
                 onTap: () {
-                  //TODO : Implement filter selection only one can be selected at a time
                   setState(() {
                     selectedindex = index;
                   });

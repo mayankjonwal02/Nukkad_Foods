@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/Screens/UserScreens/getStartedScreen.dart';
+import 'package:restaurant_app/Screens/User/getStartedScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/forgotPasswordButton.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/buttons/socialLoginButtons.dart';
