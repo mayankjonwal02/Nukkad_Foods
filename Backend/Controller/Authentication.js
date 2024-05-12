@@ -14,7 +14,7 @@ router.post("/signup", async (req,res) => {
 
  try {
     let DB = mongoose.connection.useDb("NukkadFoods")
-    DB.collection("users").findOne({userid :userid})
+    DB.collection("users").findOne({phonenumber:phonenumber})
     .then((user) => {
        
         if(!user)
