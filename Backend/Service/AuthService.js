@@ -51,7 +51,12 @@ const signupService = async (req, res) => {
         gstNumber,
         gstCertificateUrl,
         kycAadharNumber,
-        kycPanNumber
+        kycPanNumber,
+        cuisines,
+        operationalHours,
+        restaurantMenuImages,
+        restaurantImages,
+        foodImages
     } = req.body;
 
     try {
@@ -92,7 +97,12 @@ const signupService = async (req, res) => {
                 kycDetails: {
                     aadharNumber: kycAadharNumber,
                     panNumber: kycPanNumber
-                }
+                },
+                cuisines: cuisines,
+                operationalHours: operationalHours,
+                restaurantMenuImages: restaurantMenuImages,
+                restaurantImages: restaurantImages,
+                foodImages: foodImages
             })
             console.log("User Added Successfully")
             return res.json({ message: "User Added Successfully", executed: true })
@@ -104,5 +114,6 @@ const signupService = async (req, res) => {
         return res.json({ message: error, executed: false })
     }
 }
+
 
 module.exports = {loginService,signupService}
