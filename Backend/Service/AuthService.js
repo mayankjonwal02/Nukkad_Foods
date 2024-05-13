@@ -33,10 +33,14 @@ const signupService = async (req, res) => {
         nukkadAddress,
         latitude,
         longitude,
+        pincode,
+        city,
+        landmark,
         phoneNumber,
         password,
         ownerPhoto,
         ownerEmail,
+        ownerName,
         ownerContactNumber,
         currentAddress,
         permananetAddress,
@@ -60,10 +64,10 @@ const signupService = async (req, res) => {
     } = req.body;
 
     try {
-        let DB = mongoose.connection.useDb("NukkadFoods")
-        let usersCollection = DB.collection("users")
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let usersCollection = DB.collection("users");
 
-        const user = await usersCollection.findOne({ phoneNumber: phoneNumber })
+        const user = await usersCollection.findOne({ phoneNumber: phoneNumber });
 
         if (!user) {
             await usersCollection.insertOne({
@@ -71,10 +75,14 @@ const signupService = async (req, res) => {
                 nukkadAddress: nukkadAddress,
                 latitude: latitude,
                 longitude: longitude,
+                pincode: pincode,
+                city: city,
+                landmark: landmark,
                 phoneNumber: phoneNumber,
                 password: password,
                 ownerPhoto: ownerPhoto,
                 ownerEmail: ownerEmail,
+                ownerName: ownerName,
                 ownerContactNumber: ownerContactNumber,
                 currentAddress: currentAddress,
                 permananetAddress: permananetAddress,
@@ -103,17 +111,17 @@ const signupService = async (req, res) => {
                 restaurantMenuImages: restaurantMenuImages,
                 restaurantImages: restaurantImages,
                 foodImages: foodImages
-            })
-            console.log("User Added Successfully")
-            return res.json({ message: "User Added Successfully", executed: true })
+            });
+            console.log("User Added Successfully");
+            return res.json({ message: "User Added Successfully", executed: true });
         } else {
-            return res.json({ message: "User Already Exists", executed: false })
+            return res.json({ message: "User Already Exists", executed: false });
         }
     } catch (error) {
-        console.log("Error While Adding User :", error)
-        return res.json({ message: error, executed: false })
+        console.log("Error While Adding User :", error);
+        return res.json({ message: error, executed: false });
     }
-}
+};
 
 
 module.exports = {loginService,signupService}
