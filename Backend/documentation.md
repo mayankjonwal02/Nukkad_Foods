@@ -236,3 +236,76 @@ No request body required.
 
 }
 ```
+
+
+
+### DELETE /api/order/orders/:uid/:orderId
+
+**Description:**
+
+This endpoint is used to delete a specific order with the given `orderId` belonging to the user with the specified `uid`. The order is removed from the user's orders array and moved to a separate collection for cancelled orders.
+
+**Request:**
+
+- Method: DELETE
+- Path: `/api/order/orders/:uid/:orderId`
+- Parameters:
+  - `uid` (string, required): The unique identifier of the user.
+  - `orderId` (string, required): The unique identifier of the order to be deleted.
+
+**Request Body:**
+
+This endpoint does not expect any request body.
+
+**Response:**
+
+- Status Code: 200 OK
+- Status Code: 404 Not Found
+- Status Code: 500 Internal Server Error
+
+**Response Body (Success):**
+
+```json
+{
+  "message": "Order deleted successfully",
+  "order": {
+    "orderId": "5fc16a45c3a7c80f889a1f12",
+    "date": "2024-01-01",
+    "time": "12:00 PM",
+    "orderByid": "user123",
+    "orderByName": "John Doe",
+    "status": "Cancelled",
+    "items": [
+      {
+        "itemId": "item1",
+        "itemName": "Burger",
+        "itemQuantity": 2,
+        "unitCost": 5.99
+      },
+      {
+        "itemId": "item2",
+        "itemName": "Pizza",
+        "itemQuantity": 1,
+        "unitCost": 10.99
+      }
+    ]
+  }
+}
+```
+
+**Response Body (Order Not Found):**
+
+```json
+{
+  "message": "Order not found"
+}
+```
+
+**Response Body (Error):**
+
+```json
+{
+  "message": "Internal server error"
+}
+```
+
