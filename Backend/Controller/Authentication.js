@@ -9,9 +9,6 @@ router.get("/test",(req,res)=> {
 
 
 router.post("/signup", signupService)
-
-
-
 router.post("/login",loginService)
 
 
