@@ -77,119 +77,162 @@ This document outlines the functionalities provided by the NukkadFoods API, enab
 * **Description:** Enables nukkad users to log in to their NukkadFoods accounts.
 
 
-## NukkadFoods API Documentation (Continued)
 
-### Order Management APIs (Continued)
+**API Documentation for NukkadFoods Order Management System**
 
-**1. Create Order (Continued)**
+**Introduction**
 
-* **Response Body:**
-   ```json
-   {
-       "message": "String", (Success/Error message)
-       "order": { (Order object if successful)
-           "orderId": "String",
-           "date": "String",
-           "time": "String",
-           "orderByid": "String",
-           "orderByName": "String",
-           "status": "String",
-           "items": [{
-               "itemId": "String",
-               "itemName": "String",
-               "itemQuantity": "Number",
-               "unitCost": "Number"
-           }]
-       }
-   }
-   ```
-* **Description:** Creates a new order on the NukkadFoods platform.
+This API provides endpoints for managing orders within the NukkadFoods system. It allows users to create, retrieve, and update orders associated with a specific user ID (UID).
+
+
+**API Endpoints**
+
+**1. Create Order**
+
+**Route:** `POST /api/order/createOrder`
+
+**Request Body:**
+
+```json
+{
+  "uid": "<user_id>",
+  "orderData": {
+    "orderId": "<unique_order_id>",
+    "date": "<order_date_in_YYYY-MM-DD format>",
+    "time": "<order_time>",
+    "orderByid": "<id_of_the_user_who_placed_the_order>",
+    "orderByName": "<name_of_the_user_who_placed_the_order>",
+    "status": "<order_status>",
+    "items": [
+      {
+        "itemId": "<item_id>",
+        "itemName": "<item_name>",
+        "itemQuantity": <number>,
+        "unitCost": <number>
+      },
+      // ... more item objects
+    ]
+  }
+}
+```
+
+**Response Body:**
+
+```json
+{
+  "message": "Order created successfully",
+  "orders": [
+    // Array of all orders for the user (including the newly created one)
+  ]
+}
+```
+
+**Error Codes:**
+
+* **400 (Bad Request):**
+    * Missing required fields in the request body.
+    * Order with the same `orderId` already exists for the user.
+
+* **500 (Internal Server Error):**
+    * Unexpected error during order creation.
 
 **2. Get All Orders**
 
-* **Endpoint:** `/api/orders/` (GET)
-* **Request Body:** None
-* **Response Body:**
-   ```json
-   {
-       "orders": [{ (Array of order objects)
-           "orderId": "String",
-           "date": "String",
-           "time": "String",
-           "orderByid": "String",
-           "orderByName": "String",
-           "status": "String",
-           "items": [{
-               "itemId": "String",
-               "itemName": "String",
-               "itemQuantity": "Number",
-               "unitCost": "Number"
-           }]
-       }]
-   }
-   ```
-* **Description:** Retrieves all orders from the database.
+**Route:** `GET /api/order/orders`
+
+**Request Body:**
+
+```json
+{
+  "uid": "<uid>"
+}
+```
+
+**Response Body:**
+
+```json
+{
+  "orders": [
+    // Array of all orders for the user
+  ]
+}
+```
+
+**Error Codes:**
+
+* **500 (Internal Server Error):**
+    * Unexpected error during order retrieval.
 
 **3. Get Order by ID**
 
-* **Endpoint:** `/api/orders/:orderId` (GET)
-* **Request Body:** None
-* **Path Parameter:**
-    * `orderId`: Unique ID of the order to be retrieved (Required)
-* **Response Body:**
-   ```json
-   {
-       "order": { (Order object if successful, null otherwise)
-           "orderId": "String",
-           "date": "String",
-           "time": "String",
-           "orderByid": "String",
-           "orderByName": "String",
-           "status": "String",
-           "items": [{
-               "itemId": "String",
-               "itemName": "String",
-               "itemQuantity": "Number",
-               "unitCost": "Number"
-           }]
-       }
-       "message": "String", (Error message if order not found)
-   }
-   ```
-* **Description:** Retrieves a specific order by its unique ID.
+**Route:** `GET /api/order/orders/:uid/:orderId`
 
-**4. Update Order by ID**
+**Path Parameters:**
 
-* **Endpoint:** `/api/orders/:orderId` (PUT)
-* **Request Body:**
-   ```json
-   { (Update data for the order)
-       "status": "String" (Optional),
-       // Add other fields you want to allow updating (e.g., items, delivery address)
-   }
-   ```
-* **Path Parameter:**
-    * `orderId`: Unique ID of the order to be updated (Required)
-* **Response Body:**
-   ```json
-   {
-       "message": "String", (Success/Error message)
-       "order": { (Updated order object if successful, null otherwise)
-           "orderId": "String",
-           "date": "String",
-           "time": "String",
-           "orderByid": "String",
-           "orderByName": "String",
-           "status": "String",
-           "items": [{
-               "itemId": "String",
-               "itemName": "String",
-               "itemQuantity": "Number",
-               "unitCost": "Number"
-           }]
-       }
-   }
-   ```
-* **Description:** Updates an existing order by its unique ID. Update only the fields included in the request body.
+* `:uid`: User ID
+* `:orderId`: Order ID
 
-**Note:** Remember to replace placeholders like `String` and `Number` with actual data types in your implementation.
+**Request Body:**
+
+No request body required.
+
+**Response Body:**
+
+```json
+{
+  "order": {
+    "orderId": "<unique_order_id>",
+    "date": "<order_date_in_YYYY-MM-DD format>",
+    "time": "<order_time>",
+    "orderByid": "<id_of_the_user_who_placed_the_order>",
+    "orderByName": "<name_of_the_user_who_placed_the_order>",
+    "status": "<order_status>",
+    "items": [
+      {
+        "itemId": "<item_id>",
+        "itemName": "<item_name>",
+        "itemQuantity": <number>,
+        "unitCost": <number>
+      },
+      // ... more item objects
+    ]
+  }
+}
+```
+
+**Error Codes:**
+
+* **404 (Not Found):**
+    * User with the provided UID does not exist.
+    * Order with the provided `orderId` does not exist for the user.
+
+* **500 (Internal Server Error):**
+    * Unexpected error during order retrieval.
+
+**4. Update Order**
+
+**Route:** `PUT /api/order/orders/:uid/:orderId`
+
+**Path Parameters:**
+
+* `:uid`: User ID
+* `:orderId`: Order ID
+
+**Request Body:**
+
+```json
+{
+  "updateData": {
+    // Fields to update (e.g., "status", "items")
+  }
+}
+```
+
+**Response Body:**
+
+```json
+{
+  "message": "Order updated successfully",
+
+}
+```

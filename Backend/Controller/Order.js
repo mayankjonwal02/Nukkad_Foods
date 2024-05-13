@@ -5,10 +5,13 @@ const { createOrder , getOrder, getOrderById,updateOrderById} = require('../Serv
 
 router.post('/createOrder', createOrder);
 router.get("/orders", getOrder);
-router.get("/orders/:orderId", async (req, res) => {
+
+router.get("/orders/:uid/:orderId", async (req, res) => {
     try {
+        const uid = req.params.uid;
         const orderId = req.params.orderId;
-        const order = await getOrderById(orderId);
+        
+        const order = await getOrderById(uid, orderId);
 
         if (!order) {
             return res.status(404).json({ message: "Order not found" });
@@ -22,12 +25,13 @@ router.get("/orders/:orderId", async (req, res) => {
 });
 
 // PUT (update) order by ID
-router.put("/orders/:orderId", async (req, res) => {
+router.put("/orders/:uid/:orderId", async (req, res) => {
     try {
+        const uid = req.params.uid;
         const orderId = req.params.orderId;
-        const updateData = req.body;
+        const {updateData }= req.body;
 
-        const updatedOrder = await updateOrderById(orderId, updateData);
+        const updatedOrder = await updateOrderById(uid, orderId, updateData);
 
         if (!updatedOrder) {
             return res.status(404).json({ message: "Order not found" });

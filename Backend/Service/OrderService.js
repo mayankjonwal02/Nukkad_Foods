@@ -2,35 +2,54 @@ const mongoose = require('mongoose');
 const {orderSchema} = require('../Entity/Order_Entity');
 
 const createOrder = async (req, res) => {
-    const orderData = req.body;
+    const { uid, orderData } = req.body;
     try {
         const db = mongoose.connection.useDb("NukkadFoods");
         const OrderModel = db.model('Order', orderSchema);
-        const order = new OrderModel(orderData);
-        const savedOrder = await order.save();
 
-        return res.json({ message: "Order created successfully", order: savedOrder });
+        // Find the document with the given UID
+        let userOrders = await OrderModel.findOne({ uid: uid });
+
+        // If the document doesn't exist, create a new one
+        if (!userOrders) {
+            userOrders = new OrderModel({ uid: uid, orders: [] });
+        }
+
+        // Check if there is already an order with the same orderId
+        const existingOrder = userOrders.orders.find(order => order.orderId === orderData.orderId);
+        if (existingOrder) {
+            return res.status(400).json({ message: "Order with the same orderId already exists" });
+        }
+
+        // Push the new order data into the orders array
+        userOrders.orders.push(orderData);
+
+        // Save the updated document
+        const savedUserOrders = await userOrders.save();
+
+        return res.json({ message: "Order created successfully", orders: savedUserOrders.orders });
     } catch (error) {
         console.error("Error while creating order:", error);
         return res.status(500).json({ message: "Internal server error" });
-    } finally {
-        
     }
 };
+
 
 const getOrder = async (req, res) => {
     try {
 
-       
+        // Extract the UID from the request body
+        const { uid } = req.body;
         // Connect to the MongoDB database
         const db = mongoose.connection.useDb("NukkadFoods");
         const Order = db.model('Order', orderSchema);
 
         // Fetch all orders from the "orders" collection
-        const orders = await Order.find({});
+        let userOrders = await Order.findOne({ uid: uid });
+        
 
         // Return the orders as JSON response
-        return res.json({ orders });
+        return res.json({ orders : userOrders.orders});
     } catch (error) {
         console.error("Error while fetching orders:", error);
         return res.status(500).json({ message: "Internal server error" });
@@ -39,44 +58,64 @@ const getOrder = async (req, res) => {
     }
 }
 
-const getOrderById = async (orderId) => {
+const getOrderById = async (uid, orderId) => {
     try {
         // Connect to the MongoDB database
         const db = mongoose.connection.useDb("NukkadFoods");
         const Order = db.model('Order', orderSchema);
 
-        // Find the order by ID
-        const order = await Order.find({ orderId: orderId });
+        // Find the order by UID and order ID
+        const order = await Order.findOne({ uid: uid, "orders.orderId": orderId });
 
-        return order;
+        // Return only the specific order from the orders array
+        return order ? order.orders.find(o => o.orderId === orderId) : null;
     } catch (error) {
         console.error("Error while fetching order by ID:", error);
         throw error;
-    } finally {
-        // Disconnect from the MongoDB database
-       
     }
 };
 
+
+
 // Function to update order by ID
-const updateOrderById = async (orderId, updateData) => {
+const updateOrderById = async (uid, orderId, updateData) => {
     try {
         // Connect to the MongoDB database
         const db = mongoose.connection.useDb("NukkadFoods");
         const Order = db.model('Order', orderSchema);
 
-        // Find the order by ID and update it
-        const updatedOrder = await Order.findOneAndUpdate({ orderId: orderId }, updateData, { new: true });
+        // Find the order by UID and order ID
+        const foundOrder = await Order.findOne({ uid: uid, "orders.orderId": orderId });
 
-        return updatedOrder;
+        // If the order is found, update the specific order within the orders array
+        if (foundOrder) {
+
+            for( key in updateData){
+                if(updateData.hasOwnProperty(key))
+                    {
+                        foundOrder.orders.find(o => o.orderId === orderId)[key] = updateData[key];
+                    }
+            }
+
+                
+            // foundOrder.orders.find(o => o.orderId === orderId);
+            
+
+            // // Save the updated document
+            const savedOrder = await foundOrder.save();
+
+            // // Return the updated order
+            return savedOrder.orders.find(o => o.orderId === orderId);
+            
+        } else {
+            return null; // Order not found
+        }
     } catch (error) {
         console.error("Error while updating order by ID:", error);
         throw error;
-    } finally {
-        // Disconnect from the MongoDB database
-       
     }
 };
+
 
 
 module.exports = { createOrder , getOrder , getOrderById , updateOrderById};
