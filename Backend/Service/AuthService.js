@@ -16,7 +16,7 @@ const loginService = async (req, res) => {
         }
 
         if (password === user.password) {
-            return res.json({ message: "Login Successful", executed: true })
+            return res.json({ message: "Login Successful", executed: true , uid : user._id})
         } else {
             return res.json({ message: "Wrong Password", executed: false })
         }
