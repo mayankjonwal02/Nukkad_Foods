@@ -50,4 +50,35 @@ const getMenuItems = async (req, res) => {
     }
 }
 
-module.exports = { saveMenuItem , getMenuItems};
+const updateMenuItem = async (req, res) => { 
+    try {
+        const {uid , menuitemid} = req.params;
+        
+        const {updatedata } = req.body;
+        const db = mongoose.connection.useDb("NukkadFoods");
+        const MenuItem = db.model('MenuItem', menuItemSchema);
+        const existingMenuItem = await MenuItem.findOne({uid : uid});
+       
+        if(!existingMenuItem){
+            return res.status(404).json({message : "Menu item not found"});
+        }
+        
+        const menuitemlist = existingMenuItem.menuitemlist;
+        const existMenuItem = menuitemlist.find(menuitem => menuitem._id.toString() === menuitemid);
+        if(!existMenuItem){
+            return res.status(404).json({message : "Menu item not found"});
+        }
+        // return res.status(200).json({"menuitem" : existMenuItem});
+        for(key in updatedata){
+            existMenuItem[key] = updatedata[key];
+        }
+        await existingMenuItem.save();
+        return res.status(200).json({message : "Menu item updated successfully"});
+
+    }
+    catch(error){
+        res.status(500).json({error : error.message});
+    }
+}
+
+module.exports = { saveMenuItem , getMenuItems , updateMenuItem};
