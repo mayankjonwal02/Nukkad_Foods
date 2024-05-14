@@ -117,5 +117,54 @@ const updateOrderById = async (uid, orderId, updateData) => {
 };
 
 
+const deleteOrderById = async (uid, orderId) => {
+    try {
+        // Connect to the MongoDB database
+        const db = mongoose.connection.useDb("NukkadFoods");
+        const Order = db.model('Order', orderSchema);
 
-module.exports = { createOrder , getOrder , getOrderById , updateOrderById};
+        // Find the order by UID and order ID
+        const foundOrder = await Order.findOne({ uid: uid, "orders.orderId": orderId });
+
+        // If the order is found, remove the specific order from the orders array
+        if (foundOrder) {
+            // Find the index of the order in the orders array
+            const orderIndex = foundOrder.orders.findIndex(o => o.orderId === orderId);
+
+            // If the order is found in the array
+            if (orderIndex !== -1) {
+                // Remove the order from the orders array
+                const deletedOrder = foundOrder.orders.splice(orderIndex, 1)[0];
+                const Cancel = db.model("CancelledOrder", orderSchema);
+                let CanceluserOrders = await Cancel.findOne({ uid: uid });
+
+                // If the document doesn't exist, create a new one
+                if (!CanceluserOrders) {
+                    CanceluserOrders = new Cancel({ uid: uid, orders: [] });
+                }
+            CanceluserOrders.orders.push(deletedOrder);
+            await CanceluserOrders.save();
+                // Save the updated document
+                await foundOrder.save();
+
+                // Return the deleted order
+                return { success: true, deletedOrder : deletedOrder};
+            } else {
+                // If order is not found in the array
+                return { success: false, message: "Order not found" };
+            }
+        } else {
+            // If the order is not found
+            return { success: false, message: "Order not found" };
+        }
+    } catch (error) {
+        // If there's an error, throw and handle it at the caller level
+        console.error("Error while deleting order by ID:", error);
+        throw error;
+    }
+};
+
+
+
+
+module.exports = { createOrder , getOrder , getOrderById , updateOrderById , deleteOrderById};

@@ -3,6 +3,7 @@ const cors = require("cors")
 const ConnectMongo = require("./DatabaseConnection/mongoDB")
 const authRouter = require("./Controller/Authentication")
 const orderRouter = require("./Controller/Order")
+const menuRouter = require("./Controller/Menu")
 
 
 
@@ -14,6 +15,7 @@ app.use(express.json())
 
 app.use("/api/auth",authRouter)
 app.use("/api/order",orderRouter)
+app.use("/api/menu",menuRouter)
 
 
 app.get('/', (req, res) => {

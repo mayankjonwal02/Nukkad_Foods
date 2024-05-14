@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createOrder , getOrder, getOrderById,updateOrderById} = require('../Service/OrderService');
+const { createOrder , getOrder, getOrderById,updateOrderById , deleteOrderById} = require('../Service/OrderService');
 
 
 router.post('/createOrder', createOrder);
@@ -40,6 +40,25 @@ router.put("/orders/:uid/:orderId", async (req, res) => {
         return res.json({ message: "Order updated successfully", order: updatedOrder });
     } catch (error) {
         console.error("Error while updating order by ID:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+
+router.delete("/orders/:uid/:orderId", async (req, res) => {
+    try {
+        const uid = req.params.uid;
+        const orderId = req.params.orderId;
+
+        const {success , deletedOrder} = await deleteOrderById(uid, orderId);
+
+        if (!deletedOrder) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        return res.json({ message: "Order deleted successfully", order: deletedOrder });
+    } catch (error) {
+        console.error("Error while deleting order by ID:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 });
