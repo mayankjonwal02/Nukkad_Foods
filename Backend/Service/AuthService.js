@@ -9,7 +9,7 @@ const loginService = async (req, res) => {
         let DB = mongoose.connection.useDb("NukkadFoods")
         let collection = DB.collection("users")
 
-        const user = await collection.findOne({phonenumber: phonenumber})
+        const user = await collection.findOne({phoneNumber: phonenumber})
 
         if (!user) {
             return res.json({ message: "User Doesn't Exist", executed: false })
