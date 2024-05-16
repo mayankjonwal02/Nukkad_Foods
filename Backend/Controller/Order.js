@@ -4,7 +4,7 @@ const { createOrder , getOrder, getOrderById,updateOrderById , deleteOrderById} 
 
 
 router.post('/createOrder', createOrder);
-router.get("/orders", getOrder);
+router.get("/orders/:uid", getOrder);
 
 router.get("/orders/:uid/:orderId", async (req, res) => {
     try {
