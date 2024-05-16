@@ -39,7 +39,7 @@ const getOrder = async (req, res) => {
     try {
 
         // Extract the UID from the request body
-        const { uid } = req.body;
+        const { uid } = req.params;
         // Connect to the MongoDB database
         const db = mongoose.connection.useDb("NukkadFoods");
         const Order = db.model('Order', orderSchema);
