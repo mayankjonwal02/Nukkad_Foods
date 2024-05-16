@@ -77,6 +77,72 @@ This document outlines the functionalities provided by the NukkadFoods API, enab
 * **Description:** Enables nukkad users to log in to their NukkadFoods accounts.
 
 
+## Get User by ID
+
+### Description
+This endpoint allows you to retrieve a user's information by their unique identifier (ID).
+
+### Endpoint
+```
+POST /api/auth/getUser/:id
+```
+
+### Parameters
+- `id` (required): The unique identifier of the user to retrieve.
+
+### Request
+```
+POST /api/auth/getUser/664094be461dc7c1a3cd4887
+```
+
+### Responses
+
+- **200 OK**
+  - **Content-Type:** application/json
+  - **Body:**
+    ```json
+    {
+      "message": "User Found",
+      "executed": true,
+      "user": {
+        "_id": "664094be461dc7c1a3cd4887",
+        "username": "example_user",
+        "email": "user@example.com",
+        "createdAt": "2024-05-17T12:00:00.000Z",
+        "updatedAt": "2024-05-17T13:00:00.000Z"
+        // Other user properties
+      }
+    }
+    ```
+- **404 Not Found**
+  - **Content-Type:** application/json
+  - **Body:**
+    ```json
+    {
+      "message": "User Doesn't Exist",
+      "executed": false
+    }
+    ```
+- **500 Internal Server Error**
+  - **Content-Type:** application/json
+  - **Body:**
+    ```json
+    {
+      "message": "Internal server error",
+      "executed": false
+    }
+    ```
+
+### Example Usage
+
+```bash
+curl -X POST http://localhost:3000/api/auth/getUser/664094be461dc7c1a3cd4887
+```
+
+### Notes
+- Replace `:id` in the endpoint URL with the actual unique identifier of the user you want to retrieve.
+
+
 
 **API Documentation for NukkadFoods Order Management System**
 

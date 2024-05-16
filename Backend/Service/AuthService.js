@@ -124,4 +124,25 @@ const signupService = async (req, res) => {
 };
 
 
-module.exports = {loginService,signupService}
+const getUserService = async (req, res) => {
+    let id = req.params.id;
+   
+
+    try {
+        let DB = mongoose.connection.useDb("NukkadFoods")
+        let collection = DB.collection("users")
+        const objectId = new mongoose.Types.ObjectId(id);
+        const user = await collection.findOne({_id: objectId})
+
+        if (!user) {
+            return res.json({ message: "User Doesn't Exist", executed: false })
+        }
+
+        return res.json({ message: "User Found", executed: true, user: user })
+    } catch (error) {
+        console.log("Error : ", error)
+        return res.json({ message: error, executed: false })
+    }
+}
+
+module.exports = {loginService,signupService,getUserService}
