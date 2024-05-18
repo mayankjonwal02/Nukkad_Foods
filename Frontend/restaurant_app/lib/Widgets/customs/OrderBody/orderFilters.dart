@@ -5,7 +5,8 @@ import 'package:sizer/sizer.dart';
 
 class OrderFilter extends StatefulWidget {
   final bool type;
-  const OrderFilter({super.key, required this.type});
+  final Function(int) selected;
+  const OrderFilter({super.key, required this.type, required this.selected});
 
   @override
   State<OrderFilter> createState() => _OrderFilterState();
@@ -54,6 +55,7 @@ class _OrderFilterState extends State<OrderFilter> {
                   setState(() {
                     selectedindex = index;
                   });
+                  widget.selected(selectedindex);
                 },
                 child: Container(
                   padding:

@@ -13,7 +13,7 @@ Widget phoneField(Function(String) onPhoneNumberChanged) {
     elevation: 3.0,
     borderRadius: BorderRadius.circular(7.0),
     child: IntlPhoneField(
-      disableLengthCheck: true,
+      disableLengthCheck: false,
       keyboardType: TextInputType.phone,
       showDropdownIcon: false,
       flagsButtonPadding: EdgeInsets.symmetric(horizontal: 3.w),

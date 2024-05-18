@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:sizer/sizer.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../Screens/Orders/trackRiderScreen.dart';
 
 class OrderWidget extends StatefulWidget {
   final bool type;
-  const OrderWidget({super.key, required this.type});
+  Map<String, dynamic>? order;
+  OrderWidget({super.key, required this.type, this.order});
 
   @override
   State<OrderWidget> createState() => _OrderWidgetState();
@@ -19,193 +23,331 @@ class _OrderWidgetState extends State<OrderWidget> {
   bool isAccepted = false;
   bool isPrepared = false;
   bool isMarkedReady = false;
+  List<dynamic> items = [];
+  bool isLoading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    if (widget.order != null) {
+      // Initialize items only if widget.order is not null
+      items = widget.order!['items'] ?? [];
+    } else {
+      items = [];
+    }
+    super.initState();
+  }
+
+  Future<void> orderDeleted() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var baseUrl = dotenv.env['BASE_URL'];
+      final response = await http.delete(
+          Uri.parse('$baseUrl/order/orders/6643a1f3c6ff7f63f77f536c/34'));
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        if (responseData != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Menu item deleted successfully")));
+          setState(() {
+            isLoading = false;
+            isDeclined = true;
+            isAccepted = false;
+            isPrepared = false;
+            isMarkedReady = false;
+          });
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(responseData['message'])),
+          );
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Failed to order delete")));
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Error:  Internal Server Error")));
+      print('eeeeeeeeeeeeeeeee$e');
+    }
+  }
+
+  Future<void> acceptOrder() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var baseUrl = dotenv.env['BASE_URL'];
+      var reqData = {
+        "updateData": {"status": "Accepted"}
+      };
+      String requestBody = jsonEncode(reqData);
+      final response = await http.put(
+          Uri.parse('$baseUrl/order/orders/6643a1f3c6ff7f63f77f536c/26'),
+          body: requestBody);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        if (responseData != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Order item update successfully")));
+          setState(() {
+            isDeclined = false;
+            isAccepted = true;
+            isPrepared = false;
+            isMarkedReady = false;
+            isLoading = false;
+          });
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(responseData['message'])),
+          );
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Failed to update order")));
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Error:  Internal Server Error")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     bool type = widget.type;
-    return Container(
-      padding: EdgeInsets.only(top: 2.h),
-      child: Material(
-        elevation: 3,
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          decoration: BoxDecoration(
-            color: textWhite,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: textGrey2, width: 0.2.h),
-          ),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(
+              color: Colors.red,
+            ),
+          )
+        : Container(
+            padding: EdgeInsets.only(top: 2.h),
+            child: Material(
+              elevation: 3,
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: textWhite,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: textGrey2, width: 0.2.h),
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'ID: #47894267',
-                          style: body4TextStyle.copyWith(
-                              color: primaryColor, fontWeight: FontWeight.bold),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 3.w, vertical: 0.2.h),
-                          decoration: BoxDecoration(
-                            color: primaryColor,
-                            borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "ID: #${widget.order!['orderId'] != null ? widget.order!['orderId'] : 0}",
+                                style: body4TextStyle.copyWith(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 3.w, vertical: 0.2.h),
+                                decoration: BoxDecoration(
+                                  color: primaryColor,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Text(
+                                  widget.order!['status'] != null
+                                      ? widget.order!['status']
+                                      : '',
+                                  style: body4TextStyle.copyWith(
+                                      color: textWhite,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
-                          child: Text(
-                            'Status',
-                            style: body4TextStyle.copyWith(
-                                color: textWhite, fontWeight: FontWeight.bold),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 35.w,
+                                padding: EdgeInsets.symmetric(vertical: 0.4.h),
+                                child: Text(
+                                  'Today, ${widget.order!['time'] != null ? widget.order!['time'] : ''}',
+                                  style:
+                                      body5TextStyle.copyWith(color: textGrey2),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              Container(
+                                width: 48.w,
+                                padding: EdgeInsets.symmetric(vertical: 0.4.h),
+                                child: Text(
+                                  'By ${widget.order!['orderByName'] != null ? widget.order!['orderByName'] : ''}',
+                                  style:
+                                      body5TextStyle.copyWith(color: textGrey2),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.end,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 35.w,
-                          padding: EdgeInsets.symmetric(vertical: 0.4.h),
-                          child: Text(
-                            'Today, 10:40 PM',
-                            style: body5TextStyle.copyWith(color: textGrey2),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 35.w,
+                                padding: EdgeInsets.symmetric(vertical: 0.4.h),
+                                child: Text(
+                                  'Order total : ₹202',
+                                  style: body5TextStyle.copyWith(
+                                    color: textBlack,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                      color: colorSuccess, width: 0.2.h),
+                                  color: textGrey2,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 0.2.h, horizontal: 3.w),
+                                child: Text(
+                                  'COD',
+                                  style: body5TextStyle.copyWith(
+                                      color: textBlack,
+                                      fontWeight: FontWeight.bold),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.end,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Container(
-                          width: 48.w,
-                          padding: EdgeInsets.symmetric(vertical: 0.4.h),
-                          child: Text(
-                            'By Apeksha Sharma',
-                            style: body5TextStyle.copyWith(color: textGrey2),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 35.w,
-                          padding: EdgeInsets.symmetric(vertical: 0.4.h),
-                          child: Text(
-                            'Order total : ₹202',
-                            style: body5TextStyle.copyWith(
-                              color: textBlack,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border:
-                                Border.all(color: colorSuccess, width: 0.2.h),
+                          Divider(
                             color: textGrey2,
+                            thickness: 0.2.h,
                           ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 0.2.h, horizontal: 3.w),
-                          child: Text(
-                            'COD',
-                            style: body5TextStyle.copyWith(
-                                color: textBlack, fontWeight: FontWeight.bold),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
+                          SizedBox(
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: items.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return _buildOrderDetailsWidget(items[index]);
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Divider(
-                      color: textGrey2,
-                      thickness: 0.2.h,
-                    ),
-                    SizedBox(
-                      child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 5,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return _buildOrderDetailsWidget();
-                        },
+                        ],
                       ),
                     ),
+                    type
+                        ? _buildOrderStatusWidget()
+                        : GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              height: 6.h,
+                              width: 100.w,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.w, vertical: 1.h),
+                              decoration: const BoxDecoration(
+                                color: textGrey1,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(9),
+                                  bottomRight: Radius.circular(9),
+                                ),
+                              ),
+                              child: Text(
+                                'View Reciept',
+                                style: h5TextStyle.copyWith(color: textWhite),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               ),
-              type
-                  ? _buildOrderStatusWidget()
-                  : GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        height: 6.h,
-                        width: 100.w,
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 2.w, vertical: 1.h),
-                        decoration: const BoxDecoration(
-                          color: textGrey1,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(9),
-                            bottomRight: Radius.circular(9),
-                          ),
-                        ),
-                        child: Text(
-                          'View Reciept',
-                          style: h5TextStyle.copyWith(color: textWhite),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
+  //  Widget _buildOrderStatusWidget() {
+  //   if (isDeclined == true) {
+  //     return _buildDeclinedWidget();
+  //   } else if (isAccepted == false &&
+  //       isPrepared == false &&
+  //       isMarkedReady == false) {
+  //     return _buildPendingWidget();
+  //   } else if (isAccepted == true &&
+  //       isPrepared == false &&
+  //       isMarkedReady == false) {
+  //     return _buildPreparedWidget();
+  //   } else if (isAccepted == true &&
+  //       isPrepared == true &&
+  //       isMarkedReady == false) {
+  //     return _buildMarkReadyWidget();
+  //   } else {
+  //     return _buildTrackRideWidget();
+  //   }
 
   Widget _buildOrderStatusWidget() {
-    if (isDeclined == true) {
+    if (widget.order!['status'] == 'Canceled') {
       return _buildDeclinedWidget();
-    } else if (isAccepted == false &&
-        isPrepared == false &&
-        isMarkedReady == false) {
+    } else if (widget.order!['status'] == 'Pending') {
       return _buildPendingWidget();
-    } else if (isAccepted == true &&
-        isPrepared == false &&
-        isMarkedReady == false) {
+    } else if ((widget.order!['status'] == 'Accepted')) {
       return _buildPreparedWidget();
-    } else if (isAccepted == true &&
-        isPrepared == true &&
-        isMarkedReady == false) {
+    } else if (widget.order!['status'] == 'Ready') {
       return _buildMarkReadyWidget();
     } else {
       return _buildTrackRideWidget();
     }
   }
 
-  Widget _buildOrderDetailsWidget() {
+  Widget _buildOrderDetailsWidget(dynamic item) {
     return SizedBox(
       width: 45.w,
       child: Row(
@@ -213,12 +355,12 @@ class _OrderWidgetState extends State<OrderWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            '1 x',
+            '${item['itemQuantity']} x',
             style: body4TextStyle,
           ),
           SizedBox(width: 6.w),
           Text(
-            'Chicken Burger',
+            '${item['itemName']}',
             style: body4TextStyle,
           ),
         ],
@@ -255,12 +397,7 @@ class _OrderWidgetState extends State<OrderWidget> {
         children: [
           GestureDetector(
             onTap: () {
-              setState(() {
-                isDeclined = true;
-                isAccepted = false;
-                isPrepared = false;
-                isMarkedReady = false;
-              });
+              orderDeleted();
             },
             child: Container(
               height: 6.h,
@@ -283,12 +420,7 @@ class _OrderWidgetState extends State<OrderWidget> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                isDeclined = false;
-                isAccepted = true;
-                isPrepared = false;
-                isMarkedReady = false;
-              });
+              acceptOrder();
             },
             child: Container(
               height: 6.h,

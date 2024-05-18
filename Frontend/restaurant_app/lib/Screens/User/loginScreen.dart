@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:restaurant_app/Screens/User/getStartedScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/forgotPasswordButton.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
@@ -8,6 +11,8 @@ import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/input_fields/passwordField.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/homeScreen.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,16 +25,92 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String userNumber = '';
   String userPassword = '';
+  bool isLoading = false;
 
   void routeHome() {
     if (userNumber != '' && userPassword != '') {
+      // userNumber = userNumber.substring(3);
+      if (userNumber.substring(3).length == 10) {
+        signIn();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Please Enter Phone Number Correctly")));
+      }
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => const HomeScreen(),
         ),
       );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please Fill Both Field")));
     }
+  }
+
+  Future<void> signIn() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var baseUrl = dotenv.env['BASE_URL'];
+      var reqData = {'phonenumber': userNumber, 'password': userPassword};
+      String requestBody = jsonEncode(reqData);
+      final response = await http.post(Uri.parse('$baseUrl/auth/login'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: requestBody);
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        if (responseData != null && responseData['executed']) {
+          saveUserInfo(responseData['uid']);
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Login Successfully")));
+          setState(() {
+            isLoading = false;
+          });
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const HomeScreen(),
+          //   ),
+          // );
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(responseData['message'])),
+          );
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        // return "Failed to Update profile";
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Failed to login")));
+        throw Exception('Failed to login');
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Error: Server Error")));
+      print('Error: $e');
+      // Handle error
+    }
+  }
+
+  Future<void> saveUserInfo(userInfo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('User_id', jsonEncode(userInfo));
+    print(prefs.getString('user_id'));
   }
 
   void routeRegister() {
@@ -72,10 +153,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.symmetric(vertical: 2.h),
                   child: forgotPassButton(userNumber, context),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 2.h),
-                  child: mainButton('Sign In', textWhite, routeHome),
-                ),
+                isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.red,
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(bottom: 2.h),
+                        child: mainButton('Sign In', textWhite, routeHome),
+                      ),
                 Align(
                   alignment: Alignment.center,
                   child: Padding(

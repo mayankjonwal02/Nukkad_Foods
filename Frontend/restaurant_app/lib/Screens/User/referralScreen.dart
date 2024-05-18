@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Controller/Profile/profile_controller.dart';
 import 'package:restaurant_app/Screens/User/registerScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class ReferralScreen extends StatefulWidget {
@@ -15,18 +19,60 @@ class ReferralScreen extends StatefulWidget {
 
 class _ReferralScreenState extends State<ReferralScreen> {
   int? _selectedOption;
-
+  LocalController _getSavedData = LocalController();
   String executiveId = '';
   String executiveName = '';
-
+  late Map<String, dynamic> userInfo;
   final executiveIdController = TextEditingController();
   final executiveNameController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  Future<void> getUserData() async {
+    try {
+      Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
+      setState(() {
+        userInfo = getData!;
+        // isLoading = false;
+      });
+    } catch (e) {
+      print('Error: $e');
+      // Handle error
+    }
+  }
 
   routeRegistration() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const RegistrationScreen()),
-    );
+    if (_selectedOption != null) {
+      String addData;
+      if (_selectedOption == 0) {
+        userInfo['referred'] = 'Nukkad Foods Executive';
+        saveUserInfo(userInfo);
+      } else if (_selectedOption == 1) {
+        userInfo['referred'] = 'A Friend';
+        saveUserInfo(userInfo);
+      } else {
+        userInfo['referred'] = 'Self Registration';
+        saveUserInfo(userInfo);
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const RegistrationScreen()),
+      );
+      // Encode the updated Map as a JSON string
+      // String updatedUserInfoString = jsonEncode(userInfo);
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Please select a field")));
+    }
+  }
+
+  Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_info', jsonEncode(userInfo));
+    print(prefs.getString('user_info'));
   }
 
   @override

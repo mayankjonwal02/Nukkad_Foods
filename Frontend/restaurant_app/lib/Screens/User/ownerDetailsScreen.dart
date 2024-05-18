@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:restaurant_app/Controller/Profile/profile_controller.dart';
 import 'package:restaurant_app/Screens/User/documentationScreen.dart';
 import 'package:restaurant_app/Screens/User/registerScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
@@ -10,7 +15,9 @@ import 'package:restaurant_app/Widgets/customs/User/registrationTimeline.dart';
 import 'package:restaurant_app/Widgets/customs/User/uploadWidget.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:image_picker/image_picker.dart';
 
 class OwnerDetailsScreen extends StatefulWidget {
   const OwnerDetailsScreen({super.key});
@@ -20,6 +27,10 @@ class OwnerDetailsScreen extends StatefulWidget {
 }
 
 class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
+  File? _image;
+  // final ImagePicker imagebannerpath = ImagePicker();
+  late String imagebannerpath;
+  String? imageSignaturePath;
   String ownerName = '';
   String ownerEmail = '';
   String ownerPhone = '';
@@ -42,11 +53,97 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   bool whatsappConfirmation = false;
   bool isSignatureUploaded = false;
 
+  LocalController _getSavedData = LocalController();
+  late Map<String, dynamic> userInfo;
+  @override
+  void initState() {
+    super.initState();
+    _checkPermission();
+    getUserData();
+  }
+
+  Future<void> _checkPermission() async {
+    PermissionStatus status = await Permission.camera.status;
+    // setState(() {
+    //   _status = status;
+    // });
+    print('Camera Permission Status: $status');
+
+    if (status != PermissionStatus.granted) {
+      // If the camera permission is not granted, request it
+      await _requestPermission();
+    }
+  }
+
+  Future<void> _requestPermission() async {
+    try {
+      PermissionStatus status = await Permission.camera.request();
+      if (status == PermissionStatus.granted) {
+        // Permission granted, proceed with camera usage
+        print('Camera Permission Granted');
+      } else {
+        // Permission denied, handle accordingly
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Camera Permission Denied")));
+        print('Camera Permission Denied');
+      }
+    } catch (e) {
+      // Handle any exceptions that occur during the permission request
+      print('Error requesting camera permission: $e');
+    }
+  }
+
+  Future<void> getUserData() async {
+    try {
+      Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
+      setState(() {
+        userInfo = getData!;
+        aadharNumberController.text = userInfo['kycDetails']['aadharNumber'];
+        panNumberController.text = userInfo['kycDetails']['panNumber'];
+        ownerEmailController.text = userInfo['ownerEmail'];
+        ownerPhoneController.text = userInfo['ownerContactNumber'];
+        currentAddressController.text = userInfo['currentAddress'];
+        permanentAddressController.text = userInfo['permananetAddress'];
+        // isLoading = false;
+      });
+    } catch (e) {
+      print('Error: $e');
+      // Handle error
+    }
+  }
+
+  Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_info', jsonEncode(userInfo));
+    print(prefs.getString('user_info'));
+  }
+
   routeDocumentation() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const DocumentationScreen()),
-    );
+    if (aadharNumber.isNotEmpty &&
+        panNumber.isNotEmpty &&
+        ownerEmail.isNotEmpty &&
+        ownerName.isNotEmpty) {
+      userInfo['ownerPhoto'] = imagebannerpath;
+      userInfo['ownerName'] = ownerName;
+      userInfo['ownerEmail'] = ownerEmail;
+      userInfo['ownerContactNumber'] = ownerPhone;
+      userInfo['currentAddress'] = currentAddress;
+      userInfo['permananetAddress'] = permanentAddress;
+      userInfo['signature'] = imageSignaturePath;
+      // userInfo['nukkadAddress'] = whatsappConfirmation;
+      userInfo['kycDetails'] = {
+        'aadharNumber': aadharNumber,
+        'panNumber': panNumber,
+      };
+      saveUserInfo(userInfo);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const DocumentationScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Name, email, Aadhar and pan is required")));
+    }
   }
 
   @override
@@ -85,7 +182,42 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
             ),
             Align(
               alignment: Alignment.center,
-              child: Image.asset('assets/images/owner.png'),
+              child: Stack(children: [
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage: _image != null
+                      ? FileImage(_image!) as ImageProvider<Object>?
+                      : AssetImage('assets/images/owner.png'),
+                ),
+                // _image == null
+                //     ? Image.asset('assets/images/owner.png')
+                //     : Image.file(_image!),
+                // Image.asset('assets/images/owner.png'),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: ((builder) => bottomSheet()),
+                      );
+                    },
+                    child: Container(
+                        width: 45, // Adjust the width and height as needed
+                        height: 45,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.red
+                            // .red, // Adjust the color as needed
+                            ),
+                        child: Icon(
+                          Icons.camera_alt_rounded,
+                          // size: 15,
+                          color: Colors.white,
+                        )),
+                  ),
+                ),
+              ]),
             ),
             Container(
               margin: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
@@ -249,10 +381,10 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(),
+                  uploadWidget(onFilePicked: _handleSignaturePicked),
                   isSignatureUploaded
                       ? Text(
-                          'img123.jpg selected!',
+                          '${imageSignaturePath?.split('/').last} selected!',
                           style: body4TextStyle.copyWith(color: colorSuccess),
                         )
                       : const SizedBox.shrink()
@@ -267,6 +399,13 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
         ),
       ),
     );
+  }
+
+  void _handleSignaturePicked(bool isPicked, String? filePath) {
+    setState(() {
+      isSignatureUploaded = isPicked;
+      imageSignaturePath = filePath;
+    });
   }
 
   Widget buildRadioButton(int value, String title) {
@@ -308,5 +447,66 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
         ],
       ),
     );
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          const Text(
+            "Choose Profile photo",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                TextButton.icon(
+                  icon: const Icon(Icons.camera),
+                  onPressed: () {
+                    // pickImage();
+                    pickImage(ImageSource.camera);
+                    Navigator.pop(context);
+                  },
+                  label: const Text("Camera"),
+                ),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.image),
+                  onPressed: () {
+                    // pickImage();
+                    pickImage(ImageSource.gallery);
+                    Navigator.pop(context);
+                  },
+                  label: const Text("Gallery"),
+                ),
+              ])
+        ],
+      ),
+    );
+  }
+
+  Future pickImage(ImageSource source) async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: source, imageQuality: 80);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+        imagebannerpath = _image!.path;
+      });
+      // setState(() {
+      //   _image = File(pickedFile.path);
+      // });
+    }
   }
 }

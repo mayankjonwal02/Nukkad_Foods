@@ -4,7 +4,8 @@ import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:sizer/sizer.dart';
 import 'package:file_picker/file_picker.dart';
 
-Widget uploadWidget() {
+typedef OnFilePicked = void Function(bool isPicked, String? filePath);
+Widget uploadWidget({required OnFilePicked onFilePicked}) {
   return GestureDetector(
     onTap: () async {
       try {
@@ -13,9 +14,11 @@ Widget uploadWidget() {
           allowedExtensions: ['jpg', 'pdf', 'png'],
         );
         if (result != null) {
+          onFilePicked(true, result.files.single.path);
           print('File path: ${result.files.single.path}');
         } else {
           // User canceled the picker
+          onFilePicked(false, null);
           print('User canceled the file picking');
         }
       } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/wallet_icon.svg', 
+              'assets/icons/wallet_icon.svg',
               color: _selectedIndex == 3 ? primaryColor : textGrey2,
               height: 3.5.h,
               width: 3.5.h,
