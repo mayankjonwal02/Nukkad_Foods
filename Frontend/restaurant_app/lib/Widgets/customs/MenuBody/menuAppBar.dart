@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Widgets/menu/addItems.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../constants/colors.dart';
@@ -29,16 +30,37 @@ class _MenuAppBarState extends State<MenuAppBar> {
                   'Menu',
                   style: h3TextStyle,
                 ),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.3.h),
+                InkWell(
+                  onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
                   decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(5.0)),
                   ),
-                  child: Text(
-                    'Add +',
-                    style: h4TextStyle.copyWith(color: textWhite),
+                  padding: EdgeInsets.all(16.0),
+                  child: AddItems(),
+                );
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(5.0)),
+              ),
+              isScrollControlled: true,
+            );
+          },
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.3.h),
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      'Add +',
+                      style: h4TextStyle.copyWith(color: textWhite),
+                    ),
                   ),
                 ),
               ],
