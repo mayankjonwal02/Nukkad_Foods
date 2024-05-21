@@ -573,3 +573,236 @@ This endpoint sends an SMS message to a specified phone number.
     }
     ```
 
+
+
+### **User Sign-Up**
+
+**Endpoint:** `/api/auth/userSignUp`
+
+**Method:** `POST`
+
+**Description:** Creates a new user account.
+
+**Request Body:**
+
+```json
+{
+    "username": "string",
+    "email": "string",
+    "contact": "string",
+    "password": "string",
+    "latitude": "number",
+    "longitude": "number",
+    "houseFlatNo": "string",
+    "area": "string",
+    "colony": "string (optional)",
+    "hint": "string",
+    "saveAs": "string"
+}
+```
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+      "message": "User Added Successfully",
+      "executed": true
+  }
+  ```
+
+- **400 Bad Request**
+
+  ```json
+  {
+      "message": "Email already exists",
+      "executed": false
+  }
+  ```
+
+  ```json
+  {
+      "message": "Contact number already exists",
+      "executed": false
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+      "message": "Error message",
+      "executed": false
+  }
+  ```
+
+---
+
+### **User Login**
+
+**Endpoint:** `/api/auth/userLogin`
+
+**Method:** `POST`
+
+**Description:** Authenticates a user based on contact and password.
+
+**Request Body:**
+
+```json
+{
+    "contact": "string",
+    "password": "string"
+}
+```
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+      "message": "Login Successful",
+      "user": {
+          "username": "string",
+          "email": "string",
+          "contact": "string",
+          "latitude": "number",
+          "longitude": "number",
+          "houseFlatNo": "string",
+          "area": "string",
+          "colony": "string",
+          "hint": "string",
+          "saveAs": "string",
+          "ordersData": "array"
+      },
+      "executed": true
+  }
+  ```
+
+- **400 Bad Request**
+
+  ```json
+  {
+      "message": "Invalid contact or password",
+      "executed": false
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+      "message": "Error message",
+      "executed": false
+  }
+  ```
+
+---
+
+### **Get User by ID**
+
+**Endpoint:** `/api/auth/getUserByID/:id`
+
+**Method:** `POST`
+
+**Description:** Retrieves user information based on user ID.
+
+**URL Params:**
+
+- **id:** `string` (User ID)
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+      "user": {
+          "username": "string",
+          "email": "string",
+          "contact": "string",
+          "latitude": "number",
+          "longitude": "number",
+          "houseFlatNo": "string",
+          "area": "string",
+          "colony": "string",
+          "hint": "string",
+          "saveAs": "string",
+          "ordersData": "array"
+      },
+      "executed": true
+  }
+  ```
+
+- **404 Not Found**
+
+  ```json
+  {
+      "message": "User not found",
+      "executed": false
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+      "message": "Error message",
+      "executed": false
+  }
+  ```
+
+---
+
+### **Update User by ID**
+
+**Endpoint:** `/api/auth/updateUserById`
+
+**Method:** `POST`
+
+**Description:** Updates user information based on user ID and provided data.
+
+**Request Body:**
+
+```json
+{
+    "_id": "string",
+    "updateData": {
+        "key1": "value1",
+        "key2": "value2",
+        // ...
+    }
+}
+```
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+      "message": "User updated successfully",
+      "executed": true
+  }
+  ```
+
+- **404 Not Found**
+
+  ```json
+  {
+      "message": "User not found",
+      "executed": false
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+      "message": "Error message",
+      "executed": false
+  }
+  ```
+
+
