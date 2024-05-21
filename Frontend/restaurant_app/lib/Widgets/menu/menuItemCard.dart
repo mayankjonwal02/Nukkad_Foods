@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Widgets/constants/texts.dart';
 
 class MenuItemCard extends StatefulWidget {
   @override
@@ -92,31 +93,24 @@ class _MenuItemCardState extends State<MenuItemCard> {
                   width: 1, // Adjust the width as needed
                   color: Color(0xFFD6D6D6),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.edit,
-                    color: Color(0xFFFF0000),
-                  ),
-                  onPressed: () {
-                    // Edit action
-                  },
-                ),
-                Container(
-                  height: 50, // Adjust the height as needed
-                  width: 1, // Adjust the width as needed
-                  color: Color(0xFFD6D6D6),
-                ),
                 Row(
                   children: [
                     IconButton(
                       icon: Icon(
-                        Icons.timer,
-                        color: Colors.black,
+                        Icons.edit,
+                        color: Color(0xFFFF0000),
                       ),
                       onPressed: () {
-                        // Timer action
+                        // Edit action
                       },
                     ),
+                    Text(
+                      'Edit',
+                      style: h6TextStyle,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    )
                   ],
                 ),
                 Container(

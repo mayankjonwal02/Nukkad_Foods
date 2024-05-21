@@ -38,14 +38,14 @@ class _DishesFormState extends State<DishesForm> {
                 child: Row(
                   children: [
                     Category(
-                      imagePath: 'assets/images/vegan.png',
+                      imagePath: 'assets/images/veg.jpeg',
                       label: 'Veg',
                       isSelected: selectedLabel == 'Veg',
                       onTap: () => setState(() => selectedLabel = 'Veg'),
                     ),
                     SizedBox(width: 10),
                     Category(
-                      imagePath: 'assets/images/vegan.png',
+                      imagePath: 'assets/images/nonveg.jpeg',
                       label: 'Non-Veg',
                       isSelected: selectedLabel == 'Non-Veg',
                       onTap: () => setState(() => selectedLabel = 'Non-Veg'),
