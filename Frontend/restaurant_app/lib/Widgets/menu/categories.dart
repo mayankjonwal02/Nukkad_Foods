@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class Category extends StatefulWidget {
-  final IconData icon;
+  final String imagePath;
   final String label;
-  final bool isSelected; // Added `isSelected` for selection state
+  final bool isSelected;
+  final VoidCallback onTap; // Added onTap callback
 
-  const Category({
+  Category({
     super.key,
-    required this.icon,
+    required this.imagePath,
     required this.label,
-    this.isSelected = false, // Default to unselected
+    this.isSelected = false,
+    required this.onTap, // Required onTap parameter
   });
 
   @override
@@ -17,34 +19,44 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
-  bool _isSelected = false; // Internal state for selection
+  bool _isSelected = false;
 
   @override
   void initState() {
     super.initState();
-    _isSelected = widget.isSelected; // Initialize internal state based on prop
+    _isSelected = widget.isSelected;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: _isSelected
-            ? Colors.green
-            : Colors.grey[200], // Color based on selection
-        border: Border.all(
-          color: Color.fromARGB(255, 221, 221, 221), // Consistent border color
-          width: 1.0,
+    return GestureDetector(
+      onTap: () {
+        widget.onTap();
+        toggleSelection();
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: _isSelected
+              ? Color.fromARGB(255, 199, 241, 201)
+              : Color.fromARGB(244, 244, 244, 244),
+          border: Border.all(
+            color: const Color.fromARGB(255, 221, 221, 221),
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        children: [
-          Icon(widget.icon),
-          const SizedBox(width: 8.0),
-          Text(widget.label),
-        ],
+        child: Row(
+          children: [
+            Image.asset(
+              widget.imagePath,
+              width: 30,
+              height: 30,
+            ),
+            const SizedBox(width: 8.0),
+            Text(widget.label),
+          ],
+        ),
       ),
     );
   }
