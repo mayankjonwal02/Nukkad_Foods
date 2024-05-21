@@ -506,3 +506,70 @@ This endpoint is used to delete a specific menu item for a user.
 }
 ```
 
+
+
+Sure, here's a documentation for your SMS API using Express and Twilio:
+
+### SMS API Documentation
+
+### Endpoints
+
+#### Send SMS
+**Endpoint:**
+```
+POST /api/sms/sendSMS
+```
+
+**Description:**
+This endpoint sends an SMS message to a specified phone number.
+
+**Request Body:**
+```json
+{
+    "to": "+1234567890",
+    "body": "Your message here"
+}
+```
+
+- `to`: The recipient's phone number in E.164 format (required).
+- `body`: The text message to be sent (required).
+
+**Response:**
+
+- **Success (200)**:
+    ```json
+    {
+        "message": "SMS sent successfully",
+        "Response": {
+            "sid": "SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "date_created": "Thu, 30 Jul 2015 20:12:31 +0000",
+            "date_updated": "Thu, 30 Jul 2015 20:12:33 +0000",
+            "date_sent": "Thu, 30 Jul 2015 20:12:33 +0000",
+            "account_sid": "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "to": "+1234567890",
+            "from": "+12097205544",
+            "body": "Your message here",
+            "status": "sent",
+            "num_segments": "1",
+            "num_media": "0",
+            "direction": "outbound-api",
+            "api_version": "2010-04-01",
+            "price": null,
+            "price_unit": "USD",
+            "error_code": null,
+            "error_message": null,
+            "uri": "/2010-04-01/Accounts/ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Messages/SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.json",
+            "subresource_uris": {
+                "media": "/2010-04-01/Accounts/ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Messages/SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Media.json"
+            }
+        }
+    }
+    ```
+
+- **Error (500)**:
+    ```json
+    {
+        "error": "Error message explaining what went wrong"
+    }
+    ```
+
