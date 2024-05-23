@@ -87,8 +87,9 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
       userInfo['foodImages'] = imageFoodImgPath;
       saveUserInfo(userInfo);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("All Fields is required")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("All Fields is required")));
     }
   }
 
@@ -109,8 +110,9 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         if (responseData != null && responseData['executed']) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Signup Successfully")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorSuccess,
+              content: Text("Signup Successfully")));
           setState(() {
             isLoading = false;
           });
@@ -132,7 +134,9 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
           // Remove the data associated with the key 'user_info'
           // await prefs.remove('user_info');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(responseData['message'])),
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'])),
           );
         }
       } else {
@@ -140,16 +144,16 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
           isLoading = false;
         });
         // return "Failed to Update profile";
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Failed to Signup")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure, content: Text("Failed to Signup")));
         throw Exception('Failed to Signup');
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Error: Server Error")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure, content: Text("Error: Server Error")));
       print('Error: $e');
       // Handle error
     }

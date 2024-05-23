@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:sizer/sizer.dart';
@@ -13,7 +14,11 @@ Widget phoneField(Function(String) onPhoneNumberChanged) {
     elevation: 3.0,
     borderRadius: BorderRadius.circular(7.0),
     child: IntlPhoneField(
-      disableLengthCheck: false,
+      disableLengthCheck: true,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(10),
+      ],
       keyboardType: TextInputType.phone,
       showDropdownIcon: false,
       flagsButtonPadding: EdgeInsets.symmetric(horizontal: 3.w),

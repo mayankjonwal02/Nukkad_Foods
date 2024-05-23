@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Screens/AccessibilityTab/ads_page.dart';
+import 'package:restaurant_app/Screens/AccessibilityTab/complain_page.dart';
+import 'package:restaurant_app/Screens/AccessibilityTab/help_center.dart';
+import 'package:restaurant_app/Screens/AccessibilityTab/nukkad_manager.dart';
+import 'package:restaurant_app/Screens/AccessibilityTab/nukkad_settting.dart';
+import 'package:restaurant_app/Screens/AccessibilityTab/payOuts.dart';
+import 'package:restaurant_app/Screens/AccessibilityTab/promotions.dart';
+import 'package:restaurant_app/Screens/Subscription/getSubscription.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../Screens/notificationScreen.dart';
@@ -99,6 +107,272 @@ class _HomeAppBarState extends State<HomeAppBar> {
             ),
           ),
           GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    //Scrolling given for content in Container()
+                    return SingleChildScrollView(
+                        child: Container(
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
+                            child: Container(
+                                width: 100.w,
+                                padding: const EdgeInsets.all(20),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    topLeft: Radius.circular(20),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Accessibility",
+                                      style: body3TextStyle.copyWith(
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Card.outlined(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: IconButton(
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              PromotionsPage()),
+                                                    );
+                                                  },
+                                                  icon: Image.asset(
+                                                      'assets/images/Vector.png'),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Promotions",
+                                              style: body6TextStyle,
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Card.outlined(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: IconButton(
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AdsPage()),
+                                                    );
+                                                  },
+                                                  icon: Image.asset(
+                                                      'assets/images/Group.png'),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Ads",
+                                              style: body6TextStyle,
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Card.outlined(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: IconButton(
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ComplaintsWidget()),
+                                                    );
+                                                  },
+                                                  icon: Image.asset(
+                                                      'assets/images/iconCarrier.png'),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Complains",
+                                              style: body6TextStyle,
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Card.outlined(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: IconButton(
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HelpCenterWidget()),
+                                                    );
+                                                  },
+                                                  icon: Image.asset(
+                                                      'assets/images/iconHelp.png'),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Help Center",
+                                              style: body6TextStyle,
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Card.outlined(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: IconButton(
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              GetSubscription()),
+                                                    );
+                                                  },
+                                                  icon: Image.asset(
+                                                      'assets/images/persion_add.png'),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              'Subscription',
+                                              style: body6TextStyle,
+                                            )
+                                            // Text("Subscription")
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Card.outlined(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: IconButton(
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              NukkadManagerWidget()),
+                                                    );
+                                                  },
+                                                  icon: Image.asset(
+                                                      'assets/images/persion_manager.png'),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              'Manager',
+                                              style: body6TextStyle,
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Card.outlined(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: IconButton(
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              PayOutsWidget()),
+                                                    );
+                                                  },
+                                                  icon: Image.asset(
+                                                      'assets/images/payOut.png'),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              'Payouts',
+                                              style: body6TextStyle,
+                                            )
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Card.outlined(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: IconButton(
+                                                  color: Colors.red,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              NukkadSettingWidget()),
+                                                    );
+                                                  },
+                                                  icon: Image.asset(
+                                                      'assets/images/setting.png'),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              'Setting',
+                                              style: body6TextStyle,
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ))));
+                  });
+            },
             child: Icon(
               Icons.menu,
               color: textBlack,
@@ -107,6 +381,44 @@ class _HomeAppBarState extends State<HomeAppBar> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showCustomDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          contentPadding: EdgeInsets.all(16.0),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                'Custom Dialog Title',
+                style: TextStyle(fontSize: 24),
+              ),
+              SizedBox(height: 16),
+              Text('This is a custom dialog with rounded corners.'),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  TextButton(
+                    child: Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

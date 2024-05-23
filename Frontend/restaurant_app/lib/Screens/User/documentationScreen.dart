@@ -82,8 +82,9 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const SetOrderingScreen()));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("GST, FASSAI  is required")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("GST, FASSAI  is required")));
     }
   }
 

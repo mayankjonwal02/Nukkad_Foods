@@ -64,8 +64,9 @@ class _ReferralScreenState extends State<ReferralScreen> {
       // Encode the updated Map as a JSON string
       // String updatedUserInfoString = jsonEncode(userInfo);
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Please select a field")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Please select a field")));
     }
   }
 

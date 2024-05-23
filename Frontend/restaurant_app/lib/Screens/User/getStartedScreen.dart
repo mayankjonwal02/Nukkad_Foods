@@ -57,8 +57,9 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
         ),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Nukkad name is required")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Nukkad name is required")));
     }
   }
 

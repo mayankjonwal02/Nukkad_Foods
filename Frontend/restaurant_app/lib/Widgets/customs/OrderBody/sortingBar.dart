@@ -10,8 +10,10 @@ import '../../constants/colors.dart';
 import '../../constants/texts.dart';
 
 class SortingBar extends StatefulWidget {
+  final Function(String) onOrderFilterChanged;
   final bool type;
-  const SortingBar({super.key, required this.type});
+  const SortingBar(
+      {super.key, required this.type, required this.onOrderFilterChanged});
 
   @override
   State<SortingBar> createState() => _SortingBarState();
@@ -28,13 +30,14 @@ class _SortingBarState extends State<SortingBar> {
   ];
   String? selectedSortOption;
 
-  selectorButton(
+  Widget selectorButton(
       Color color, Color borderColor, String buttonText, Color textColor) {
     return SizedBox(
       child: Material(
         elevation: 3,
         borderRadius: BorderRadius.circular(10),
         child: Container(
+          padding: EdgeInsets.symmetric(vertical: 1.3.h, horizontal: 2.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: color,
@@ -52,102 +55,125 @@ class _SortingBarState extends State<SortingBar> {
   void _showSortingBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // Allow the bottom sheet to be scrollable
       builder: (BuildContext context) {
         return Container(
+          padding: EdgeInsets.fromLTRB(4.w, 2.h, 4.w, 2.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: textWhite,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(10.w, 3.h, 10.w, 1.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Sort',
-                      style: h3TextStyle,
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(
-                        Icons.close_rounded,
-                        size: 25.sp,
-                        color: primaryColor,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(10.w, 3.h, 10.w, 1.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Sort',
+                        style: h3TextStyle,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(
-                color: textGrey2,
-                thickness: 0.2.h,
-                indent: 2.w,
-                endIndent: 2.w,
-              ),
-              Container(
-                height: 50.h,
-                padding: EdgeInsets.fromLTRB(10.w, 0, 12.w, 2.h),
-                child: ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: sortFilter.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedSortOption = sortFilter[index];
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 0.4.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              sortFilter[index],
-                              style: body3TextStyle.copyWith(
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                            Transform.scale(
-                              scale: 1.2,
-                              child: Radio<String>(
-                                value: sortFilter[index],
-                                groupValue: selectedSortOption,
-                                activeColor: primaryColor,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    selectedSortOption = value;
-                                  });
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ),
-                          ],
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 25.sp,
+                          color: primaryColor,
                         ),
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 2.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  selectorButton(
-                      textWhite, primaryColor, 'Cancel', primaryColor),
-                  selectorButton(
-                      primaryColor, primaryColor, 'Apply Filters', textWhite),
-                ],
-              ),
-            ],
+                Divider(
+                  color: textGrey2,
+                  thickness: 0.2.h,
+                  indent: 2.w,
+                  endIndent: 2.w,
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10.w, 0, 12.w, 2.h),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: sortFilter.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedSortOption = sortFilter[index];
+                          });
+                          // print(selectedSortOption);
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 0.4.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                sortFilter[index],
+                                style: body3TextStyle.copyWith(
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                              Transform.scale(
+                                scale: 1.2,
+                                child: Radio<String>(
+                                  value: sortFilter[index],
+                                  groupValue: selectedSortOption,
+                                  activeColor: primaryColor,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      selectedSortOption = value;
+                                    });
+                                    print(selectedSortOption);
+                                    widget.onOrderFilterChanged(
+                                        selectedSortOption!);
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                // SizedBox(height: 2.h),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10.w, 0, 12.w, 0.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: selectorButton(
+                            textWhite, primaryColor, 'Cancel', primaryColor),
+                      ),
+                      SizedBox(width: 2.w),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: selectorButton(primaryColor, primaryColor,
+                            'Apply Filters', textWhite),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
