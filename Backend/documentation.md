@@ -506,3 +506,303 @@ This endpoint is used to delete a specific menu item for a user.
 }
 ```
 
+
+
+Sure, here's a documentation for your SMS API using Express and Twilio:
+
+### SMS API Documentation
+
+### Endpoints
+
+#### Send SMS
+**Endpoint:**
+```
+POST /api/sms/sendSMS
+```
+
+**Description:**
+This endpoint sends an SMS message to a specified phone number.
+
+**Request Body:**
+```json
+{
+    "to": "+1234567890",
+    "body": "Your message here"
+}
+```
+
+- `to`: The recipient's phone number in E.164 format (required).
+- `body`: The text message to be sent (required).
+
+**Response:**
+
+- **Success (200)**:
+    ```json
+    {
+        "message": "SMS sent successfully",
+        "Response": {
+            "sid": "SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "date_created": "Thu, 30 Jul 2015 20:12:31 +0000",
+            "date_updated": "Thu, 30 Jul 2015 20:12:33 +0000",
+            "date_sent": "Thu, 30 Jul 2015 20:12:33 +0000",
+            "account_sid": "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+            "to": "+1234567890",
+            "from": "+12097205544",
+            "body": "Your message here",
+            "status": "sent",
+            "num_segments": "1",
+            "num_media": "0",
+            "direction": "outbound-api",
+            "api_version": "2010-04-01",
+            "price": null,
+            "price_unit": "USD",
+            "error_code": null,
+            "error_message": null,
+            "uri": "/2010-04-01/Accounts/ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Messages/SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.json",
+            "subresource_uris": {
+                "media": "/2010-04-01/Accounts/ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Messages/SMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Media.json"
+            }
+        }
+    }
+    ```
+
+- **Error (500)**:
+    ```json
+    {
+        "error": "Error message explaining what went wrong"
+    }
+    ```
+
+
+
+### **User Sign-Up**
+
+**Endpoint:** `/api/auth/userSignUp`
+
+**Method:** `POST`
+
+**Description:** Creates a new user account.
+
+**Request Body:**
+
+```json
+{
+    "username": "string",
+    "email": "string",
+    "contact": "string",
+    "password": "string",
+    "latitude": "number",
+    "longitude": "number",
+    "houseFlatNo": "string",
+    "area": "string",
+    "colony": "string (optional)",
+    "hint": "string",
+    "saveAs": "string"
+}
+```
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+      "message": "User Added Successfully",
+      "executed": true
+  }
+  ```
+
+- **400 Bad Request**
+
+  ```json
+  {
+      "message": "Email already exists",
+      "executed": false
+  }
+  ```
+
+  ```json
+  {
+      "message": "Contact number already exists",
+      "executed": false
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+      "message": "Error message",
+      "executed": false
+  }
+  ```
+
+---
+
+### **User Login**
+
+**Endpoint:** `/api/auth/userLogin`
+
+**Method:** `POST`
+
+**Description:** Authenticates a user based on contact and password.
+
+**Request Body:**
+
+```json
+{
+    "contact": "string",
+    "password": "string"
+}
+```
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+      "message": "Login Successful",
+      "user": {
+          "username": "string",
+          "email": "string",
+          "contact": "string",
+          "latitude": "number",
+          "longitude": "number",
+          "houseFlatNo": "string",
+          "area": "string",
+          "colony": "string",
+          "hint": "string",
+          "saveAs": "string",
+          "ordersData": "array"
+      },
+      "executed": true
+  }
+  ```
+
+- **400 Bad Request**
+
+  ```json
+  {
+      "message": "Invalid contact or password",
+      "executed": false
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+      "message": "Error message",
+      "executed": false
+  }
+  ```
+
+---
+
+### **Get User by ID**
+
+**Endpoint:** `/api/auth/getUserByID/:id`
+
+**Method:** `POST`
+
+**Description:** Retrieves user information based on user ID.
+
+**URL Params:**
+
+- **id:** `string` (User ID)
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+      "user": {
+          "username": "string",
+          "email": "string",
+          "contact": "string",
+          "latitude": "number",
+          "longitude": "number",
+          "houseFlatNo": "string",
+          "area": "string",
+          "colony": "string",
+          "hint": "string",
+          "saveAs": "string",
+          "ordersData": "array"
+      },
+      "executed": true
+  }
+  ```
+
+- **404 Not Found**
+
+  ```json
+  {
+      "message": "User not found",
+      "executed": false
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+      "message": "Error message",
+      "executed": false
+  }
+  ```
+
+---
+
+### **Update User by ID**
+
+**Endpoint:** `/api/auth/updateUserById`
+
+**Method:** `POST`
+
+**Description:** Updates user information based on user ID and provided data.
+
+**Request Body:**
+
+```json
+{
+    "_id": "string",
+    "updateData": {
+        "key1": "value1",
+        "key2": "value2",
+        // ...
+    }
+}
+```
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+      "message": "User updated successfully",
+      "executed": true
+  }
+  ```
+
+- **404 Not Found**
+
+  ```json
+  {
+      "message": "User not found",
+      "executed": false
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+      "message": "Error message",
+      "executed": false
+  }
+  ```
+
+
