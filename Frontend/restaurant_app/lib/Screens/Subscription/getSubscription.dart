@@ -10,11 +10,8 @@ import 'package:restaurant_app/Screens/Subscription/subscribe_card.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
-import 'package:restaurant_app/Widgets/customs/WalletBody/viewEarningButton.dart';
-import 'package:restaurant_app/homeScreen.dart';
+
 import 'package:sizer/sizer.dart';
-import '../../Widgets/customs/WalletBody/referalMap.dart';
-import '../../Widgets/customs/WalletBody/walletWidget.dart';
 
 class GetSubscription extends StatefulWidget {
   const GetSubscription({super.key});
@@ -24,6 +21,25 @@ class GetSubscription extends StatefulWidget {
 }
 
 class _GetSubscriptionState extends State<GetSubscription> {
+  Widget _buildRow(String text) {
+    return Row(
+      // mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.check_circle_rounded,
+          color: Colors.black,
+        ),
+        SizedBox(width: 2.h),
+        Text(
+          text,
+          style: body4TextStyle.copyWith(
+              color: Colors.black, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.left,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,76 +94,20 @@ class _GetSubscriptionState extends State<GetSubscription> {
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 2.h),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.check_circle_rounded,
-                                color: Colors.black,
-                              ),
-                              SizedBox(width: 2.h),
-                              Text(
-                                '2x New customers',
-                                style: body4TextStyle.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 2.h),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.check_circle_rounded,
-                                color: Colors.black,
-                              ),
-                              SizedBox(width: 2.h),
-                              Text(
-                                '3x Repeat customers',
-                                style: body4TextStyle.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 2.h),
-                          Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.check_circle_rounded,
-                                color: Colors.black,
-                              ),
-                              SizedBox(width: 2.h),
-                              Text(
-                                'More Orders',
-                                style: body4TextStyle.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 2.h),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.check_circle_rounded,
-                                color: Colors.black,
-                              ),
-                              SizedBox(width: 2.h),
-                              Text(
-                                'More Earnings',
-                                style: body4TextStyle.copyWith(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+                          Container(
+                            width: 60.w,
+                            child: Column(
+                              children: [
+                                _buildRow('2x New customers'),
+                                SizedBox(height: 2.h),
+                                _buildRow('3x Repeat customers'),
+                                SizedBox(height: 2.h),
+                                _buildRow('More Orders'),
+                                SizedBox(height: 2.h),
+                                _buildRow('More Earnings'),
+                              ],
+                            ),
+                          )
                         ],
                       ),
 

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -30,10 +32,14 @@ class OwnerDetailsScreen extends StatefulWidget {
 
 class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   final GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
+  Uint8List? _signatureImageBytes;
   File? _image;
   // final ImagePicker imagebannerpath = ImagePicker();
   late String imagebannerpath;
   String? imageSignaturePath;
+  String? imagePanPath;
+  String? imageAadharFrontPath;
+  String? imageAadharBackPath;
   String ownerName = '';
   String ownerEmail = '';
   String ownerPhone = '';
@@ -55,6 +61,9 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   int? _selectedOption;
   bool whatsappConfirmation = false;
   bool isSignatureUploaded = false;
+  bool isPanUploaded = false;
+  bool isAadharBackUploaded = false;
+  bool isAadharUploadeFront = false;
 
   LocalController _getSavedData = LocalController();
   late Map<String, dynamic> userInfo;
@@ -258,11 +267,13 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       alignment: Alignment.topLeft,
                       child:
                           buildRadioButton(0, 'Same as restaurant mobile no.')),
-                  phoneField((String input) {
-                    setState(() {
-                      ownerPhone = input;
-                    });
-                  }),
+                  PhoneField(
+                    onPhoneNumberChanged: (String number) {
+                      setState(() {
+                        ownerPhone = number;
+                      });
+                    },
+                  ),
                   Align(
                     alignment: Alignment.topLeft,
                     child: CheckboxListTile(
@@ -386,10 +397,10 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handleSignaturePicked),
-                  isSignatureUploaded
+                  uploadWidget(onFilePicked: _handleAadharFrontPicked),
+                  isAadharUploadeFront
                       ? Text(
-                          '${imageSignaturePath?.split('/').last} selected!',
+                          '${imageAadharFrontPath?.split('/').last} selected!',
                           style: body4TextStyle.copyWith(color: colorSuccess),
                         )
                       : const SizedBox.shrink()
@@ -424,10 +435,10 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handleSignaturePicked),
-                  isSignatureUploaded
+                  uploadWidget(onFilePicked: _handleAadharBackPicked),
+                  isAadharBackUploaded
                       ? Text(
-                          '${imageSignaturePath?.split('/').last} selected!',
+                          '${imageAadharBackPath?.split('/').last} selected!',
                           style: body4TextStyle.copyWith(color: colorSuccess),
                         )
                       : const SizedBox.shrink()
@@ -453,7 +464,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Upload Signature'.toUpperCase(),
+                            'Upload PAN'.toUpperCase(),
                             style: titleTextStyle,
                           ),
                           SizedBox(width: 1.w),
@@ -462,15 +473,19 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handleSignaturePicked),
-                  isSignatureUploaded
+                  uploadWidget(onFilePicked: _handlePanPicked),
+                  isPanUploaded
                       ? Text(
-                          '${imageSignaturePath?.split('/').last} selected!',
+                          '${imagePanPath?.split('/').last} selected!',
                           style: body4TextStyle.copyWith(color: colorSuccess),
                         )
                       : const SizedBox.shrink()
                 ],
               ),
+            ),
+            Text(
+              'Signature hear'.toUpperCase(),
+              style: titleTextStyle,
             ),
             Column(
                 children: [
@@ -499,6 +514,9 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center),
+            SizedBox(height: 2.h),
+            // Show the captured signature image
+            _showSignatureImage(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
               child: mainButton('Save Details', textWhite, routeDocumentation),
@@ -509,6 +527,14 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
     );
   }
 
+  Widget _showSignatureImage() {
+    if (_signatureImageBytes != null) {
+      return Image.memory(_signatureImageBytes!);
+    } else {
+      return Text('No signature captured');
+    }
+  }
+
   void _handleSignaturePicked(bool isPicked, String? filePath) {
     setState(() {
       isSignatureUploaded = isPicked;
@@ -516,30 +542,66 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
     });
   }
 
+  void _handlePanPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isPanUploaded = isPicked;
+      imagePanPath = filePath;
+    });
+  }
+
+  void _handleAadharFrontPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isAadharUploadeFront = isPicked;
+      imageAadharFrontPath = filePath;
+    });
+  }
+
+  void _handleAadharBackPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isAadharBackUploaded = isPicked;
+      imageAadharBackPath = filePath;
+    });
+  }
+
   void _handleClearButtonPressed() {
     signatureGlobalKey.currentState!.clear();
   }
 
-  void _handleSaveButtonPressed() async {
-    final data =
-        await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
-    final bytes = await data.toByteData(format: ui.ImageByteFormat.png);
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return Scaffold(
-            appBar: AppBar(),
-            body: Center(
-              child: Container(
-                color: Colors.grey[300],
-                child: Image.memory(bytes!.buffer.asUint8List()),
-              ),
-            ),
-          );
-        },
-      ),
-    );
+  Future<void> _handleSaveButtonPressed() async {
+    if (signatureGlobalKey.currentState != null) {
+      // Retrieve the drawn signature as a data blob
+      final data =
+          await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
+      final byteData = await data.toByteData(format: ui.ImageByteFormat.png);
+      final bytes = byteData!.buffer.asUint8List();
+      // final base64String = base64Encode(bytes);
+      // print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$base64String');
+      setState(() {
+        _signatureImageBytes = bytes;
+      });
+    }
   }
+
+  // void _handleSaveButtonPressed() async {
+  //   final data =
+  //       await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
+  //   final bytes = await data.toByteData(format: ui.ImageByteFormat.png);
+  //   await Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (BuildContext context) {
+  //         return Scaffold(
+  //           appBar: AppBar(),
+  //           body: Center(
+  //             child: Container(
+  //               color: Colors.grey[300],
+  //               child: Image.memory(bytes!.buffer.asUint8List()),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget buildRadioButton(int value, String title) {
     return RadioListTile<int>(

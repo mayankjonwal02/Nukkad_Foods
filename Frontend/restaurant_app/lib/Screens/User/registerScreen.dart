@@ -375,11 +375,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: 2.h, bottom: 1.h),
-                      child: phoneField((String input) {
-                        setState(() {
-                          nukkadContact = input;
-                        });
-                      }),
+                      child: PhoneField(
+                        onPhoneNumberChanged: (String number) {
+                          setState(() {
+                            nukkadContact = number;
+                          });
+                        },
+                      ),
+                      //  phoneField((String input) {
+                      //   setState(() {
+                      //     nukkadContact = input;
+                      //   });
+                      // }),
                     ),
                     Align(
                       alignment: Alignment.topLeft,

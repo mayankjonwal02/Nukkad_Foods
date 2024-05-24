@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (userNumber.substring(3).length == 10) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => GetSubscription()),
+          MaterialPageRoute(builder: (context) => HomeScreen()),
         );
         // signIn();
       } else {
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
           });
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GetSubscription()),
+            MaterialPageRoute(builder: (context) => HomeScreen()),
           );
         } else {
           setState(() {
@@ -138,11 +138,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text('Sign In', style: h1TextStyle),
                 Padding(
                   padding: EdgeInsets.only(top: 6.h, bottom: 4.h),
-                  child: phoneField((String number) {
-                    setState(() {
-                      userNumber = number;
-                    });
-                  }),
+                  child: PhoneField(
+                    onPhoneNumberChanged: (String number) {
+                      setState(() {
+                        userNumber = number;
+                      });
+                    },
+                  ),
                 ),
                 PasswordField(
                   labelText: 'Password',

@@ -34,8 +34,9 @@ class _OrderBodyState extends State<OrderBody> {
     // myOrder = responseDataList
     //     .where((order) => order['status'] == 'Pending')
     //     .toList();
-    getUid();
+
     super.initState();
+    getUid();
   }
 
   Future<void> getUid() async {
@@ -47,6 +48,9 @@ class _OrderBodyState extends State<OrderBody> {
   }
 
   Future<void> getOngoingData() async {
+    if (!mounted) {
+      return; // Widget is not mounted, do nothing
+    }
     setState(() {
       isLoading = true;
     });
