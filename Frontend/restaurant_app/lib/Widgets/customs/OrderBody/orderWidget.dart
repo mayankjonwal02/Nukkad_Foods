@@ -12,7 +12,8 @@ import '../../../Screens/Orders/trackRiderScreen.dart';
 class OrderWidget extends StatefulWidget {
   final bool type;
   Map<String, dynamic>? order;
-  OrderWidget({super.key, required this.type, this.order});
+  String? uid;
+  OrderWidget({super.key, required this.type, this.uid, this.order});
 
   @override
   State<OrderWidget> createState() => _OrderWidgetState();
@@ -25,12 +26,16 @@ class _OrderWidgetState extends State<OrderWidget> {
   bool isMarkedReady = false;
   List<dynamic> items = [];
   bool isLoading = false;
+  String? orderId;
+  String? uid;
   @override
   void initState() {
     // TODO: implement initState
     if (widget.order != null) {
       // Initialize items only if widget.order is not null
       items = widget.order!['items'] ?? [];
+      orderId = widget.order!['orderId'];
+      uid = widget.uid;
     } else {
       items = [];
     }
@@ -43,14 +48,15 @@ class _OrderWidgetState extends State<OrderWidget> {
     });
     try {
       var baseUrl = dotenv.env['BASE_URL'];
-      final response = await http.delete(
-          Uri.parse('$baseUrl/order/orders/6643a1f3c6ff7f63f77f536c/34'));
+      final response =
+          await http.delete(Uri.parse('$baseUrl/order/orders/$uid/$orderId'));
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
         if (responseData != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Menu item deleted successfully")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorSuccess,
+              content: Text("Menu item deleted successfully")));
           setState(() {
             isLoading = false;
             isDeclined = true;
@@ -63,7 +69,9 @@ class _OrderWidgetState extends State<OrderWidget> {
             isLoading = false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(responseData['message'])),
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'])),
           );
         }
       } else {
@@ -71,16 +79,141 @@ class _OrderWidgetState extends State<OrderWidget> {
           isLoading = false;
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Failed to order delete")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Failed to order delete")));
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Error:  Internal Server Error")));
-      print('eeeeeeeeeeeeeeeee$e');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Error:  Internal Server Error")));
+    }
+  }
+
+  Future<void> startOnWay() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var baseUrl = dotenv.env['BASE_URL'];
+      var reqData = {
+        "updateData": {"status": "On the way"}
+      };
+      String requestBody = jsonEncode(reqData);
+      final response =
+          await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: requestBody);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        if (responseData != null) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorSuccess,
+              content: Text("Order start ride successfully")));
+          setState(() {
+            widget.order = responseData['order'];
+            isDeclined = false;
+            isAccepted = true;
+            isPrepared = true;
+            isMarkedReady = true;
+            isLoading = false;
+          });
+          print(widget.order);
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'])),
+          );
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Failed to start ride order")));
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Error:  Internal Server Error")));
+    }
+  }
+
+  Future<void> startPreparing() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var baseUrl = dotenv.env['BASE_URL'];
+      var reqData = {
+        "updateData": {"status": "Ready"}
+      };
+      String requestBody = jsonEncode(reqData);
+      final response =
+          await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: requestBody);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        if (responseData != null) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorSuccess,
+              content: Text("Order item start Preparing successfully")));
+          setState(() {
+            widget.order = responseData['order'];
+            isDeclined = false;
+            isAccepted = true;
+            isLoading = false;
+            isPrepared = true;
+            isMarkedReady = false;
+          });
+          print(widget.order);
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'])),
+          );
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Failed to start Preparing order")));
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Error:  Internal Server Error")));
     }
   }
 
@@ -94,28 +227,36 @@ class _OrderWidgetState extends State<OrderWidget> {
         "updateData": {"status": "Accepted"}
       };
       String requestBody = jsonEncode(reqData);
-      final response = await http.put(
-          Uri.parse('$baseUrl/order/orders/6643a1f3c6ff7f63f77f536c/26'),
-          body: requestBody);
+      final response =
+          await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: requestBody);
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
         if (responseData != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Order item update successfully")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorSuccess,
+              content: Text("Order item update successfully")));
           setState(() {
+            widget.order = responseData['order'];
             isDeclined = false;
             isAccepted = true;
             isPrepared = false;
             isMarkedReady = false;
             isLoading = false;
           });
+          print(widget.order);
         } else {
           setState(() {
             isLoading = false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(responseData['message'])),
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'])),
           );
         }
       } else {
@@ -123,16 +264,18 @@ class _OrderWidgetState extends State<OrderWidget> {
           isLoading = false;
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Failed to update order")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Failed to update order")));
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Error:  Internal Server Error")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Error:  Internal Server Error")));
     }
   }
 
@@ -449,12 +592,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   Widget _buildPreparedWidget() {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isDeclined = false;
-          isAccepted = true;
-          isPrepared = true;
-          isMarkedReady = false;
-        });
+        startPreparing();
       },
       child: Container(
         height: 6.h,
@@ -514,12 +652,7 @@ class _OrderWidgetState extends State<OrderWidget> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                isDeclined = false;
-                isAccepted = true;
-                isPrepared = true;
-                isMarkedReady = true;
-              });
+              startOnWay();
             },
             child: Container(
               height: 6.h,

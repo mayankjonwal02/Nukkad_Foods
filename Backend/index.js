@@ -4,7 +4,7 @@ const ConnectMongo = require("./DatabaseConnection/mongoDB")
 const authRouter = require("./Controller/Authentication")
 const orderRouter = require("./Controller/Order")
 const menuRouter = require("./Controller/Menu")
-
+const smsRouter = require("./Controller/SMS")
 
 
 const port = 3000
@@ -16,7 +16,7 @@ app.use(express.json())
 app.use("/api/auth",authRouter)
 app.use("/api/order",orderRouter)
 app.use("/api/menu",menuRouter)
-
+app.use("/api/sms",smsRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

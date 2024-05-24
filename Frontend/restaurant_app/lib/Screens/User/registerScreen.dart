@@ -137,12 +137,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           );
         }));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Your Password is not match")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Your Password is not match")));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("All fields is required")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("All fields is required")));
     }
   }
 
@@ -373,11 +375,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: 2.h, bottom: 1.h),
-                      child: phoneField((String input) {
-                        setState(() {
-                          nukkadContact = input;
-                        });
-                      }),
+                      child: PhoneField(
+                        onPhoneNumberChanged: (String number) {
+                          setState(() {
+                            nukkadContact = number;
+                          });
+                        },
+                      ),
+                      //  phoneField((String input) {
+                      //   setState(() {
+                      //     nukkadContact = input;
+                      //   });
+                      // }),
                     ),
                     Align(
                       alignment: Alignment.topLeft,

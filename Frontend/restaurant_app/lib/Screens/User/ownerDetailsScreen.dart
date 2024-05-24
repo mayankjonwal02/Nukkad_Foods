@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,6 +21,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
+
 class OwnerDetailsScreen extends StatefulWidget {
   const OwnerDetailsScreen({super.key});
 
@@ -27,10 +31,15 @@ class OwnerDetailsScreen extends StatefulWidget {
 }
 
 class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
+  final GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
+  Uint8List? _signatureImageBytes;
   File? _image;
   // final ImagePicker imagebannerpath = ImagePicker();
   late String imagebannerpath;
   String? imageSignaturePath;
+  String? imagePanPath;
+  String? imageAadharFrontPath;
+  String? imageAadharBackPath;
   String ownerName = '';
   String ownerEmail = '';
   String ownerPhone = '';
@@ -52,6 +61,9 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   int? _selectedOption;
   bool whatsappConfirmation = false;
   bool isSignatureUploaded = false;
+  bool isPanUploaded = false;
+  bool isAadharBackUploaded = false;
+  bool isAadharUploadeFront = false;
 
   LocalController _getSavedData = LocalController();
   late Map<String, dynamic> userInfo;
@@ -83,8 +95,9 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
         print('Camera Permission Granted');
       } else {
         // Permission denied, handle accordingly
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Camera Permission Denied")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Camera Permission Denied")));
         print('Camera Permission Denied');
       }
     } catch (e) {
@@ -142,6 +155,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
           content: Text("Name, email, Aadhar and pan is required")));
     }
   }
@@ -253,11 +267,13 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       alignment: Alignment.topLeft,
                       child:
                           buildRadioButton(0, 'Same as restaurant mobile no.')),
-                  phoneField((String input) {
-                    setState(() {
-                      ownerPhone = input;
-                    });
-                  }),
+                  PhoneField(
+                    onPhoneNumberChanged: (String number) {
+                      setState(() {
+                        ownerPhone = number;
+                      });
+                    },
+                  ),
                   Align(
                     alignment: Alignment.topLeft,
                     child: CheckboxListTile(
@@ -372,7 +388,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Upload Signature'.toUpperCase(),
+                            'Upload Aadhar Front'.toUpperCase(),
                             style: titleTextStyle,
                           ),
                           SizedBox(width: 1.w),
@@ -381,16 +397,126 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handleSignaturePicked),
-                  isSignatureUploaded
+                  uploadWidget(onFilePicked: _handleAadharFrontPicked),
+                  isAadharUploadeFront
                       ? Text(
-                          '${imageSignaturePath?.split('/').last} selected!',
+                          '${imageAadharFrontPath?.split('/').last} selected!',
                           style: body4TextStyle.copyWith(color: colorSuccess),
                         )
                       : const SizedBox.shrink()
                 ],
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
+              padding: EdgeInsets.only(left: 3.w, bottom: 5.h, right: 3.w),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Upload Aadhar Back'.toUpperCase(),
+                            style: titleTextStyle,
+                          ),
+                          SizedBox(width: 1.w),
+                          SvgPicture.asset('assets/icons/upload_icon.svg'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  uploadWidget(onFilePicked: _handleAadharBackPicked),
+                  isAadharBackUploaded
+                      ? Text(
+                          '${imageAadharBackPath?.split('/').last} selected!',
+                          style: body4TextStyle.copyWith(color: colorSuccess),
+                        )
+                      : const SizedBox.shrink()
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 3.h, left: 3.w, right: 3.w),
+              padding: EdgeInsets.only(left: 3.w, bottom: 5.h, right: 3.w),
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Upload PAN'.toUpperCase(),
+                            style: titleTextStyle,
+                          ),
+                          SizedBox(width: 1.w),
+                          SvgPicture.asset('assets/icons/upload_icon.svg'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  uploadWidget(onFilePicked: _handlePanPicked),
+                  isPanUploaded
+                      ? Text(
+                          '${imagePanPath?.split('/').last} selected!',
+                          style: body4TextStyle.copyWith(color: colorSuccess),
+                        )
+                      : const SizedBox.shrink()
+                ],
+              ),
+            ),
+            Text(
+              'Signature hear'.toUpperCase(),
+              style: titleTextStyle,
+            ),
+            Column(
+                children: [
+                  Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                          child: SfSignaturePad(
+                              key: signatureGlobalKey,
+                              backgroundColor: Colors.white,
+                              strokeColor: Colors.black,
+                              minimumStrokeWidth: 1.0,
+                              maximumStrokeWidth: 4.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey)))),
+                  SizedBox(height: 10),
+                  Row(children: <Widget>[
+                    TextButton(
+                      child: Text('Upload Signature '),
+                      onPressed: _handleSaveButtonPressed,
+                    ),
+                    TextButton(
+                      child: Text('Clear'),
+                      onPressed: _handleClearButtonPressed,
+                    )
+                  ], mainAxisAlignment: MainAxisAlignment.spaceEvenly)
+                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center),
+            SizedBox(height: 2.h),
+            // Show the captured signature image
+            _showSignatureImage(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
               child: mainButton('Save Details', textWhite, routeDocumentation),
@@ -401,12 +527,81 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
     );
   }
 
+  Widget _showSignatureImage() {
+    if (_signatureImageBytes != null) {
+      return Image.memory(_signatureImageBytes!);
+    } else {
+      return Text('No signature captured');
+    }
+  }
+
   void _handleSignaturePicked(bool isPicked, String? filePath) {
     setState(() {
       isSignatureUploaded = isPicked;
       imageSignaturePath = filePath;
     });
   }
+
+  void _handlePanPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isPanUploaded = isPicked;
+      imagePanPath = filePath;
+    });
+  }
+
+  void _handleAadharFrontPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isAadharUploadeFront = isPicked;
+      imageAadharFrontPath = filePath;
+    });
+  }
+
+  void _handleAadharBackPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isAadharBackUploaded = isPicked;
+      imageAadharBackPath = filePath;
+    });
+  }
+
+  void _handleClearButtonPressed() {
+    signatureGlobalKey.currentState!.clear();
+  }
+
+  Future<void> _handleSaveButtonPressed() async {
+    if (signatureGlobalKey.currentState != null) {
+      // Retrieve the drawn signature as a data blob
+      final data =
+          await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
+      final byteData = await data.toByteData(format: ui.ImageByteFormat.png);
+      final bytes = byteData!.buffer.asUint8List();
+      // final base64String = base64Encode(bytes);
+      // print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$base64String');
+      setState(() {
+        _signatureImageBytes = bytes;
+      });
+    }
+  }
+
+  // void _handleSaveButtonPressed() async {
+  //   final data =
+  //       await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
+  //   final bytes = await data.toByteData(format: ui.ImageByteFormat.png);
+  //   await Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (BuildContext context) {
+  //         return Scaffold(
+  //           appBar: AppBar(),
+  //           body: Center(
+  //             child: Container(
+  //               color: Colors.grey[300],
+  //               child: Image.memory(bytes!.buffer.asUint8List()),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget buildRadioButton(int value, String title) {
     return RadioListTile<int>(

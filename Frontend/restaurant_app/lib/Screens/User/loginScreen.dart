@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:restaurant_app/Screens/Subscription/getSubscription.dart';
 import 'package:restaurant_app/Screens/User/getStartedScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/forgotPasswordButton.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
@@ -31,21 +32,22 @@ class _LoginScreenState extends State<LoginScreen> {
     if (userNumber != '' && userPassword != '') {
       // userNumber = userNumber.substring(3);
       if (userNumber.substring(3).length == 10) {
-        signIn();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+        // signIn();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure,
             content: Text("Please Enter Phone Number Correctly")));
       }
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please Fill Both Field")));
+        const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Please Fill Both Field")),
+      );
     }
   }
 
@@ -68,49 +70,50 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (responseData != null && responseData['executed']) {
           saveUserInfo(responseData['uid']);
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Login Successfully")));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorFailure,
+              content: Text("Login Successfully")));
           setState(() {
             isLoading = false;
           });
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => const HomeScreen(),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
         } else {
           setState(() {
             isLoading = false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(responseData['message'])),
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'])),
           );
         }
       } else {
         setState(() {
           isLoading = false;
         });
-        // return "Failed to Update profile";
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Failed to login")));
-        throw Exception('Failed to login');
+
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure, content: Text("Failed to login")));
+        // throw Exception('Failed to login');
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Error: Server Error")));
-      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure, content: Text("Error: Server Error")));
+      // print('Error: $e');
       // Handle error
     }
   }
 
   Future<void> saveUserInfo(userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('User_id', jsonEncode(userInfo));
-    print(prefs.getString('user_id'));
+    await prefs.setString('User_id', userInfo);
+    print(prefs.getString('User_id'));
   }
 
   void routeRegister() {
@@ -135,11 +138,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text('Sign In', style: h1TextStyle),
                 Padding(
                   padding: EdgeInsets.only(top: 6.h, bottom: 4.h),
-                  child: phoneField((String number) {
-                    setState(() {
-                      userNumber = number;
-                    });
-                  }),
+                  child: PhoneField(
+                    onPhoneNumberChanged: (String number) {
+                      setState(() {
+                        userNumber = number;
+                      });
+                    },
+                  ),
                 ),
                 PasswordField(
                   labelText: 'Password',
