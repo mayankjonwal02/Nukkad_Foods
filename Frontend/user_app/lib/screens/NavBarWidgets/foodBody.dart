@@ -308,7 +308,6 @@ class _FoodBodyState extends State<FoodBody> {
           ),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 3.w),
-            height: 70.h,
             child: ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
