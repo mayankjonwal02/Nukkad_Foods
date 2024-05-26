@@ -119,16 +119,6 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     ],
                   ),
                 ),
-                Positioned(
-                  bottom: 1.h,
-                  left: 1.w,
-                  right: 1.w,
-                  child: Center(
-                    child: _cartCounter > 0
-                        ? viewCartButton(_cartCounter, routeCart)
-                        : const SizedBox.shrink(),
-                  ),
-                ),
               ],
             ),
           ),
@@ -207,6 +197,17 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                 ),
               ),
             ),
+          // Place the Positioned widget for the view cart button outside the SingleChildScrollView
+          Positioned(
+            bottom: 1.h,
+            left: 1.w,
+            right: 1.w,
+            child: Center(
+              child: _cartCounter > 0
+                  ? viewCartButton(_cartCounter, routeCart)
+                  : const SizedBox.shrink(),
+            ),
+          ),
         ],
       ),
       floatingActionButton: Padding(
@@ -214,11 +215,11 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
             EdgeInsets.only(right: 1.w, bottom: _cartCounter > 0 ? 7.h : 1.h),
         child: SizedBox(
           height: 5.h,
-          width: 20.w,
+          width: 26.w,
           child: FloatingActionButton.extended(
             backgroundColor:
                 _isFloatingContainerVisible ? Colors.black : primaryColor,
-            foregroundColor: primaryColor,
+            foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -238,7 +239,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     : Image.asset('assets/icons/menu_icon.png'),
                 SizedBox(width: 2.w),
                 Text(
-                  _isFloatingContainerVisible ? 'CLOSE' : "MENU",
+                  _isFloatingContainerVisible ? 'Cancel' : "MENU",
                   style: h6TextStyle.copyWith(color: Colors.white),
                 ),
               ],
