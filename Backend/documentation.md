@@ -1036,4 +1036,202 @@ This endpoint sends an SMS message to a specified phone number.
 ```
 
 
+### API Documentation for Adds Management
+
+#### Base URL
+```
+/api/adds
+```
+
+### Endpoints
+
+#### 1. Add Adds
+
+**URL**: `/api/adds/addAdds`
+
+**Method**: `POST`
+
+**Description**: Creates a new advertisement for a restaurant.
+
+**Request Body**:
+```json
+{
+  "restaurantId": "string",
+  "amount": number,
+  "startDate": "string (ISO 8601 format)",
+  "endDate": "string (ISO 8601 format)"
+}
+```
+
+**Response**:
+
+**Success (201)**:
+```json
+{
+  "_id": "string",
+  "restaurantId": "string",
+  "amount": number,
+  "startDate": "string",
+  "endDate": "string",
+  "createdAt": "string",
+  "updatedAt": "string",
+  "__v": number
+}
+```
+
+**Error (400)**:
+```json
+{
+  "error": "Error message"
+}
+```
+
+#### 2. Get Adds
+
+**URL**: `/api/adds/getAdds/:restaurantId`
+
+**Method**: `GET`
+
+**Description**: Retrieves all advertisements for a specific restaurant.
+
+**Parameters**:
+- `restaurantId` (string): Restaurant ID
+
+**Response**:
+
+**Success (200)**:
+```json
+{
+  "adds": [
+    {
+      "_id": "string",
+      "restaurantId": "string",
+      "amount": number,
+      "startDate": "string",
+      "endDate": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "__v": number
+    }
+  ],
+  "status": "success"
+}
+```
+
+**Error (404)**:
+```json
+{
+  "error": "Advertisement not found"
+}
+```
+
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
+
+#### 3. Update Adds
+
+**URL**: `/api/adds/updateAdds`
+
+**Method**: `PUT`
+
+**Description**: Updates an existing advertisement for a restaurant.
+
+**Request Body**:
+```json
+{
+  "restaurantId": "string",
+  "amount": number,
+  "startDate": "string (ISO 8601 format)",
+  "endDate": "string (ISO 8601 format)"
+}
+```
+
+**Response**:
+
+**Success (200)**:
+```json
+{
+  "adds": {
+    "_id": "string",
+    "restaurantId": "string",
+    "amount": number,
+    "startDate": "string",
+    "endDate": "string",
+    "createdAt": "string",
+    "updatedAt": "string",
+    "__v": number
+  },
+  "status": "success"
+}
+```
+
+**Error (404)**:
+```json
+{
+  "error": "Advertisement not found"
+}
+```
+
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
+
+#### 4. Delete Adds
+
+**URL**: `/api/adds/deleteAdds/:restaurantId`
+
+**Method**: `DELETE`
+
+**Description**: Deletes an existing advertisement for a restaurant.
+
+**Parameters**:
+- `restaurantId` (string): Restaurant ID
+
+**Response**:
+
+**Success (200)**:
+```json
+{
+  "adds": {
+    "_id": "string",
+    "restaurantId": "string",
+    "amount": number,
+    "startDate": "string",
+    "endDate": "string",
+    "createdAt": "string",
+    "updatedAt": "string",
+    "__v": number
+  },
+  "status": "success"
+}
+```
+
+**Error (404)**:
+```json
+{
+  "error": "Advertisement not found"
+}
+```
+
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
+
+### Summary:
+1. **POST `/api/adds/addAdds`**: Creates a new advertisement.
+2. **GET `/api/adds/getAdds/:restaurantId`**: Retrieves all advertisements for a specific restaurant.
+3. **PUT `/api/adds/updateAdds`**: Updates an existing advertisement.
+4. **DELETE `/api/adds/deleteAdds/:restaurantId`**: Deletes an existing advertisement.
+
+
 
