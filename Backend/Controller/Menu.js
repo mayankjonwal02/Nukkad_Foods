@@ -5,7 +5,7 @@ const {saveMenuItem , getMenuItems , updateMenuItem , deleteMenuItem} = require(
 
 router.post('/saveMenuItem', saveMenuItem);
 router.get('/getMenuItem/:uid', getMenuItems);
-router.put('/updateMenuItem/:uid/:menuitemid', updateMenuItem);
-router.delete('/deleteMenuItem/:uid/:menuitemid', deleteMenuItem);
+router.put('/updateMenuItem/:uid/:category/:subCategory/:menuitemid', updateMenuItem);
+router.delete('/deleteMenuItem/:uid/:category/:subCategory/:menuitemid', deleteMenuItem);
 
 module.exports = router;

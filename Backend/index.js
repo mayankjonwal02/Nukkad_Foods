@@ -1,34 +1,42 @@
-const express = require('express')
-const cors = require("cors")
-const ConnectMongo = require("./DatabaseConnection/mongoDB")
-const authRouter = require("./Controller/Authentication")
-const orderRouter = require("./Controller/Order")
-const menuRouter = require("./Controller/Menu")
-const smsRouter = require("./Controller/SMS")
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const ConnectMongo = require('./DatabaseConnection/mongoDB');
+const authRouter = require('./Controller/Authentication');
+const orderRouter = require('./Controller/Order');
+const menuRouter = require('./Controller/Menu');
+const smsRouter = require('./Controller/SMS');
 
+const port = 3000;
+const app = express();
 
-const port = 3000
-const app = express()
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 
+// Remove view engine setup as it's not needed for serving static HTML files
+// app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
 
-app.use("/api/auth",authRouter)
-app.use("/api/order",orderRouter)
-app.use("/api/menu",menuRouter)
-app.use("/api/sms",smsRouter)
+app.use('/api/auth', authRouter);
+app.use('/api/order', orderRouter);
+app.use('/api/menu', menuRouter);
+app.use('/api/sms', smsRouter);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+  res.send('Hello World!');
+});
 
-app.get("/test" ,(req,res) => {
-    res.send("Running")
-})
+// Serve the static HTML file
+app.get('/ui', (req, res) => {
+  res.sendFile(path.join(__dirname, '/views/index.html'));
+});
 
-app.listen(port, '0.0.0.0' ,() => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.get('/test', (req, res) => {
+  res.send('Running');
+});
 
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Example app listening on port ${port}`);
+});
 
-ConnectMongo()
+ConnectMongo();

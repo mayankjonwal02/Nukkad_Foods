@@ -377,138 +377,243 @@ This endpoint does not expect any request body.
 
 
 
-### POST /api/menu/saveMenuItem
+### Menu API
 
-**Description:**
-This endpoint is used to save a new menu item for a specific user.
+#### Base URL
+```
+/api/menu
+```
 
-**Request:**
-- Method: POST
-- Path: `/api/menu/saveMenuItem`
-- Request Body:
-  ```json
-  {
-    "uid": "user123",
-    "menuitem": {
-      "menuitemName": "Burger",
-      "menuitemImageURL": "burger.jpg",
-      "servingInfo": "Large",
-      "menuitemCost": 5.99,
-      "inStock": true,
-      "timeToPrepare": 10
-    }
+### Endpoints
+
+#### 1. Save Menu Item
+
+**URL**: `/api/menu/saveMenuItem`
+
+**Method**: `POST`
+
+**Description**: Adds a new menu item to the specified category and subcategory.
+
+**Request Body**:
+```json
+{
+  "uid": "string",
+  "category": "string",
+  "subCategory": "string",
+  "menuItem": {
+    "menuItemName": "string",
+    "menuItemImageURL": "string",
+    "servingInfo": "string",
+    "menuItemCost": number,
+    "inStock": boolean,
+    "timeToPrepare": number
   }
-  ```
+}
+```
 
-**Response:**
-- Status Code: 201 Created
-- Status Code: 500 Internal Server Error
+**Response**:
 
-**Response Body (Success):**
+**Success (201)**:
 ```json
 {
   "message": "Menu item added successfully"
 }
 ```
 
----
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
 
-### GET /api/menu/getMenuItem/:uid
+#### 2. Get Menu Items
 
-**Description:**
-This endpoint is used to retrieve all menu items for a specific user.
+**URL**: `/api/menu/getMenuItem/:uid`
 
-**Request:**
-- Method: GET
-- Path: `/api/menu/getMenuItem/user123`
+**Method**: `GET`
 
-**Response:**
-- Status Code: 200 OK
-- Status Code: 404 Not Found
-- Status Code: 500 Internal Server Error
+**Description**: Retrieves the menu items for the specified user ID. Can filter by category and subcategory if provided.
 
-**Response Body (Success):**
+**Parameters**:
+- `uid` (string): User ID
+
+**Optional Query Parameters**:
+- `category` (string): Category name
+- `subCategory` (string): Subcategory name
+
+**Response**:
+
+**Success (200)**:
+
+- If neither `category` nor `subCategory` is provided:
 ```json
 {
   "menuItems": [
     {
-      "menuitemName": "Burger",
-      "menuitemImageURL": "burger.jpg",
-      "servingInfo": "Large",
-      "menuitemCost": 5.99,
-      "inStock": true,
-      "timeToPrepare": 10
-    },
-    {
-      "menuitemName": "Pizza",
-      "menuitemImageURL": "pizza.jpg",
-      "servingInfo": "Medium",
-      "menuitemCost": 9.99,
-      "inStock": true,
-      "timeToPrepare": 15
+      "category": "string",
+      "subCategory": [
+        {
+          "subCategoryName": "string",
+          "menuItems": [
+            {
+              "menuItemName": "string",
+              "menuItemImageURL": "string",
+              "servingInfo": "string",
+              "menuItemCost": number,
+              "inStock": boolean,
+              "timeToPrepare": number
+            }
+          ]
+        }
+      ]
     }
   ]
 }
 ```
 
----
-
-### PUT /api/menu/updateMenuItem/:uid/:menuitemid
-
-**Description:**
-This endpoint is used to update a specific menu item for a user.
-
-**Request:**
-- Method: PUT
-- Path: `/api/menu/updateMenuItem/user123/123456`
-- Request Body:
-  ```json
-  {
-    "updatedata": {
-      "menuitemName": "New Burger",
-      "menuitemCost": 6.99
+- If only `category` is provided:
+```json
+{
+  "subCategories": [
+    {
+      "subCategoryName": "string",
+      "menuItems": [
+        {
+          "menuItemName": "string",
+          "menuItemImageURL": "string",
+          "servingInfo": "string",
+          "menuItemCost": number,
+          "inStock": boolean,
+          "timeToPrepare": number
+        }
+      ]
     }
+  ]
+}
+```
+
+- If both `category` and `subCategory` are provided:
+```json
+{
+  "menuItems": [
+    {
+      "menuItemName": "string",
+      "menuItemImageURL": "string",
+      "servingInfo": "string",
+      "menuItemCost": number,
+      "inStock": boolean,
+      "timeToPrepare": number
+    }
+  ]
+}
+```
+
+**Error (404)**:
+```json
+{
+  "message": "Menu items not found"
+}
+```
+
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
+
+#### 3. Update Menu Item
+
+**URL**: `/api/menu/updateMenuItem/:uid/:category/:subCategory/:menuitemid`
+
+**Method**: `PUT`
+
+**Description**: Updates an existing menu item in the specified category and subcategory.
+
+**Parameters**:
+- `uid` (string): User ID
+- `category` (string): Category name
+- `subCategory` (string): Subcategory name
+- `menuitemid` (string): Menu item ID
+
+**Request Body**:
+```json
+{
+  "updatedata": {
+    "menuItemName": "string",
+    "menuItemImageURL": "string",
+    "servingInfo": "string",
+    "menuItemCost": number,
+    "inStock": boolean,
+    "timeToPrepare": number
   }
-  ```
+}
+```
 
-**Response:**
-- Status Code: 200 OK
-- Status Code: 404 Not Found
-- Status Code: 500 Internal Server Error
+**Response**:
 
-**Response Body (Success):**
+**Success (200)**:
 ```json
 {
   "message": "Menu item updated successfully"
 }
 ```
 
----
+**Error (404)**:
+```json
+{
+  "message": "Menu item not found"
+}
+```
 
-### DELETE /api/menu/deleteMenuItem/:uid/:menuitemid
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
 
-**Description:**
-This endpoint is used to delete a specific menu item for a user.
+#### 4. Delete Menu Item
 
-**Request:**
-- Method: DELETE
-- Path: `/api/menu/deleteMenuItem/user123/123456`
+**URL**: `/api/menu/deleteMenuItem/:uid/:category/:subCategory/:menuitemid`
 
-**Response:**
-- Status Code: 200 OK
-- Status Code: 404 Not Found
-- Status Code: 500 Internal Server Error
+**Method**: `DELETE`
 
-**Response Body (Success):**
+**Description**: Deletes an existing menu item from the specified category and subcategory.
+
+**Parameters**:
+- `uid` (string): User ID
+- `category` (string): Category name
+- `subCategory` (string): Subcategory name
+- `menuitemid` (string): Menu item ID
+
+**Response**:
+
+**Success (200)**:
 ```json
 {
   "message": "Menu item deleted successfully"
 }
 ```
 
+**Error (404)**:
+```json
+{
+  "message": "Menu item not found"
+}
+```
+
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
 
 
-Sure, here's a documentation for your SMS API using Express and Twilio:
+
+
 
 ### SMS API Documentation
 
