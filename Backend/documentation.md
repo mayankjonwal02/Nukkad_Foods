@@ -176,7 +176,12 @@ This API provides endpoints for managing orders within the NukkadFoods system. I
         "itemQuantity": <number>,
         "unitCost": <number>
       },
-      // ... more item objects
+       "paymentMethod" : "{ type: String, required: true }",
+       "totalCost": "{ type: Number, required: true }",
+       "gst": "{ type: Number, required: true }",
+       "itemAmount": "{ type: Number, required: true }",
+       "deliveryCharge": "{ type: Number, required: true }",
+       "convinenceFee": "{ type: Number, required: true }"
     ]
   }
 }
@@ -384,6 +389,7 @@ This endpoint does not expect any request body.
 /api/menu
 ```
 
+<<<<<<< HEAD
 ### Endpoints
 
 #### 1. Save Menu Item
@@ -407,6 +413,25 @@ This endpoint does not expect any request body.
     "menuItemCost": number,
     "inStock": boolean,
     "timeToPrepare": number
+=======
+**Request:**
+- Method: POST
+- Path: `/api/menu/saveMenuItem`
+- Request Body:
+  ```json
+  {
+    "uid": "user123",
+    "menuitem": {
+      "menuitemName": "Burger",
+      "menuitemImageURL": "burger.jpg",
+      "servingInfo": "Large",
+      "menuitemCost": 5.99,
+      "inStock": true,
+      "timeToPrepare": 10,
+      "category":"string",
+      "subCategory":"string"
+    }
+>>>>>>> 6e4b859436cbae582351b4bd70751ed21e5445de
   }
 }
 ```
