@@ -17,6 +17,7 @@ const orderSchema = new mongoose.Schema(
             orderByid: { type: String, required: true },
             orderByName: { type: String, required: true },
             status: { type: String, required: true },
+            deliveryAddress: { type: String, required: true },
             items: [{
                 itemId: { type: String, required: true },
                 itemName: { type: String, required: true },

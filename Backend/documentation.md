@@ -169,6 +169,7 @@ This API provides endpoints for managing orders within the NukkadFoods system. I
     "orderByid": "<id_of_the_user_who_placed_the_order>",
     "orderByName": "<name_of_the_user_who_placed_the_order>",
     "status": "<order_status>",
+    "deliveryAddress": "{ type: String, required: true }",
     "items": [
       {
         "itemId": "<item_id>",
