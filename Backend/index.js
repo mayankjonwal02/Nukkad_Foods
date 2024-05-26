@@ -6,6 +6,7 @@ const authRouter = require('./Controller/Authentication');
 const orderRouter = require('./Controller/Order');
 const menuRouter = require('./Controller/Menu');
 const smsRouter = require('./Controller/SMS');
+const subscribeRouter = require('./Controller/Subscribe');
 
 const port = 3000;
 const app = express();
@@ -21,6 +22,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/menu', menuRouter);
 app.use('/api/sms', smsRouter);
+app.use('/api/subscribe', subscribeRouter);
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!');

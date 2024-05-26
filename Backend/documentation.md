@@ -389,7 +389,6 @@ This endpoint does not expect any request body.
 /api/menu
 ```
 
-<<<<<<< HEAD
 ### Endpoints
 
 #### 1. Save Menu Item
@@ -413,25 +412,6 @@ This endpoint does not expect any request body.
     "menuItemCost": number,
     "inStock": boolean,
     "timeToPrepare": number
-=======
-**Request:**
-- Method: POST
-- Path: `/api/menu/saveMenuItem`
-- Request Body:
-  ```json
-  {
-    "uid": "user123",
-    "menuitem": {
-      "menuitemName": "Burger",
-      "menuitemImageURL": "burger.jpg",
-      "servingInfo": "Large",
-      "menuitemCost": 5.99,
-      "inStock": true,
-      "timeToPrepare": 10,
-      "category":"string",
-      "subCategory":"string"
-    }
->>>>>>> 6e4b859436cbae582351b4bd70751ed21e5445de
   }
 }
 ```
@@ -934,5 +914,126 @@ This endpoint sends an SMS message to a specified phone number.
       "executed": false
   }
   ```
+
+### API Documentation for Subscription Management
+
+#### Base URL
+```
+/api/subscribe
+```
+
+### Endpoints
+
+#### 1. Subscribe
+
+**URL**: `/api/subscribe/subscribe`
+
+**Method**: `POST`
+
+**Description**: Creates or updates a subscription for a restaurant.
+
+**Request Body**:
+```json
+{
+  "restaurantId": "string",
+  "amount": number,
+  "duration": "string"
+}
+```
+
+**Response**:
+
+**Success (201)**:
+```json
+{
+  "message": "Subscription added successfully"
+}
+```
+
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
+
+#### 2. Get Subscription
+
+**URL**: `/api/subscribe/subscribe/:restaurantId`
+
+**Method**: `GET`
+
+**Description**: Retrieves the subscription details for a specified restaurant.
+
+**Parameters**:
+- `restaurantId` (string): Restaurant ID
+
+**Response**:
+
+**Success (200)**:
+```json
+{
+  "restaurantId": "string",
+  "amount": number,
+  "duration": "string",
+  "createdAt": "date",
+  "updatedAt": "date"
+}
+```
+
+**Error (404)**:
+```json
+{
+  "message": "Subscription not found"
+}
+```
+
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
+
+#### 3. Update Subscription
+
+**URL**: `/api/subscribe/subscribe`
+
+**Method**: `PUT`
+
+**Description**: Updates an existing subscription for a restaurant.
+
+**Request Body**:
+```json
+{
+  "restaurantId": "string",
+  "amount": number,
+  "duration": "string"
+}
+```
+
+**Response**:
+
+**Success (200)**:
+```json
+{
+  "message": "Subscription updated successfully"
+}
+```
+
+**Error (404)**:
+```json
+{
+  "message": "Subscription not found"
+}
+```
+
+**Error (500)**:
+```json
+{
+  "error": "Error message"
+}
+```
+
 
 
