@@ -8,6 +8,7 @@ const menuRouter = require('./Controller/Menu');
 const smsRouter = require('./Controller/SMS');
 const subscribeRouter = require('./Controller/Subscribe');
 const AddRouter = require('./Controller/Adds');
+const ComplaintRouter = require('./Controller/Complaint');
 
 
 const port = 3000;
@@ -26,6 +27,7 @@ app.use('/api/menu', menuRouter);
 app.use('/api/sms', smsRouter);
 app.use('/api/subscribe', subscribeRouter);
 app.use('/api/adds', AddRouter);
+app.use('/api/complaint', ComplaintRouter);
 
 
 app.get('/', (req, res) => {

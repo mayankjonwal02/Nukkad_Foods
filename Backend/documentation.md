@@ -1235,3 +1235,140 @@ This endpoint sends an SMS message to a specified phone number.
 
 
 
+
+### Complaint API
+
+#### Base URL:
+```
+/api/complaint
+```
+
+#### Endpoints:
+
+1. **Add Complaint**
+   - Method: POST
+   - URL: /addComplaint
+   - Description: Add a new complaint for a restaurant.
+   - Request Body:
+     ```json
+     {
+         "restaurantID": "123",
+         "status": "Processing",
+         "orderID": "456",
+         "description": "Received wrong item",
+         "complaintByID": "789",
+         "designation": "Customer"
+     }
+     ```
+   - Response Body (Success):
+     ```json
+     {
+         "message": "Complaint added successfully",
+         "complaint": {
+             "_id": "617091f3d5309808cfc5f367",
+             "status": "Processing",
+             "orderID": "456",
+             "description": "Received wrong item",
+             "complaintByID": "789",
+             "designation": "Customer",
+             "createdAt": "2022-10-21T08:45:47.122Z",
+             "updatedAt": "2022-10-21T08:45:47.122Z"
+         }
+     }
+     ```
+   - Response Body (Error):
+     ```json
+     {
+         "error": "Internal Server Error"
+     }
+     ```
+
+2. **Get Complaints by Restaurant ID**
+   - Method: GET
+   - URL: /getComplaint/:restaurantID
+   - Description: Get all complaints for a specific restaurant.
+   - Response Body (Success):
+     ```json
+     {
+         "complaints": [
+             {
+                 "_id": "617091f3d5309808cfc5f367",
+                 "status": "Processing",
+                 "orderID": "456",
+                 "description": "Received wrong item",
+                 "complaintByID": "789",
+                 "designation": "Customer",
+                 "createdAt": "2022-10-21T08:45:47.122Z",
+                 "updatedAt": "2022-10-21T08:45:47.122Z"
+             },
+             {
+                 "_id": "617091f3d5309808cfc5f368",
+                 "status": "Resolve",
+                 "orderID": "457",
+                 "description": "Delayed delivery",
+                 "complaintByID": "790",
+                 "designation": "Customer",
+                 "createdAt": "2022-10-21T08:46:05.876Z",
+                 "updatedAt": "2022-10-21T08:46:05.876Z"
+             }
+         ],
+         "status": "success"
+     }
+     ```
+   - Response Body (Error):
+     ```json
+     {
+         "error": "Complaint database not found"
+     }
+     ```
+
+3. **Update Complaint**
+   - Method: PUT
+   - URL: /updateComplaint/:restaurantID/:complaintID
+   - Description: Update a complaint for a specific restaurant.
+   - Request Body:
+     ```json
+     {
+         "status": "Resolve",
+         "description": "Issue resolved"
+     }
+     ```
+   - Response Body (Success):
+     ```json
+     {
+         "message": "Complaint updated successfully",
+         "updatedComplaint": {
+             "_id": "617091f3d5309808cfc5f367",
+             "status": "Resolve",
+             "orderID": "456",
+             "description": "Issue resolved",
+             "complaintByID": "789",
+             "designation": "Customer",
+             "createdAt": "2022-10-21T08:45:47.122Z",
+             "updatedAt": "2022-10-21T09:00:22.537Z"
+         }
+     }
+     ```
+   - Response Body (Error):
+     ```json
+     {
+         "error": "Complaint not found"
+     }
+     ```
+
+4. **Delete Complaint**
+   - Method: DELETE
+   - URL: /deleteComplaint/:restaurantID/:complaintID
+   - Description: Delete a complaint for a specific restaurant.
+   - Response Body (Success):
+     ```json
+     {
+         "message": "Complaint deleted successfully"
+     }
+     ```
+   - Response Body (Error):
+     ```json
+     {
+         "error": "Complaint not found"
+     }
+     ```
