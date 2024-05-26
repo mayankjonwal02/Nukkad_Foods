@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/splashScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
@@ -17,16 +18,16 @@ class MainApp extends StatelessWidget {
         return MaterialApp(
           title: 'Nukkad Foods',
           theme: ThemeData(
-            useMaterial3: true,
-            timePickerTheme: const TimePickerThemeData(
-              dialHandColor: primaryColor,
-              backgroundColor: textWhite,
-              dayPeriodColor: textGrey3,
-              dialBackgroundColor: textGrey2,
-              hourMinuteColor: bgColor,
-              entryModeIconColor: textBlack,
-            ),
-          ),
+              useMaterial3: true,
+              timePickerTheme: const TimePickerThemeData(
+                dialHandColor: primaryColor,
+                backgroundColor: textWhite,
+                dayPeriodColor: textGrey3,
+                dialBackgroundColor: textGrey2,
+                hourMinuteColor: bgColor,
+                entryModeIconColor: textBlack,
+              ),
+              textTheme: GoogleFonts.poppinsTextTheme()),
           debugShowCheckedModeBanner: false,
           home: const SplashScreen(),
         );

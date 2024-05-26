@@ -8,6 +8,7 @@ import 'package:user_app/Screens/Subscriptions/planScreen.dart';
 import 'package:user_app/Screens/Support/helpSupportScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/screens/rewards/rewardsScreen.dart';
 
 class customAppBar extends StatefulWidget {
   const customAppBar({super.key});
@@ -20,7 +21,7 @@ class _customAppBarState extends State<customAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 5.h, right: 2.w, left: 3.w),
+      margin: EdgeInsets.only(top: 5.h, right: 1.8.w, left: 3.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,7 +83,8 @@ class _customAppBarState extends State<customAppBar> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const PlanScreen(),
+                  // builder: (context) => const PlanScreen(),
+                  builder: (context) => const RewardsScreen(),
                 ),
               );
             },
