@@ -50,6 +50,14 @@ const userSchema = new mongoose.Schema({
     ordersData: {
         type: Array,
         default: []
+    },
+    gender : {
+        type: String,
+        required: true
+    },
+    userImage: {
+        type: Buffer,
+        required: true
     }
 });
 

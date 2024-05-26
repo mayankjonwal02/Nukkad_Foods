@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const { errorMonitor } = require("ws")
-const {userSchema} = require("../Entity/User_Entity")
+const { userSchema } = require("../Entity/User_Entity")
 
 const loginService = async (req, res) => {
     let phonenumber = req.body.phoneNumber
@@ -10,14 +10,14 @@ const loginService = async (req, res) => {
         let DB = mongoose.connection.useDb("NukkadFoods")
         let collection = DB.collection("Restaurants")
 
-        const user = await collection.findOne({phoneNumber: phonenumber})
+        const user = await collection.findOne({ phoneNumber: phonenumber })
 
         if (!user) {
             return res.json({ message: "Restaurant Doesn't Exist", executed: false })
         }
 
         if (password === user.password) {
-            return res.json({ message: "Login Successful", executed: true , uid : user._id})
+            return res.json({ message: "Login Successful", executed: true, uid: user._id })
         } else {
             return res.json({ message: "Wrong Password", executed: false })
         }
@@ -127,13 +127,13 @@ const signupService = async (req, res) => {
 
 const getRestaurantUserService = async (req, res) => {
     let id = req.params.id;
-   
+
 
     try {
         let DB = mongoose.connection.useDb("NukkadFoods")
         let collection = DB.collection("Restaurants")
         const objectId = new mongoose.Types.ObjectId(id);
-        const user = await collection.findOne({_id: objectId})
+        const user = await collection.findOne({ _id: objectId })
 
         if (!user) {
             return res.json({ message: "Restaurant Doesn't Exist", executed: false })
@@ -158,6 +158,8 @@ const userSignUp = async (req, res) => {
         longitude,
         houseFlatNo,
         area,
+        gender,
+        userImage,
         colony,
         hint,
         saveAs
@@ -182,6 +184,8 @@ const userSignUp = async (req, res) => {
                 area,
                 colony,
                 hint,
+                gender,
+                userImage,
                 saveAs,
                 ordersData: [] // Ensure ordersData is initialized as an empty list
             });
@@ -205,14 +209,14 @@ const userLogin = async (req, res) => {
         let DB = mongoose.connection.useDb("NukkadFoods")
         let User = DB.model('User', userSchema);
 
-        const user = await User.findOne({contact: contact})
+        const user = await User.findOne({ contact: contact })
 
         if (!user) {
             return res.json({ message: "User Doesn't Exist", executed: false })
         }
 
         if (password === user.password) {
-            return res.json({ message: "Login Successful", executed: true , uid : user._id})
+            return res.json({ message: "Login Successful", executed: true, uid: user._id })
         } else {
             return res.json({ message: "Wrong Password", executed: false })
         }
@@ -222,7 +226,7 @@ const userLogin = async (req, res) => {
     }
 }
 
-const getUserByID = async (req,res) => {
+const getUserByID = async (req, res) => {
     let id = req.params.id;
     try {
         let DB = mongoose.connection.useDb("NukkadFoods")
@@ -240,7 +244,7 @@ const getUserByID = async (req,res) => {
     }
 }
 
-const updateUserById = async (req,res) => {
+const updateUserById = async (req, res) => {
     const { _id, updateData } = req.body;
     try {
         let DB = mongoose.connection.useDb("NukkadFoods")
@@ -265,4 +269,4 @@ const updateUserById = async (req,res) => {
 }
 
 
-module.exports = {loginService,signupService,getRestaurantUserService , userSignUp , userLogin,getUserByID,updateUserById}
+module.exports = { loginService, signupService, getRestaurantUserService, userSignUp, userLogin, getUserByID, updateUserById }

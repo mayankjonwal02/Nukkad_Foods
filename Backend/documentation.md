@@ -708,7 +708,9 @@ This endpoint sends an SMS message to a specified phone number.
     "area": "string",
     "colony": "string (optional)",
     "hint": "string",
-    "saveAs": "string"
+    "saveAs": "string",
+    "gender":"string",
+    "userImage":"Buffer",
 }
 ```
 
