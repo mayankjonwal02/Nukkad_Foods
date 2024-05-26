@@ -400,7 +400,9 @@ This endpoint is used to save a new menu item for a specific user.
       "servingInfo": "Large",
       "menuitemCost": 5.99,
       "inStock": true,
-      "timeToPrepare": 10
+      "timeToPrepare": 10,
+      "category":"string",
+      "subCategory":"string"
     }
   }
   ```
