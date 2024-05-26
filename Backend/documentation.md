@@ -176,7 +176,12 @@ This API provides endpoints for managing orders within the NukkadFoods system. I
         "itemQuantity": <number>,
         "unitCost": <number>
       },
-      // ... more item objects
+       "paymentMethod" : "{ type: String, required: true }",
+       "totalCost": "{ type: Number, required: true }",
+       "gst": "{ type: Number, required: true }",
+       "itemAmount": "{ type: Number, required: true }",
+       "deliveryCharge": "{ type: Number, required: true }",
+       "convinenceFee": "{ type: Number, required: true }"
     ]
   }
 }
