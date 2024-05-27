@@ -18,7 +18,7 @@ const saveMenuItem = async (req, res) => {
         if (!categoryObj) {
             categoryObj = { category: category, subCategory: [] };
             existingMenuItem.menuItemList.push(categoryObj);
-            existingMenuItem.markModified('menuItemList');
+            // existingMenuItem.markModified('menuItemList');
         }
 
         let subCategoryObj = categoryObj.subCategory.find(subCat => subCat.subCategoryName === subCategory);
@@ -27,12 +27,12 @@ const saveMenuItem = async (req, res) => {
             subCategoryObj = { subCategoryName: subCategory, menuItems: [] };
             
             categoryObj.subCategory.push(subCategoryObj);
-            existingMenuItem.markModified('menuItemList');
+            // existingMenuItem.markModified('menuItemList');
             
         }
         
         subCategoryObj.menuItems.push(menuItem);
-        console.log("subCategoryObj", subCategoryObj);
+        // console.log("subCategoryObj", subCategoryObj);
         existingMenuItem.markModified('menuItemList');
 
         await existingMenuItem.save();
