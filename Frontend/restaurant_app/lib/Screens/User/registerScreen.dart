@@ -289,7 +289,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Container(
                 height: 40.h,
                 color: bgColor,
-                child: MapWidget(),
+                // child: MapWidget(),
                 // child: GoogleMap(
                 //   mapType: MapType.normal,
                 //   onMapCreated: (GoogleMapController controller) {
@@ -376,6 +376,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 2.h, bottom: 1.h),
                       child: PhoneField(
+                        controller: nukkadContactController,
                         onPhoneNumberChanged: (String number) {
                           setState(() {
                             nukkadContact = number;

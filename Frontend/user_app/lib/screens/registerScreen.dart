@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/loginScreen.dart';
 import 'package:user_app/Screens/otpScreen.dart';
@@ -19,6 +22,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  bool isLoading = false;
   String userName = '';
   String userEmail = '';
   String userNumber = '';
@@ -48,21 +52,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         userEmail != '' &&
         userNumber != '' &&
         newPassword != '' &&
-        confirmPassword != '' &&
-        newPassword == confirmPassword) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OTPScreen(userNumber: userNumber, option: 2),
-        ),
-      );
-      setState(() {
-        userName = '';
-        userEmail = '';
-        userNumber = '';
-        newPassword = '';
-        confirmPassword = '';
-      });
+        confirmPassword != '') {
+      if (newPassword == confirmPassword) {
+        userSignUp();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please enter all details'),
+            backgroundColor: colorFailure,
+          ),
+        );
+      }
+
+      // setState(() {
+      //   userName = '';
+      //   userEmail = '';
+      //   userNumber = '';
+      //   newPassword = '';
+      //   confirmPassword = '';
+      // });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -70,6 +78,82 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           backgroundColor: colorFailure,
         ),
       );
+    }
+  }
+
+  Future<void> userSignUp() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var baseUrl = dotenv.env['BASE_URL'];
+      var reqData = {
+        "username": userName,
+        "email": userEmail,
+        "contact": userNumber,
+        "password": confirmPassword,
+        "latitude": "676.000",
+        "longitude": "5345.909",
+        "houseFlatNo": "string df gdfg  ",
+        "area": "string d  gdfd fg",
+        "colony": "string (optional)",
+        "hint": "strin gfddf g",
+        "saveAs": "strggging"
+      };
+      String requestBody = jsonEncode(reqData);
+      // print(reqData);
+      final response = await http.post(Uri.parse('$baseUrl/auth/userSignUp'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: requestBody);
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        if (responseData != null && responseData['executed']) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorSuccess,
+              content: Text("Signup Successfully")));
+          setState(() {
+            isLoading = false;
+          });
+          // SharedPreferences prefs = await SharedPreferences.getInstance();
+          // Remove the data associated with the key 'user_info'
+          // await prefs.remove('user_info');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  OTPScreen(userNumber: userNumber, option: 2),
+            ),
+          );
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          // SharedPreferences prefs = await SharedPreferences.getInstance();
+          // Remove the data associated with the key 'user_info'
+          // await prefs.remove('user_info');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'])),
+          );
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure, content: Text("Failed to Signup")));
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure, content: Text("Error: Server Error")));
     }
   }
 
@@ -125,10 +209,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onValueChanged: handleConfirmPasswordChange,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 2.h),
-              child: mainButton('Sign Up', textWhite, () => routeSignUp()),
-            ),
+            isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: colorFailure,
+                    ),
+                  )
+                : Padding(
+                    padding: EdgeInsets.only(bottom: 2.h),
+                    child:
+                        mainButton('Sign Up', textWhite, () => routeSignUp()),
+                  ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

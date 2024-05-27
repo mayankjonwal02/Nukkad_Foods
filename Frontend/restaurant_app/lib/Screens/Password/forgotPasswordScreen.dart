@@ -21,6 +21,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final TextEditingController ownerPhoneController = TextEditingController();
   String enteredNumber = '';
   bool isLoading = false;
 
@@ -136,6 +137,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Padding(
                 padding: EdgeInsets.only(top: 10.h, bottom: 8.h),
                 child: PhoneField(
+                  controller: ownerPhoneController,
                   onPhoneNumberChanged: (String number) {
                     setState(() {
                       enteredNumber = number;

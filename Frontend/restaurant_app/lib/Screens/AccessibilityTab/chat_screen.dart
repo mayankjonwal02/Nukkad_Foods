@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
@@ -13,90 +12,108 @@ class ChatScreenWidget extends StatefulWidget {
 }
 
 class _ChatScreenWidgetState extends State<ChatScreenWidget> {
+  final TextEditingController _messageController = TextEditingController();
+
+  // Declare _messages as an instance variable
+  List<Map<String, dynamic>> _messages = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat with Us', style: h4TextStyle),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 19.sp,
-            color: Colors.black,
-          ),
+          icon: const Icon(Icons.arrow_back_ios, color: textBlack),
         ),
+        title: Text('Chat with Us', style: h4TextStyle),
+        centerTitle: true,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(5.w),
-                child: ListView(
-                  children: [
-                    // Container for other user messages
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      width: MediaQuery.of(context).size.width / 1.43,
-                      decoration: BoxDecoration(
-                        color: textGrey3,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: Text(
-                          "Hi Apeksha, I am your costumer care representive, Vinod. How can I help you today?"),
-                    ),
-                    // Container for current user messages
-                    Container(
-                      alignment: Alignment.centerRight,
-                      width: MediaQuery.of(context).size.width / 3,
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        "Your Message",
-                        style: body6TextStyle.copyWith(
-                          letterSpacing: 0.7,
-                          fontSize: 15,
-                          color: textWhite,
-                          fontWeight: FontWeight.w400,
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                final message = _messages[index];
+                final isSupport = message['isSupport'] as bool;
+                final color = isSupport ? Color(0xFFd6d6d6) : primaryColor;
+                final textColor = isSupport ? textBlack : Colors.white;
+                final borderRadius = BorderRadius.circular(15);
+                return Container(
+                  margin:
+                      EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 5.w),
+                  child: Align(
+                    alignment: isSupport
+                        ? Alignment.centerLeft
+                        : Alignment.centerRight,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 75.w),
+                      child: Container(
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: borderRadius,
+                        ),
+                        child: Text(
+                          message['text'] as String,
+                          style: TextStyle(color: textColor),
                         ),
                       ),
                     ),
-                  ],
+                  ),
+                );
+              },
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+            height: 8.h,
+            child: TextField(
+              controller: _messageController,
+              decoration: InputDecoration(
+                hintText: 'Start typing your query...',
+                hintStyle: body4TextStyle,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.send,
+                    color: primaryColor,
+                  ),
+                  onPressed: () {
+                    final text = _messageController.text;
+                    if (text.isNotEmpty) {
+                      setState(() {
+                        _messages.add({'text': text, 'isSupport': false});
+                        _messageController.clear();
+                        _messages.add({
+                          'text':
+                              'Hi Apeksha, I am your customer care representative, Vinod. How can I help you today?',
+                          'isSupport': true
+                        });
+                      });
+                    }
+                  },
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: primaryColor, width: 0.1.h),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: primaryColor, width: 0.1.h),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(5.w),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Type your message...',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: primaryColor, width: 1.0),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      // Handle send message action
-                    },
-                    icon: Icon(Icons.send),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
   }
 }
