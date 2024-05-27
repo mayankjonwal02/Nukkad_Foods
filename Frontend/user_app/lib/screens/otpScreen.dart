@@ -37,10 +37,11 @@ class _OTPScreenState extends State<OTPScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const LocationSetupScreen(),
+            builder: (context) => const LoginScreen(),
           ),
         );
       }
+      // LocationSetupScreen
     }
 
     void routeLogin() {

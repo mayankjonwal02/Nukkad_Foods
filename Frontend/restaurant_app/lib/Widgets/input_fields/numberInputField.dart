@@ -17,7 +17,7 @@ Widget numberInputField(String labelText, TextEditingController controller,
       keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(7),
+        LengthLimitingTextInputFormatter(15),
       ],
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(

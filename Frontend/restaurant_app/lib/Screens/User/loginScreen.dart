@@ -9,6 +9,7 @@ import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/buttons/socialLoginButtons.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
+import 'package:restaurant_app/Widgets/customs/HomeBody/viewTotalBill.dart';
 import 'package:restaurant_app/Widgets/input_fields/passwordField.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/homeScreen.dart';
@@ -24,6 +25,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController ownerPhoneController = TextEditingController();
   String userNumber = '';
   String userPassword = '';
   bool isLoading = false;
@@ -36,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
         );
+        // ViewTotalBillWidget
         // signIn();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -113,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> saveUserInfo(userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('User_id', userInfo);
+    print('sdggdgsagasssdasdasdasdads');
     print(prefs.getString('User_id'));
   }
 
@@ -139,6 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: EdgeInsets.only(top: 6.h, bottom: 4.h),
                   child: PhoneField(
+                    controller: ownerPhoneController,
                     onPhoneNumberChanged: (String number) {
                       setState(() {
                         userNumber = number;

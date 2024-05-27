@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
+import 'package:restaurant_app/Widgets/customs/HomeBody/viewTotalBill.dart';
 import 'package:sizer/sizer.dart';
 import 'package:http/http.dart' as http;
 import '../../../Screens/Orders/trackRiderScreen.dart';
@@ -297,7 +298,15 @@ class _OrderWidgetState extends State<OrderWidget> {
                 decoration: BoxDecoration(
                   color: textWhite,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: textGrey2, width: 0.2.h),
+                  border: Border.all(color: textGrey3, width: 0.2.h),
+                  boxShadow: [
+                    BoxShadow(
+                      color: textGrey3.withOpacity(0.5), // Shadow color
+                      spreadRadius: 2, // Spread radius
+                      blurRadius: 5, // Blur radius
+                      offset: Offset(0, 3), // Offset in the x and y directions
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
@@ -429,7 +438,15 @@ class _OrderWidgetState extends State<OrderWidget> {
                     type
                         ? _buildOrderStatusWidget()
                         : GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ViewTotalBillWidget()),
+                              );
+                              // ViewTotalBillWidget
+                            },
                             child: Container(
                               height: 6.h,
                               width: 100.w,

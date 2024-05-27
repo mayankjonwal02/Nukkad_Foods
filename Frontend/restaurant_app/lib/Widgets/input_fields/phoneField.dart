@@ -6,9 +6,10 @@ import 'package:sizer/sizer.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class PhoneField extends StatefulWidget {
+  final TextEditingController controller;
   final Function(String) onPhoneNumberChanged;
 
-  PhoneField({required this.onPhoneNumberChanged});
+  PhoneField({required this.controller, required this.onPhoneNumberChanged});
 
   @override
   _PhoneFieldState createState() => _PhoneFieldState();
