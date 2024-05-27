@@ -35,7 +35,7 @@ class _NukkadSettingWidgetState extends State<NukkadSettingWidget> {
   ];
   List<bool> isOpen = List.generate(7, (index) => false);
   // final ImagePicker imagebannerpath = ImagePicker();
-  late String imagebannerpath;
+  String? imagebannerpath;
 
   @override
   void initState() {
@@ -211,7 +211,7 @@ class _NukkadSettingWidgetState extends State<NukkadSettingWidget> {
                   alignment: Alignment.center,
                   child: Text(
                     'nukkad Contact'.toUpperCase(),
-                    style: titleTextStyle,
+                    style: titleTextStyle.copyWith(fontSize: 14.sp),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -234,7 +234,9 @@ class _NukkadSettingWidgetState extends State<NukkadSettingWidget> {
                   alignment: Alignment.center,
                   child: Text(
                     'restaurant operational hours'.toUpperCase(),
-                    style: titleTextStyle,
+                    style: titleTextStyle.copyWith(fontSize: 14.sp),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -322,6 +324,141 @@ class _NukkadSettingWidgetState extends State<NukkadSettingWidget> {
                           'Select restaurant opening /closing time',
                           style: body4TextStyle.copyWith(color: textGrey3),
                         ),
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                'Opening',
+                                style: body5TextStyle.copyWith(
+                                    color: colorSuccess,
+                                    letterSpacing: 1.5,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5.w, vertical: 1.h),
+                                decoration: BoxDecoration(
+                                  color: bgColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: colorFailure, width: 0.2.w),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: colordenger
+                                          .withOpacity(0.5), // Shadow color
+                                      spreadRadius: 2, // Spread radius
+                                      blurRadius: 5, // Blur radius
+                                      offset: Offset(0,
+                                          2), // Offset in the x and y directions
+                                    ),
+                                  ],
+                                ),
+                                child: Stack(children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/openRes.png',
+                                        cacheWidth: 50,
+                                      ),
+                                      SizedBox(
+                                        width: 2.w,
+                                      ),
+                                      Text(
+                                        '09:30 AM',
+                                        style: body5TextStyle.copyWith(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  Positioned(
+                                    top: 10,
+                                    left: 5,
+                                    child: Text(
+                                      'OPEN',
+                                      style: body6TextStyle.copyWith(
+                                          color: colorSuccess),
+                                    ),
+                                  )
+                                ]),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                'Closing',
+                                style: body5TextStyle.copyWith(
+                                    color: colordenger,
+                                    letterSpacing: 1.5,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5.w, vertical: 1.h),
+                                decoration: BoxDecoration(
+                                  color: bgColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: colorFailure, width: 0.2.w),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: colordenger
+                                          .withOpacity(0.5), // Shadow color
+                                      spreadRadius: 2, // Spread radius
+                                      blurRadius: 5, // Blur radius
+                                      offset: Offset(0,
+                                          2), // Offset in the x and y directions
+                                    ),
+                                  ],
+                                ),
+                                child: Stack(children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/closeRes.png',
+                                        cacheWidth: 50,
+                                      ),
+                                      SizedBox(
+                                        width: 2.w,
+                                      ),
+                                      Text(
+                                        '10:30 PM',
+                                        style: body5TextStyle.copyWith(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                  Positioned(
+                                    top: 10,
+                                    left: 5,
+                                    child: Text(
+                                      'CLOSE',
+                                      style: body6TextStyle.copyWith(
+                                        color: colorFailure,
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),

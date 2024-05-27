@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
@@ -20,6 +21,10 @@ Widget phoneField(Function(String) onPhoneNumberChanged) {
       dropdownDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(7.0),
       ),
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(10),
+      ],
       decoration: InputDecoration(
         labelText: 'Mobile'.toString().toUpperCase(),
         labelStyle: body4TextStyle.copyWith(color: textGrey2),

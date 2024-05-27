@@ -56,7 +56,8 @@ class _OrderBodyState extends State<OrderBody> {
     });
     try {
       var baseUrl = dotenv.env['BASE_URL'];
-      final response = await http.get(Uri.parse('$baseUrl/order/orders/$uid'));
+      final response = await http
+          .get(Uri.parse('$baseUrl/order/orders/6643a1f3c6ff7f63f77f536c'));
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         if (responseData is Map<String, dynamic>) {

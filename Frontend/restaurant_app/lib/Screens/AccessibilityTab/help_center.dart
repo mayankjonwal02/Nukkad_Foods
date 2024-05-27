@@ -113,19 +113,19 @@ class _HelpCenterWidgetState extends State<HelpCenterWidget> {
                   child: mainButton(
                       'chat with us'.toUpperCase(), textWhite, routerChat),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Still need help?'.toUpperCase(),
-                    style: body6TextStyle.copyWith(
-                      letterSpacing: 0.7,
-                      fontSize: 15,
-                      color: primaryColor,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+                // Align(
+                //   alignment: Alignment.center,
+                //   child: Text(
+                //     'Still need help?'.toUpperCase(),
+                //     style: body6TextStyle.copyWith(
+                //       letterSpacing: 0.7,
+                //       fontSize: 15,
+                //       color: primaryColor,
+                //       fontWeight: FontWeight.w400,
+                //     ),
+                //     textAlign: TextAlign.center,
+                //   ),
+                // ),
               ],
             ),
           ),

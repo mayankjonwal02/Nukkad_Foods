@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -25,6 +26,32 @@ class SetOrderingScreen extends StatefulWidget {
 }
 
 class _SetOrderingScreenState extends State<SetOrderingScreen> {
+  List<String> cuisines = [
+    "Chinese",
+    "Momos",
+    "Mughlai",
+    "Mexican",
+    "Arabic",
+    "Bihari",
+    "North Indian",
+    "Thai",
+    "South Indian",
+    "Chaat",
+    "Italian",
+    "Cakes",
+    "Bakery",
+    "Sweets",
+    "Himachali",
+    "Bengali",
+    "Nepali",
+    "Continental",
+    "Hyderabadi",
+    "Gujrati",
+    "Maharastrian"
+  ];
+
+  Map<String, bool> selectedCuisines = {};
+  List<String> selectedCuisineList = [];
   TextEditingController controller = TextEditingController();
   bool isLoading = false;
   List<String> daysOfWeek = [
@@ -43,6 +70,9 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
   @override
   void initState() {
     super.initState();
+    for (var cuisine in cuisines) {
+      selectedCuisines[cuisine] = false;
+    }
     getUserData();
     // getUid();
   }
@@ -75,7 +105,7 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_info', jsonEncode(userInfo));
     await signUp();
-    print(prefs.getString('user_info'));
+    // print(prefs.getString('user_info'));
   }
 
   routeRegistrationComplete() {
@@ -91,6 +121,25 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
           backgroundColor: colorFailure,
           content: Text("All Fields is required")));
     }
+  }
+
+  void _updateSelectedCuisines(bool? value, String cuisine) {
+    setState(() {
+      if (selectedCuisineList.length < 3 || selectedCuisines[cuisine] == true) {
+        selectedCuisines[cuisine] = value!;
+        if (value == true) {
+          selectedCuisineList.add(cuisine);
+        } else {
+          selectedCuisineList.remove(cuisine);
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("You can select up to 3 cuisines only."),
+          ),
+        );
+      }
+    });
   }
 
   Future<void> signUp() async {
@@ -130,8 +179,8 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
           setState(() {
             isLoading = false;
           });
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          // Remove the data associated with the key 'user_info'
+          // SharedPreferences prefs = await SharedPreferences.getInstance();
+          // // Remove the data associated with the key 'user_info'
           // await prefs.remove('user_info');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -191,8 +240,9 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
               child: Column(
                 children: [
                   const RegistrationTimeline(pageIndex: 3),
+                  //   alignment: Alignment.center,
+                  // child:
                   Align(
-                    alignment: Alignment.center,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(5.w, 1.h, 5.w, 2.h),
                       child: Text(
@@ -203,6 +253,7 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                       ),
                     ),
                   ),
+
                   Container(
                       margin: EdgeInsets.only(left: 3.w, right: 3.w),
                       padding:
@@ -214,6 +265,54 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                       ),
                       child: Column(
                         children: [
+                          // DropdownButtonHideUnderline(
+                          //   child: DropdownButton(
+                          //     hint: Text("Select up to 3 cuisines"),
+                          //     isExpanded: true,
+                          //     items: [
+                          //       DropdownMenuItem(
+                          //         child: Column(
+                          //           children: cuisines.map((cuisine) {
+                          //             return CheckboxListTile(
+                          //               title: Text(cuisine),
+                          //               value: selectedCuisines[cuisine],
+                          //               onChanged: (bool? value) {
+                          //                 _updateSelectedCuisines(
+                          //                     value, cuisine);
+                          //               },
+                          //             );
+                          //           }).toList(),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //     onChanged: (_) {},
+                          //   ),
+                          // ),
+
+                          const SizedBox(height: 20),
+                          if (selectedCuisineList.isNotEmpty)
+                            Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: selectedCuisineList.map((cuisine) {
+                                    return ListTile(
+                                      title: Text(cuisine),
+                                      trailing: IconButton(
+                                        icon: Icon(Icons.remove_circle),
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedCuisines[cuisine] = false;
+                                            selectedCuisineList.remove(cuisine);
+                                          });
+                                        },
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
                           Padding(
                             padding: EdgeInsets.only(bottom: 2.h),
                             child: textInputField(
@@ -260,7 +359,7 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                             child: Wrap(
                               spacing: 0.5.h,
                               runSpacing: 0.5.h,
-                              alignment: WrapAlignment.spaceEvenly,
+                              // alignment: WrapAlignment.spaceEvenly,
                               runAlignment: WrapAlignment.center,
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: List.generate(
@@ -318,6 +417,141 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                             'Select restaurant opening /closing time',
                             style: body4TextStyle.copyWith(color: textGrey3),
                           ),
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  'Opening',
+                                  style: body5TextStyle.copyWith(
+                                      color: colorSuccess,
+                                      letterSpacing: 1.5,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 7.w, vertical: 1.h),
+                                  decoration: BoxDecoration(
+                                    color: bgColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: colorFailure, width: 0.2.w),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: colordenger
+                                            .withOpacity(0.5), // Shadow color
+                                        spreadRadius: 2, // Spread radius
+                                        blurRadius: 5, // Blur radius
+                                        offset: Offset(0,
+                                            2), // Offset in the x and y directions
+                                      ),
+                                    ],
+                                  ),
+                                  child: Stack(children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/openRes.png',
+                                          cacheWidth: 50,
+                                        ),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        Text(
+                                          '09:30 AM',
+                                          style: body5TextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      top: 10,
+                                      left: 5,
+                                      child: Text(
+                                        'OPEN',
+                                        style: body6TextStyle.copyWith(
+                                            color: colorSuccess),
+                                      ),
+                                    )
+                                  ]),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  'Closing',
+                                  style: body5TextStyle.copyWith(
+                                      color: colordenger,
+                                      letterSpacing: 1.5,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 7.w, vertical: 1.h),
+                                  decoration: BoxDecoration(
+                                    color: bgColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: colorFailure, width: 0.2.w),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: colordenger
+                                            .withOpacity(0.5), // Shadow color
+                                        spreadRadius: 2, // Spread radius
+                                        blurRadius: 5, // Blur radius
+                                        offset: Offset(0,
+                                            2), // Offset in the x and y directions
+                                      ),
+                                    ],
+                                  ),
+                                  child: Stack(children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/closeRes.png',
+                                          cacheWidth: 50,
+                                        ),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        Text(
+                                          '10:30 PM',
+                                          style: body5TextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      top: 10,
+                                      left: 5,
+                                      child: Text(
+                                        'CLOSE',
+                                        style: body6TextStyle.copyWith(
+                                          color: colorFailure,
+                                        ),
+                                      ),
+                                    )
+                                  ]),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),

@@ -15,6 +15,7 @@ import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/customs/User/registrationTimeline.dart';
 import 'package:restaurant_app/Widgets/customs/User/uploadWidget.dart';
+import 'package:restaurant_app/Widgets/input_fields/numberInputField.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,7 +36,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   Uint8List? _signatureImageBytes;
   File? _image;
   // final ImagePicker imagebannerpath = ImagePicker();
-  late String imagebannerpath;
+  String? imagebannerpath;
   String? imageSignaturePath;
   String? imagePanPath;
   String? imageAadharFrontPath;
@@ -45,7 +46,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   String ownerPhone = '';
   String currentAddress = '';
   String permanentAddress = '';
-
+  String nukkadPhoneNumber = '';
   final ownerNameController = TextEditingController();
   final ownerEmailController = TextEditingController();
   final ownerPhoneController = TextEditingController();
@@ -111,12 +112,17 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
       setState(() {
         userInfo = getData!;
-        aadharNumberController.text = userInfo['kycDetails']['aadharNumber'];
-        panNumberController.text = userInfo['kycDetails']['panNumber'];
-        ownerEmailController.text = userInfo['ownerEmail'];
-        ownerPhoneController.text = userInfo['ownerContactNumber'];
+        nukkadPhoneNumber = userInfo['phoneNumber'];
+        ownerNameController.text = userInfo['ownerName'] ?? '';
+        ownerPhoneController.text = userInfo['ownerContactNumber'] ?? '';
         currentAddressController.text = userInfo['currentAddress'];
-        permanentAddressController.text = userInfo['permananetAddress'];
+        permanentAddressController.text = userInfo['permananetAddress'] ?? '';
+        // aadharNumberController.text =
+        //     userInfo['kycDetails']['aadharNumber'] ?? '';
+        // panNumberController.text = userInfo['kycDetails']['panNumber'] ?? '';
+        ownerEmailController.text = userInfo['ownerEmail'] ?? "";
+
+        // print('ddddddddddddddddddddddddddd$userInfo');
         // isLoading = false;
       });
     } catch (e) {
@@ -127,6 +133,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
 
   Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.remove('user_info');
     await prefs.setString('user_info', jsonEncode(userInfo));
     print(prefs.getString('user_info'));
   }
@@ -142,12 +149,14 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       userInfo['ownerContactNumber'] = ownerPhone;
       userInfo['currentAddress'] = currentAddress;
       userInfo['permananetAddress'] = permanentAddress;
-      userInfo['signature'] = imageSignaturePath;
-      // userInfo['nukkadAddress'] = whatsappConfirmation;
       userInfo['kycDetails'] = {
         'aadharNumber': aadharNumber,
         'panNumber': panNumber,
       };
+      userInfo['signature'] = imageSignaturePath;
+
+      // userInfo['nukkadAddress'] = whatsappConfirmation;
+
       saveUserInfo(userInfo);
       Navigator.push(
         context,
@@ -268,6 +277,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       child:
                           buildRadioButton(0, 'Same as restaurant mobile no.')),
                   PhoneField(
+                    controller: ownerPhoneController,
                     onPhoneNumberChanged: (String number) {
                       setState(() {
                         ownerPhone = number;
@@ -293,6 +303,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                   textInputField('Current Address', currentAddressController,
                       (String input) {
                     setState(() {
+                      // currentAddressController.text = input;
                       currentAddress = input;
                     });
                   }),
@@ -333,9 +344,9 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                 children: [
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 1.h, 0, 0.5.h),
-                    child:
-                        textInputField('Aadhaar Number', aadharNumberController,
-                            (String input) {
+                    child: numberInputField(
+                        'Aadhaar Number', aadharNumberController,
+                        (String input) {
                       setState(() {
                         aadharNumber = input;
                       });
@@ -351,7 +362,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 1.h, 0, 0.5.h),
-                    child: textInputField('PAN Number', panNumberController,
+                    child: numberInputField('PAN Number', panNumberController,
                         (String input) {
                       setState(() {
                         panNumber = input;
@@ -574,10 +585,11 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
           await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
       final byteData = await data.toByteData(format: ui.ImageByteFormat.png);
       final bytes = byteData!.buffer.asUint8List();
-      // final base64String = base64Encode(bytes);
+      final base64String = base64Encode(bytes);
       // print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$base64String');
       setState(() {
         _signatureImageBytes = bytes;
+        imageSignaturePath = base64String;
       });
     }
   }
@@ -609,7 +621,21 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       groupValue: _selectedOption,
       onChanged: (newValue) {
         setState(() {
+          // ownerPhoneController.text = nukkadPhoneNumber;
           _selectedOption = newValue;
+          if (newValue != null && title == 'Same as current address.') {
+            permanentAddress = currentAddressController.text;
+            permanentAddressController.text = currentAddressController.text;
+          } else {
+            permanentAddressController.clear();
+          }
+          if (newValue == 0) {
+            ownerPhoneController.text = nukkadPhoneNumber;
+            ownerPhone = nukkadPhoneNumber;
+          } else {
+            ownerPhoneController.clear();
+            ownerPhone = '';
+          }
         });
       },
       toggleable: true,

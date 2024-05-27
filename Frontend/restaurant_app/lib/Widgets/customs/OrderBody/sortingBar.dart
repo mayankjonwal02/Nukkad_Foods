@@ -148,30 +148,30 @@ class _SortingBarState extends State<SortingBar> {
                   ),
                 ),
                 // SizedBox(height: 2.h),
-                Container(
-                  padding: EdgeInsets.fromLTRB(10.w, 0, 12.w, 0.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: selectorButton(
-                            textWhite, primaryColor, 'Cancel', primaryColor),
-                      ),
-                      SizedBox(width: 2.w),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: selectorButton(primaryColor, primaryColor,
-                            'Apply Filters', textWhite),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   padding: EdgeInsets.fromLTRB(10.w, 0, 12.w, 0.h),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       GestureDetector(
+                //         onTap: () {
+                //           Navigator.pop(context);
+                //         },
+                //         child: selectorButton(
+                //             textWhite, primaryColor, 'Cancel', primaryColor),
+                //       ),
+                //       SizedBox(width: 2.w),
+                //       GestureDetector(
+                //         onTap: () {
+                //           Navigator.pop(context);
+                //         },
+                //         child: selectorButton(primaryColor, primaryColor,
+                //             'Apply Filters', textWhite),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
