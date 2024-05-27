@@ -4,7 +4,7 @@ const { menuItemSchema } = require("../Entity/Menu_Entity")
 const saveMenuItem = async (req, res) => {
     try {
         const { uid, category, subCategory, menuItem } = req.body;
-        
+
         let DB = mongoose.connection.useDb("NukkadFoods");
         const MenuItem = DB.model('MenuItem', menuItemSchema);
         let existingMenuItem = await MenuItem.findOne({ uid });
@@ -16,22 +16,27 @@ const saveMenuItem = async (req, res) => {
         let categoryObj = existingMenuItem.menuItemList.find(cat => cat.category === category);
 
         if (!categoryObj) {
-            categoryObj = { category, subCategory: [] };
+            categoryObj = { category: category, subCategory: [] };
             existingMenuItem.menuItemList.push(categoryObj);
+            existingMenuItem.markModified('menuItemList');
         }
 
         let subCategoryObj = categoryObj.subCategory.find(subCat => subCat.subCategoryName === subCategory);
 
         if (!subCategoryObj) {
             subCategoryObj = { subCategoryName: subCategory, menuItems: [] };
+            
             categoryObj.subCategory.push(subCategoryObj);
+            existingMenuItem.markModified('menuItemList');
+            
         }
-
+        
         subCategoryObj.menuItems.push(menuItem);
+        console.log("subCategoryObj", subCategoryObj);
+        existingMenuItem.markModified('menuItemList');
 
         await existingMenuItem.save();
-
-        res.status(201).json({ message: 'Menu item added successfully' });
+        return res.status(201).json({ message: 'Menu item added successfully', existingMenuItem });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
