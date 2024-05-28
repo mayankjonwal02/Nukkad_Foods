@@ -11,28 +11,36 @@ const saveMenuItem = async (req, res) => {
 
         if (!existingMenuItem) {
             existingMenuItem = new MenuItem({ uid, menuItemList: [] });
+            await existingMenuItem.save();
         }
-
+        existingMenuItem = await MenuItem.findOne({ uid });
         let categoryObj = existingMenuItem.menuItemList.find(cat => cat.category === category);
 
         if (!categoryObj) {
             categoryObj = { category: category, subCategory: [] };
             existingMenuItem.menuItemList.push(categoryObj);
-            // existingMenuItem.markModified('menuItemList');
+            // Debugging statement
+            console.log('New categoryObj created and pushed:', categoryObj);
+            await existingMenuItem.save()
         }
-
+        existingMenuItem = await MenuItem.findOne({ uid });
+        categoryObj = existingMenuItem.menuItemList.find(cat => cat.category === category);
         let subCategoryObj = categoryObj.subCategory.find(subCat => subCat.subCategoryName === subCategory);
 
         if (!subCategoryObj) {
             subCategoryObj = { subCategoryName: subCategory, menuItems: [] };
-            
             categoryObj.subCategory.push(subCategoryObj);
-            // existingMenuItem.markModified('menuItemList');
-            
+            // Debugging statement
+            console.log('New subCategoryObj created and pushed:', subCategoryObj);
+            await existingMenuItem.save()
         }
-        
+        existingMenuItem = await MenuItem.findOne({ uid });
+        categoryObj = existingMenuItem.menuItemList.find(cat => cat.category === category);
+        subCategoryObj = categoryObj.subCategory.find(subCat => subCat.subCategoryName === subCategory);
         subCategoryObj.menuItems.push(menuItem);
-        // console.log("subCategoryObj", subCategoryObj);
+        // Debugging statement
+        console.log('MenuItem pushed to subCategoryObj:', subCategoryObj);
+
         existingMenuItem.markModified('menuItemList');
 
         await existingMenuItem.save();
@@ -40,7 +48,8 @@ const saveMenuItem = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};
+
 
 
 
