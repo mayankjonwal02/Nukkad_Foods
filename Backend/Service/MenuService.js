@@ -4,10 +4,10 @@ const { menuItemSchema } = require("../Entity/Menu_Entity")
 const saveMenuItem = async (req, res) => {
     try {
         const { uid, category, subCategory, menuItem } = req.body;
-
+        // return res.json({reqbody: req.body})
         let DB = mongoose.connection.useDb("NukkadFoods");
         const MenuItem = DB.model('MenuItem', menuItemSchema);
-        MenuItem.createCollection();
+        await MenuItem.createCollection();
         let existingMenuItem = await MenuItem.findOne({ uid });
 
         if (!existingMenuItem) {
