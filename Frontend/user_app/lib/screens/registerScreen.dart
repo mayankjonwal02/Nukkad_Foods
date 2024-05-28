@@ -98,7 +98,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         "area": "string d  gdfd fg",
         "colony": "string (optional)",
         "hint": "strin gfddf g",
-        "saveAs": "strggging"
+        "saveAs": "strggging",
+        "gender": "male",
+        "userImage": "www.image.com"
       };
       String requestBody = jsonEncode(reqData);
       // print(reqData);

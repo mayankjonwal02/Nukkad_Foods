@@ -79,7 +79,7 @@ class _DishesFormState extends State<DishesForm> {
       print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: colorSuccess,
@@ -89,7 +89,7 @@ class _DishesFormState extends State<DishesForm> {
         final responseData = jsonDecode(response.body);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: colorFailure,
-          content: Text(responseData['error'] ?? 'Unknown error'),
+          content: Text(responseData['message'] ?? 'Unknown error'),
         ));
         print('Server error: ${response.body}');
       }
@@ -113,17 +113,16 @@ class _DishesFormState extends State<DishesForm> {
   }
 
   void handleSubmit() {
-    String uid = "dummyUid";
+    String uid = "restaurant123";
     String category = selectedLabel; // Use the selected label for category
     String subCategory = selectedCategory ??
         "General"; // Default to "General" if no subcategory is selected
     String menuItemName = itemName.text;
-    String menuItemImageURL =
-        "https://example.com/images/dish.jpg"; // Dummy URL
-    String servingInfo = "Serves ${noOfServers.text}";
+    String menuItemImageURL = "www.image.com"; // Image URL
+    String servingInfo = "myserveinfo";
     double menuItemCost = double.tryParse(basePrice.text) ?? 0.0;
     bool inStock = true; // Assuming it's always in stock for now
-    int timeToPrepare = 15; // Dummy preparation time
+    int timeToPrepare = 1; // Time to prepare
 
     saveMenuItem(
       uid: uid,

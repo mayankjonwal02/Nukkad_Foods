@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/Widgets/customs/Food/adsSlider.dart';
 import 'package:user_app/Widgets/customs/Food/allRestaurants.dart';
 import 'package:user_app/Widgets/customs/Food/appBar.dart';
 import 'package:user_app/Widgets/customs/Food/offersSlider.dart';
@@ -10,6 +9,7 @@ import 'package:user_app/Widgets/customs/Food/restaurantSlider.dart';
 import 'package:user_app/Widgets/customs/Food/searchBar.dart';
 import 'package:user_app/Widgets/customs/Food/sectionGrid.dart';
 import 'package:user_app/Widgets/customs/Food/sectionSlider.dart';
+import 'package:user_app/widgets/customs/Food/adsSlider.dart';
 
 class FoodBody extends StatefulWidget {
   const FoodBody({super.key});
@@ -187,7 +187,7 @@ class _FoodBodyState extends State<FoodBody> {
             padding: EdgeInsets.only(bottom: 2.h),
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 2.w),
-              child: adsSlider(),
+              child: AdsSlider(),
             ),
           ),
           Padding(
