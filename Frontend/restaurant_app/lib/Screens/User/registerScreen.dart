@@ -289,18 +289,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Container(
                 height: 40.h,
                 color: bgColor,
-                // child: MapWidget(),
-                // child: GoogleMap(
-                //   mapType: MapType.normal,
-                //   onMapCreated: (GoogleMapController controller) {
-                //     mapController = controller;
-                //   },
-                //   initialCameraPosition: const CameraPosition(
-                //     target: LatLng(60.0, 60.0),
-                //     zoom: 12.0,
-                //   ),
-                //   markers: Set.from([]),
-                // ),
+                //child: MapWidget(),
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  onMapCreated: (GoogleMapController controller) {
+                    mapController = controller;
+                  },
+                  initialCameraPosition: const CameraPosition(
+                    target: LatLng(60.0, 60.0),
+                    zoom: 12.0,
+                  ),
+                  markers: Set.from([]),
+                ),
               ),
               Align(
                 alignment: Alignment.center,
