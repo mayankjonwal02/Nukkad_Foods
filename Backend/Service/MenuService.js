@@ -7,14 +7,12 @@ const saveMenuItem = async (req, res) => {
 
     let DB = mongoose.connection.useDb("NukkadFoods");
     const MenuItem = DB.model("MenuItem", menuItemSchema);
-    MenuItem.createCollection();
     let existingMenuItem = await MenuItem.findOne({ uid });
 
     if (!existingMenuItem) {
       existingMenuItem = new MenuItem({ uid, menuItemList: [] });
-      await existingMenuItem.save();
     }
-    existingMenuItem = await MenuItem.findOne({ uid });
+
     let categoryObj = existingMenuItem.menuItemList.find(
       (cat) => cat.category === category
     );
@@ -22,36 +20,22 @@ const saveMenuItem = async (req, res) => {
     if (!categoryObj) {
       categoryObj = { category: category, subCategory: [] };
       existingMenuItem.menuItemList.push(categoryObj);
-      // Debugging statement
-      console.log("New categoryObj created and pushed:", categoryObj);
-      await existingMenuItem.save();
+      // existingMenuItem.markModified('menuItemList');
     }
-    existingMenuItem = await MenuItem.findOne({ uid });
-    categoryObj = existingMenuItem.menuItemList.find(
-      (cat) => cat.category === category
-    );
+
     let subCategoryObj = categoryObj.subCategory.find(
       (subCat) => subCat.subCategoryName === subCategory
     );
 
     if (!subCategoryObj) {
       subCategoryObj = { subCategoryName: subCategory, menuItems: [] };
-      categoryObj.subCategory.push(subCategoryObj);
-      // Debugging statement
-      console.log("New subCategoryObj created and pushed:", subCategoryObj);
-      await existingMenuItem.save();
-    }
-    existingMenuItem = await MenuItem.findOne({ uid });
-    categoryObj = existingMenuItem.menuItemList.find(
-      (cat) => cat.category === category
-    );
-    subCategoryObj = categoryObj.subCategory.find(
-      (subCat) => subCat.subCategoryName === subCategory
-    );
-    subCategoryObj.menuItems.push(menuItem);
-    // Debugging statement
-    console.log("MenuItem pushed to subCategoryObj:", subCategoryObj);
 
+      categoryObj.subCategory.push(subCategoryObj);
+      // existingMenuItem.markModified('menuItemList');
+    }
+
+    subCategoryObj.menuItems.push(menuItem);
+    // console.log("subCategoryObj", subCategoryObj);
     existingMenuItem.markModified("menuItemList");
 
     await existingMenuItem.save();
