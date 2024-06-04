@@ -21,6 +21,7 @@ class GetStartedScreen extends StatefulWidget {
 class _GetStartedScreenState extends State<GetStartedScreen> {
   LocalController _getSavedData = LocalController();
   late Map<String, dynamic> userInfo;
+
   @override
   void initState() {
     super.initState();
@@ -30,11 +31,12 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
   Future<void> getUserData() async {
     try {
       Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
-      setState(() {
-        userInfo = getData!;
-        nukkadNameController.text = userInfo['nukkadName'];
-      });
-      print('jkhjj ${userInfo}');
+      if (getData != null) {
+        setState(() {
+          userInfo = getData;
+          nukkadNameController.text = userInfo['nukkadName'] ?? '';
+        });
+      }
     } catch (e) {
       print('Error: $e');
       // Handle error
@@ -44,12 +46,12 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
   String nukkadName = '';
   final nukkadNameController = TextEditingController();
 
-  routeReferral() {
+  routeReferral() async {
     if (nukkadName.isNotEmpty) {
       var addData = {
         'nukkadName': nukkadName,
       };
-      saveUserInfo(addData);
+      await saveUserInfo(addData);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -63,10 +65,13 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
     }
   }
 
-  Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
+  Future<void> saveUserInfo(Map<String, dynamic> newData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userInfoStr = prefs.getString('user_info');
+    Map<String, dynamic> userInfo =
+        userInfoStr != null ? jsonDecode(userInfoStr) : {};
+    userInfo.addAll(newData);
     await prefs.setString('user_info', jsonEncode(userInfo));
-    // print(prefs.getString('user_info'));
   }
 
   @override
