@@ -54,37 +54,33 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> signIn(String phoneNumber, String password) async {
+  Future<void> signIn() async {
     setState(() {
       isLoading = true;
     });
-
     try {
       var baseUrl = dotenv.env['BASE_URL'];
-      var reqData = {
-        'phoneNumber': phoneNumber,
-        'password': password,
-      };
+      var reqData = {'phoneNumber': userNumber, 'password': userPassword};
       String requestBody = jsonEncode(reqData);
-
       final response = await http.post(
         Uri.parse('$baseUrl/auth/login'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: requestBody,
       );
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
-        if (responseData != null && responseData['executed']) {
+        if (responseData != null && responseData['executed'] == true) {
           saveUserInfo(responseData['uid']);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: colorFailure,
-              content: Text("Login Successful")));
+              backgroundColor: colorSuccess,
+              content: Text("Login Successfully")));
           setState(() {
             isLoading = false;
           });
-          // Navigate to the next screen after successful login
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -93,14 +89,17 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() {
             isLoading = false;
           });
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: colorFailure,
-              content: Text(responseData['message'])));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'] ?? "Login failed")),
+          );
         }
       } else {
         setState(() {
           isLoading = false;
         });
+
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: colorFailure, content: Text("Failed to login")));
       }
@@ -171,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     : Padding(
                         padding: EdgeInsets.only(bottom: 2.h),
-                        child: mainButton('Sign In', textWhite, routeHome),
+                        child: mainButton('Sign In', textWhite, signIn),
                       ),
                 Align(
                   alignment: Alignment.center,
