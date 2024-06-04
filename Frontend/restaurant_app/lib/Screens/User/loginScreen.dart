@@ -54,19 +54,24 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> signIn() async {
+  Future<void> signIn(String phoneNumber, String password) async {
     setState(() {
       isLoading = true;
     });
+
     try {
       var baseUrl = dotenv.env['BASE_URL'];
-      var reqData = {'phonenumber': userNumber, 'password': userPassword};
+      var reqData = {
+        'phoneNumber': phoneNumber,
+        'password': password,
+      };
       String requestBody = jsonEncode(reqData);
-      final response = await http.post(Uri.parse('$baseUrl/auth/login'),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: requestBody);
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: requestBody,
+      );
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
@@ -75,10 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
           saveUserInfo(responseData['uid']);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: colorFailure,
-              content: Text("Login Successfully")));
+              content: Text("Login Successful")));
           setState(() {
             isLoading = false;
           });
+          // Navigate to the next screen after successful login
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -87,20 +93,16 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() {
             isLoading = false;
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                backgroundColor: colorFailure,
-                content: Text(responseData['message'])),
-          );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: colorFailure,
+              content: Text(responseData['message'])));
         }
       } else {
         setState(() {
           isLoading = false;
         });
-
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: colorFailure, content: Text("Failed to login")));
-        // throw Exception('Failed to login');
       }
     } catch (e) {
       setState(() {
@@ -108,8 +110,6 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: colorFailure, content: Text("Error: Server Error")));
-      // print('Error: $e');
-      // Handle error
     }
   }
 

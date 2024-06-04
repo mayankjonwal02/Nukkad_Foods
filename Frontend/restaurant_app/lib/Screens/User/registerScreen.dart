@@ -57,9 +57,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   LocalController _getSavedData = LocalController();
   late Map<String, dynamic> userInfo;
   late Position _currentPosition;
-  double getLaitude = 0.0;
+  double getLatitude = 0.0;
   double getLongitude = 0.0;
   bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -73,7 +74,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           desiredAccuracy: LocationAccuracy.high);
       setState(() {
         _currentPosition = position;
-        getLaitude = _currentPosition.latitude;
+        getLatitude = _currentPosition.latitude;
         getLongitude = _currentPosition.longitude;
         _isLoading = false;
       });
@@ -96,11 +97,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         nukkadAddressController.text = userInfo['nukkadAddress'];
         nukkadCityController.text = userInfo['city'];
         nukkadPincodeController.text = userInfo['pincode'];
-        nukkadLandmarkController.text = userInfo['landmark,'];
+        nukkadLandmarkController.text = userInfo['landmark'];
       });
     } catch (e) {
       print('Error: $e');
-      // Handle error
     }
   }
 
@@ -117,7 +117,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         confirmPassword.isNotEmpty) {
       if (password == confirmPassword) {
         userInfo['nukkadAddress'] = nukkadAddress;
-        userInfo['latitude'] = getLaitude;
+        userInfo['latitude'] = getLatitude;
         userInfo['longitude'] = getLongitude;
         userInfo['bankDetails'] = {
           'accountNo': accountNumber,
@@ -126,9 +126,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         };
         userInfo['phoneNumber'] = nukkadContact;
         userInfo['password'] = password;
-        userInfo['pincode,'] = nukkadPincode;
+        userInfo['pincode'] = nukkadPincode;
         userInfo['city'] = nukkadCity;
-        userInfo['landmark,'] = nukkadLandmark;
+        userInfo['landmark'] = nukkadLandmark;
         saveUserInfo(userInfo);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return OTPScreen(
@@ -139,12 +139,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: colorFailure,
-            content: Text("Your Password is not match")));
+            content: Text("Your Password does not match")));
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: colorFailure,
-          content: Text("All fields is required")));
+          content: Text("All fields are required")));
     }
   }
 
@@ -214,49 +214,35 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 2.h),
                       child: TextField(
-                          autofocus: false,
-                          // maxLength: 6,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(6),
-                          ],
-                          keyboardType: TextInputType.number,
-                          // decoration: InputDecoration(
-                          //   border: OutlineInputBorder(),
-                          //   labelText: 'PINCODE'.toUpperCase(),
-
-                          //   // hintText: 'Enter Password',
-                          // ),
-                          controller: nukkadPincodeController,
-                          onChanged: (value) {
-                            setState(() {
-                              nukkadPincode = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7),
-                              borderSide:
-                                  BorderSide(color: textGrey2, width: 0.1.h),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7),
-                              borderSide:
-                                  BorderSide(color: textGrey2, width: 0.1.h),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 5.w, vertical: 2.h),
-                            labelText: 'PINCODE'.toUpperCase(),
-                            labelStyle:
-                                body4TextStyle.copyWith(color: textGrey2),
-                          )),
-                      // textInputField(
-                      //     'PINCODE'.toUpperCase(), nukkadPincodeController,
-                      //     (String input) {
-                      //   setState(() {
-                      //     nukkadPincode = input;
-                      //   });
-                      // }),
+                        autofocus: false,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6),
+                        ],
+                        keyboardType: TextInputType.number,
+                        controller: nukkadPincodeController,
+                        onChanged: (value) {
+                          setState(() {
+                            nukkadPincode = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            borderSide:
+                                BorderSide(color: textGrey2, width: 0.1.h),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            borderSide:
+                                BorderSide(color: textGrey2, width: 0.1.h),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 5.w, vertical: 2.h),
+                          labelText: 'PINCODE'.toUpperCase(),
+                          labelStyle: body4TextStyle.copyWith(color: textGrey2),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 2.h),
@@ -271,7 +257,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     Padding(
                       padding: EdgeInsets.only(top: 1.h, bottom: 2.h),
                       child: noteWidget(
-                          'Please enter the same address as in the documentations.'),
+                          'Please enter the same address as in the documentation.'),
                     ),
                   ],
                 ),
@@ -289,7 +275,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Container(
                 height: 40.h,
                 color: bgColor,
-                //child: MapWidget(),
                 child: GoogleMap(
                   mapType: MapType.normal,
                   onMapCreated: (GoogleMapController controller) {
@@ -383,18 +368,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           });
                         },
                       ),
-                      //  phoneField((String input) {
-                      //   setState(() {
-                      //     nukkadContact = input;
-                      //   });
-                      // }),
                     ),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
                         padding: EdgeInsets.only(left: 1.w),
                         child: Text(
-                          'An otp will be sent to your registered mobile number',
+                          'An OTP will be sent to your registered mobile number',
                           style: body6TextStyle.copyWith(color: textGrey2),
                         ),
                       ),
@@ -442,7 +422,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       borderRadius: BorderRadius.circular(7),
       child: TextField(
         controller: controller,
-        // maxLength: 20,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(18),

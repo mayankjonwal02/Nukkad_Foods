@@ -115,11 +115,38 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
       userInfo['restaurantMenuImages'] = _imageRestaurantMenuImgPaths;
       userInfo['restaurantImages'] = imageRestaurantImgPath;
       userInfo['foodImages'] = imageFoodImgPath;
-      saveUserInfo(userInfo);
+      saveUserInfo(userInfo); // Save user info to SharedPreferences
+      sendUserDataToServer(userInfo); // Send user data to server for signup
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: colorFailure,
           content: Text("All Fields is required")));
+    }
+  }
+
+  Future<void> sendUserDataToServer(Map<String, dynamic> userData) async {
+    final baseUrl = dotenv.env['BASE_URL']!;
+    final signUpUrl = Uri.parse('$baseUrl/auth/signup');
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      final response = await http.post(
+        signUpUrl,
+        headers: headers,
+        body: jsonEncode(userData),
+      );
+
+      if (response.statusCode == 200) {
+        // Successful signup
+        print('Signup successful!');
+      } else {
+        // Signup failed
+        print('Signup failed: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      // Handle error...
+      print('Error: $e');
     }
   }
 
