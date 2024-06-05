@@ -19,6 +19,8 @@ function SigninAdmin() {
             alert("Login Successful");
             localStorage.setItem('admin',adminid);
             localStorage.setItem('password',password)
+            localStorage.setItem('login',true);
+            localStorage.setItem('role','admin');
             navigate('/process');
         }else{
             alert("Login Failed");

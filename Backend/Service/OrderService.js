@@ -173,14 +173,28 @@ const getAllOrders = async (req, res) => {
 
         // Fetch all orders from the "orders" collection
         const allOrders = await Order.find({});
-        
-        // Return the orders as JSON response
-        return res.json({ orders: allOrders });
+
+        // Initialize an array to store flattened orders
+        const flattenedOrders = [];
+
+        // Iterate over fetched orders and flatten them
+        allOrders.forEach(order => {
+            const { uid, orders } = order;
+            orders.forEach(orderData => {
+                const flattenedOrder = { ...orderData.toObject(), uid: uid };
+                flattenedOrders.push(flattenedOrder);
+            });
+        });
+
+        // Return the flattened orders as JSON response
+        return res.json({ orders: flattenedOrders });
     } catch (error) {
         console.error("Error while fetching orders:", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 }
+
+
 
 
 module.exports = { createOrder , getOrder , getOrderById , updateOrderById , deleteOrderById, getAllOrders};

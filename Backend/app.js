@@ -9,6 +9,7 @@ const smsRouter = require('./Controller/SMS');
 const subscribeRouter = require('./Controller/Subscribe');
 const AddRouter = require('./Controller/Adds');
 const ComplaintRouter = require('./Controller/Complaint');
+const subAdminRouter = require('./Controller/SubAdmin');
 
 
 const port = 5000;
@@ -28,6 +29,7 @@ app.use('/api/sms', smsRouter);
 app.use('/api/subscribe', subscribeRouter);
 app.use('/api/adds', AddRouter);
 app.use('/api/complaint', ComplaintRouter);
+app.use('/api/subadmin', subAdminRouter);
 
 
 app.get('/', (req, res) => {
