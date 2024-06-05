@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './auth.css';
+import './ScreenCss/auth.css';
 
 function SignupAdmin() {
   const [passwordVisible, setPasswordVisible] = useState(false);

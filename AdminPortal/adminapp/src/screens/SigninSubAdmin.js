@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './auth.css';
+import './ScreenCss/auth.css';
 
 function SigninSubAdmin() {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -12,7 +12,7 @@ function SigninSubAdmin() {
 
     return (
         <div className="App">
-            <div className='text-white fw-bold m-5' style={{ fontSize: "70px" }}>Sub-ADMIN Portal</div>
+           <div className='adminhead'>Sub-Admin Portal</div>
             <div className="signin-card">
                 <h1 className='fw-bold mt-3'>Sign In</h1>
                 <div style={{ marginBlock: "70px" }}>

@@ -165,6 +165,22 @@ const deleteOrderById = async (uid, orderId) => {
 };
 
 
+const getAllOrders = async (req, res) => {
+    try {
+        // Connect to the MongoDB database
+        const db = mongoose.connection.useDb("NukkadFoods");
+        const Order = db.model('Order', orderSchema);
+
+        // Fetch all orders from the "orders" collection
+        const allOrders = await Order.find({});
+        
+        // Return the orders as JSON response
+        return res.json({ orders: allOrders });
+    } catch (error) {
+        console.error("Error while fetching orders:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
 
 
-module.exports = { createOrder , getOrder , getOrderById , updateOrderById , deleteOrderById};
+module.exports = { createOrder , getOrder , getOrderById , updateOrderById , deleteOrderById, getAllOrders};

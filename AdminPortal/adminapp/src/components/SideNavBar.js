@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sidebar, Menu, MenuItem ,SubMenu} from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const MenuItemComponent = ({ icon, text, link, id ,globalid, setglobalid}) => {
     const backgroundColor = globalid === id ? "#7fffd4" : "white";
@@ -12,7 +13,7 @@ const MenuItemComponent = ({ icon, text, link, id ,globalid, setglobalid}) => {
 }
 
 export default function SideNavBar(props) {
-
+  const navigate = useNavigate();
   return (
     <Sidebar width='300px'>
       <Menu
@@ -46,7 +47,7 @@ export default function SideNavBar(props) {
         <MenuItemComponent icon={<i class="fa-solid fa-file-invoice me-3"></i>} text="Transactions" link="" id="transactions" globalid={props.globalid} setglobalid={props.setglobalid}/>
         <MenuItemComponent icon={<i class="fa-solid fa-users me-3"></i>} text="Sub-Admin Registration" link="" id="subadminregis" globalid={props.globalid} setglobalid={props.setglobalid}/>
         <MenuItemComponent icon={<i class="fa-solid fa-user me-3"></i>} text="Sub-Admins" link="" id="subadmins" globalid={props.globalid} setglobalid={props.setglobalid}/>
-        <MenuItemComponent icon={<i class="fa-solid fa-right-from-bracket me-3"></i>} text="Logout" link="" id="logout" globalid={props.globalid} setglobalid={props.setglobalid}/>
+        <MenuItemComponent icon={<i class="fa-solid fa-right-from-bracket me-3"></i>} text="Logout" link="" id="logout" globalid={props.globalid} setglobalid={props.setglobalid} />
       </Menu>
     </Sidebar>
   );

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const { errorMonitor } = require("ws")
 const { userSchema } = require("../Entity/User_Entity")
+const {DeliveryBoy }= require('../Entity/Delivery_boy_Entity');
 
 const loginService = async (req, res) => {
     let phonenumber = req.body.phoneNumber
@@ -61,7 +62,8 @@ const signupService = async (req, res) => {
         operationalHours,
         restaurantMenuImages,
         restaurantImages,
-        foodImages
+        foodImages,
+        status
     } = req.body;
 
     try {
@@ -111,7 +113,8 @@ const signupService = async (req, res) => {
                 operationalHours: operationalHours,
                 restaurantMenuImages: restaurantMenuImages,
                 restaurantImages: restaurantImages,
-                foodImages: foodImages
+                foodImages: foodImages,
+                status: "unverified"
             });
             console.log("Restaurant Added Successfully");
             return res.json({ message: "Restaurant Added Successfully", executed: true });
@@ -143,6 +146,25 @@ const getRestaurantUserService = async (req, res) => {
     } catch (error) {
         console.log("Error : ", error)
         return res.json({ message: error, executed: false })
+    }
+}
+
+
+const fetchAllRestaurants = async (req, res) => {
+    try {
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let collection = DB.collection("Restaurants");
+
+        const restaurants = await collection.find({}, { projection: { password: 0 } }).toArray();
+
+        if (!restaurants || restaurants.length === 0) {
+            return res.json({ message: "No Restaurants Found", executed: false });
+        }
+
+        return res.json({ message: "Restaurants Found", executed: true, restaurants: restaurants });
+    } catch (error) {
+        console.log("Error : ", error);
+        return res.json({ message: error, executed: false });
     }
 }
 
@@ -269,4 +291,149 @@ const updateUserById = async (req, res) => {
 }
 
 
-module.exports = { loginService, signupService, getRestaurantUserService, userSignUp, userLogin, getUserByID, updateUserById }
+const fetchAllUsers = async (req, res) => {
+    try {
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let User = DB.model('User', userSchema);
+
+        // Fetching all users while neglecting the password field
+        const users = await User.find({}, { password: 0 });
+
+        return res.json({ message: "Users retrieved successfully", users: users });
+    } catch (error) {
+        console.log("Error : ", error);
+        return res.json({ message: error, users: [] });
+    }
+}
+
+
+const DeliveryBoyloginService = async (req, res) => {
+    const { contact, password } = req.body;
+    try {
+        // Find the delivery boy by phone number
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let delivery = DB.model('DeliveryBoy', DeliveryBoy);
+
+        const deliveryBoy = await delivery.findOne({ contact: contact});
+
+        // If delivery boy not found
+        if (!deliveryBoy) {
+            return res.status(404).json({ message: "Delivery boy not found", executed: false });
+        }
+
+        // Check if password matches
+        if (password === deliveryBoy.password) {
+            return res.json({ message: "Login Successful", executed: true, uid: deliveryBoy._id });
+        } else {
+            return res.status(401).json({ message: "Wrong Password", executed: false });
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ message: error.message, executed: false });
+    }
+};
+
+const DeliveryBoysignupService = async (req, res) => {
+    const deliveryBoyData = req.body;
+    try {
+        // Check if delivery boy already exists
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let delivery = DB.model('DeliveryBoy', DeliveryBoy);
+
+        const existingDeliveryBoy = await delivery.findOne({ contact: deliveryBoyData.contact });
+        if (existingDeliveryBoy) {
+            return res.status(400).json({ message: "Delivery boy already exists", executed: false });
+        }
+
+        // Create a new delivery boy
+        const newDeliveryBoy = new delivery(deliveryBoyData);
+        await newDeliveryBoy.save();
+        return res.json({ message: "Delivery boy added successfully", executed: true });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ message: error.message, executed: false });
+    }
+};
+
+const getDeliveryBoyById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let delivery = DB.model('DeliveryBoy', DeliveryBoy);
+
+        const deliveryBoy = await delivery.findById(id);
+        if (!deliveryBoy) {
+            return res.status(404).json({ message: "Delivery boy not found", executed: false });
+        }
+        return res.json({ message: "Delivery boy found", executed: true, deliveryBoy });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ message: error.message, executed: false });
+    }
+};
+
+const updateDeliveryBoyById = async (req, res) => {
+    const { id,  updateData  } = req.body;
+   
+    try {
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let delivery = DB.model('DeliveryBoy', DeliveryBoy);
+
+        const deliveryBoy = await delivery.findById(id);
+   
+        if (!deliveryBoy) {
+            return res.status(404).json({ message: "Delivery boy not found", executed: false });
+        }
+
+        for (let key in updateData) {
+            
+            deliveryBoy[key] = updateData[key];
+        }
+        // return res.json(deliveryBoy);
+        await deliveryBoy.save();
+
+        return res.json({ message: "Delivery boy updated successfully", executed: true, deliveryBoy});
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ message: error.message, executed: false });
+    }
+};
+
+
+const deleteDeliveryBoyById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let delivery = DB.model('DeliveryBoy', DeliveryBoy);
+
+        const deliveryBoy = await delivery.findByIdAndDelete(id);
+        if (!deliveryBoy) {
+            return res.status(404).json({ message: "Delivery boy not found", executed: false });
+        }
+        return res.json({ message: "Delivery boy deleted successfully", executed: true });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ message: error.message, executed: false });
+    }
+};
+
+const getAllDeliveryBoys = async (req, res) => {
+    try {
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let delivery = DB.model('DeliveryBoy', DeliveryBoy);
+
+        const deliveryBoys = await delivery.find({});
+        return res.json({ message: "Delivery boys retrieved successfully", deliveryBoys });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+
+
+
+module.exports = { loginService, signupService, getRestaurantUserService, userSignUp, userLogin, getUserByID, updateUserById, fetchAllUsers,fetchAllRestaurants,
+     DeliveryBoyloginService, DeliveryBoysignupService, getDeliveryBoyById, updateDeliveryBoyById, deleteDeliveryBoyById, getAllDeliveryBoys}
