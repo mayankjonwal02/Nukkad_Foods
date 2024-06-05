@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
+import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/menu/addImage.dart';
 import 'package:restaurant_app/Widgets/menu/categories.dart';
@@ -21,6 +26,116 @@ class _DishesFormState extends State<DishesForm> {
   String? selectedCategory;
   final List<String> categories = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
   String selectedLabel = '';
+  bool isLoading = false;
+
+  Future<void> saveMenuItem({
+    required String uid,
+    required String category,
+    required String subCategory,
+    required String menuItemName,
+    required String menuItemImageURL,
+    required String servingInfo,
+    required double menuItemCost,
+    required bool inStock,
+    required int timeToPrepare,
+  }) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      var baseUrl = dotenv.env['BASE_URL'];
+      if (baseUrl == null || baseUrl.isEmpty) {
+        throw Exception('BASE_URL is not set in .env file');
+      }
+
+      var reqData = {
+        "uid": uid,
+        "category": category,
+        "subCategory": subCategory,
+        "menuItem": {
+          "menuItemName": menuItemName,
+          "menuItemImageURL": menuItemImageURL,
+          "servingInfo": servingInfo,
+          "menuItemCost": menuItemCost,
+          "inStock": inStock,
+          "timeToPrepare": timeToPrepare
+        }
+      };
+      String requestBody = jsonEncode(reqData);
+
+      final response = await http
+          .post(
+            Uri.parse('$baseUrl/menu/saveMenuItem'),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: requestBody,
+          )
+          .timeout(const Duration(seconds: 10));
+
+      print('Request URL: $baseUrl/menu/saveMenuItem');
+      print('Request Body: $requestBody');
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = jsonDecode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: colorSuccess,
+          content: Text(responseData['message']),
+        ));
+      } else {
+        final responseData = jsonDecode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: colorFailure,
+          content: Text(responseData['message'] ?? 'Unknown error'),
+        ));
+        print('Server error: ${response.body}');
+      }
+    } on TimeoutException catch (_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: colorFailure,
+        content: Text('Request timed out'),
+      ));
+      print('Error: Request timed out');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: colorFailure,
+        content: Text("Error: $e"),
+      ));
+      print('Error: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void handleSubmit() {
+    String uid = "restaurant123";
+    String category = selectedLabel; // Use the selected label for category
+    String subCategory = selectedCategory ??
+        "General"; // Default to "General" if no subcategory is selected
+    String menuItemName = itemName.text;
+    String menuItemImageURL = "www.image.com"; // Image URL
+    String servingInfo = "myserveinfo";
+    double menuItemCost = double.tryParse(basePrice.text) ?? 0.0;
+    bool inStock = true; // Assuming it's always in stock for now
+    int timeToPrepare = 1; // Time to prepare
+
+    saveMenuItem(
+      uid: uid,
+      category: category,
+      subCategory: subCategory,
+      menuItemName: menuItemName,
+      menuItemImageURL: menuItemImageURL,
+      servingInfo: servingInfo,
+      menuItemCost: menuItemCost,
+      inStock: inStock,
+      timeToPrepare: timeToPrepare,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,11 +302,11 @@ class _DishesFormState extends State<DishesForm> {
               SizedBox(height: 20),
               AddImage(),
               SizedBox(height: 20),
-              AddButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+              isLoading
+                  ? CircularProgressIndicator()
+                  : AddButton(
+                      onPressed: handleSubmit,
+                    ),
             ],
           ),
         ),

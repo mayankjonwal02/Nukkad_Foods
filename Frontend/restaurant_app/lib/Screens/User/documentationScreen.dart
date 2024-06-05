@@ -41,27 +41,45 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
     getUserData();
   }
 
-  Future<void> getUserData() async {
-    try {
-      Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
-      setState(() {
-        userInfo = getData!;
-        gstController.text = getData['fssaiDetails']['gstNumber'];
-        fssaiController.text = getData['fssaiDetails']['certificateNumber'];
-        fssaiDateController.text = getData['fssaiDetails']['expiryDate'];
+  // Future<void> getUserData() async {
+  //   try {
+  //     Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
+  //     setState(() {
+  //       userInfo = getData!;
+  //       gstController.text = getData['fssaiDetails']['gstNumber'];
+  //       fssaiController.text = getData['fssaiDetails']['certificateNumber'];
+  //       fssaiDateController.text = getData['fssaiDetails']['expiryDate'];
 
-        // isLoading = false;
-      });
-    } catch (e) {
-      print('Error: $e');
-      // Handle error
-    }
-  }
+  //       // isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     // Handle error
+  //   }
+  // }
 
   Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_info', jsonEncode(userInfo));
-    print(prefs.getString('user_info'));
+  }
+
+  Future<void> getUserData() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userDataString = prefs.getString('user_info');
+      if (userDataString != null) {
+        Map<String, dynamic> userData = jsonDecode(userDataString);
+        setState(() {
+          userInfo = userData;
+          gstController.text = userData['fssaiDetails']['gstNumber'];
+          fssaiController.text = userData['fssaiDetails']['certificateNumber'];
+          fssaiDateController.text = userData['fssaiDetails']['expiryDate'];
+        });
+      }
+    } catch (e) {
+      print('Error: $e');
+      // Handle error
+    }
   }
 
   routeOrdering() {
@@ -84,7 +102,7 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: colorFailure,
-          content: Text("GST, FASSAI  is required")));
+          content: Text("GST, FSSAI  is required")));
     }
   }
 

@@ -83,8 +83,8 @@ class _customAppBarState extends State<customAppBar> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  // builder: (context) => const PlanScreen(),
-                  builder: (context) => const RewardsScreen(),
+                  builder: (context) => const PlanScreen(),
+                  // builder: (context) => const RewardsScreen(),
                 ),
               );
             },

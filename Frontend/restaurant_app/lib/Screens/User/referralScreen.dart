@@ -49,20 +49,18 @@ class _ReferralScreenState extends State<ReferralScreen> {
       String addData;
       if (_selectedOption == 0) {
         userInfo['referred'] = 'Nukkad Foods Executive';
-        saveUserInfo(userInfo);
+        userInfo['executiveId'] = executiveId;
+        userInfo['executiveName'] = executiveName;
       } else if (_selectedOption == 1) {
         userInfo['referred'] = 'A Friend';
-        saveUserInfo(userInfo);
       } else {
         userInfo['referred'] = 'Self Registration';
-        saveUserInfo(userInfo);
       }
+      saveUserInfo(userInfo);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const RegistrationScreen()),
       );
-      // Encode the updated Map as a JSON string
-      // String updatedUserInfoString = jsonEncode(userInfo);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: colorFailure,

@@ -107,35 +107,55 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
     }
   }
 
+  // Future<void> getUserData() async {
+  //   try {
+  //     Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
+  //     setState(() {
+  //       userInfo = getData!;
+  //       nukkadPhoneNumber = userInfo['phoneNumber'];
+  //       ownerNameController.text = userInfo['ownerName'] ?? '';
+  //       ownerPhoneController.text = userInfo['ownerContactNumber'] ?? '';
+  //       currentAddressController.text = userInfo['currentAddress'];
+  //       permanentAddressController.text = userInfo['permananetAddress'] ?? '';
+  //       // aadharNumberController.text =
+  //       //     userInfo['kycDetails']['aadharNumber'] ?? '';
+  //       // panNumberController.text = userInfo['kycDetails']['panNumber'] ?? '';
+  //       ownerEmailController.text = userInfo['ownerEmail'] ?? "";
+
+  //       // print('ddddddddddddddddddddddddddd$userInfo');
+  //       // isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     // Handle error
+  //   }
+  // }
+
+  Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_info', jsonEncode(userInfo));
+  }
+
   Future<void> getUserData() async {
     try {
-      Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
-      setState(() {
-        userInfo = getData!;
-        nukkadPhoneNumber = userInfo['phoneNumber'];
-        ownerNameController.text = userInfo['ownerName'] ?? '';
-        ownerPhoneController.text = userInfo['ownerContactNumber'] ?? '';
-        currentAddressController.text = userInfo['currentAddress'];
-        permanentAddressController.text = userInfo['permananetAddress'] ?? '';
-        // aadharNumberController.text =
-        //     userInfo['kycDetails']['aadharNumber'] ?? '';
-        // panNumberController.text = userInfo['kycDetails']['panNumber'] ?? '';
-        ownerEmailController.text = userInfo['ownerEmail'] ?? "";
-
-        // print('ddddddddddddddddddddddddddd$userInfo');
-        // isLoading = false;
-      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userDataString = prefs.getString('user_info');
+      if (userDataString != null) {
+        Map<String, dynamic> userData = jsonDecode(userDataString);
+        setState(() {
+          userInfo = userData;
+          nukkadPhoneNumber = userInfo['phoneNumber'];
+          ownerNameController.text = userInfo['ownerName'] ?? '';
+          ownerPhoneController.text = userInfo['ownerContactNumber'] ?? '';
+          currentAddressController.text = userInfo['currentAddress'];
+          permanentAddressController.text = userInfo['permananetAddress'] ?? '';
+          ownerEmailController.text = userInfo['ownerEmail'] ?? '';
+        });
+      }
     } catch (e) {
       print('Error: $e');
       // Handle error
     }
-  }
-
-  Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // await prefs.remove('user_info');
-    await prefs.setString('user_info', jsonEncode(userInfo));
-    print(prefs.getString('user_info'));
   }
 
   routeDocumentation() {
