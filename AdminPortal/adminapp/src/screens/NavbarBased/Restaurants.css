@@ -1,0 +1,4 @@
+.smaller-font th,
+.smaller-font td {
+    font-size: 0.9rem; /* Adjust the font size as needed */
+}

@@ -1,0 +1,71 @@
+.opcards{
+    background-color: white;
+    width: 17vw;
+    height: 17vw;
+    padding: 30px;
+}
+
+.headtext{
+    font-size: 100px;
+    color: #000000;
+
+}
+.cardfa {
+    font-size: 50px;
+    color: #000000;
+
+}
+.opcards:hover{
+    background-color: #ababab;
+    
+}
+
+.textfa{
+    font-size: 30px;
+    color: #000000;
+
+}
+
+.myheaddiv {
+    display: flex;
+    flex-direction: row;
+
+
+    justify-content: center;
+    align-items: center;
+    gap: 30px; /* 1.25rem is equivalent to 20px, adjust as needed */
+    
+  }
+
+
+  @media (max-width: 1168px) {
+    .myheaddiv {
+      flex-direction: column;
+
+    }
+
+    .opcards{
+        width: 200px;
+        height: 200px;
+        gap: 10px;
+        padding: auto;
+    }
+
+    .cardfa {
+        font-size: 40px;
+        color: #000000;
+    
+    }
+
+    .textfa{
+        font-size: 20px;
+        color: #000000;
+    
+    }
+
+    .headtext{
+        font-size: 10vw;
+        color: #000000;
+    
+    }
+  }

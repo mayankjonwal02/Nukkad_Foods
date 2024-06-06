@@ -3,12 +3,19 @@ body {
     font-family: Arial, sans-serif;
   }
   
+
+  .adminhead{
+    font-size: 4vw;
+    font-weight: bold;
+    color: darkgreen;
+    margin: 20px;
+  }
   .App {
     display: flex;
     flex-direction: column;
-    justify-content:flex-start;
+    justify-content:center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #7fffd4;
   }
 
@@ -74,3 +81,15 @@ body {
     color: #555;
   }
   
+
+  @media (max-width: 1168px) {
+    .signin-card {
+      width: 300px;
+      height: 400px;
+    }
+
+    .adminhead{
+      font-size: 10vw;
+    }
+
+  }

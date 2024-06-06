@@ -1,18 +1,35 @@
 import React, { useState } from 'react';
-import './auth.css';
+import './ScreenCss/auth.css';
+import config from '../config';
+import { useNavigate } from 'react-router-dom';
+
 
 function SigninAdmin() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [adminid, setAdminid] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate();
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
 
+    const {ADMIN,PASSWORD} = config;
+    const handleLogin = () => {
+        if(adminid === ADMIN && password === PASSWORD){
+            alert("Login Successful");
+            localStorage.setItem('admin',adminid);
+            localStorage.setItem('password',password)
+            localStorage.setItem('login',true);
+            localStorage.setItem('role','admin');
+            navigate('/process');
+        }else{
+            alert("Login Failed");
+        }
+    }
     return (
         <div className="App">
-            <div className='text-white fw-bold m-5' style={{ fontSize: "70px" }}>ADMIN Portal</div>
+        
+            <div className='adminhead'>Admin Portal</div>
             <div className="signin-card">
                 <h1 className='fw-bold mt-3'>Sign In</h1>
                 <div style={{ marginBlock: "70px" }}>
@@ -31,7 +48,7 @@ function SigninAdmin() {
                             <i className={passwordVisible ? "fas fa-eye-slash" : "fas fa-eye"}></i>
                         </span></button>
                     </div>
-                    <button type="submit" className="login-button mt-5 fs-5">Login</button>
+                    <button onClick={() => {handleLogin()}} className="login-button mt-5 fs-5">Login</button>
 
                 </div>
             </div>

@@ -84,6 +84,19 @@ const deleteComplaint = async (req, res) => {
     }
 };
 
+const getAllComplaints = async (req, res) => {
+    try {
+        const allComplaints = await complaintDB.find();
+
+        if (!allComplaints) {
+            return res.status(404).json({ error: "No complaints found" });
+        }
+
+        res.status(200).json({ complaints: allComplaints, status: "success" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 
-module.exports = { addComplaint, getComplaintsByRestaurantID, updateComplaint, deleteComplaint };
+module.exports = { addComplaint, getComplaintsByRestaurantID, updateComplaint, deleteComplaint, getAllComplaints};

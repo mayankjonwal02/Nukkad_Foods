@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createOrder , getOrder, getOrderById,updateOrderById , deleteOrderById} = require('../Service/OrderService');
+const { createOrder , getOrder, getOrderById,updateOrderById , deleteOrderById,getAllOrders} = require('../Service/OrderService');
 
 
 router.post('/createOrder', createOrder);
@@ -62,4 +62,6 @@ router.delete("/orders/:uid/:orderId", async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 });
+
+router.get("/getAllOrders",getAllOrders);
 module.exports = router;
