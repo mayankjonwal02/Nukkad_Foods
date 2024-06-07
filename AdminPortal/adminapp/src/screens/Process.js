@@ -9,6 +9,7 @@ import NukkadApproval from './NavbarBased/NukkadApproval'
 import Complaints from './NavbarBased/Complaints'
 import Orders from './NavbarBased/Orders'
 import ShowSubAdmins from './NavbarBased/ShowSubAdmins'
+import Department from './NavbarBased/Department'
 
 export default function Process() {
 
@@ -33,6 +34,7 @@ export default function Process() {
           {globalid === 'complaints' && <Complaints />}
           {globalid === 'orders' && <Orders />}
           {globalid === 'subadmins' && <ShowSubAdmins />}
+          {globalid === 'department' && <Department />}
         </div>
       </div>
     </div>
