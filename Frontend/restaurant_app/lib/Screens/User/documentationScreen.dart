@@ -71,9 +71,9 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
         Map<String, dynamic> userData = jsonDecode(userDataString);
         setState(() {
           userInfo = userData;
-          gstController.text = userData['fssaiDetails']['gstNumber'];
-          fssaiController.text = userData['fssaiDetails']['certificateNumber'];
-          fssaiDateController.text = userData['fssaiDetails']['expiryDate'];
+          gstController.text = userData['gstNumber'];
+          fssaiController.text = userData['fssaiCertificateNumber'];
+          fssaiDateController.text = userData['fssaiExpiryDate'];
         });
       }
     } catch (e) {
@@ -86,15 +86,21 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
     if (gstinNumber.isNotEmpty &&
         fssaiNumber.isNotEmpty &&
         fssaiExpiryDate.isNotEmpty) {
-      userInfo['gstDetails'] = {
-        'gstNumber': gstinNumber,
-        'gstCertificateUrl': imageGstPath,
-      };
-      userInfo['fssaiDetails'] = {
-        'certificateNumber': fssaiNumber,
-        'expiryDate': fssaiExpiryDate,
-        'certificateUrl': imageFssaiPath,
-      };
+      // userInfo['gstDetails'] = {
+      //   'gstNumber': gstinNumber,
+      //   'gstCertificateUrl': imageGstPath,
+      // };
+      userInfo['gstNumber'] = gstinNumber;
+      userInfo['gstCertificateUrl'] = imageGstPath;
+      // userInfo['fssaiDetails'] = {
+      //   'certificateNumber': fssaiNumber,
+      //   'expiryDate': fssaiExpiryDate,
+      //   'certificateUrl': imageFssaiPath,
+      // };
+
+      userInfo['fssaiCertificateNumber'] = fssaiNumber;
+      userInfo['fssaiExpiryDate'] = fssaiExpiryDate;
+      userInfo['fssaiCertificateUrl'] = imageFssaiPath;
 
       saveUserInfo(userInfo);
       Navigator.push(context,

@@ -96,9 +96,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
       setState(() {
         userInfo = getData!;
-        accountNumberController.text = userInfo['bankDetails']['accountNo'];
-        ifscCodeController.text = userInfo['bankDetails']['IFSCcode'];
-        bankBranchCodeController.text = userInfo['bankDetails']['bankBranch'];
+        accountNumberController.text = userInfo['bankAccountNo'];
+        ifscCodeController.text = userInfo['bankIFSCcode'];
+        bankBranchCodeController.text = userInfo['bankBranch'];
         confirmPasswordController.text = userInfo['password'];
         nukkadContactController.text = userInfo['phoneNumber'];
         passwordController.text = userInfo['password'];
@@ -133,11 +133,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         userInfo['nukkadAddress'] = nukkadAddress;
         userInfo['latitude'] = getLatitude;
         userInfo['longitude'] = getLongitude;
-        userInfo['bankDetails'] = {
-          'accountNo': accountNumber,
-          'IFSCcode': ifscCode,
-          'bankBranch': bankBranchCode
-        };
+        // userInfo['bankDetails'] = {
+        //   'accountNo': accountNumber,
+        //   'IFSCcode': ifscCode,
+        //   'bankBranch': bankBranchCode
+        // };
+        userInfo['bankAccountNo'] = accountNumber;
+        userInfo['bankIFSCcode'] = ifscCode;
+        userInfo['bankBranch'] = bankBranchCode;
         userInfo['phoneNumber'] = nukkadContact;
         userInfo['password'] = password;
         userInfo['pincode'] = nukkadPincode;
@@ -197,6 +200,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Serialize nested objects to JSON strings
+    // userInfo['bankDetails'] = jsonEncode(userInfo['bankDetails']);
+    // userInfo['fssaiDetails'] = jsonEncode(userInfo['fssaiDetails']);
+    // userInfo['gstDetails'] = jsonEncode(userInfo['gstDetails']);
+    // userInfo['kycDetails'] = jsonEncode(userInfo['kycDetails']);
+
     await prefs.setString('user_info', jsonEncode(userInfo));
     print(prefs.getString('user_info'));
   }

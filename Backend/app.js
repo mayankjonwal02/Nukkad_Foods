@@ -12,7 +12,7 @@ const ComplaintRouter = require('./Controller/Complaint');
 const subAdminRouter = require('./Controller/SubAdmin');
 
 
-const port = 5000;
+const port = 3000;
 const app = express();
 
 app.use(cors());

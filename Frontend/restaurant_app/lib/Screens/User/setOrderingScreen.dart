@@ -138,7 +138,7 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
 
       if (response.statusCode == 200) {
         // Successful signup
-        print('Signup successful!');
+        print('Signup successfulllllll!');
       } else {
         // Signup failed
         print('Signup failed: ${response.statusCode}');
@@ -186,6 +186,7 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         if (responseData != null && responseData['executed']) {
+          print("SIGNUP SUCCESS");
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: colorSuccess,
               content: Text("Signup Successfully")));
