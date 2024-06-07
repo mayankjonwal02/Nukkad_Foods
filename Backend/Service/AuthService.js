@@ -169,6 +169,32 @@ const fetchAllRestaurants = async (req, res) => {
 }
 
 
+const updateRestaurantById = async (req, res) => {
+    const { _id, updateData } = req.body;
+    try {
+        let DB = mongoose.connection.useDb("NukkadFoods");
+        let Restaurant = DB.collection("Restaurants");
+
+        // Find the restaurant by its _id
+        const id = new mongoose.Types.ObjectId(_id);
+        const restaurant = await Restaurant.findOne({ _id: id });
+
+        if (!restaurant) {
+            return res.json({ message: "Restaurant Doesn't Exist", executed: false });
+        }
+
+        // Update the restaurant's data
+        await Restaurant.updateOne({ _id: id }, { $set: updateData });
+
+        return res.json({ message: "Restaurant Updated Successfully", executed: true });
+    } catch (error) {
+        console.log("Error:", error);
+        return res.json({ message: error.toString(), executed: false });
+    }
+};
+
+
+
 
 const userSignUp = async (req, res) => {
     let {
@@ -435,5 +461,5 @@ const getAllDeliveryBoys = async (req, res) => {
 
 
 
-module.exports = { loginService, signupService, getRestaurantUserService, userSignUp, userLogin, getUserByID, updateUserById, fetchAllUsers,fetchAllRestaurants,
+module.exports = { loginService, signupService, getRestaurantUserService, updateRestaurantById,userSignUp, userLogin, getUserByID, updateUserById, fetchAllUsers,fetchAllRestaurants,
      DeliveryBoyloginService, DeliveryBoysignupService, getDeliveryBoyById, updateDeliveryBoyById, deleteDeliveryBoyById, getAllDeliveryBoys}

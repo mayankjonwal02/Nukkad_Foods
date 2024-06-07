@@ -34,7 +34,42 @@ export default function NukkadApproval() {
     }, [searchTerm, searchField, nukkadList]);
 
     const handleVerifyNukkad = (id) => {
-        // Logic to verify the nukkad with the given ID
+        
+        try {
+            
+            fetch(`${API_URL}/api/auth/updateRestaurantById`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ _id: id, updateData: { status: 'verified' } }),
+                }
+            ).then(res => res.json()).then(data => {
+                if (data.executed) {
+                    alert('Nukkad verified successfully');
+                    setLoading(true);
+                    fetch(`${API_URL}/api/auth/fetchAllRestaurants`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const unverifiedNukkads = data.restaurants.filter(nukkad => nukkad.status === 'unverified');
+                        setNukkadList(unverifiedNukkads);
+                        setFilteredNukkadList(unverifiedNukkads);
+                        setLoading(false);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching unverified nukkads:", error);
+                        setLoading(false);
+                    });
+                } else {
+                    alert('Failed to verify nukkad');
+                }
+            }   
+
+            )
+        } catch (error) {
+            alert('Failed to verify nukkad', error);
+        }
     };
 
     if (loading) {
