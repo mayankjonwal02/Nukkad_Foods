@@ -39,9 +39,9 @@ const deliveryBoySchema = new mongoose.Schema({
         branchCode: String,
         accountNumber: String
     },
-    idProofPic: String,
-    pancardPic: String,
-    drivingLicensePic: String,
+    idProofPic: Buffer,
+    pancardPic: Buffer,
+    drivingLicensePic: Buffer,
     workPreference: [{
         locationName: String,
         description: String
