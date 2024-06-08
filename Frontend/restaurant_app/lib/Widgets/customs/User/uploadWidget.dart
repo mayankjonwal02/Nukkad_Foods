@@ -1,10 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:sizer/sizer.dart';
 import 'package:file_picker/file_picker.dart';
 
-typedef OnFilePicked = void Function(bool isPicked, String? filePath);
+typedef OnFilePicked = void Function(bool isPicked, String? base64File);
+
 Widget uploadWidget({required OnFilePicked onFilePicked}) {
   return GestureDetector(
     onTap: () async {
@@ -13,9 +16,13 @@ Widget uploadWidget({required OnFilePicked onFilePicked}) {
           type: FileType.custom,
           allowedExtensions: ['jpg', 'pdf', 'png'],
         );
+
         if (result != null) {
-          onFilePicked(true, result.files.single.path);
-          print('File path: ${result.files.single.path}');
+          File file = File(result.files.single.path!);
+          List<int> fileBytes = await file.readAsBytes();
+          String base64File = base64Encode(fileBytes);
+          onFilePicked(true, base64File);
+          print('Base64 file: $base64File');
         } else {
           // User canceled the picker
           onFilePicked(false, null);
