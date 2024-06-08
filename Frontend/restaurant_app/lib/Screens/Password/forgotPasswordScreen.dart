@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math'; // Add this import
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -25,6 +26,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   String enteredNumber = '';
   bool isLoading = false;
 
+
+  String generateOTP() {
+    // Generating a random 4-digit OTP
+    Random random = Random();
+    return (1000 + random.nextInt(9000)).toString();
+  }
+
   void routeNext(String userNumber) {
     sendOtp(userNumber);
   }
@@ -35,9 +43,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     });
     try {
       var baseUrl = dotenv.env['BASE_URL'];
+      String otp = generateOTP(); // Generate OTP here
       String requestBody = jsonEncode({
-        "to": "+1234567890",
-        "body": enteredNumber,
+        "to": enteredNumber,
+        "body": 'Your otp is : $otp',
       });
       // print(reqData);
       final response = await http.post(Uri.parse('$baseUrl/sms/sendSMS'),
@@ -63,6 +72,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             MaterialPageRoute(
               builder: (context) => OTPScreen(
                 userNumber: userNumber,
+                otp: otp,
                 option: 1,
               ),
             ),

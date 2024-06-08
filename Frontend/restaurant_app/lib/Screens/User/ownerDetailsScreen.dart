@@ -169,10 +169,12 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       userInfo['ownerContactNumber'] = ownerPhone;
       userInfo['currentAddress'] = currentAddress;
       userInfo['permananetAddress'] = permanentAddress;
-      userInfo['kycDetails'] = {
-        'aadharNumber': aadharNumber,
-        'panNumber': panNumber,
-      };
+      // userInfo['kycDetails'] = {
+      //   'aadharNumber': aadharNumber,
+      //   'panNumber': panNumber,
+      // };
+      userInfo['kycAadharNumber'] = aadharNumber;
+      userInfo['kycPanNumber'] = panNumber;
       userInfo['signature'] = imageSignaturePath;
 
       // userInfo['nukkadAddress'] = whatsappConfirmation;
