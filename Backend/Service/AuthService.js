@@ -53,11 +53,11 @@ const signupService = async (req, res) => {
         bankBranch,
         fssaiCertificateNumber,
         fssaiExpiryDate,
-        fssaiCertificateUrl,
+        fssaiCertificate,
         gstNumber,
-        gstCertificateUrl,
-        kycAadharNumber,
-        kycPanNumber,
+        gstCertificate,
+        kycAadhar,
+        kycPan,
         cuisines,
         operationalHours,
         restaurantMenuImages,
@@ -99,15 +99,15 @@ const signupService = async (req, res) => {
                 fssaiDetails: {
                     certificateNumber: fssaiCertificateNumber,
                     expiryDate: fssaiExpiryDate,
-                    certificateUrl: fssaiCertificateUrl
+                    certificate: fssaiCertificate
                 },
                 gstDetails: {
                     gstNumber: gstNumber,
-                    gstCertificateUrl: gstCertificateUrl
+                    gstCertificate: gstCertificate
                 },
                 kycDetails: {
-                    aadharNumber: kycAadharNumber,
-                    panNumber: kycPanNumber
+                    aadhar: kycAadhar,
+                    pan: kycPan
                 },
                 cuisines: cuisines,
                 operationalHours: operationalHours,
