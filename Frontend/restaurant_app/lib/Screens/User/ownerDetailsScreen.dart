@@ -35,6 +35,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   final GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
   Uint8List? _signatureImageBytes;
   File? _image;
+  String? _base64Image;
   // final ImagePicker imagebannerpath = ImagePicker();
   String? imagebannerpath;
   String? imageSignaturePath;
@@ -169,10 +170,12 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       userInfo['ownerContactNumber'] = ownerPhone;
       userInfo['currentAddress'] = currentAddress;
       userInfo['permananetAddress'] = permanentAddress;
-      userInfo['kycDetails'] = {
-        'aadharNumber': aadharNumber,
-        'panNumber': panNumber,
-      };
+      // userInfo['kycDetails'] = {
+      //   'aadharNumber': aadharNumber,
+      //   'panNumber': panNumber,
+      // };
+      userInfo['kycAadharNumber'] = aadharNumber;
+      userInfo['kycPanNumber'] = panNumber;
       userInfo['signature'] = imageSignaturePath;
 
       // userInfo['nukkadAddress'] = whatsappConfirmation;
@@ -739,12 +742,15 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   Future pickImage(ImageSource source) async {
     final pickedFile =
         await ImagePicker().pickImage(source: source, imageQuality: 80);
+    final bytes = await File(pickedFile!.path).readAsBytes();
 
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
         imagebannerpath = _image!.path;
+        _base64Image = base64Encode(bytes);
       });
+      print(_base64Image);
       // setState(() {
       //   _image = File(pickedFile.path);
       // });

@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:math'; // Add this import
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http; // Add this import
 import 'package:intl/intl.dart';
 import 'package:restaurant_app/Controller/Profile/profile_controller.dart';
 import 'package:restaurant_app/Screens/User/map.dart';
@@ -17,6 +19,8 @@ import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
 import 'package:restaurant_app/Widgets/noteWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Add this import
+import 'package:flutter/foundation.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -68,6 +72,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     _getCurrentLocation();
   }
 
+  Future<void> loadEnv() async {
+    await dotenv.load(fileName: ".env");
+  }
+
   Future<void> _getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -88,9 +96,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       Map<String, dynamic>? getData = await _getSavedData.getUserInfo();
       setState(() {
         userInfo = getData!;
-        accountNumberController.text = userInfo['bankDetails']['accountNo'];
-        ifscCodeController.text = userInfo['bankDetails']['IFSCcode'];
-        bankBranchCodeController.text = userInfo['bankDetails']['bankBranch'];
+        accountNumberController.text = userInfo['bankAccountNo'];
+        ifscCodeController.text = userInfo['bankIFSCcode'];
+        bankBranchCodeController.text = userInfo['bankBranch'];
         confirmPasswordController.text = userInfo['password'];
         nukkadContactController.text = userInfo['phoneNumber'];
         passwordController.text = userInfo['password'];
@@ -104,7 +112,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
   }
 
-  void routeOTP() {
+  String generateOTP() {
+    Random random = Random();
+    int otp = random.nextInt(10000);
+    return otp.toString().padLeft(4, '0');
+  }
+
+  Future<void> routeOTP() async {
     if (nukkadCity.isNotEmpty &&
         nukkadAddress.isNotEmpty &&
         nukkadPincode.isNotEmpty &&
@@ -119,23 +133,59 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         userInfo['nukkadAddress'] = nukkadAddress;
         userInfo['latitude'] = getLatitude;
         userInfo['longitude'] = getLongitude;
-        userInfo['bankDetails'] = {
-          'accountNo': accountNumber,
-          'IFSCcode': ifscCode,
-          'bankBranch': bankBranchCode
-        };
+        // userInfo['bankDetails'] = {
+        //   'accountNo': accountNumber,
+        //   'IFSCcode': ifscCode,
+        //   'bankBranch': bankBranchCode
+        // };
+        userInfo['bankAccountNo'] = accountNumber;
+        userInfo['bankIFSCcode'] = ifscCode;
+        userInfo['bankBranch'] = bankBranchCode;
         userInfo['phoneNumber'] = nukkadContact;
         userInfo['password'] = password;
         userInfo['pincode'] = nukkadPincode;
         userInfo['city'] = nukkadCity;
         userInfo['landmark'] = nukkadLandmark;
         saveUserInfo(userInfo);
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return OTPScreen(
-            userNumber: nukkadContact,
-            option: 2,
-          );
-        }));
+
+        // Generate OTP
+        String otp = generateOTP();
+
+        // Call the sendOtp endpoint
+        final String baseUrl = dotenv.env['BASE_URL']!;
+        final response = await http.post(
+          Uri.parse('$baseUrl/sms/sendSMS'), // Update with your backend URL
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'to': nukkadContact,
+            'body': 'Your OTP is $otp',
+          }),
+        );
+
+        // debugPrint('response : $response');
+
+        if (response.statusCode == 200) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return OTPScreen(
+              userNumber: nukkadContact,
+              otp: otp,
+              option: 2,
+            );
+          }));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("Failed to send OTP"),
+          ));
+        }
+        // Navigator.push(context, MaterialPageRoute(builder: (context) {
+        //   return OTPScreen(
+        //     userNumber: nukkadContact,
+        //     option: 2,
+        //   );
+        // }));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: colorFailure,
@@ -150,6 +200,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Serialize nested objects to JSON strings
+    // userInfo['bankDetails'] = jsonEncode(userInfo['bankDetails']);
+    // userInfo['fssaiDetails'] = jsonEncode(userInfo['fssaiDetails']);
+    // userInfo['gstDetails'] = jsonEncode(userInfo['gstDetails']);
+    // userInfo['kycDetails'] = jsonEncode(userInfo['kycDetails']);
+
     await prefs.setString('user_info', jsonEncode(userInfo));
     print(prefs.getString('user_info'));
   }

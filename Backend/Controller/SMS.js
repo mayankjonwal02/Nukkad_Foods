@@ -1,17 +1,12 @@
-const express = require("express")
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
+const { sendSMS, sendOtp, verifyOtp } = require('../Service/smsService');
 
-const {sendSMS} = require("../Service/smsService")
+router.post('/sendSMS', sendSMS);
 
-router.post("/sendSMS",
+router.post('/sendOtp', sendOtp);
 
-sendSMS
-// (req,res) => {
-//     res.json({message : "SMS sent successfully"})
-// }
+router.post('/verifyOtp', verifyOtp);
 
-
-)
-
-module.exports = router
+module.exports = router;

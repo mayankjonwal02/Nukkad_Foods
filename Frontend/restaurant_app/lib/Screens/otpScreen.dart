@@ -9,8 +9,13 @@ import 'package:sizer/sizer.dart';
 
 class OTPScreen extends StatefulWidget {
   final String userNumber;
+  final String otp; // Added this line
   final int option;
-  const OTPScreen({super.key, required this.userNumber, required this.option});
+  const OTPScreen(
+      {super.key,
+      required this.userNumber,
+      required this.otp,
+      required this.option});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -22,24 +27,33 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     String userNumber = widget.userNumber;
+    String otp = widget.otp; // Added this line
     int option = widget.option;
 
     void chooseRoute() {
-      if (option == 1) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ResetPasswordScreen(),
-          ),
-        );
-      } else if (option == 2) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const OwnerDetailsScreen(),
-          ),
-        );
-      }
+      if (enteredpin == otp) {
+        if (option == 1) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ResetPasswordScreen(),
+            ),
+          );
+        } else if (option == 2) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const OwnerDetailsScreen(),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("Invalid OTP. Please try again."),
+    ));
+  }
+
     }
 
     void routeBack() {

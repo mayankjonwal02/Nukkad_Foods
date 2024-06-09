@@ -16,7 +16,11 @@ const { uploadUserData , getImageByName} = require('./Service/testfilemongo');
 
 
 
+<<<<<<< HEAD:Backend/index.js
 const port = process.env.PORT || 5000;
+=======
+const port = 3000;
+>>>>>>> d026be6e5192c5ca3fe8e4e329a632352d041095:Backend/app.js
 const app = express();
 
 app.use(cors());
