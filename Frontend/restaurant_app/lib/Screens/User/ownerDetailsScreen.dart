@@ -174,8 +174,8 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       //   'aadharNumber': aadharNumber,
       //   'panNumber': panNumber,
       // };
-      userInfo['kycAadharNumber'] = aadharNumber;
-      userInfo['kycPanNumber'] = panNumber;
+      userInfo['kycAadhar'] = aadharNumber;
+      userInfo['kycPan'] = panNumber;
       userInfo['signature'] = imageSignaturePath;
 
       // userInfo['nukkadAddress'] = whatsappConfirmation;
