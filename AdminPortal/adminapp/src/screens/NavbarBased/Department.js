@@ -154,7 +154,13 @@ export default function Department() {
         dept.departmentName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     if (loading) {
-        return <div className='d-flex flex-column bg-white justify-content-center align-items-center'>Loading...</div>;
+        return (
+            <div className='d-flex flex-column bg-white' style={{ minHeight: "100vh", maxWidth: "100vw", justifyContent: "center", alignItems: "center" }}>
+            <div class="spinner-grow text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        )
     }
     return (
         <div className='bg-white' style={{ minHeight: "100vh", justifyContent: "flex-start", alignItems: "center", display: "flex", flexDirection: "column" }}>
