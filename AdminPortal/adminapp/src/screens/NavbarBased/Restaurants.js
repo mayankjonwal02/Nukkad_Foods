@@ -15,8 +15,8 @@ export default function Restaurants() {
         fetch(`${API_URL}/api/auth/fetchAllRestaurants`)
             .then(res => res.json())
             .then(data => {
-                setRestaurants(data.restaurants);
-                setFilteredRestaurants(data.restaurants); // Initialize filtered list with all restaurants
+                setRestaurants(data.restaurants || []);
+                setFilteredRestaurants(data.restaurants  || []); // Initialize filtered list with all restaurants
                 setLoading(false);
             })
             .catch(error => {

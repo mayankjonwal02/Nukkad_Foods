@@ -38,6 +38,8 @@ function SigninSubAdmin() {
                     localStorage.setItem('password', password);
                     localStorage.setItem('login', true);
                     localStorage.setItem('role', 'subAdmin');
+                    localStorage.setItem('department', data.subAdmin.department);
+                    localStorage.setItem('options', data.subAdmin.options);
                     navigate('/process');
 
                 }

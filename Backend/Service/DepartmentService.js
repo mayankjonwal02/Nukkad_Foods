@@ -7,19 +7,28 @@ const DepartmentSchema = new Schema([
             type : String,
             required : true
         
-        }
+        },
+        options : [
+            {
+                type : String,
+                required : true
+            }
+        ]
     }
 ])
 
 
 const addDepartment = async (req,res) => {
-    const {departmentName} = req.body
+    const {departmentName,options} = req.body
     try {
 
         const db = mongoose.connection.useDb('NukkadFoods')
         const Department = db.model('Department', DepartmentSchema)
+        const exist = await Department.findOne({departmentName})
+        if(exist) return res.json({message:"Department Already Exist"})
         const department = new Department({
-            departmentName
+            departmentName,
+            options
         })
         await department.save()
         return res.json({message:"Department Added Successfully"})
@@ -39,6 +48,34 @@ const getDepartment = async (req,res) => {
     }
 }
 
+const getDepartmentByName = async (req,res) => {
+    const {departmentName} = req.body
+    try {
+        const db = mongoose.connection.useDb('NukkadFoods')
+        const Department = db.model('Department', DepartmentSchema)
+        const department = await Department.findOne({departmentName})
+        return res.json({department:department})
+    } catch (error) {
+        return res.json({error})
+    }
+}
+
+
+const updateDepartment = async (req,res) => {
+    const {id,departmentName,options} = req.body
+    try {
+        const db = mongoose.connection.useDb('NukkadFoods')
+        const Department = db.model('Department', DepartmentSchema)
+
+
+        await Department.updateOne({_id:id},{departmentName,options})
+
+        return res.json({message:"Department Updated Successfully"})
+    } catch (error) {
+        return res.json({error})
+    }
+}
+
 const deleteDepartment = async (req,res) => {
     const {departmentName} = req.body
     try {
@@ -53,4 +90,4 @@ const deleteDepartment = async (req,res) => {
 
 
 
-module.exports = {addDepartment,getDepartment,deleteDepartment}
+module.exports = {addDepartment,getDepartment,deleteDepartment,getDepartmentByName,updateDepartment}

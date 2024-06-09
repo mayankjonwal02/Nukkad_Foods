@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const { subAdminSchema } = require('../Entity/SubAdminSchema');
-
+require('dotenv').config();
 
 
 
 const createSubAdmin = async (req, res) => {
     try {
         // Extracting data from req body
-        const { managerId, UniqueId, password, options } = req.body;
+        const { managerId, UniqueId, password, contact , department, options } = req.body;
         const db = mongoose.connection.useDb("NukkadFoods");
         const SubAdmin = db.model('SubAdmin', subAdminSchema);
+        let executed = false
 
         const existingSubAdmin = await SubAdmin.findOne({ UniqueId: UniqueId });
         if (existingSubAdmin) {
@@ -21,14 +22,37 @@ const createSubAdmin = async (req, res) => {
             managerId,
             UniqueId,
             password,
+            contact,
+            department,
             options
         });
 
         // Saving the document to the database
         const savedSubAdmin = await subAdmin.save();
+        const fetch = await import('node-fetch');
+
+        await fetch.default(`${process.env.API_URL}/api/sms/sendSMS`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                to : contact,
+                body : `Welcome to Nukkad Foods. Your UniqueId is  ${ UniqueId} +  and Password is  ${ password}. your department is ${ department}  Please do not share your credentials with anyone.`
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            executed = data.executed
+        })
+        .catch(error => {
+            console.error(error);
+            executed = false
+        });
 
         // Sending back the saved document as response
-        res.json({savedSubAdmin: savedSubAdmin, message: "SubAdmin created successfully",executed: true});
+        res.json({savedSubAdmin: savedSubAdmin, message: "SubAdmin created successfully",executed: executed});
     } catch (error) {
         // If there's an error, send an error response
         res.status(400).json({ message: error.message });
