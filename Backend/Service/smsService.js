@@ -1,12 +1,18 @@
 const twilio = require('twilio');
 require('dotenv').config();
+
 const  accountSid   = process.env.ACCOUNT_SID
 const  authToken    = process.env.AUTH_TOKEN
 const twilioNumber = process.env.TWILIO_NUMBER
 const verifyServiceSid = process.env.VERIFY_SERVICE_SID;
 const  client       = require('twilio')(accountSid, authToken);
 
+
 const sendSMS = (req, res) => {
+    const  accountSid   = process.env.ACCOUNT_SID
+    const  authToken    = process.env.AUTH_TOKEN
+    const twilioNumber = process.env.TWILIO_NUMBER
+    const  client       = new twilio(accountSid, authToken);
     const { to, body } = req.body;
     client.messages
         .create({
@@ -15,10 +21,10 @@ const sendSMS = (req, res) => {
             to: to
         })
         .then(message => {
-            res.status(200).json({ message: 'SMS sent successfully' , Responce : message});
+            res.status(200).json({ message: 'SMS sent successfully' , Responce : message, executed : true});
         })
         .catch(error => {
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ error: error , executed : false});
         });
 }
 

@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -16,16 +17,14 @@ const {setMyUpload} = require('./Service/filestoredemo');
 const { uploadUserData , getImageByName} = require('./Service/testfilemongo');
 
 
-
-const port = 3000;
+//process.env.PORT || 
+const port = 5000;
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-app.use(bodyParser.json({ limit: '50mb' }));
-// app.use(express.bodyParser({limit: '50mb'}));
-// app.use(express.urlencoded({ limit: '50mb', extended: true })); // Increase the limit
-// app.use(express.json({ limit: '50mb' }));
+app.use(bodyParser.json({ limit: '300mb' }));
+app.use(express.json());
+
 // Remove view engine setup as it's not needed for serving static HTML files
 // app.set('view engine', 'ejs');
 // app.set('views', path.join(__dirname, 'views'));

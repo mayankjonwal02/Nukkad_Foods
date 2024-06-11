@@ -14,6 +14,15 @@ const subAdminSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    contact: {
+        type: String,
+        required: true
+    },
+    
+    department: {
+        type: String,
+        required: true
+    },
     options : [
         {
             type : String,

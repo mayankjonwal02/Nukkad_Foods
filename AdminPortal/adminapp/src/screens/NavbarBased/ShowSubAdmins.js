@@ -81,6 +81,8 @@ export default function ShowSubAdmins() {
                     <tr>
                         <th scope="col">Manager ID</th>
                         <th scope="col">Unique ID</th>
+                        <th scope="col">Contact</th>
+                        <th scope="col">Department</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -89,6 +91,8 @@ export default function ShowSubAdmins() {
                         <tr key={subAdmin._id}>
                             <td>{subAdmin.managerId}</td>
                             <td>{subAdmin.UniqueId}</td>
+                            <td>{subAdmin.contact}</td>
+                            <td>{subAdmin.department}</td>
                             <td>
                                 <button className="btn-secondary p-2 ps-4 pe-4">Edit</button>
                             </td>

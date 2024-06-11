@@ -2,3 +2,12 @@
 .smaller-font td {
     font-size: 0.9rem; /* Adjust the font size as needed */
 }
+
+.departmentcard {
+    background-color: white;
+}
+.departmentcard:hover {
+    background-color: #7fffd4;
+    cursor: pointer;
+}
+

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 import config from '../config'
 
-function SignupSubAdmin() {
+function SignupSubAdmin({ department}) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordVisible1, setPasswordVisible1] = useState(false);
   const [adminid, setAdminid] = useState('');
+  const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmpassword] = useState('');
   const { API_URL } = config;
@@ -27,6 +28,8 @@ function SignupSubAdmin() {
       managerId: localStorage.getItem('admin'),
       UniqueId: adminid,
       password: password,
+      contact: contact,
+      department: department,
       options: [] // You might need to adjust this based on your requirements
     };
 
@@ -65,10 +68,15 @@ function SignupSubAdmin() {
     <div className="Appsub">
       {/* <div className='text-white fw-bold m-5' style={{ fontSize: "70px" }}>ADMIN Portal</div> */}
       <div className="signin-card">
-        <h1 className='fw-bold mt-3'>Registration</h1>
+        <h1 className='fw-bold mt-3'>{department} Registration</h1>
         <form style={{marginBlock:"70px"}} >
           <div className="input-group mb-4 " >
             <input type="text" className="form-control" id="floatingInput" placeholder="Unique ID"  value={adminid} onChange={(e) => {setAdminid(e.target.value)}}/>
+            
+          </div>
+
+          <div className="input-group mb-4 " >
+            <input type="text" className="form-control" id="floatingInput1" placeholder="Contact No. (+91XXXXXXXXXX)"  value={contact} onChange={(e) => {setContact(e.target.value)}} />
             
           </div>
          
@@ -95,7 +103,7 @@ function SignupSubAdmin() {
               <i className={passwordVisible1 ? "fas fa-eye-slash" : "fas fa-eye"}></i>
             </span></button>
           </div>
-          <button onClick={handleSubmit} className="login-button mt-5 fs-5">Register</button>
+          <button onClick={handleSubmit} className="login-button " style={{width:"fit-content"}}>Register</button>
         
         </form>
       </div>
