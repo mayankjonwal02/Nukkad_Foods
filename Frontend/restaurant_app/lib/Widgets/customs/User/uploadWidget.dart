@@ -5,8 +5,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:sizer/sizer.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
-typedef OnFilePicked = void Function(bool isPicked, String? base64File);
+
+Future<List<int>> compressImage(File file) async {
+  final result = await FlutterImageCompress.compressWithFile(
+    file.absolute.path,
+    minWidth: 800,
+    minHeight: 600,
+    quality: 85,
+  );
+  return result ?? file.readAsBytesSync();
+}
+
+// typedef OnFilePicked = void Function(bool isPicked, String? base64File);
+typedef OnFilePicked = void Function(bool isPicked, List<int>? fileBytes);
 
 Widget uploadWidget({required OnFilePicked onFilePicked}) {
   return GestureDetector(
@@ -19,10 +32,11 @@ Widget uploadWidget({required OnFilePicked onFilePicked}) {
 
         if (result != null) {
           File file = File(result.files.single.path!);
-          List<int> fileBytes = await file.readAsBytes();
-          String base64File = base64Encode(fileBytes);
-          onFilePicked(true, base64File);
-          print('Base64 file: $base64File');
+          // List<int> fileBytes = await file.readAsBytes();
+          List<int> fileBytes = await compressImage(file); // Compress the image
+          // String base64File = base64Encode(fileBytes);
+          onFilePicked(true, fileBytes);
+          print('File bytes: $fileBytes');
         } else {
           // User canceled the picker
           onFilePicked(false, null);

@@ -23,6 +23,8 @@ class DocumentationScreen extends StatefulWidget {
 }
 
 class _DocumentationScreenState extends State<DocumentationScreen> {
+  String? _base64GstImage;
+  String? _base64FssaiImage;
   String gstinNumber = '';
   String fssaiNumber = '';
   String fssaiExpiryDate = '';
@@ -91,7 +93,7 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
       //   'gstCertificate': imageGstPath,
       // };
       userInfo['gstNumber'] = gstinNumber;
-      userInfo['gstCertificate'] = imageGstPath;
+      userInfo['gstCertificate'] = _base64GstImage;
       // userInfo['fssaiDetails'] = {
       //   'certificateNumber': fssaiNumber,
       //   'expiryDate': fssaiExpiryDate,
@@ -100,7 +102,7 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
 
       userInfo['fssaiCertificateNumber'] = fssaiNumber;
       userInfo['fssaiExpiryDate'] = fssaiExpiryDate;
-      userInfo['fssaiCertificate'] = imageFssaiPath;
+      userInfo['fssaiCertificate'] = _base64FssaiImage;
 
       saveUserInfo(userInfo);
       Navigator.push(context,
@@ -257,17 +259,48 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
 
   String? imageFssaiPath;
   String? imageGstPath;
-  void _handleFssaiPicked(bool isPicked, String? filePath) {
-    setState(() {
-      _isFSSAIUploaded = isPicked;
-      imageFssaiPath = filePath;
-    });
+  // void _handleFssaiPicked(bool isPicked, String? filePath) {
+  //   setState(() {
+  //     _isFSSAIUploaded = isPicked;
+  //     imageFssaiPath = filePath;
+  //   });
+  // }
+
+  void _handleFssaiPicked(bool isPicked, List<int>? imageData) {
+    if (isPicked && imageData != null) {
+      setState(() {
+        _isFSSAIUploaded = true;
+        _base64FssaiImage = base64Encode(imageData);
+      });
+    } else {
+      setState(() {
+        _isFSSAIUploaded = false;
+      });
+    }
   }
 
-  void _handleGSTPicked(bool isPicked, String? filePath) {
-    setState(() {
-      _isGSTUploaded = isPicked;
-      imageGstPath = filePath;
-    });
+  // void _handleGSTPicked(bool isPicked, String? filePath) {
+  //   setState(() {
+  //     _isGSTUploaded = isPicked;
+  //     imageGstPath = filePath;
+  //   });
+  // }
+
+  // Function to handle picking GST image
+  void _handleGSTPicked(bool isPicked, List<int>? imageData) {
+    if (isPicked && imageData != null) {
+      // Convert image data to base64
+      // String base64Image = base64Encode(imageData);
+      setState(() {
+        _isGSTUploaded = true;
+        // Assuming imageGstPath is a String
+        // imageGstPath = base64Image;
+        _base64GstImage = base64Encode(imageData);
+      });
+    } else {
+      setState(() {
+        _isGSTUploaded = false;
+      });
+    }
   }
 }

@@ -70,6 +70,8 @@ const signupService = async (req, res) => {
         let DB = mongoose.connection.useDb("NukkadFoods");
         let usersCollection = DB.collection("Restaurants");
 
+        console.log("Inside Sigup function");
+
         const user = await usersCollection.findOne({ phoneNumber: phoneNumber });
 
         if (!user) {
@@ -119,6 +121,7 @@ const signupService = async (req, res) => {
             console.log("Restaurant Added Successfully");
             return res.json({ message: "Restaurant Added Successfully", executed: true });
         } else {
+            console.log("Failed in the SIgnup pageeeeee");
             return res.json({ message: "Restaurant Already Exists", executed: false });
         }
     } catch (error) {
