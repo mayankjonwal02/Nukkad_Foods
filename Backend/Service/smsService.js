@@ -1,13 +1,12 @@
 const twilio = require('twilio');
 require('dotenv').config();
-<<<<<<< HEAD
-=======
+
 const  accountSid   = process.env.ACCOUNT_SID
 const  authToken    = process.env.AUTH_TOKEN
 const twilioNumber = process.env.TWILIO_NUMBER
 const verifyServiceSid = process.env.VERIFY_SERVICE_SID;
 const  client       = require('twilio')(accountSid, authToken);
->>>>>>> d026be6e5192c5ca3fe8e4e329a632352d041095
+
 
 const sendSMS = (req, res) => {
     const  accountSid   = process.env.ACCOUNT_SID

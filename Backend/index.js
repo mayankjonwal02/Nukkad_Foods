@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const ConnectMongo = require('./DatabaseConnection/mongoDB');
@@ -15,15 +16,12 @@ const {setMyUpload} = require('./Service/filestoredemo');
 const { uploadUserData , getImageByName} = require('./Service/testfilemongo');
 
 
-
-<<<<<<< HEAD:Backend/index.js
-const port = process.env.PORT || 5000;
-=======
-const port = 3000;
->>>>>>> d026be6e5192c5ca3fe8e4e329a632352d041095:Backend/app.js
+//process.env.PORT || 
+const port = 5000;
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json({ limit: '300mb' }));
 app.use(express.json());
 
 // Remove view engine setup as it's not needed for serving static HTML files
