@@ -42,10 +42,6 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   String? imagePanPath;
   String? imageAadharFrontPath;
   String? imageAadharBackPath;
-  String? _base64AadharFrontImage;
-  String? _base64AadharBackImage;
-  String? _base64PanImage;
-  String? _base64SignatureImage;
   String ownerName = '';
   String ownerEmail = '';
   String ownerPhone = '';
@@ -168,7 +164,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
         panNumber.isNotEmpty &&
         ownerEmail.isNotEmpty &&
         ownerName.isNotEmpty) {
-      userInfo['ownerPhoto'] = imagebannerpath;
+      userInfo['ownerPhoto'] = _base64Image;
       userInfo['ownerName'] = ownerName;
       userInfo['ownerEmail'] = ownerEmail;
       userInfo['ownerContactNumber'] = ownerPhone;
@@ -178,12 +174,9 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       //   'aadharNumber': aadharNumber,
       //   'panNumber': panNumber,
       // };
-      userInfo['kycAadhar'] = aadharNumber;
-      userInfo['kycPan'] = panNumber;
-      userInfo['signature'] = _base64SignatureImage;
-      // userInfo['aadharFrontImage'] = _base64AadharFrontImage;
-      // userInfo['aadharBackImage'] = _base64AadharBackImage;
-      // userInfo['panImage'] = _base64PanImage;
+      userInfo['kycAadhar'] = imageAadharFrontPath;
+      userInfo['kycPan'] = imagePanPath;
+      userInfo['signature'] = imageSignaturePath;
 
       // userInfo['nukkadAddress'] = whatsappConfirmation;
 
@@ -576,91 +569,53 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
     }
   }
 
-  // void _handleSignaturePicked(bool isPicked, String? filePath) {
-  //   setState(() {
-  //     isSignatureUploaded = isPicked;
-  //     imageSignaturePath = filePath;
-  //   });
-  // }
-  void _handleSaveButtonPressed() async {
-    final data =
-        await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
-    final bytes = await data.toByteData(format: ui.ImageByteFormat.png);
-    final base64String = base64Encode(bytes!.buffer.asUint8List());
-
+  void _handleSignaturePicked(bool isPicked, String? filePath) {
     setState(() {
-      _signatureImageBytes = bytes.buffer.asUint8List();
-      imageSignaturePath = base64String;
+      isSignatureUploaded = isPicked;
+      imageSignaturePath = filePath;
     });
   }
 
-  // void _handlePanPicked(bool isPicked, String? filePath) {
-  //   setState(() {
-  //     isPanUploaded = isPicked;
-  //     imagePanPath = filePath;
-  //   });
-  // }
-  void _handlePanPicked(bool isPicked, List<int>? imageData) async {
-    if (isPicked && imageData != null) {
-      setState(() {
-        isPanUploaded = isPicked;
-        // Convert to base64
-        _base64PanImage = base64Encode(imageData);
-      });
-    }
+  void _handlePanPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isPanUploaded = isPicked;
+      imagePanPath = filePath;
+    });
   }
 
-  // void _handleAadharFrontPicked(bool isPicked, String? filePath) {
-  //   setState(() {
-  //     isAadharUploadeFront = isPicked;
-  //     imageAadharFrontPath = filePath;
-  //   });
-  // }
-  void _handleAadharFrontPicked(bool isPicked, List<int>? imageData) async {
-    if (isPicked && imageData != null) {
-      setState(() {
-        isAadharUploadeFront = isPicked;
-        // Convert to base64
-        _base64AadharFrontImage = base64Encode(imageData);
-      });
-    }
+  void _handleAadharFrontPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isAadharUploadeFront = isPicked;
+      imageAadharFrontPath = filePath;
+    });
   }
 
-  // void _handleAadharBackPicked(bool isPicked, String? filePath) {
-  //   setState(() {
-  //     isAadharBackUploaded = isPicked;
-  //     imageAadharBackPath = filePath;
-  //   });
-  // }
-  void _handleAadharBackPicked(bool isPicked, List<int>? imageData) async {
-    if (isPicked && imageData != null) {
-      setState(() {
-        isAadharBackUploaded = isPicked;
-        // Convert to base64
-        _base64AadharBackImage = base64Encode(imageData);
-      });
-    }
+  void _handleAadharBackPicked(bool isPicked, String? filePath) {
+    setState(() {
+      isAadharBackUploaded = isPicked;
+      imageAadharBackPath = filePath;
+    });
   }
 
   void _handleClearButtonPressed() {
     signatureGlobalKey.currentState!.clear();
   }
 
-  // Future<void> _handleSaveButtonPressed() async {
-  //   if (signatureGlobalKey.currentState != null) {
-  //     // Retrieve the drawn signature as a data blob
-  //     final data =
-  //         await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
-  //     final byteData = await data.toByteData(format: ui.ImageByteFormat.png);
-  //     final bytes = byteData!.buffer.asUint8List();
-  //     final base64String = base64Encode(bytes);
-  //     // print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$base64String');
-  //     setState(() {
-  //       _signatureImageBytes = bytes;
-  //       imageSignaturePath = base64String;
-  //     });
-  //   }
-  // }
+  Future<void> _handleSaveButtonPressed() async {
+    if (signatureGlobalKey.currentState != null) {
+      // Retrieve the drawn signature as a data blob
+      final data =
+          await signatureGlobalKey.currentState!.toImage(pixelRatio: 3.0);
+      final byteData = await data.toByteData(format: ui.ImageByteFormat.png);
+      final bytes = byteData!.buffer.asUint8List();
+      final base64String = base64Encode(bytes);
+      // print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb$base64String');
+      setState(() {
+        _signatureImageBytes = bytes;
+        imageSignaturePath = base64String;
+      });
+    }
+  }
 
   // void _handleSaveButtonPressed() async {
   //   final data =

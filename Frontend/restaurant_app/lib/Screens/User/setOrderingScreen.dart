@@ -26,10 +26,6 @@ class SetOrderingScreen extends StatefulWidget {
 }
 
 class _SetOrderingScreenState extends State<SetOrderingScreen> {
-  List<String> _base64RestaurantMenuImages = [];
-  List<String> _base64RestaurantImages = [];
-  List<String> _base64FoodImages = [];
-
   List<String> cuisines = [
     "Chinese",
     "Momos",
@@ -108,10 +104,7 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
   Future<void> saveUserInfo(Map<String, dynamic> userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_info', jsonEncode(userInfo));
-    print("Hello");
     await signUp();
-    print("ENdd");
-
     // print(prefs.getString('user_info'));
   }
 
@@ -119,12 +112,11 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     if (controller.text.isNotEmpty) {
       userInfo['cuisines'] = [];
       userInfo['operationalHours'] = "8pm";
-      userInfo['restaurantMenuImages'] = _base64RestaurantMenuImages;
-      userInfo['restaurantImages'] = _base64RestaurantImages;
-      userInfo['foodImages'] = _base64FoodImages;
-
-      // saveUserInfo(userInfo); // Save user info to SharedPreferences
-      sendUserDataToServer(userInfo); // Send user data to server for signup
+      userInfo['restaurantMenuImages'] = _imageRestaurantMenuImgPaths;
+      userInfo['restaurantImages'] = imageRestaurantImgPath;
+      userInfo['foodImages'] = imageFoodImgPath;
+      saveUserInfo(userInfo); // Save user info to SharedPreferences
+      // sendUserDataToServer(userInfo); // Send user data to server for signup
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: colorFailure,
@@ -781,24 +773,11 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     }
   }
 
-  // void _handleFoodImgPicked(bool isPicked, String? filePath) {
-  //   if (isPicked && filePath != null) {
-  //     setState(() {
-  //       _isFoodImgUploaded = true;
-  //       imageFoodImgPath.add(filePath);
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _isFoodImgUploaded = false;
-  //     });
-  //   }
-  // }
-  void _handleFoodImgPicked(bool isPicked, List<int>? imageData) {
-    if (isPicked && imageData != null) {
+  void _handleFoodImgPicked(bool isPicked, String? filePath) {
+    if (isPicked && filePath != null) {
       setState(() {
         _isFoodImgUploaded = true;
-        // Convert to base64 and add to the list
-        _base64FoodImages.add(base64Encode(imageData));
+        imageFoodImgPath.add(filePath);
       });
     } else {
       setState(() {
@@ -807,24 +786,11 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     }
   }
 
-  // void _handleRestaurantImgPicked(bool isPicked, String? filePath) {
-  //   if (isPicked && filePath != null) {
-  //     setState(() {
-  //       _isRestaurantImgUploaded = true;
-  //       imageRestaurantImgPath.add(filePath);
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _isRestaurantImgUploaded = false;
-  //     });
-  //   }
-  // }
-  void _handleRestaurantImgPicked(bool isPicked, List<int>? imageData) {
-    if (isPicked && imageData != null) {
+  void _handleRestaurantImgPicked(bool isPicked, String? filePath) {
+    if (isPicked && filePath != null) {
       setState(() {
         _isRestaurantImgUploaded = true;
-        // Convert to base64 and add to the list
-        _base64RestaurantImages.add(base64Encode(imageData));
+        imageRestaurantImgPath.add(filePath);
       });
     } else {
       setState(() {
@@ -833,24 +799,11 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     }
   }
 
-  // void _handleRestaurantMenuImgPicked(bool isPicked, String? filePath) {
-  //   if (isPicked && filePath != null) {
-  //     setState(() {
-  //       _isRestaurantMenuUploaded = true;
-  //       _imageRestaurantMenuImgPaths.add(filePath);
-  //     });
-  //   } else {
-  //     setState(() {
-  //       _isRestaurantMenuUploaded = false;
-  //     });
-  //   }
-  // }
-  void _handleRestaurantMenuImgPicked(bool isPicked, List<int>? imageData) {
-    if (isPicked && imageData != null) {
+  void _handleRestaurantMenuImgPicked(bool isPicked, String? filePath) {
+    if (isPicked && filePath != null) {
       setState(() {
         _isRestaurantMenuUploaded = true;
-        // Convert to base64 and add to the list
-        _base64RestaurantMenuImages.add(base64Encode(imageData));
+        _imageRestaurantMenuImgPaths.add(filePath);
       });
     } else {
       setState(() {

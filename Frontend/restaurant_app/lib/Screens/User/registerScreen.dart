@@ -150,6 +150,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
         // Generate OTP
         String otp = generateOTP();
+        print(otp);
 
         // Call the sendOtp endpoint
         final String baseUrl = dotenv.env['BASE_URL']!;
@@ -164,7 +165,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           }),
         );
 
-        // debugPrint('response : $response');
+        debugPrint('response : $response');
 
         if (response.statusCode == 200) {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
