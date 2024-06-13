@@ -383,239 +383,272 @@ This endpoint does not expect any request body.
 
 
 
-### Menu API
 
-#### Base URL
+# Menu API Documentation
+
+## Base URL
 ```
 /api/menu
 ```
 
-### Endpoints
+## 1. Fetch All Categories
 
-#### 1. Save Menu Item
+Retrieves all categories for a given restaurant.
 
-**URL**: `/api/menu/saveMenuItem`
-
-**Method**: `POST`
-
-**Description**: Adds a new menu item to the specified category and subcategory.
-
-**Request Body**:
+- **Endpoint:** `/fetchAllCategories`
+- **Method:** POST
+- **Request Body:**
 ```json
 {
-  "uid": "string",
-  "category": "string",
-  "subCategory": "string",
-  "menuItem": {
-    "menuItemName": "string",
-    "menuItemImageURL": "string",
-    "servingInfo": "string",
-    "menuItemCost": number,
-    "inStock": boolean,
-    "timeToPrepare": number
+  "uid": "restaurant123"
+}
+```
+- **Response Body:**
+```json
+{
+  "categories": ["Appetizers", "Main Course", "Desserts"],
+  "message": "Categories fetched successfully"
+}
+```
+
+## 2. Add Category
+
+Adds a new category to a restaurant's menu.
+
+- **Endpoint:** `/addcategory`
+- **Method:** POST
+- **Request Body:**
+```json
+{
+  "uid": "restaurant123",
+  "category": "Beverages"
+}
+```
+- **Response Body:**
+```json
+{
+  "message": "Category added successfully",
+  "existingMenuItem": {
+    "uid": "restaurant123",
+    "menuItemList": [
+      {
+        "category": "Beverages",
+        "subCategory": []
+      }
+    ]
   }
 }
 ```
 
-**Response**:
+## 3. Delete Category
 
-**Success (201)**:
+Removes a category from a restaurant's menu.
+
+- **Endpoint:** `/deleteCategory`
+- **Method:** POST
+- **Request Body:**
 ```json
 {
-  "message": "Menu item added successfully"
+  "uid": "restaurant123",
+  "category": "Beverages"
+}
+```
+- **Response Body:**
+```json
+{
+  "message": "Category deleted successfully"
 }
 ```
 
-**Error (500)**:
+## 4. Fetch All Subcategories
+
+Retrieves all subcategories for a given category in a restaurant's menu.
+
+- **Endpoint:** `/fetchAllSubCategories`
+- **Method:** POST
+- **Request Body:**
 ```json
 {
-  "error": "Error message"
+  "uid": "restaurant123",
+  "category": "Appetizers"
+}
+```
+- **Response Body:**
+```json
+{
+  "subCategories": ["Soups", "Salads", "Starters"]
 }
 ```
 
-#### 2. Get Menu Items
+## 5. Add Subcategory
 
-**URL**: `/api/menu/getMenuItem/:uid`
+Adds a new subcategory to a category in a restaurant's menu.
 
-**Method**: `GET`
+- **Endpoint:** `/addSubCategory`
+- **Method:** POST
+- **Request Body:**
+```json
+{
+  "uid": "restaurant123",
+  "category": "Appetizers",
+  "subCategory": "Finger Foods"
+}
+```
+- **Response Body:**
+```json
+{
+  "message": "Sub-category added successfully",
+  "subCategoryObj": {
+    "subCategoryName": "Finger Foods",
+    "menuItems": []
+  }
+}
+```
 
-**Description**: Retrieves the menu items for the specified user ID. Can filter by category and subcategory if provided.
+## 6. Delete Subcategory
 
-**Parameters**:
-- `uid` (string): User ID
+Removes a subcategory from a category in a restaurant's menu.
 
-**Optional Query Parameters**:
-- `category` (string): Category name
-- `subCategory` (string): Subcategory name
+- **Endpoint:** `/deleteSubCategory`
+- **Method:** POST
+- **Request Body:**
+```json
+{
+  "uid": "restaurant123",
+  "category": "Appetizers",
+  "subCategory": "Finger Foods"
+}
+```
+- **Response Body:**
+```json
+{
+  "message": "Sub-category deleted successfully"
+}
+```
 
-**Response**:
+## 7. Save Menu Item
 
-**Success (200)**:
+Adds a new menu item to a subcategory.
 
-- If neither `category` nor `subCategory` is provided:
+- **Endpoint:** `/saveMenuItem`
+- **Method:** POST
+- **Request Body:**
+```json
+{
+  "uid": "restaurant123",
+  "category": "Main Course",
+  "subCategory": "Pasta",
+  "menuItem": {
+    "name": "Spaghetti Carbonara",
+    "description": "Classic Italian pasta dish with eggs, cheese, and bacon",
+    "price": 12.99,
+    "isAvailable": true
+  }
+}
+```
+- **Response Body:**
+```json
+{
+  "message": "Menu item added successfully",
+  "existingMenuItem": {
+    "uid": "restaurant123",
+    "menuItemList": [
+      {
+        "category": "Main Course",
+        "subCategory": [
+          {
+            "subCategoryName": "Pasta",
+            "menuItems": [
+              {
+                "name": "Spaghetti Carbonara",
+                "description": "Classic Italian pasta dish with eggs, cheese, and bacon",
+                "price": 12.99,
+                "isAvailable": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## 8. Get Menu Items
+
+Retrieves menu items based on the provided parameters.
+
+- **Endpoint:** `/getMenuItem/:uid`
+- **Method:** POST
+- **Parameters:**
+  - `uid`: Restaurant ID
+- **Request Body:** (Optional)
+```json
+{
+  "category": "Main Course",
+  "subCategory": "Pasta"
+}
+```
+- **Response Body:**
 ```json
 {
   "menuItems": [
     {
-      "category": "string",
-      "subCategory": [
-        {
-          "subCategoryName": "string",
-          "menuItems": [
-            {
-              "menuItemName": "string",
-              "menuItemImageURL": "string",
-              "servingInfo": "string",
-              "menuItemCost": number,
-              "inStock": boolean,
-              "timeToPrepare": number
-            }
-          ]
-        }
-      ]
+      "name": "Spaghetti Carbonara",
+      "description": "Classic Italian pasta dish with eggs, cheese, and bacon",
+      "price": 12.99,
+      "isAvailable": true
     }
   ]
 }
 ```
 
-- If only `category` is provided:
-```json
-{
-  "subCategories": [
-    {
-      "subCategoryName": "string",
-      "menuItems": [
-        {
-          "menuItemName": "string",
-          "menuItemImageURL": "string",
-          "servingInfo": "string",
-          "menuItemCost": number,
-          "inStock": boolean,
-          "timeToPrepare": number
-        }
-      ]
-    }
-  ]
-}
-```
+## 9. Update Menu Item
 
-- If both `category` and `subCategory` are provided:
-```json
-{
-  "menuItems": [
-    {
-      "menuItemName": "string",
-      "menuItemImageURL": "string",
-      "servingInfo": "string",
-      "menuItemCost": number,
-      "inStock": boolean,
-      "timeToPrepare": number
-    }
-  ]
-}
-```
+Updates an existing menu item.
 
-**Error (404)**:
-```json
-{
-  "message": "Menu items not found"
-}
-```
-
-**Error (500)**:
-```json
-{
-  "error": "Error message"
-}
-```
-
-#### 3. Update Menu Item
-
-**URL**: `/api/menu/updateMenuItem/:uid/:category/:subCategory/:menuitemid`
-
-**Method**: `PUT`
-
-**Description**: Updates an existing menu item in the specified category and subcategory.
-
-**Parameters**:
-- `uid` (string): User ID
-- `category` (string): Category name
-- `subCategory` (string): Subcategory name
-- `menuitemid` (string): Menu item ID
-
-**Request Body**:
+- **Endpoint:** `/updateMenuItem/:uid/:category/:subCategory/:menuitemid`
+- **Method:** PUT
+- **Parameters:**
+  - `uid`: Restaurant ID
+  - `category`: Category name
+  - `subCategory`: Subcategory name
+  - `menuitemid`: Menu item ID
+- **Request Body:**
 ```json
 {
   "updatedata": {
-    "menuItemName": "string",
-    "menuItemImageURL": "string",
-    "servingInfo": "string",
-    "menuItemCost": number,
-    "inStock": boolean,
-    "timeToPrepare": number
+    "price": 13.99,
+    "isAvailable": false
   }
 }
 ```
-
-**Response**:
-
-**Success (200)**:
+- **Response Body:**
 ```json
 {
   "message": "Menu item updated successfully"
 }
 ```
 
-**Error (404)**:
-```json
-{
-  "message": "Menu item not found"
-}
-```
+## 10. Delete Menu Item
 
-**Error (500)**:
-```json
-{
-  "error": "Error message"
-}
-```
+Removes a menu item from a subcategory.
 
-#### 4. Delete Menu Item
-
-**URL**: `/api/menu/deleteMenuItem/:uid/:category/:subCategory/:menuitemid`
-
-**Method**: `DELETE`
-
-**Description**: Deletes an existing menu item from the specified category and subcategory.
-
-**Parameters**:
-- `uid` (string): User ID
-- `category` (string): Category name
-- `subCategory` (string): Subcategory name
-- `menuitemid` (string): Menu item ID
-
-**Response**:
-
-**Success (200)**:
+- **Endpoint:** `/deleteMenuItem/:uid/:category/:subCategory/:menuitemid`
+- **Method:** POST
+- **Parameters:**
+  - `uid`: Restaurant ID
+  - `category`: Category name
+  - `subCategory`: Subcategory name
+  - `menuitemid`: Menu item ID
+- **Response Body:**
 ```json
 {
   "message": "Menu item deleted successfully"
 }
 ```
 
-**Error (404)**:
-```json
-{
-  "message": "Menu item not found"
-}
-```
 
-**Error (500)**:
-```json
-{
-  "error": "Error message"
-}
-```
 
 
 
