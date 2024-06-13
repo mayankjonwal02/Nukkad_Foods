@@ -12,6 +12,7 @@ const AddRouter = require('./Controller/Adds');
 const ComplaintRouter = require('./Controller/Complaint');
 const subAdminRouter = require('./Controller/SubAdmin');
 const departmentRouter = require('./Controller/Department');
+const paymentrouter = require('./Controller/Payment');
 const {setMyUpload} = require('./Service/filestoredemo');
 const { uploadUserData , getImageByName} = require('./Service/testfilemongo');
 
@@ -37,6 +38,7 @@ app.use('/api/adds', AddRouter);
 app.use('/api/complaint', ComplaintRouter);
 app.use('/api/subadmin', subAdminRouter);
 app.use('/api/department', departmentRouter);
+app.use('/api/payment', paymentrouter);
 app.post('/uploads', setMyUpload)
 app.post('/uploadUserData', uploadUserData);
 app.get('/getimage/:name', getImageByName);

@@ -1408,3 +1408,127 @@ This endpoint sends an SMS message to a specified phone number.
          "error": "Complaint not found"
      }
      ```
+
+
+
+
+# Razorpay Payment API Documentation
+
+## Base URL
+```
+https://your-api-domain.com/api/payment
+```
+
+## 1. Create Order
+
+Creates a new order in Razorpay.
+
+### Endpoint
+```
+POST /createOrder
+```
+
+### Request Body
+| Field    | Type   | Description                            |
+|----------|--------|----------------------------------------|
+| amount   | number | Amount in the smallest currency unit   |
+| currency | string | Currency code (e.g., INR, USD)         |
+
+### Example Request
+```json
+{
+  "amount": 50000,
+  "currency": "INR"
+}
+```
+
+### Success Response (200 OK)
+```json
+{
+  "order": {
+    "id": "order_ABCDefghIJKLmn",
+    "entity": "order",
+    "amount": 50000,
+    "amount_paid": 0,
+    "amount_due": 50000,
+    "currency": "INR",
+    "receipt": "order_1623660301",
+    "status": "created",
+    "attempts": 0,
+    "created_at": 1623660301
+  },
+  "status": 200,
+  "message": "Order created successfully",
+  "executed": true
+}
+```
+
+### Error Response (500 Internal Server Error)
+```json
+{
+  "error": "Error message describing the issue",
+  "executed": false
+}
+```
+
+## 2. Verify Payment
+
+Verifies the payment signature after a successful payment.
+
+### Endpoint
+```
+POST /verifyPayment
+```
+
+### Request Body
+| Field               | Type   | Description                       |
+|---------------------|--------|-----------------------------------|
+| razorpay_order_id   | string | Razorpay Order ID                 |
+| razorpay_payment_id | string | Razorpay Payment ID               |
+| razorpay_signature  | string | Signature provided by Razorpay    |
+
+### Example Request
+```json
+{
+  "razorpay_order_id": "order_ABCDefghIJKLmn",
+  "razorpay_payment_id": "pay_ABCDefghIJKLmn",
+  "razorpay_signature": "9ef4dffbfd84f1318f6739a3ce19f9d85851857ae648f114332d8401e0949a3d"
+}
+```
+
+### Success Response (200 OK)
+```json
+{
+  "status": 200,
+  "message": "Payment verified successfully",
+  "executed": true
+}
+```
+
+### Error Response (400 Bad Request)
+```json
+{
+  "status": 400,
+  "message": "Payment verification failed",
+  "executed": false
+}
+```
+
+### Error Response (500 Internal Server Error)
+```json
+{
+  "error": "Error message describing the issue",
+  "executed": false
+}
+```
+
+## Usage Notes
+
+1. The `amount` in the Create Order API should be in the smallest currency unit. For example, for INR, the amount should be in paise (1 rupee = 100 paise).
+
+2. The `currency` in the Create Order API should be a valid currency code supported by Razorpay.
+
+3. After creating an order, use the returned `order.id` to initiate the payment on the client-side using Razorpay's JavaScript SDK.
+
+4. After a successful payment, use the Verify Payment API to confirm the payment's authenticity.
+
