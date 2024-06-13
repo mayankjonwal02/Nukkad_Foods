@@ -9,14 +9,15 @@ class RestaurantOperatingHoursWidget extends StatefulWidget {
   final TimeOfDay closingTime;
   final List<String> daysOfWeek;
   final Function(List<bool>, TimeOfDay, TimeOfDay) onValuesChanged;
+  final EdgeInsetsGeometry? padding;
 
-  RestaurantOperatingHoursWidget({
-    required this.isOpen,
-    required this.openingTime,
-    required this.closingTime,
-    required this.onValuesChanged,
-    required this.daysOfWeek,
-  });
+  RestaurantOperatingHoursWidget(
+      {required this.isOpen,
+      required this.openingTime,
+      required this.closingTime,
+      required this.onValuesChanged,
+      required this.daysOfWeek,
+      this.padding});
 
   @override
   _RestaurantOperatingHoursWidgetState createState() =>
@@ -29,7 +30,7 @@ class _RestaurantOperatingHoursWidgetState
   Widget build(BuildContext context) {
     return Container(
       width: 100.w,
-      margin: EdgeInsets.symmetric(horizontal: 3.w),
+      margin: widget.padding ?? EdgeInsets.symmetric(horizontal: 3.w),
       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
       decoration: BoxDecoration(
         color: bgColor,

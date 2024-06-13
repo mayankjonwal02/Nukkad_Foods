@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
+import 'package:restaurant_app/Widgets/registration/build_restaurant_operational_hours_widget.dart';
 import 'package:sizer/sizer.dart';
 
 class NukkadSettingWidget extends StatefulWidget {
@@ -33,7 +33,11 @@ class _NukkadSettingWidgetState extends State<NukkadSettingWidget> {
     'Saturday',
     'Sunday'
   ];
-  List<bool> isOpen = List.generate(7, (index) => false);
+  late List<bool> isOpen;
+  late TimeOfDay openingTime;
+  late TimeOfDay closingTime;
+  late String selectedDate;
+  // List<bool> isOpen = List.generate(7, (index) => false);
   // final ImagePicker imagebannerpath = ImagePicker();
   String? imagebannerpath;
 
@@ -41,7 +45,34 @@ class _NukkadSettingWidgetState extends State<NukkadSettingWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    isOpen = List.filled(7, false);
+    openingTime = TimeOfDay(hour: 9, minute: 30); // Set default opening time
+    closingTime = TimeOfDay(hour: 21, minute: 30); // Set default closing time
     ownerNameController.text = "Rahul Kumar";
+  }
+
+  String formatTimeOfDay(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    final dateTime = DateTime(
+        now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    return DateFormat.jm().format(dateTime);
+  }
+
+  List<String> getSelectedDaysString(List<bool> selectedDays) {
+    List<String> selectedDaysString = [];
+
+    for (int i = 0; i < selectedDays.length; i++) {
+      if (selectedDays[i]) {
+        selectedDaysString.add(daysOfWeek[i]);
+      }
+    }
+
+    // Remove the trailing comma and space
+    // selectedDaysString = selectedDaysString.isNotEmpty
+    //     ? selectedDaysString.substring(0, selectedDaysString.length - 2)
+    //     : selectedDaysString;
+
+    return selectedDaysString;
   }
 
   @override
@@ -243,226 +274,243 @@ class _NukkadSettingWidgetState extends State<NukkadSettingWidget> {
                 SizedBox(
                   height: 2.h,
                 ),
-                Container(
-                  width: 100.w,
-                  padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 2.h),
-                  decoration: BoxDecoration(
-                    color: bgColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: textGrey2, width: 0.2.w),
-                  ),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Select restaurant opening days',
-                          style: body4TextStyle.copyWith(color: textGrey3),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: SizedBox(
-                          width: 100.w,
-                          child: Wrap(
-                            spacing: 0.5.h,
-                            runSpacing: 0.5.h,
-                            alignment: WrapAlignment.spaceEvenly,
-                            runAlignment: WrapAlignment.center,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: List.generate(
-                              (daysOfWeek.length / 2).ceil(),
-                              (rowIndex) {
-                                int startIndex = rowIndex * 2;
-                                int endIndex = startIndex + 1;
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    if (startIndex < daysOfWeek.length)
-                                      Checkbox(
-                                        value: isOpen[startIndex],
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            isOpen[startIndex] = newValue!;
-                                          });
-                                        },
-                                        activeColor: colorSuccess,
-                                      ),
-                                    if (startIndex < daysOfWeek.length)
-                                      Text(
-                                        daysOfWeek[startIndex],
-                                        style: body3TextStyle.copyWith(
-                                            fontSize: 12.sp),
-                                      ),
-                                    if (endIndex < daysOfWeek.length)
-                                      Checkbox(
-                                        value: isOpen[endIndex],
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            isOpen[endIndex] = newValue!;
-                                          });
-                                        },
-                                        activeColor: colorSuccess,
-                                      ),
-                                    if (endIndex < daysOfWeek.length)
-                                      Text(
-                                        daysOfWeek[endIndex],
-                                        style: body3TextStyle.copyWith(
-                                            fontSize: 12.sp),
-                                      ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Select restaurant opening /closing time',
-                          style: body4TextStyle.copyWith(color: textGrey3),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                'Opening',
-                                style: body5TextStyle.copyWith(
-                                    color: colorSuccess,
-                                    letterSpacing: 1.5,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5.w, vertical: 1.h),
-                                decoration: BoxDecoration(
-                                  color: bgColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: colorFailure, width: 0.2.w),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: colordenger
-                                          .withOpacity(0.5), // Shadow color
-                                      spreadRadius: 2, // Spread radius
-                                      blurRadius: 5, // Blur radius
-                                      offset: Offset(0,
-                                          2), // Offset in the x and y directions
-                                    ),
-                                  ],
-                                ),
-                                child: Stack(children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/openRes.png',
-                                        cacheWidth: 50,
-                                      ),
-                                      SizedBox(
-                                        width: 2.w,
-                                      ),
-                                      Text(
-                                        '09:30 AM',
-                                        style: body5TextStyle.copyWith(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                  Positioned(
-                                    top: 10,
-                                    left: 5,
-                                    child: Text(
-                                      'OPEN',
-                                      style: body6TextStyle.copyWith(
-                                          color: colorSuccess),
-                                    ),
-                                  )
-                                ]),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                'Closing',
-                                style: body5TextStyle.copyWith(
-                                    color: colordenger,
-                                    letterSpacing: 1.5,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: 1.h,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5.w, vertical: 1.h),
-                                decoration: BoxDecoration(
-                                  color: bgColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: colorFailure, width: 0.2.w),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: colordenger
-                                          .withOpacity(0.5), // Shadow color
-                                      spreadRadius: 2, // Spread radius
-                                      blurRadius: 5, // Blur radius
-                                      offset: Offset(0,
-                                          2), // Offset in the x and y directions
-                                    ),
-                                  ],
-                                ),
-                                child: Stack(children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/closeRes.png',
-                                        cacheWidth: 50,
-                                      ),
-                                      SizedBox(
-                                        width: 2.w,
-                                      ),
-                                      Text(
-                                        '10:30 PM',
-                                        style: body5TextStyle.copyWith(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                  Positioned(
-                                    top: 10,
-                                    left: 5,
-                                    child: Text(
-                                      'CLOSE',
-                                      style: body6TextStyle.copyWith(
-                                        color: colorFailure,
-                                      ),
-                                    ),
-                                  )
-                                ]),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                RestaurantOperatingHoursWidget(
+                  closingTime: closingTime,
+                  openingTime: openingTime,
+                  isOpen: isOpen,
+                  onValuesChanged: (List<bool> newIsOpen,
+                      TimeOfDay newOpeningTime, TimeOfDay newClosingTime) {
+                    setState(() {
+                      isOpen = newIsOpen;
+                      openingTime = newOpeningTime;
+                      closingTime = newClosingTime;
+                    });
+                  },
+                  daysOfWeek: daysOfWeek,
+                  padding: EdgeInsets.symmetric(
+                    vertical: 2.h,
                   ),
                 ),
+                // Container(
+                //   width: 100.w,
+                //   padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 2.h),
+                //   decoration: BoxDecoration(
+                //     color: bgColor,
+                //     borderRadius: BorderRadius.circular(10),
+                //     border: Border.all(color: textGrey2, width: 0.2.w),
+                //   ),
+                //   child: Column(
+                //     children: [
+                //       Align(
+                //         alignment: Alignment.topLeft,
+                //         child: Text(
+                //           'Select restaurant opening days',
+                //           style: body4TextStyle.copyWith(color: textGrey3),
+                //         ),
+                //       ),
+                //       Align(
+                //         alignment: Alignment.topLeft,
+                //         child: SizedBox(
+                //           width: 100.w,
+                //           child: Wrap(
+                //             spacing: 0.5.h,
+                //             runSpacing: 0.5.h,
+                //             alignment: WrapAlignment.spaceEvenly,
+                //             runAlignment: WrapAlignment.center,
+                //             crossAxisAlignment: WrapCrossAlignment.center,
+                //             children: List.generate(
+                //               (daysOfWeek.length / 2).ceil(),
+                //               (rowIndex) {
+                //                 int startIndex = rowIndex * 2;
+                //                 int endIndex = startIndex + 1;
+                //                 return Row(
+                //                   mainAxisAlignment: MainAxisAlignment.start,
+                //                   crossAxisAlignment: CrossAxisAlignment.center,
+                //                   children: [
+                //                     if (startIndex < daysOfWeek.length)
+                //                       Checkbox(
+                //                         value: isOpen[startIndex],
+                //                         onChanged: (newValue) {
+                //                           setState(() {
+                //                             isOpen[startIndex] = newValue!;
+                //                           });
+                //                         },
+                //                         activeColor: colorSuccess,
+                //                       ),
+                //                     if (startIndex < daysOfWeek.length)
+                //                       Text(
+                //                         daysOfWeek[startIndex],
+                //                         style: body3TextStyle.copyWith(
+                //                             fontSize: 12.sp),
+                //                       ),
+                //                     if (endIndex < daysOfWeek.length)
+                //                       Checkbox(
+                //                         value: isOpen[endIndex],
+                //                         onChanged: (newValue) {
+                //                           setState(() {
+                //                             isOpen[endIndex] = newValue!;
+                //                           });
+                //                         },
+                //                         activeColor: colorSuccess,
+                //                       ),
+                //                     if (endIndex < daysOfWeek.length)
+                //                       Text(
+                //                         daysOfWeek[endIndex],
+                //                         style: body3TextStyle.copyWith(
+                //                             fontSize: 12.sp),
+                //                       ),
+                //                   ],
+                //                 );
+                //               },
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //       Align(
+                //         alignment: Alignment.topLeft,
+                //         child: Text(
+                //           'Select restaurant opening /closing time',
+                //           style: body4TextStyle.copyWith(color: textGrey3),
+                //         ),
+                //       ),
+                //       SizedBox(
+                //         height: 2.h,
+                //       ),
+                //       Row(
+                //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //         children: [
+                //           Column(
+                //             children: [
+                //               Text(
+                //                 'Opening',
+                //                 style: body5TextStyle.copyWith(
+                //                     color: colorSuccess,
+                //                     letterSpacing: 1.5,
+                //                     fontWeight: FontWeight.w600),
+                //               ),
+                //               SizedBox(
+                //                 height: 1.h,
+                //               ),
+                //               Container(
+                //                 padding: EdgeInsets.symmetric(
+                //                     horizontal: 5.w, vertical: 1.h),
+                //                 decoration: BoxDecoration(
+                //                   color: bgColor,
+                //                   borderRadius: BorderRadius.circular(10),
+                //                   border: Border.all(
+                //                       color: colorFailure, width: 0.2.w),
+                //                   boxShadow: [
+                //                     BoxShadow(
+                //                       color: colordenger
+                //                           .withOpacity(0.5), // Shadow color
+                //                       spreadRadius: 2, // Spread radius
+                //                       blurRadius: 5, // Blur radius
+                //                       offset: Offset(0,
+                //                           2), // Offset in the x and y directions
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 child: Stack(children: [
+                //                   Row(
+                //                     mainAxisAlignment:
+                //                         MainAxisAlignment.spaceBetween,
+                //                     children: [
+                //                       Image.asset(
+                //                         'assets/images/openRes.png',
+                //                         cacheWidth: 50,
+                //                       ),
+                //                       SizedBox(
+                //                         width: 2.w,
+                //                       ),
+                //                       Text(
+                //                         '09:30 AM',
+                //                         style: body5TextStyle.copyWith(
+                //                             fontWeight: FontWeight.w600),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                   Positioned(
+                //                     top: 10,
+                //                     left: 5,
+                //                     child: Text(
+                //                       'OPEN',
+                //                       style: body6TextStyle.copyWith(
+                //                           color: colorSuccess),
+                //                     ),
+                //                   )
+                //                 ]),
+                //               ),
+                //             ],
+                //           ),
+                //           Column(
+                //             children: [
+                //               Text(
+                //                 'Closing',
+                //                 style: body5TextStyle.copyWith(
+                //                     color: colordenger,
+                //                     letterSpacing: 1.5,
+                //                     fontWeight: FontWeight.w600),
+                //               ),
+                //               SizedBox(
+                //                 height: 1.h,
+                //               ),
+                //               Container(
+                //                 padding: EdgeInsets.symmetric(
+                //                     horizontal: 5.w, vertical: 1.h),
+                //                 decoration: BoxDecoration(
+                //                   color: bgColor,
+                //                   borderRadius: BorderRadius.circular(10),
+                //                   border: Border.all(
+                //                       color: colorFailure, width: 0.2.w),
+                //                   boxShadow: [
+                //                     BoxShadow(
+                //                       color: colordenger
+                //                           .withOpacity(0.5), // Shadow color
+                //                       spreadRadius: 2, // Spread radius
+                //                       blurRadius: 5, // Blur radius
+                //                       offset: Offset(0,
+                //                           2), // Offset in the x and y directions
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 child: Stack(children: [
+                //                   Row(
+                //                     mainAxisAlignment:
+                //                         MainAxisAlignment.spaceBetween,
+                //                     children: [
+                //                       Image.asset(
+                //                         'assets/images/closeRes.png',
+                //                         cacheWidth: 50,
+                //                       ),
+                //                       SizedBox(
+                //                         width: 2.w,
+                //                       ),
+                //                       Text(
+                //                         '10:30 PM',
+                //                         style: body5TextStyle.copyWith(
+                //                             fontWeight: FontWeight.w600),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                   Positioned(
+                //                     top: 10,
+                //                     left: 5,
+                //                     child: Text(
+                //                       'CLOSE',
+                //                       style: body6TextStyle.copyWith(
+                //                         color: colorFailure,
+                //                       ),
+                //                     ),
+                //                   )
+                //                 ]),
+                //               ),
+                //             ],
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     vertical: 2.h,
@@ -488,6 +536,16 @@ class _NukkadSettingWidgetState extends State<NukkadSettingWidget> {
     //     builder: (context) => const ChatScreenWidget(),
     //   ),
     // );
+    if (isOpen.contains(true)) {
+      Map<String, dynamic> operationalHours = Map.fromEntries(
+          getSelectedDaysString(isOpen).map((key) => MapEntry(key,
+              "${formatTimeOfDay(openingTime)} - ${formatTimeOfDay(closingTime)}")));
+      print(operationalHours);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("All Fields is required")));
+    }
   }
 
   Widget bottomSheet() {
