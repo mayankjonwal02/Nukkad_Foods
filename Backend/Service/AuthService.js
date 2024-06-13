@@ -74,6 +74,9 @@ const signupService = async (req, res) => {
 
         const user = await usersCollection.findOne({ phoneNumber: phoneNumber });
 
+    
+
+
         if (!user) {
             await usersCollection.insertOne({
                 nukkadName: nukkadName,
