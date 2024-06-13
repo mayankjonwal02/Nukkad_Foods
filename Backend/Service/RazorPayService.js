@@ -55,7 +55,35 @@ const verifyPayment = async (req, res) => {
         return res.status(500).json({ error: error.message, executed: false });
     }
 };
+
+
+const createPayout = (req, res) => {
+    const { amount, currency,  notes, fund_account_id, mode, purpose } = req.body;
+
+    try {
+        const options = {
+            account_number: process.env.ACCOUNT_NUMBER, // Ensure this environment variable is set
+            fund_account_id: fund_account_id,
+            amount: amount * 100, // Razorpay expects amount in smallest currency unit
+            currency: currency,
+            mode: mode,
+            purpose: purpose,
+            queue_if_low_balance: true,
+            notes: notes
+        };
+
+        instance.payouts.create(options, (err, payout) => {
+            if (err) {
+                return res.status(500).json({ error: err, executed: false });
+            }
+            return res.status(200).json({ payout: payout, status: 200, message: "Payout created successfully", executed: true });
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message, executed: false });
+    }
+};
+
          
 
 
-module.exports = { createOrder , verifyPayment };
+module.exports = { createOrder , verifyPayment , createPayout };

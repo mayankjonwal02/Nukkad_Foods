@@ -1532,3 +1532,130 @@ POST /verifyPayment
 
 4. After a successful payment, use the Verify Payment API to confirm the payment's authenticity.
 
+
+
+
+
+
+
+
+
+### Payout API Documentation
+
+#### API Endpoint
+
+**Endpoint**: `/api/payment/createPayout`
+
+**Method**: POST
+
+#### Description
+
+This API endpoint allows you to create a payout using Razorpay's Payout API. The payout will be created using a pre-configured fund account and the specified details in the request body.
+
+#### Request
+
+**URL**: `/api/payment/createPayout`
+
+**Method**: POST
+
+**Headers**:
+- `Content-Type`: `application/json`
+
+**Body Parameters**:
+
+| Parameter          | Type    | Required | Description                                            |
+|--------------------|---------|----------|--------------------------------------------------------|
+| `amount`           | Number  | Yes      | The payout amount in the smallest currency unit (e.g., paise for INR) |
+| `currency`         | String  | Yes      | The currency of the payout (e.g., "INR")               |
+| `notes`            | Object  | No       | Any additional notes related to the payout (key-value pairs) |
+| `fund_account_id`  | String  | Yes      | The fund account ID to which the payout will be made   |
+| `mode`             | String  | Yes      | The mode of the payout (e.g., "IMPS", "NEFT", "RTGS", "UPI") |
+| `purpose`          | String  | Yes      | The purpose of the payout (e.g., "refund", "payout")   |
+
+**Environment Variables**:
+- `ACCOUNT_NUMBER`: The account number from which the payout will be made. Ensure this is set in your environment variables.
+
+#### Sample Request Body
+
+```json
+{
+    "amount": 500,
+    "currency": "INR",
+    "fund_account_id": "fa_1234567890",
+    "mode": "UPI",
+    "purpose": "refund",
+    "notes": {
+        "note1": "This is a test payout",
+        "note2": "For testing purposes"
+    }
+}
+```
+
+#### Response
+
+**Success Response**:
+
+- **Status Code**: 200 OK
+
+```json
+{
+    "payout": {
+        "id": "pout_1Aa00000000001",
+        "entity": "payout",
+        "fund_account_id": "fa_1234567890",
+        "amount": 50000,
+        "currency": "INR",
+        "transaction_id": "txn_00000000000001",
+        "created_at": 1609459200,
+        "status": "processing",
+        "purpose": "refund",
+        "mode": "UPI",
+        "reference_id": null,
+        "notes": {
+            "note1": "This is a test payout",
+            "note2": "For testing purposes"
+        }
+    },
+    "status": 200,
+    "message": "Payout created successfully",
+    "executed": true
+}
+```
+
+**Error Response**:
+
+- **Status Code**: 500 Internal Server Error
+
+```json
+{
+    "error": {
+        "code": "BAD_REQUEST_ERROR",
+        "description": "Insufficient funds in account",
+        "source": "business",
+        "step": "currency",
+        "reason": "The account does not have enough balance to process this payout"
+    },
+    "executed": false
+}
+```
+
+### Example Usage
+
+#### cURL
+
+```sh
+curl -X POST http://localhost:3000/api/payment/createPayout \
+    -H "Content-Type: application/json" \
+    -d '{
+          "amount": 500,
+          "currency": "INR",
+          "fund_account_id": "fa_1234567890",
+          "mode": "UPI",
+          "purpose": "refund",
+          "notes": {
+              "note1": "This is a test payout",
+              "note2": "For testing purposes"
+          }
+        }'
+```
+
