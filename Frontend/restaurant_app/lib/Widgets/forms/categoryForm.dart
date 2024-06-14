@@ -1,14 +1,20 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
-import 'package:restaurant_app/Widgets/constants/texts.dart';
+import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
+import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
+import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
+import 'package:restaurant_app/Widgets/constants/strings.dart';
 import 'package:restaurant_app/Widgets/menu/addImage.dart';
 import 'package:restaurant_app/Widgets/menu/customInputField.dart';
 import 'package:sizer/sizer.dart';
 
 class CategoriesForm extends StatefulWidget {
-  const CategoriesForm({super.key});
+  const CategoriesForm({
+    super.key,
+  });
 
   @override
   State<CategoriesForm> createState() => _CategoriesFormState();
@@ -18,7 +24,13 @@ class _CategoriesFormState extends State<CategoriesForm> {
   TextEditingController categoryName = TextEditingController();
   String? selectedCategory; // To store the currently selected value
 
-  final List<String> categories = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+  bool isAddCategoryLoaded = true;
+  @override
+  void dispose() {
+    categoryName.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,11 +78,42 @@ class _CategoriesFormState extends State<CategoriesForm> {
               SizedBox(
                 height: 20,
               ),
-              AddButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
+              isAddCategoryLoaded
+                  ? AddButton(
+                onPressed: () async {
+                  setState(() {
+                    isAddCategoryLoaded = false;
+                  });
+                  if (categoryName.text.isNotEmpty) {
+                    String? uid = SharedPrefsUtil().getString(AppStrings.userId);
+                    if (uid != null) {
+                      await MenuControllerClass.addCategory(
+                        uid: uid,
+                        category: categoryName.text,
+                        context: context,
+                      ).then((_) {
+                        setState(() {
+                          isAddCategoryLoaded = true;
+                        });
+                        context.pop();
+                      });
+                    } else {
+                      setState(() {
+                        isAddCategoryLoaded = true;
+                      });
+                      context.showSnackBar(
+                          message: 'User ID is not available');
+                    }
+                  } else {
+                    setState(() {
+                      isAddCategoryLoaded = true;
+                    });
+                    context.showSnackBar(
+                        message: AppStrings.allFieldsRequired);
+                  }
                 },
               )
+                  : Center(child: CircularProgressIndicator()),
             ],
           ),
         ),

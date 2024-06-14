@@ -1,13 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/menu_model.dart';
+import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
+import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
+import 'package:restaurant_app/Widgets/constants/strings.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
+import 'package:restaurant_app/Widgets/forms/dishesForm.dart';
 
 class MenuItemCard extends StatefulWidget {
+  const MenuItemCard({
+    required this.menuItemModel,
+    required this.categorie,
+    required this.subCategory,
+    required this.categories,
+  });
+  final MenuItemModel menuItemModel;
+  final List<String> categories;
+  final String categorie;
+  final String subCategory;
   @override
-  _MenuItemCardState createState() => _MenuItemCardState();
+  _MenuItemCardState createState() =>
+      _MenuItemCardState(menuItemModel: menuItemModel);
 }
 
 class _MenuItemCardState extends State<MenuItemCard> {
   bool inStock = true;
+  final MenuItemModel menuItemModel;
+
+  _MenuItemCardState({required this.menuItemModel});
+
+  deleteMenuItem() async {
+    await MenuControllerClass.deleteMenuItem(
+      context: context,
+      uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
+      menuitemid: menuItemModel.id ?? "",
+      category: widget.categorie,
+      subCategory: widget.subCategory,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +56,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Veg Manchurian Gravy',
+                      widget.menuItemModel.menuItemName ?? "",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -34,14 +64,14 @@ class _MenuItemCardState extends State<MenuItemCard> {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      '[Serving Qty As 1-2 People]',
+                      "[Serving Qty As ${widget.menuItemModel.servingInfo ?? ""}] ",
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     SizedBox(
                       height: 8,
                     ),
                     Text(
-                      '₹ 100',
+                      '₹ ${widget.menuItemModel.menuItemCost}',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -54,7 +84,8 @@ class _MenuItemCardState extends State<MenuItemCard> {
                   color: Colors.green,
                 ),
                 Image.network(
-                  'https://www.cookingcarnival.com/wp-content/uploads/2021/09/Veg-manchow-soup.webp', // Replace with actual image URL
+                  widget.menuItemModel.menuItemImageURL ??
+                      'https://www.cookingcarnival.com/wp-content/uploads/2021/09/Veg-manchow-soup.webp', // Replace with actual image URL
                   width: 100,
                   height: 100,
                 ),
@@ -72,15 +103,17 @@ class _MenuItemCardState extends State<MenuItemCard> {
                   activeColor: Color(0xFF35BA2A),
                   inactiveThumbColor: Color(0xFFFF0000),
                   inactiveTrackColor: Color(0xFFFFCCCC),
-                  value: inStock,
+                  value: widget.menuItemModel.inStock ?? true,
                   onChanged: (value) {
-                    setState(() {
-                      inStock = value;
-                    });
+                    // setState(() {
+                    //   inStock = value;
+                    // });
                   },
                 ),
                 Text(
-                  inStock ? 'In stock' : 'Off stock',
+                  widget.menuItemModel.inStock ?? true
+                      ? 'In stock'
+                      : 'Off stock',
                   style: TextStyle(
                       color: inStock ? Colors.green : Colors.red,
                       fontWeight: FontWeight.bold),
@@ -96,14 +129,19 @@ class _MenuItemCardState extends State<MenuItemCard> {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: Color(0xFFFF0000),
-                      ),
-                      onPressed: () {
-                        // Edit action
-                      },
-                    ),
+                        icon: Icon(
+                          Icons.edit,
+                          color: Color(0xFFFF0000),
+                        ),
+                        onPressed: () => context.push(
+                              DishesForm(
+                                categories: widget.categories,
+                                menuItemModel: menuItemModel,
+                                selectedCategory: widget.categorie,
+                                edit: true,
+                                subCategory: widget.subCategory,
+                              ),
+                            )),
                     Text(
                       'Edit',
                       style: h6TextStyle,
@@ -122,7 +160,31 @@ class _MenuItemCardState extends State<MenuItemCard> {
                   icon: Icon(Icons.delete),
                   color: Colors.red,
                   onPressed: () {
-                    // Delete action
+                    //build are you sure dialog
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Are you sure?'),
+                          content: Text('This action cannot be undone.'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Delete'),
+                              onPressed: () {
+                                deleteMenuItem();
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
               ],

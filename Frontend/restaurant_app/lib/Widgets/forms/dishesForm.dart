@@ -1,17 +1,34 @@
 import 'dart:async';
-import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/menu_model.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/update_menu_item_model.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
-import 'package:restaurant_app/Widgets/constants/colors.dart';
+import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
+import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
+import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
+import 'package:restaurant_app/Widgets/constants/strings.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/menu/addImage.dart';
 import 'package:restaurant_app/Widgets/menu/categories.dart';
 import 'package:restaurant_app/Widgets/menu/customInputField.dart';
 
 class DishesForm extends StatefulWidget {
-  const DishesForm({super.key});
+  const DishesForm({
+    super.key,
+    required this.categories,
+    this.subCategory,
+    this.menuItemModel,
+    this.edit = false,
+    this.selectedCategory,
+  });
+  final List<String> categories;
+  final String? subCategory;
+  final MenuItemModel? menuItemModel;
+  final bool edit;
+  final String? selectedCategory;
 
   @override
   State<DishesForm> createState() => _DishesFormState();
@@ -24,117 +41,155 @@ class _DishesFormState extends State<DishesForm> {
   TextEditingController noOfServers = TextEditingController();
 
   String? selectedCategory;
-  final List<String> categories = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
-  String selectedLabel = '';
+  String selectedLabel = AppStrings.subCategory[0];
   bool isLoading = false;
+  final List<bool> subCategoryCheck = [
+    true,
+    false,
+    false,
+    false,
+    false,
+  ];
+  final List<String> subCategoryImage = [
+    'assets/images/veg.jpeg',
+    'assets/images/nonveg.jpeg',
+    'assets/images/vegan.png',
+    'assets/images/glutenfree.png',
+    'assets/images/dairyfree.png'
+  ];
 
-  Future<void> saveMenuItem({
-    required String uid,
-    required String category,
-    required String subCategory,
-    required String menuItemName,
-    required String menuItemImageURL,
-    required String servingInfo,
-    required double menuItemCost,
-    required bool inStock,
-    required int timeToPrepare,
-  }) async {
+  _DishesFormState();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    fetchCategories(); // Fetch categories when the form initializes
+
+    widget.edit
+        ? {
+            print(widget.menuItemModel!.toJson()),
+            setState(() {
+              itemName.text = widget.menuItemModel!.menuItemName!;
+              basePrice.text = widget.menuItemModel!.menuItemCost.toString();
+              packingCharges.text =
+                  widget.menuItemModel!.timeToPrepare.toString();
+              noOfServers.text = widget.menuItemModel!.servingInfo!;
+              selectedCategory = widget.selectedCategory;
+              selectedLabel = widget.subCategory!;
+              print(selectedLabel);
+              for (int i = 0; i < subCategoryCheck.length; i++) {
+                if (widget.subCategory == AppStrings.subCategory[i]) {
+                  subCategoryCheck[i] = true;
+                }
+              }
+            })
+          }
+        : null;
+  }
+
+
+  Future<void> fetchCategories() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      final categories = await MenuControllerClass.fetchAllCategories(
+        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
+        context: context,
+      );
+
+      setState(() {
+        widget.categories.clear();
+        widget.categories.addAll(categories as Iterable<String>);
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      context.showSnackBar(message: "Failed to fetch categories: ${e.toString()}");
+    }
+  }
+
+  Future saveMenu() async {
     setState(() {
       isLoading = true;
     });
 
     try {
-      var baseUrl = dotenv.env['BASE_URL'];
-      if (baseUrl == null || baseUrl.isEmpty) {
-        throw Exception('BASE_URL is not set in .env file');
-      }
-
-      var reqData = {
-        "uid": uid,
-        "category": category,
-        "subCategory": subCategory,
-        "menuItem": {
-          "menuItemName": menuItemName,
-          "menuItemImageURL": menuItemImageURL,
-          "servingInfo": servingInfo,
-          "menuItemCost": menuItemCost,
-          "inStock": inStock,
-          "timeToPrepare": timeToPrepare
+      if (_validateForm()) {
+        if (widget.edit) {
+          await MenuControllerClass.updateMenuItem(
+            updateMenuItemModel: UpdateMenuItemModel(
+              updatedata: widget.menuItemModel!.copyWith(
+                menuItemName: itemName.text,
+                menuItemCost: double.tryParse(basePrice.text) ?? 0.0,
+                timeToPrepare: double.tryParse(packingCharges.text) ?? 0.0,
+                inStock: true,
+                servingInfo: noOfServers.text,
+              ),
+            ),
+            context: context,
+            uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
+            menuitemid: widget.menuItemModel!.id!,
+            category: widget.selectedCategory ?? "",
+            subCategory: widget.subCategory ?? "null",
+          );
+        } else {
+          await MenuControllerClass.saveMenuItem(
+            saveMenuItem: SaveMenuItem(
+              uid: SharedPrefsUtil().getString(AppStrings.userId),
+              category: selectedCategory!,
+              subCategory: selectedLabel,
+              menuItem: SaveMenuItemModel(
+                menuItemName: itemName.text,
+                menuItemCost: double.tryParse(basePrice.text) ?? 0.0,
+                timeToPrepare: double.tryParse(packingCharges.text) ?? 0.0,
+                inStock: true,
+                servingInfo: noOfServers.text,
+              ),
+            ),
+            context: context,
+          );
         }
-      };
-      String requestBody = jsonEncode(reqData);
-
-      final response = await http
-          .post(
-            Uri.parse('$baseUrl/menu/saveMenuItem'),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: requestBody,
-          )
-          .timeout(const Duration(seconds: 10));
-
-      print('Request URL: $baseUrl/menu/saveMenuItem');
-      print('Request Body: $requestBody');
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = jsonDecode(response.body);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: colorSuccess,
-          content: Text(responseData['message']),
-        ));
+        setState(() {
+          isLoading = false;
+        });
+        // context.pop(); // Close the form after successful submission
+        // Notify the menu screen that a new item has been added or updated
+        Navigator.pop(context, true);
       } else {
-        final responseData = jsonDecode(response.body);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: colorFailure,
-          content: Text(responseData['message'] ?? 'Unknown error'),
-        ));
-        print('Server error: ${response.body}');
+        setState(() {
+          isLoading = false;
+        });
+        context.showSnackBar(message: AppStrings.allFieldsRequired);
       }
-    } on TimeoutException catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: colorFailure,
-        content: Text('Request timed out'),
-      ));
-      print('Error: Request timed out');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: colorFailure,
-        content: Text("Error: $e"),
-      ));
-      print('Error: $e');
-    } finally {
       setState(() {
         isLoading = false;
       });
+      context.showSnackBar(message: 'Failed to add dish: ${e.toString()}');
     }
   }
 
-  void handleSubmit() {
-    String uid = "restaurant123";
-    String category = selectedLabel; // Use the selected label for category
-    String subCategory = selectedCategory ??
-        "General"; // Default to "General" if no subcategory is selected
-    String menuItemName = itemName.text;
-    String menuItemImageURL = "www.image.com"; // Image URL
-    String servingInfo = "myserveinfo";
-    double menuItemCost = double.tryParse(basePrice.text) ?? 0.0;
-    bool inStock = true; // Assuming it's always in stock for now
-    int timeToPrepare = 1; // Time to prepare
+  bool _validateForm() {
+    return itemName.text.isNotEmpty &&
+        basePrice.text.isNotEmpty &&
+        packingCharges.text.isNotEmpty &&
+        noOfServers.text.isNotEmpty &&
+        selectedCategory != null;
+  }
 
-    saveMenuItem(
-      uid: uid,
-      category: category,
-      subCategory: subCategory,
-      menuItemName: menuItemName,
-      menuItemImageURL: menuItemImageURL,
-      servingInfo: servingInfo,
-      menuItemCost: menuItemCost,
-      inStock: inStock,
-      timeToPrepare: timeToPrepare,
-    );
+  changeSubCategoryCheck(int index) {
+    setState(() {
+      for (int i = 0; i < subCategoryCheck.length; i++) {
+        subCategoryCheck[i] = i == index ? true : false;
+      }
+      selectedLabel = AppStrings.subCategory[index];
+    });
   }
 
   @override
@@ -152,42 +207,8 @@ class _DishesFormState extends State<DishesForm> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    Category(
-                      imagePath: 'assets/images/veg.jpeg',
-                      label: 'Veg',
-                      isSelected: selectedLabel == 'Veg',
-                      onTap: () => setState(() => selectedLabel = 'Veg'),
-                    ),
-                    SizedBox(width: 10),
-                    Category(
-                      imagePath: 'assets/images/nonveg.jpeg',
-                      label: 'Non-Veg',
-                      isSelected: selectedLabel == 'Non-Veg',
-                      onTap: () => setState(() => selectedLabel = 'Non-Veg'),
-                    ),
-                    SizedBox(width: 10),
-                    Category(
-                      imagePath: 'assets/images/vegan.png',
-                      label: 'Vegan',
-                      isSelected: selectedLabel == 'Vegan',
-                      onTap: () => setState(() => selectedLabel = 'Vegan'),
-                    ),
-                    SizedBox(width: 10),
-                    Category(
-                      imagePath: 'assets/images/glutenfree.png',
-                      label: 'Gluten-Free',
-                      isSelected: selectedLabel == 'Gluten-Free',
-                      onTap: () =>
-                          setState(() => selectedLabel = 'Gluten-Free'),
-                    ),
-                    SizedBox(width: 10),
-                    Category(
-                      imagePath: 'assets/images/dairyfree.png',
-                      label: 'Dairy Free',
-                      isSelected: selectedLabel == 'Dairy Free',
-                      onTap: () => setState(() => selectedLabel = 'Dairy Free'),
-                    ),
-                    SizedBox(width: 10),
+                    for (int i = 0; i < AppStrings.subCategory.length; i++)
+                      _buildSubCategoryWidget(index: i),
                   ],
                 ),
               ),
@@ -211,7 +232,9 @@ class _DishesFormState extends State<DishesForm> {
                     ),
                     SizedBox(height: 20),
                     CustomInputField(
-                        labelText: 'Base Price', controller: basePrice),
+                      labelText: 'Base Price',
+                      controller: basePrice,
+                    ),
                     SizedBox(height: 20),
                     CustomInputField(
                         labelText: 'Packing Charges',
@@ -274,9 +297,14 @@ class _DishesFormState extends State<DishesForm> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text('Choose item category'),
                               ),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedCategory = newValue;
+                                });
+                              },
                               isExpanded: true,
                               underline: Container(),
-                              items: categories.map((String item) {
+                              items: widget.categories.map((String item) {
                                 return DropdownMenuItem<String>(
                                   value: item,
                                   child: Padding(
@@ -286,11 +314,6 @@ class _DishesFormState extends State<DishesForm> {
                                   ),
                                 );
                               }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedCategory = newValue;
-                                });
-                              },
                             ),
                           ),
                         ),
@@ -305,7 +328,7 @@ class _DishesFormState extends State<DishesForm> {
               isLoading
                   ? CircularProgressIndicator()
                   : AddButton(
-                      onPressed: handleSubmit,
+                      onPressed: saveMenu,
                     ),
             ],
           ),
@@ -313,4 +336,26 @@ class _DishesFormState extends State<DishesForm> {
       ),
     );
   }
+
+  Widget _buildSubCategoryWidget({required int index, String? imagePath}) =>
+      Row(
+        children: [
+          Category(
+            imagePath: subCategoryImage[index],
+            label: AppStrings.subCategory[index],
+            isSelected: selectedLabel == AppStrings.subCategory[index],
+            onTap: () {
+              changeSubCategoryCheck(index);
+              // setState(() {
+              //   for (int i = 0; i < subCategoryCheck.length; i++) {
+              //     subCategoryCheck[i] = i == index ? true : false;
+              //   }
+              //   print(subCategoryCheck);
+              //   selectedLabel = AppStrings.subCategory[index];
+              // });
+            },
+          ),
+          SizedBox(width: 10),
+        ],
+      );
 }
