@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:restaurant_app/Screens/Payments/payments_screen.dart';
 import 'package:restaurant_app/Screens/splashScreen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,14 +22,13 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return  MaterialApp(
-          
+        return MaterialApp(
           title: 'Nukkad Foods',
           debugShowCheckedModeBanner: false,
           home: SplashScreen(),
-          theme: ThemeData(
-            textTheme: GoogleFonts.poppinsTextTheme()
-            ),
+          //home: PaymentScreen(),
+
+          theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
         );
       },
     );
