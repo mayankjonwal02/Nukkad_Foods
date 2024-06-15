@@ -12,6 +12,7 @@ const menuItemSchema = new mongoose.Schema({
                 servingInfo: String,
                 menuItemCost: Number,
                 inStock: Boolean,
+                label:String,
                 timeToPrepare: Number
             }]
         }]
