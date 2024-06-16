@@ -8,10 +8,10 @@ class AppStrings {
   static String baseURL = "${dotenv.env['BASE_URL']}";
   static String loginEndpoint = "${baseURL}/auth/login";
   static String menuEndpoint = "${baseURL}/menu/";
-  static String saveMenuItemEndpoint = "${menuEndpoint}/saveMenuItem";
-  static String getMenuItemEndpoint = "${menuEndpoint}/getMenuItem/";
-  static String updateMenuItemEndpoint = "${menuEndpoint}/updateMenuItem";
-  static String deleteMenuItemEndpoint = "${menuEndpoint}/deleteMenuItem";
+  static String saveMenuItemEndpoint = "${menuEndpoint}/menu/saveMenuItem";
+  static String getMenuItemEndpoint = "${menuEndpoint}/menu/getMenuItem";
+  static String updateMenuItemEndpoint = "${menuEndpoint}/menu/updateMenuItem";
+  static String deleteMenuItemEndpoint = "${menuEndpoint}/menu/deleteMenuItem";
 
   //categories api
   // static String deleteMenuItemEndpoint = "${menuEndpoint}/deleteMenuItem";

@@ -10,8 +10,12 @@ class AddItems extends StatelessWidget {
   const AddItems({
     super.key,
     required this.categories,
+    required this.subCategories,
+    required this.closeBottomSheet,
   });
   final List<String> categories;
+  final List<String> subCategories;
+  final VoidCallback closeBottomSheet;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,9 @@ class AddItems extends StatelessWidget {
               itemName: 'Add Dish',
               screen: DishesForm(
                 categories: categories,
+                subCategories: subCategories,
               ),
+              closeBottomSheet: closeBottomSheet,
             ),
             SizedBox(
               height: 20,
@@ -41,6 +47,7 @@ class AddItems extends StatelessWidget {
             MenuItem(
               itemName: 'Add Category',
               screen: CategoriesForm(),
+              closeBottomSheet: closeBottomSheet,
             ),
             SizedBox(
               height: 20,
@@ -48,8 +55,9 @@ class AddItems extends StatelessWidget {
             MenuItem(
               itemName: 'Add Sub-Category',
               screen: SubCategoriesForm(
-                // categories: categories,
+                categories: categories,
               ),
+              closeBottomSheet: closeBottomSheet,
             ),
             SizedBox(
               height: 20,

@@ -2,14 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 
 class MenuItem extends StatelessWidget {
-  MenuItem({super.key, required this.itemName, required this.screen});
-  String itemName;
-  Widget screen;
+  // MenuItem({super.key, required this.itemName, required this.screen});
+  const MenuItem({
+    Key? key,
+    required this.itemName,
+    required this.screen,
+    required this.closeBottomSheet,
+  }) : super(key: key);
+
+  final String itemName;
+  final Widget screen;
+  final VoidCallback closeBottomSheet;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        closeBottomSheet();
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => screen));
       },

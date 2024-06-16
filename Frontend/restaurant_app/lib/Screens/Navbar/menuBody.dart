@@ -7,6 +7,7 @@ import 'package:restaurant_app/Widgets/constants/strings.dart';
 import 'package:restaurant_app/Widgets/customs/MenuBody/menuAppBar.dart';
 import 'package:restaurant_app/Widgets/customs/MenuBody/menuItems.dart';
 import 'package:restaurant_app/Widgets/customs/MenuBody/menuSearchBar.dart';
+import 'package:restaurant_app/Widgets/menu/addItems.dart';
 import 'package:restaurant_app/Widgets/menu/menuItem.dart';
 
 class MenuBody extends StatefulWidget {
@@ -26,6 +27,7 @@ class _MenuBodyState extends State<MenuBody> {
   List<MenuItemModel> menuItemsList = [];
   Map<String, List<MenuItemModel>> menuItemsByCategory = {};
   List<String> categories = [];
+  List<String> subCategories = [];
 
   Future<void> getMenu() async {
     setState(() {
@@ -33,6 +35,7 @@ class _MenuBodyState extends State<MenuBody> {
       menuItemsList = [];
       menuItemsByCategory = {};
       categories = [];
+      subCategories = [];
     });
     var result = await MenuControllerClass.getMenuItems(
       context: context,
@@ -134,6 +137,7 @@ class _MenuBodyState extends State<MenuBody> {
         children: [
           MenuAppBar(
             categories: categories,
+            subCategories: subCategories,
           ),
           MenuSearchBar(),
           Padding(
@@ -144,6 +148,7 @@ class _MenuBodyState extends State<MenuBody> {
                     ? Center(child: Text(AppStrings.noItemsFound))
                     : MenuItems(
                         categories: categories,
+                        subCategories: subCategories,
                         menuItemsByCategory: menuItemsByCategory,
                         menuModel: fullMenu!,
                       ),

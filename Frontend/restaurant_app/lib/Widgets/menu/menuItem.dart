@@ -8,10 +8,12 @@ class MenuItems extends StatefulWidget {
   MenuItems({
     Key? key,
     required this.categories,
+    required this.subCategories,
     required this.menuItemsByCategory,
     required this.menuModel,
   }) : super(key: key);
   final List<String> categories;
+  final List<String> subCategories;
   final Map<String, List<MenuItemModel>> menuItemsByCategory;
   final FullMenuModel menuModel;
 
@@ -91,7 +93,8 @@ class _MenuItemsState extends State<MenuItems> with TickerProviderStateMixin {
                         menuItemModel: widget.menuItemsByCategory[
                             widget.categories[index]]![itemIndex],
                         categories: widget.categories,
-                        categorie: widget.categories[index],
+                        subCategories: widget.subCategories,
+                        category: widget.categories[index],
                         subCategory: getSubCategory(index),
                       ),
                   separatorBuilder: (context, index) => SizedBox(height: 1.h),

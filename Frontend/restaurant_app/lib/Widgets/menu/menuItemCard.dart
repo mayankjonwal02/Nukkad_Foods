@@ -10,13 +10,15 @@ import 'package:restaurant_app/Widgets/forms/dishesForm.dart';
 class MenuItemCard extends StatefulWidget {
   const MenuItemCard({
     required this.menuItemModel,
-    required this.categorie,
+    required this.category,
     required this.subCategory,
     required this.categories,
+    required this.subCategories,
   });
   final MenuItemModel menuItemModel;
   final List<String> categories;
-  final String categorie;
+  final List<String> subCategories;
+  final String category;
   final String subCategory;
   @override
   _MenuItemCardState createState() =>
@@ -34,7 +36,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
       context: context,
       uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
       menuitemid: menuItemModel.id ?? "",
-      category: widget.categorie,
+      category: widget.category,
       subCategory: widget.subCategory,
     );
   }
@@ -136,10 +138,11 @@ class _MenuItemCardState extends State<MenuItemCard> {
                         onPressed: () => context.push(
                               DishesForm(
                                 categories: widget.categories,
+                                subCategories: widget.subCategories,
                                 menuItemModel: menuItemModel,
-                                selectedCategory: widget.categorie,
+                                selectedCategory: widget.category,
+                                selectedSubCategory: widget.subCategory,
                                 edit: true,
-                                subCategory: widget.subCategory,
                               ),
                             )),
                     Text(

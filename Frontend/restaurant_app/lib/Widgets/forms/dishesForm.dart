@@ -19,16 +19,22 @@ class DishesForm extends StatefulWidget {
   const DishesForm({
     super.key,
     required this.categories,
-    this.subCategory,
+    required this.subCategories,
+    // this.subCategory,
     this.menuItemModel,
     this.edit = false,
     this.selectedCategory,
+    this.selectedSubCategory,
+    this.selectedLabel,
   });
   final List<String> categories;
-  final String? subCategory;
+  final List<String> subCategories;
+  // final String? subCategory;
   final MenuItemModel? menuItemModel;
   final bool edit;
   final String? selectedCategory;
+  final String? selectedSubCategory;
+  final String? selectedLabel;
 
   @override
   State<DishesForm> createState() => _DishesFormState();
@@ -39,9 +45,12 @@ class _DishesFormState extends State<DishesForm> {
   TextEditingController basePrice = TextEditingController();
   TextEditingController packingCharges = TextEditingController();
   TextEditingController noOfServers = TextEditingController();
+  // TextEditingController label = TextEditingController();
 
   String? selectedCategory;
-  String selectedLabel = AppStrings.subCategory[0];
+  String? selectedSubCategory;
+  String? selectedLabel;
+  String label = AppStrings.subCategory[0];
   bool isLoading = false;
   final List<bool> subCategoryCheck = [
     true,
@@ -66,6 +75,7 @@ class _DishesFormState extends State<DishesForm> {
     super.initState();
 
     fetchCategories(); // Fetch categories when the form initializes
+    // fetchSubCategories(); // Fetch categories when the form initializes
 
     widget.edit
         ? {
@@ -77,10 +87,11 @@ class _DishesFormState extends State<DishesForm> {
                   widget.menuItemModel!.timeToPrepare.toString();
               noOfServers.text = widget.menuItemModel!.servingInfo!;
               selectedCategory = widget.selectedCategory;
-              selectedLabel = widget.subCategory!;
+              selectedSubCategory = widget.selectedSubCategory;
+              selectedLabel = widget.selectedLabel!;
               print(selectedLabel);
               for (int i = 0; i < subCategoryCheck.length; i++) {
-                if (widget.subCategory == AppStrings.subCategory[i]) {
+                if (widget.selectedLabel == AppStrings.subCategory[i]) {
                   subCategoryCheck[i] = true;
                 }
               }
@@ -88,7 +99,6 @@ class _DishesFormState extends State<DishesForm> {
           }
         : null;
   }
-
 
   Future<void> fetchCategories() async {
     try {
@@ -103,14 +113,41 @@ class _DishesFormState extends State<DishesForm> {
 
       setState(() {
         widget.categories.clear();
-        widget.categories.addAll(categories as Iterable<String>);
+        widget.categories.addAll(categories);
         isLoading = false;
       });
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      context.showSnackBar(message: "Failed to fetch categories: ${e.toString()}");
+      context.showSnackBar(
+          message: "Failed to fetch categories: ${e.toString()}");
+    }
+  }
+
+  Future<void> fetchSubCategories() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+
+      final subCategories = await MenuControllerClass.fetchAllSubCategories(
+        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
+        category: selectedCategory!,
+        context: context,
+      );
+
+      setState(() {
+        widget.subCategories.clear();
+        widget.subCategories.addAll(subCategories);
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      context.showSnackBar(
+          message: "Failed to fetch sub-categories: ${e.toString()}");
     }
   }
 
@@ -121,7 +158,9 @@ class _DishesFormState extends State<DishesForm> {
 
     try {
       if (_validateForm()) {
+        print("Hello1");
         if (widget.edit) {
+          print("hello2");
           await MenuControllerClass.updateMenuItem(
             updateMenuItemModel: UpdateMenuItemModel(
               updatedata: widget.menuItemModel!.copyWith(
@@ -136,24 +175,29 @@ class _DishesFormState extends State<DishesForm> {
             uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
             menuitemid: widget.menuItemModel!.id!,
             category: widget.selectedCategory ?? "",
-            subCategory: widget.subCategory ?? "null",
+            // subCategory: widget.subCategory ?? "null",
+            subCategory: widget.selectedSubCategory ?? "",
           );
         } else {
+          print("hello3");
           await MenuControllerClass.saveMenuItem(
             saveMenuItem: SaveMenuItem(
               uid: SharedPrefsUtil().getString(AppStrings.userId),
               category: selectedCategory!,
-              subCategory: selectedLabel,
+              subCategory: selectedSubCategory!,
               menuItem: SaveMenuItemModel(
                 menuItemName: itemName.text,
-                menuItemCost: double.tryParse(basePrice.text) ?? 0.0,
-                timeToPrepare: double.tryParse(packingCharges.text) ?? 0.0,
-                inStock: true,
+                menuItemImageURL: "image_url.png",
                 servingInfo: noOfServers.text,
+                menuItemCost: double.tryParse(basePrice.text) ?? 0.0,
+                inStock: true,
+                label: selectedLabel,
+                timeToPrepare: double.tryParse(packingCharges.text) ?? 0.0,
               ),
             ),
             context: context,
           );
+          print("enddd3");
         }
         setState(() {
           isLoading = false;
@@ -180,7 +224,8 @@ class _DishesFormState extends State<DishesForm> {
         basePrice.text.isNotEmpty &&
         packingCharges.text.isNotEmpty &&
         noOfServers.text.isNotEmpty &&
-        selectedCategory != null;
+        selectedCategory != null &&
+        selectedSubCategory != null;
   }
 
   changeSubCategoryCheck(int index) {
@@ -300,11 +345,74 @@ class _DishesFormState extends State<DishesForm> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   selectedCategory = newValue;
+                                  selectedSubCategory = null;
+                                  // selectedLabel = null;
                                 });
+                                if (selectedCategory != null) {
+                                  fetchSubCategories();
+                                }
                               },
                               isExpanded: true,
                               underline: Container(),
                               items: widget.categories.map((String item) {
+                                return DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.0),
+                                    child: Text(item),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Color(0xFFCACACA)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Sub-Category', style: h5TextStyle),
+                    SizedBox(height: 20),
+                    Text(
+                      'Define the sub-category of the item',
+                      style: TextStyle(color: Color(0xFFCACACA)),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.grey, width: 1.0),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: DropdownButton<String>(
+                              elevation: 3,
+                              value: selectedSubCategory,
+                              hint: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Choose item sub-category'),
+                              ),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedSubCategory = newValue;
+                                });
+                              },
+                              isExpanded: true,
+                              underline: Container(),
+                              items: widget.subCategories.map((String item) {
                                 return DropdownMenuItem<String>(
                                   value: item,
                                   child: Padding(

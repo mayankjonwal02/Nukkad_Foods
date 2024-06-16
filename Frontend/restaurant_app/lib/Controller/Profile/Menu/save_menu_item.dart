@@ -50,6 +50,7 @@ class SaveMenuItemModel {
   bool? inStock;
   num? timeToPrepare;
   String? id;
+  String? label;
 
   SaveMenuItemModel({
     this.menuItemName,
@@ -58,6 +59,7 @@ class SaveMenuItemModel {
     this.menuItemCost,
     this.inStock,
     this.timeToPrepare,
+    this.label,
   });
 
   factory SaveMenuItemModel.fromJson(Map<String, dynamic> json) {
@@ -68,6 +70,7 @@ class SaveMenuItemModel {
       menuItemCost: json['menuItemCost'] as num?,
       inStock: json['inStock'] as bool?,
       timeToPrepare: json['timeToPrepare'] as num?,
+      label: json['label'] as String?,
     );
   }
 
@@ -79,6 +82,7 @@ class SaveMenuItemModel {
       'menuItemCost': menuItemCost,
       'inStock': inStock,
       'timeToPrepare': timeToPrepare,
+      'label': label,
     };
   }
 
@@ -89,6 +93,7 @@ class SaveMenuItemModel {
     num? menuItemCost,
     bool? inStock,
     num? timeToPrepare,
+    String? label,
   }) {
     return SaveMenuItemModel(
       menuItemName: menuItemName ?? this.menuItemName,
@@ -97,6 +102,7 @@ class SaveMenuItemModel {
       menuItemCost: menuItemCost ?? this.menuItemCost,
       inStock: inStock ?? this.inStock,
       timeToPrepare: timeToPrepare ?? this.timeToPrepare,
+      label: label ?? this.label,
     );
   }
 }

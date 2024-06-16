@@ -9,8 +9,10 @@ class MenuAppBar extends StatefulWidget {
   const MenuAppBar({
     Key? key,
     required this.categories,
+    required this.subCategories,
   }) : super(key: key);
   final List<String> categories;
+  final List<String> subCategories;
 
   @override
   State<MenuAppBar> createState() => _MenuAppBarState();
@@ -50,6 +52,10 @@ class _MenuAppBarState extends State<MenuAppBar> {
                           padding: EdgeInsets.all(16.0),
                           child: AddItems(
                             categories: widget.categories,
+                            subCategories: widget.subCategories,
+                            closeBottomSheet: () {  
+                              Navigator.pop(context);
+                            },
                           ),
                         );
                       },

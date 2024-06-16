@@ -14,8 +14,9 @@ import 'package:sizer/sizer.dart';
 class SubCategoriesForm extends StatefulWidget {
   const SubCategoriesForm({
     super.key,
+    required this.categories
   });
-  // final List<String> categories;
+  final List<String> categories;
 
   @override
   State<SubCategoriesForm> createState() => _SubCategoriesFormState();
@@ -38,21 +39,21 @@ class _SubCategoriesFormState extends State<SubCategoriesForm> {
     setState(() {
       isLoading = true;
     });
-    final result = await MenuControllerClass.fetchAllCategories(
-      uid: SharedPrefsUtil().getString(AppStrings.userId) ?? '',
-      context: context,
-    );
-    result.fold((errorMessage) {
-      setState(() {
-        isLoading = false;
-      });
-      context.showSnackBar(message: errorMessage);
-    }, (fetchedCategories) {
+    try {
+      final List<String> fetchedCategories = await MenuControllerClass.fetchAllCategories(
+        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? '',
+        context: context,
+      );
       setState(() {
         categories = fetchedCategories;
         isLoading = false;
       });
-    });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      context.showSnackBar(message: "Failed to fetch categories: ${e.toString()}");
+    }
   }
 
   Future<void> addSubCategory() async {

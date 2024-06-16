@@ -72,7 +72,7 @@ class MenuControllerClass {
   }) async {
     try {
       final http.Response response = await http.post(
-        Uri.parse(AppStrings.saveMenuItemEndpoint),
+        Uri.parse('$baseURL/menu/saveMenuItem'),
         headers: <String, String>{
           AppStrings.contentType: AppStrings.applicationJson,
         },
@@ -163,7 +163,7 @@ class MenuControllerClass {
 
 
 
-  static Future<Either<String, List<String>>> fetchAllCategories({
+  static Future<List<String>> fetchAllCategories({
     required String uid,
     required BuildContext context,
   }) async {
@@ -179,12 +179,12 @@ class MenuControllerClass {
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         final categories = List<String>.from(jsonResponse['categories']);
-        return Right(categories);
+        return categories;
       } else {
-        return Left(AppStrings.failedToFetchCategories);
+        throw Exception(AppStrings.failedToFetchCategories);
       }
     } catch (e) {
-      return Left(AppStrings.serverError);
+      throw Exception(AppStrings.serverError);
     }
   }
 
@@ -211,10 +211,12 @@ class MenuControllerClass {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final jsonResponse = json.decode(response.body);
         final message = jsonResponse['message'];
+        context.showSuccessSnackBar(message: jsonResponse['message']);
         return Right(message);
       } else {
         final jsonResponse = json.decode(response.body);
         final errorMessage = jsonResponse['error'] ?? AppStrings.failedToAddSubCategory;
+        context.showSnackBar(message: jsonResponse['error']);
         return Left(errorMessage);
       }
     } catch (e) {
