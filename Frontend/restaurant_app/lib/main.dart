@@ -29,8 +29,11 @@ class MainApp extends StatelessWidget {
           title: 'Nukkad Foods',
           debugShowCheckedModeBanner: false,
           home: SplashScreen(),
+<<<<<<< HEAD
           //home: PaymentScreen(),
 
+=======
+>>>>>>> 58a872add1b03a22eebec1ed27592ff8f8c1a8bd
           theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
         );
       },
