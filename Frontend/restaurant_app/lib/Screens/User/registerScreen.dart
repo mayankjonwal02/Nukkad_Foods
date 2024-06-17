@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:math'; // Add this import
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Add this import
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http; // Add this import
@@ -18,9 +20,7 @@ import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
 import 'package:restaurant_app/Widgets/noteWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sizer/sizer.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // Add this import
-import 'package:flutter/foundation.dart';
+import 'package:sizer/sizerage:flutter/foundation.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});

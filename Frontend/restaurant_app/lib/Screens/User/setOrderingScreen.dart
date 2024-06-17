@@ -1,22 +1,21 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:restaurant_app/Controller/Profile/profile_controller.dart';
 import 'package:restaurant_app/Screens/User/documentationScreen.dart';
-import 'package:restaurant_app/Screens/User/loginScreen.dart';
 import 'package:restaurant_app/Screens/User/registrationCompleteScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/customs/User/registrationTimeline.dart';
 import 'package:restaurant_app/Widgets/customs/User/uploadWidget.dart';
-import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
+import 'package:restaurant_app/Widgets/registration/build_restaurant_operational_hours_widget.dart';
+import 'package:restaurant_app/Widgets/registration/cuisines_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:http/http.dart' as http;
 
 class SetOrderingScreen extends StatefulWidget {
   const SetOrderingScreen({super.key});
@@ -49,10 +48,11 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     "Gujrati",
     "Maharastrian"
   ];
-
-  Map<String, bool> selectedCuisines = {};
+  late List<CuisineModel> cuisinesModelList = [];
+  String cuisineButtonText = 'Select Cuisines';
+  // Map<String, bool> selectedCuisines = {};
   List<String> selectedCuisineList = [];
-  TextEditingController controller = TextEditingController();
+  // TextEditingController controller = TextEditingController();
   bool isLoading = false;
   List<String> daysOfWeek = [
     'Monday',
@@ -63,16 +63,24 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     'Saturday',
     'Sunday'
   ];
-  List<bool> isOpen = List.generate(7, (index) => false);
+  // List<bool> isOpen = List.generate(7, (index) => false);
+  late List<bool> isOpen;
+  late TimeOfDay openingTime;
+  late TimeOfDay closingTime;
+  late String selectedDate;
   late String uid;
   LocalController _getSavedData = LocalController();
   late Map<String, dynamic> userInfo;
   @override
   void initState() {
     super.initState();
-    for (var cuisine in cuisines) {
-      selectedCuisines[cuisine] = false;
-    }
+    cuisinesModelList = cuisines.map((e) => CuisineModel(name: e)).toList();
+    isOpen = List.filled(7, false);
+    openingTime = TimeOfDay(hour: 9, minute: 30); // Set default opening time
+    closingTime = TimeOfDay(hour: 21, minute: 30); // Set default closing time
+    // for (var cuisine in cuisines) {
+    //   selectedCuisines[cuisine] = false;
+    // }
     getUserData();
     // getUid();
   }
@@ -108,10 +116,37 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     // print(prefs.getString('user_info'));
   }
 
+  String formatTimeOfDay(TimeOfDay timeOfDay) {
+    final now = DateTime.now();
+    final dateTime = DateTime(
+        now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+    return DateFormat.jm().format(dateTime);
+  }
+
+  List<String> getSelectedDaysString(List<bool> selectedDays) {
+    List<String> selectedDaysString = [];
+
+    for (int i = 0; i < selectedDays.length; i++) {
+      if (selectedDays[i]) {
+        selectedDaysString.add(daysOfWeek[i]);
+      }
+    }
+
+    // Remove the trailing comma and space
+    // selectedDaysString = selectedDaysString.isNotEmpty
+    //     ? selectedDaysString.substring(0, selectedDaysString.length - 2)
+    //     : selectedDaysString;
+
+    return selectedDaysString;
+  }
+
   routeRegistrationComplete() {
-    if (controller.text.isNotEmpty) {
-      userInfo['cuisines'] = [];
-      userInfo['operationalHours'] = "8pm";
+    if (/*controller.text.isNotEmpty*/ selectedCuisineList.length != 0 &&
+        isOpen.contains(true)) {
+      userInfo['cuisines'] = selectedCuisineList;
+      userInfo['operationalHours'] = Map.fromEntries(
+          getSelectedDaysString(isOpen).map((key) => MapEntry(key,
+              "${formatTimeOfDay(openingTime)} - ${formatTimeOfDay(closingTime)}")));
       userInfo['restaurantMenuImages'] = _imageRestaurantMenuImgPaths;
       userInfo['restaurantImages'] = imageRestaurantImgPath;
       userInfo['foodImages'] = imageFoodImgPath;
@@ -150,24 +185,24 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
     }
   }
 
-  void _updateSelectedCuisines(bool? value, String cuisine) {
-    setState(() {
-      if (selectedCuisineList.length < 3 || selectedCuisines[cuisine] == true) {
-        selectedCuisines[cuisine] = value!;
-        if (value == true) {
-          selectedCuisineList.add(cuisine);
-        } else {
-          selectedCuisineList.remove(cuisine);
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("You can select up to 3 cuisines only."),
-          ),
-        );
-      }
-    });
-  }
+  // void _updateSelectedCuisines(bool? value, String cuisine) {
+  //   setState(() {
+  //     if (selectedCuisineList.length < 3 || selectedCuisines[cuisine] == true) {
+  //       selectedCuisines[cuisine] = value!;
+  //       if (value == true) {
+  //         selectedCuisineList.add(cuisine);
+  //       } else {
+  //         selectedCuisineList.remove(cuisine);
+  //       }
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text("You can select up to 3 cuisines only."),
+  //         ),
+  //       );
+  //     }
+  //   });
+  // }
 
   Future<void> signUp() async {
     setState(() {
@@ -316,36 +351,36 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                           //     onChanged: (_) {},
                           //   ),
                           // ),
-
+                          buildCuisineButton(),
                           const SizedBox(height: 20),
-                          if (selectedCuisineList.isNotEmpty)
-                            Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: selectedCuisineList.map((cuisine) {
-                                    return ListTile(
-                                      title: Text(cuisine),
-                                      trailing: IconButton(
-                                        icon: Icon(Icons.remove_circle),
-                                        onPressed: () {
-                                          setState(() {
-                                            selectedCuisines[cuisine] = false;
-                                            selectedCuisineList.remove(cuisine);
-                                          });
-                                        },
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 2.h),
-                            child: textInputField(
-                                'Cuisines', controller, (String input) => null),
-                          ),
+                          // if (selectedCuisineList.isNotEmpty)
+                          //   Card(
+                          //     child: Padding(
+                          //       padding: const EdgeInsets.all(16.0),
+                          //       child: Column(
+                          //         crossAxisAlignment: CrossAxisAlignment.start,
+                          //         children: selectedCuisineList.map((cuisine) {
+                          //           return ListTile(
+                          //             title: Text(cuisine),
+                          //             trailing: IconButton(
+                          //               icon: Icon(Icons.remove_circle),
+                          //               onPressed: () {
+                          //                 setState(() {
+                          //                   selectedCuisines[cuisine] = false;
+                          //                   selectedCuisineList.remove(cuisine);
+                          //                 });
+                          //               },
+                          //             ),
+                          //           );
+                          //         }).toList(),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // Padding(
+                          //   padding: EdgeInsets.only(bottom: 2.h),
+                          //   child: textInputField(
+                          //       'Cuisines', controller, (String input) => null),
+                          // ),
                         ],
                       )),
                   Align(
@@ -361,229 +396,243 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: 100.w,
-                    margin: EdgeInsets.only(left: 3.w, right: 3.w),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-                    decoration: BoxDecoration(
-                      color: bgColor,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: textGrey2, width: 0.2.w),
-                    ),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Select restaurant opening days',
-                            style: body4TextStyle.copyWith(color: textGrey3),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: SizedBox(
-                            width: 100.w,
-                            child: Wrap(
-                              spacing: 0.5.h,
-                              runSpacing: 0.5.h,
-                              // alignment: WrapAlignment.spaceEvenly,
-                              runAlignment: WrapAlignment.center,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: List.generate(
-                                (daysOfWeek.length / 2).ceil(),
-                                (rowIndex) {
-                                  int startIndex = rowIndex * 2;
-                                  int endIndex = startIndex + 1;
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      if (startIndex < daysOfWeek.length)
-                                        Checkbox(
-                                          value: isOpen[startIndex],
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              isOpen[startIndex] = newValue!;
-                                            });
-                                          },
-                                          activeColor: colorSuccess,
-                                        ),
-                                      if (startIndex < daysOfWeek.length)
-                                        Text(
-                                          daysOfWeek[startIndex],
-                                          style: body3TextStyle.copyWith(
-                                              fontSize: 12.sp),
-                                        ),
-                                      if (endIndex < daysOfWeek.length)
-                                        Checkbox(
-                                          value: isOpen[endIndex],
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              isOpen[endIndex] = newValue!;
-                                            });
-                                          },
-                                          activeColor: colorSuccess,
-                                        ),
-                                      if (endIndex < daysOfWeek.length)
-                                        Text(
-                                          daysOfWeek[endIndex],
-                                          style: body3TextStyle.copyWith(
-                                              fontSize: 12.sp),
-                                        ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Select restaurant opening /closing time',
-                            style: body4TextStyle.copyWith(color: textGrey3),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  'Opening',
-                                  style: body5TextStyle.copyWith(
-                                      color: colorSuccess,
-                                      letterSpacing: 1.5,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 7.w, vertical: 1.h),
-                                  decoration: BoxDecoration(
-                                    color: bgColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: colorFailure, width: 0.2.w),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: colordenger
-                                            .withOpacity(0.5), // Shadow color
-                                        spreadRadius: 2, // Spread radius
-                                        blurRadius: 5, // Blur radius
-                                        offset: Offset(0,
-                                            2), // Offset in the x and y directions
-                                      ),
-                                    ],
-                                  ),
-                                  child: Stack(children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/openRes.png',
-                                          cacheWidth: 50,
-                                        ),
-                                        SizedBox(
-                                          width: 2.w,
-                                        ),
-                                        Text(
-                                          '09:30 AM',
-                                          style: body5TextStyle.copyWith(
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
-                                    Positioned(
-                                      top: 10,
-                                      left: 5,
-                                      child: Text(
-                                        'OPEN',
-                                        style: body6TextStyle.copyWith(
-                                            color: colorSuccess),
-                                      ),
-                                    )
-                                  ]),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  'Closing',
-                                  style: body5TextStyle.copyWith(
-                                      color: colordenger,
-                                      letterSpacing: 1.5,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 7.w, vertical: 1.h),
-                                  decoration: BoxDecoration(
-                                    color: bgColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: colorFailure, width: 0.2.w),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: colordenger
-                                            .withOpacity(0.5), // Shadow color
-                                        spreadRadius: 2, // Spread radius
-                                        blurRadius: 5, // Blur radius
-                                        offset: Offset(0,
-                                            2), // Offset in the x and y directions
-                                      ),
-                                    ],
-                                  ),
-                                  child: Stack(children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/closeRes.png',
-                                          cacheWidth: 50,
-                                        ),
-                                        SizedBox(
-                                          width: 2.w,
-                                        ),
-                                        Text(
-                                          '10:30 PM',
-                                          style: body5TextStyle.copyWith(
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
-                                    Positioned(
-                                      top: 10,
-                                      left: 5,
-                                      child: Text(
-                                        'CLOSE',
-                                        style: body6TextStyle.copyWith(
-                                          color: colorFailure,
-                                        ),
-                                      ),
-                                    )
-                                  ]),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  RestaurantOperatingHoursWidget(
+                    closingTime: closingTime,
+                    openingTime: openingTime,
+                    isOpen: isOpen,
+                    onValuesChanged: (List<bool> newIsOpen,
+                        TimeOfDay newOpeningTime, TimeOfDay newClosingTime) {
+                      setState(() {
+                        isOpen = newIsOpen;
+                        openingTime = newOpeningTime;
+                        closingTime = newClosingTime;
+                      });
+                    },
+                    daysOfWeek: daysOfWeek,
                   ),
+                  // Container(
+                  //   width: 100.w,
+                  //   margin: EdgeInsets.only(left: 3.w, right: 3.w),
+                  //   padding:
+                  //       EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+                  //   decoration: BoxDecoration(
+                  //     color: bgColor,
+                  //     borderRadius: BorderRadius.circular(10),
+                  //     border: Border.all(color: textGrey2, width: 0.2.w),
+                  //   ),
+                  //   child: Column(
+                  //     children: [
+                  //       Align(
+                  //         alignment: Alignment.topLeft,
+                  //         child: Text(
+                  //           'Select restaurant opening days',
+                  //           style: body4TextStyle.copyWith(color: textGrey3),
+                  //         ),
+                  //       ),
+                  //       Align(
+                  //         alignment: Alignment.topLeft,
+                  //         child: SizedBox(
+                  //           width: 100.w,
+                  //           child: Wrap(
+                  //             spacing: 0.5.h,
+                  //             runSpacing: 0.5.h,
+                  //             // alignment: WrapAlignment.spaceEvenly,
+                  //             runAlignment: WrapAlignment.center,
+                  //             crossAxisAlignment: WrapCrossAlignment.center,
+                  //             children: List.generate(
+                  //               (daysOfWeek.length / 2).ceil(),
+                  //               (rowIndex) {
+                  //                 int startIndex = rowIndex * 2;
+                  //                 int endIndex = startIndex + 1;
+                  //                 return Row(
+                  //                   mainAxisAlignment: MainAxisAlignment.start,
+                  //                   crossAxisAlignment:
+                  //                       CrossAxisAlignment.center,
+                  //                   children: [
+                  //                     if (startIndex < daysOfWeek.length)
+                  //                       Checkbox(
+                  //                         value: isOpen[startIndex],
+                  //                         onChanged: (newValue) {
+                  //                           setState(() {
+                  //                             isOpen[startIndex] = newValue!;
+                  //                           });
+                  //                         },
+                  //                         activeColor: colorSuccess,
+                  //                       ),
+                  //                     if (startIndex < daysOfWeek.length)
+                  //                       Text(
+                  //                         daysOfWeek[startIndex],
+                  //                         style: body3TextStyle.copyWith(
+                  //                             fontSize: 12.sp),
+                  //                       ),
+                  //                     if (endIndex < daysOfWeek.length)
+                  //                       Checkbox(
+                  //                         value: isOpen[endIndex],
+                  //                         onChanged: (newValue) {
+                  //                           setState(() {
+                  //                             isOpen[endIndex] = newValue!;
+                  //                           });
+                  //                         },
+                  //                         activeColor: colorSuccess,
+                  //                       ),
+                  //                     if (endIndex < daysOfWeek.length)
+                  //                       Text(
+                  //                         daysOfWeek[endIndex],
+                  //                         style: body3TextStyle.copyWith(
+                  //                             fontSize: 12.sp),
+                  //                       ),
+                  //                   ],
+                  //                 );
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       Align(
+                  //         alignment: Alignment.topLeft,
+                  //         child: Text(
+                  //           'Select restaurant opening /closing time',
+                  //           style: body4TextStyle.copyWith(color: textGrey3),
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         height: 2.h,
+                  //       ),
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //         children: [
+                  //           Column(
+                  //             children: [
+                  //               Text(
+                  //                 'Opening',
+                  //                 style: body5TextStyle.copyWith(
+                  //                     color: colorSuccess,
+                  //                     letterSpacing: 1.5,
+                  //                     fontWeight: FontWeight.w600),
+                  //               ),
+                  //               SizedBox(
+                  //                 height: 1.h,
+                  //               ),
+                  //               Container(
+                  //                 padding: EdgeInsets.symmetric(
+                  //                     horizontal: 7.w, vertical: 1.h),
+                  //                 decoration: BoxDecoration(
+                  //                   color: bgColor,
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                   border: Border.all(
+                  //                       color: colorFailure, width: 0.2.w),
+                  //                   boxShadow: [
+                  //                     BoxShadow(
+                  //                       color: colordenger
+                  //                           .withOpacity(0.5), // Shadow color
+                  //                       spreadRadius: 2, // Spread radius
+                  //                       blurRadius: 5, // Blur radius
+                  //                       offset: Offset(0,
+                  //                           2), // Offset in the x and y directions
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //                 child: Stack(children: [
+                  //                   Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Image.asset(
+                  //                         'assets/images/openRes.png',
+                  //                         cacheWidth: 50,
+                  //                       ),
+                  //                       SizedBox(
+                  //                         width: 2.w,
+                  //                       ),
+                  //                       Text(
+                  //                         '09:30 AM',
+                  //                         style: body5TextStyle.copyWith(
+                  //                             fontWeight: FontWeight.w600),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                   Positioned(
+                  //                     top: 10,
+                  //                     left: 5,
+                  //                     child: Text(
+                  //                       'OPEN',
+                  //                       style: body6TextStyle.copyWith(
+                  //                           color: colorSuccess),
+                  //                     ),
+                  //                   )
+                  //                 ]),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           Column(
+                  //             children: [
+                  //               Text(
+                  //                 'Closing',
+                  //                 style: body5TextStyle.copyWith(
+                  //                     color: colordenger,
+                  //                     letterSpacing: 1.5,
+                  //                     fontWeight: FontWeight.w600),
+                  //               ),
+                  //               SizedBox(
+                  //                 height: 1.h,
+                  //               ),
+                  //               Container(
+                  //                 padding: EdgeInsets.symmetric(
+                  //                     horizontal: 7.w, vertical: 1.h),
+                  //                 decoration: BoxDecoration(
+                  //                   color: bgColor,
+                  //                   borderRadius: BorderRadius.circular(10),
+                  //                   border: Border.all(
+                  //                       color: colorFailure, width: 0.2.w),
+                  //                   boxShadow: [
+                  //                     BoxShadow(
+                  //                       color: colordenger
+                  //                           .withOpacity(0.5), // Shadow color
+                  //                       spreadRadius: 2, // Spread radius
+                  //                       blurRadius: 5, // Blur radius
+                  //                       offset: Offset(0,
+                  //                           2), // Offset in the x and y directions
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //                 child: Stack(children: [
+                  //                   Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Image.asset(
+                  //                         'assets/images/closeRes.png',
+                  //                         cacheWidth: 50,
+                  //                       ),
+                  //                       SizedBox(
+                  //                         width: 2.w,
+                  //                       ),
+                  //                       Text(
+                  //                         '10:30 PM',
+                  //                         style: body5TextStyle.copyWith(
+                  //                             fontWeight: FontWeight.w600),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                   Positioned(
+                  //                     top: 10,
+                  //                     left: 5,
+                  //                     child: Text(
+                  //                       'CLOSE',
+                  //                       style: body6TextStyle.copyWith(
+                  //                         color: colorFailure,
+                  //                       ),
+                  //                     ),
+                  //                   )
+                  //                 ]),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Align(
                     alignment: Alignment.center,
                     child: Padding(
@@ -810,5 +859,73 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
         _isRestaurantMenuUploaded = false;
       });
     }
+  }
+
+  Widget buildCuisineButton() => PopupMenuButton<int>(
+        onSelected: (int value) {
+          // No-op
+        },
+        surfaceTintColor: bgColor,
+        color: bgColor,
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        itemBuilder: (BuildContext context) {
+          return [
+            PopupMenuItem<int>(
+              value: 0,
+              child: Column(
+                children: cuisinesModelList
+                    .map((cuisine) => StatefulBuilder(
+                          builder: (BuildContext context, setState) {
+                            return CheckboxListTile(
+                              title: Text(cuisine.name),
+                              value: cuisine.isSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  cuisine.isSelected = value ?? false;
+                                  if (value == true) {
+                                    selectedCuisineList.add(cuisine.name);
+                                  } else {
+                                    selectedCuisineList.remove(cuisine.name);
+                                  }
+                                  _updateCuisineButtonText();
+                                });
+                              },
+                            );
+                          },
+                        ))
+                    .toList(),
+              ),
+            ),
+          ];
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  cuisineButtonText,
+                  style: TextStyle(color: Colors.black),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Icon(Icons.arrow_drop_down, color: Colors.black),
+            ],
+          ),
+        ),
+      );
+
+  void _updateCuisineButtonText() {
+    setState(() {
+      cuisineButtonText = selectedCuisineList.isEmpty
+          ? 'Select Cuisines'
+          : selectedCuisineList.join(', ');
+    });
   }
 }
