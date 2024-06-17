@@ -8,17 +8,16 @@ class AppStrings {
   static String baseURL = "${dotenv.env['BASE_URL']}";
   static String loginEndpoint = "${baseURL}/auth/login";
   static String menuEndpoint = "${baseURL}/menu/";
-  static String saveMenuItemEndpoint = "${menuEndpoint}/menu/saveMenuItem";
-  static String getMenuItemEndpoint = "${menuEndpoint}/menu/getMenuItem";
-  static String updateMenuItemEndpoint = "${menuEndpoint}/menu/updateMenuItem";
-  static String deleteMenuItemEndpoint = "${menuEndpoint}/menu/deleteMenuItem";
+  static String saveMenuItemEndpoint = "${menuEndpoint}saveMenuItem";
+  static String getMenuItemEndpoint = "${menuEndpoint}getMenuItem";
+  static String updateMenuItemEndpoint = "${menuEndpoint}updateMenuItem";
+  static String deleteMenuItemEndpoint = "${menuEndpoint}deleteMenuItem";
 
   //categories api
   // static String deleteMenuItemEndpoint = "${menuEndpoint}/deleteMenuItem";
   // static String deleteMenuItemEndpoint = "${menuEndpoint}/deleteMenuItem";
   // static String deleteMenuItemEndpoint = "${menuEndpoint}/deleteMenuItem";
   // static String deleteMenuItemEndpoint = "${menuEndpoint}/deleteMenuItem";
-
 
   //errors
   static const loginError = 'Login failed';
@@ -30,7 +29,6 @@ class AppStrings {
   static const allFieldsRequired = "All Fields are required";
   static const failedToFetchCategories = "Failed to fetch categories";
   static const failedToAddSubCategory = "Failed to Add Sub categories";
-
 
   //shared preferences
   static const userId = "User_id";
