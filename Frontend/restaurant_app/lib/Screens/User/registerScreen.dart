@@ -152,7 +152,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         String otp = generateOTP();
         print(otp);
 
-        // // Call the sendOtp endpoint
+        // Call the sendOtp endpoint
         // final String baseUrl = dotenv.env['BASE_URL']!;
         // final response = await http.post(
         //   Uri.parse('$baseUrl/sms/sendSMS'), // Update with your backend URL
