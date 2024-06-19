@@ -12,11 +12,8 @@ import 'package:restaurant_app/Widgets/constants/strings.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
-
 class MenuControllerClass {
   static String baseURL = "${dotenv.env['BASE_URL']}";
-
 
   static Future<Either<String, dynamic>> getMenuItems({
     required String uid,
@@ -34,7 +31,8 @@ class MenuControllerClass {
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("In getMenuItem");
         final jsonResponse = jsonDecode(response.body);
         print("Raw JSON Response: $jsonResponse");
 
@@ -62,6 +60,7 @@ class MenuControllerClass {
       }
     } catch (e) {
       print("Error: $e");
+      print("I don't know why this error is coming");
       return Left(AppStrings.serverError);
     }
   }
@@ -160,9 +159,6 @@ class MenuControllerClass {
     }
   }
 
-
-
-
   static Future<List<String>> fetchAllCategories({
     required String uid,
     required BuildContext context,
@@ -187,7 +183,6 @@ class MenuControllerClass {
       throw Exception(AppStrings.serverError);
     }
   }
-
 
   static Future<Either<String, String>> addSubCategory({
     required String uid,
@@ -215,7 +210,8 @@ class MenuControllerClass {
         return Right(message);
       } else {
         final jsonResponse = json.decode(response.body);
-        final errorMessage = jsonResponse['error'] ?? AppStrings.failedToAddSubCategory;
+        final errorMessage =
+            jsonResponse['error'] ?? AppStrings.failedToAddSubCategory;
         context.showSnackBar(message: jsonResponse['error']);
         return Left(errorMessage);
       }
@@ -223,8 +219,6 @@ class MenuControllerClass {
       return Left(AppStrings.serverError);
     }
   }
-
-
 
   static Future<void> deleteSubCategory({
     required String uid,
@@ -257,7 +251,6 @@ class MenuControllerClass {
     }
   }
 
-
   // categories API ---------------------------------------------
 
   static Future<void> addCategory({
@@ -288,7 +281,6 @@ class MenuControllerClass {
       context.showSnackBar(message: 'Failed to add category');
     }
   }
-
 
   static Future<void> deleteCategory({
     required String uid,
@@ -338,7 +330,8 @@ class MenuControllerClass {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = jsonDecode(response.body);
-        List<String> subCategories = List<String>.from(responseData['subCategories']);
+        List<String> subCategories =
+            List<String>.from(responseData['subCategories']);
         return subCategories;
       } else {
         throw Exception('Failed to load sub-categories');
@@ -348,10 +341,4 @@ class MenuControllerClass {
       throw Exception('Failed to load sub-categories');
     }
   }
-
-
-
-
-
-
 }
