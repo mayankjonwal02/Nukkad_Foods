@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST Request Example</title>
+</head>
+<body>
+    <input type="text" id="amount" />
+    
+    <button id="postButton">Send POST Request</button>
+
+    <script>
+
+        document.getElementById('postButton').addEventListener('click', function() {
+            var amount = document.getElementById('amount').value;
+            const url = 'http://localhost:5000/api/payment/createOrder'; // Replace with your target URL
+            const data = {
+                amount: amount,
+                currency: 'INR'
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
