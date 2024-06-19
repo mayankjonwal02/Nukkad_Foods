@@ -659,6 +659,7 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                     child: Column(
                       children: [
                         uploadWidget(
+                            context: context,
                             onFilePicked: _handleRestaurantMenuImgPicked),
                         _isRestaurantMenuUploaded
                             ? SingleChildScrollView(
@@ -711,7 +712,9 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                     ),
                     child: Column(
                       children: [
-                        uploadWidget(onFilePicked: _handleRestaurantImgPicked),
+                        uploadWidget(
+                            context: context,
+                            onFilePicked: _handleRestaurantImgPicked),
                         _isRestaurantImgUploaded
                             ? SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -763,7 +766,9 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
                     ),
                     child: Column(
                       children: [
-                        uploadWidget(onFilePicked: _handleFoodImgPicked),
+                        uploadWidget(
+                            context: context,
+                            onFilePicked: _handleFoodImgPicked),
                         _isFoodImgUploaded
                             ? SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,

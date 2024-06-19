@@ -3,10 +3,12 @@ import 'dart:math'; // Add this import
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // Add this import
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http; // Add this import
+import 'package:intl/intl.dart';
 import 'package:restaurant_app/Controller/Profile/profile_controller.dart';
+import 'package:restaurant_app/Screens/User/map.dart';
 import 'package:restaurant_app/Screens/otpScreen.dart';
 import 'package:restaurant_app/Widgets/buttons/mainButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
@@ -17,6 +19,8 @@ import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
 import 'package:restaurant_app/Widgets/noteWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Add this import
+import 'package:flutter/foundation.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -148,7 +152,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         String otp = generateOTP();
         print(otp);
 
-        // // Call the sendOtp endpoint
+        // Call the sendOtp endpoint
         // final String baseUrl = dotenv.env['BASE_URL']!;
         // final response = await http.post(
         //   Uri.parse('$baseUrl/sms/sendSMS'), // Update with your backend URL
