@@ -45,7 +45,7 @@ class _AddImageState extends State<AddImage> {
             child: GestureDetector(
               onTap: () async {
                 // Use uploadWidget to pick a file
-                uploadWidget(onFilePicked: _handleFilePicked);
+                uploadWidget(onFilePicked: _handleFilePicked, context: context);
               },
               child: DottedBorder(
                 strokeWidth: 2,

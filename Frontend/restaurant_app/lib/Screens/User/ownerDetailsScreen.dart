@@ -38,7 +38,8 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   final GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
   Uint8List? _signatureImageBytes;
   File? _image;
-  String? _downloadURL;
+  String? _downloadURLOwnerImage;
+  String? _downloadURLSignature;
   // final ImagePicker imagebannerpath = ImagePicker();
   String? imagebannerpath;
   String? imageSignaturePath;
@@ -167,7 +168,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
         panNumber.isNotEmpty &&
         ownerEmail.isNotEmpty &&
         ownerName.isNotEmpty) {
-      userInfo['ownerPhoto'] = _base64Image;
+      userInfo['ownerPhoto'] = _downloadURLOwnerImage;
       userInfo['ownerName'] = ownerName;
       userInfo['ownerEmail'] = ownerEmail;
       userInfo['ownerContactNumber'] = ownerPhone;
@@ -179,7 +180,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       // };
       userInfo['kycAadhar'] = imageAadharFrontPath;
       userInfo['kycPan'] = imagePanPath;
-      userInfo['signature'] = imageSignaturePath;
+      userInfo['signature'] = _downloadURLSignature;
 
       // userInfo['nukkadAddress'] = whatsappConfirmation;
 
@@ -620,6 +621,28 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
         _signatureImageBytes = bytes;
         imageSignaturePath = base64String;
       });
+
+
+      // Upload image to Firebase Storage
+      try {
+        AuthProvider authProvider =
+            Provider.of<AuthProvider>(context, listen: false);
+
+        await authProvider.signInWithEmailAndPassword();
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('images/${DateTime.now().toString()}');
+        await ref.putFile(_image!);
+        final url = await ref.getDownloadURL();
+
+        setState(() {
+          _downloadURLSignature = url;
+        });
+
+        print(_downloadURLSignature);
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
     }
   }
 
@@ -768,10 +791,10 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
         final url = await ref.getDownloadURL();
 
         setState(() {
-          _downloadURL = url;
+          _downloadURLOwnerImage = url;
         });
 
-        print(_downloadURL);
+        print(_downloadURLOwnerImage);
       } catch (e) {
         print('Error uploading image: $e');
       }
