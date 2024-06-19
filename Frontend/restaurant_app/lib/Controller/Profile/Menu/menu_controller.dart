@@ -22,7 +22,7 @@ class MenuControllerClass {
     String? subCategory,
   }) async {
     try {
-      final response = await http.get(
+      final response = await http.post(
         Uri.parse("${AppStrings.getMenuItemEndpoint}$uid").replace(
           queryParameters: {
             if (category != null) 'category': category,
