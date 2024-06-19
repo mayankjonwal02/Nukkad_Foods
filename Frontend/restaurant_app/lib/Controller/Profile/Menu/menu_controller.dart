@@ -133,8 +133,8 @@ class MenuControllerClass {
   }) async {
     try {
       print(
-          "${AppStrings.deleteMenuItemEndpoint}$uid/$category/$subCategory/$menuitemid");
-      final response = await http.delete(
+          "${AppStrings.deleteMenuItemEndpoint}/$uid/$category/$subCategory/$menuitemid");
+      final response = await http.post(
         Uri.parse(
             "${AppStrings.deleteMenuItemEndpoint}/$uid/$category/$subCategory/$menuitemid"),
       );

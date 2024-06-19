@@ -2,6 +2,7 @@ class MenuItemModel {
   String? menuItemName;
   dynamic menuItemImageURL;
   String? servingInfo;
+  String? label;
   num? menuItemCost;
   bool? inStock;
   num? timeToPrepare;
@@ -11,6 +12,7 @@ class MenuItemModel {
     this.menuItemName,
     this.menuItemImageURL,
     this.servingInfo,
+    this.label,
     this.menuItemCost,
     this.inStock,
     this.timeToPrepare,
@@ -22,6 +24,7 @@ class MenuItemModel {
       menuItemName: json['menuItemName'] as String?,
       menuItemImageURL: json['menuItemImageURL'],
       servingInfo: json['servingInfo'] as String?,
+      label: json['label'] as String?,
       menuItemCost: json['menuItemCost'] as num?,
       inStock: json['inStock'] as bool?,
       timeToPrepare: json['timeToPrepare'] as num?,
@@ -34,6 +37,7 @@ class MenuItemModel {
       'menuItemName': menuItemName,
       'menuItemImageURL': menuItemImageURL,
       'servingInfo': servingInfo,
+      'label': label,
       'menuItemCost': menuItemCost,
       'inStock': inStock,
       'timeToPrepare': timeToPrepare,

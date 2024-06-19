@@ -6,7 +6,6 @@ import 'package:restaurant_app/Controller/Profile/Menu/menu_model.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/update_menu_item_model.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
-import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
 import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/strings.dart';
@@ -88,8 +87,7 @@ class _DishesFormState extends State<DishesForm> {
               noOfServers.text = widget.menuItemModel!.servingInfo!;
               selectedCategory = widget.selectedCategory;
               selectedSubCategory = widget.selectedSubCategory;
-              selectedLabel = widget.selectedLabel!;
-              print(selectedLabel);
+              selectedLabel = widget.menuItemModel!.label;
               for (int i = 0; i < subCategoryCheck.length; i++) {
                 if (widget.selectedLabel == AppStrings.subCategory[i]) {
                   subCategoryCheck[i] = true;
@@ -169,6 +167,7 @@ class _DishesFormState extends State<DishesForm> {
                 timeToPrepare: double.tryParse(packingCharges.text) ?? 0.0,
                 inStock: true,
                 servingInfo: noOfServers.text,
+
               ),
             ),
             context: context,
@@ -225,7 +224,8 @@ class _DishesFormState extends State<DishesForm> {
         packingCharges.text.isNotEmpty &&
         noOfServers.text.isNotEmpty &&
         selectedCategory != null &&
-        selectedSubCategory != null;
+        selectedSubCategory != null &&
+        selectedLabel != null;
   }
 
   changeSubCategoryCheck(int index) {
