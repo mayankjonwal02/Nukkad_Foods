@@ -29,17 +29,69 @@ class _MenuBodyState extends State<MenuBody> {
   List<String> categories = [];
   List<String> subCategories = [];
 
-  Future<void> getMenu() async {
+  // Future<void> getMenu() async {
+  //   setState(() {
+  //     subCategoryNames = [];
+  //     menuItemsList = [];
+  //     menuItemsByCategory = {};
+  //     categories = [];
+  //     subCategories = [];
+  //   });
+  //   var result = await MenuControllerClass.getMenuItems(
+  //     context: context,
+  //     uid: SharedPrefsUtil().getString(AppStrings.userId)!,
+  //   );
+
+  //   result.fold(
+  //     (String errorMessage) {
+  //       setState(() {
+  //         isMenuLoaded = true;
+  //       });
+  //       context.showSnackBar(message: errorMessage);
+  //     },
+  //     (dynamic menuModel) {
+  //       if (menuModel is FullMenuModel) {
+  //         fullMenu = menuModel;
+  //         _processFullMenu();
+  //         categories = fullMenu!.menuItems!.map((item) => item.category!).toList();
+  //         subCategories = fullMenu!.menuItems!.expand((item) => item.subCategory!).map((subItem) => subItem.subCategoryName!).toList();
+  //       }
+
+  //       ///todo handle all of them
+  //       // else if (menuModel is CategoryMenuModel) {
+  //       //   categoryMenu = menuModel;
+  //       //   _processCategoryMenu();
+  //       // } else if (menuModel is SimpleMenuModel) {
+  //       //   simpleMenu = menuModel;
+  //       //   _processSimpleMenu();
+  //       // } 
+  //       else {
+  //         context.showSnackBar(message: 'Unexpected menu model type');
+  //       }
+
+  //       setState(() {
+  //         isMenuLoaded = true;
+  //       });
+  //     },
+  //   );
+  // }
+
+
+  Future<void> getMenu({String? category, String? subCategory}) async {
     setState(() {
       subCategoryNames = [];
       menuItemsList = [];
       menuItemsByCategory = {};
       categories = [];
       subCategories = [];
+      isMenuLoaded = false;
     });
+
     var result = await MenuControllerClass.getMenuItems(
       context: context,
       uid: SharedPrefsUtil().getString(AppStrings.userId)!,
+      category: category,
+      subCategory: subCategory,
     );
 
     result.fold(
@@ -53,17 +105,13 @@ class _MenuBodyState extends State<MenuBody> {
         if (menuModel is FullMenuModel) {
           fullMenu = menuModel;
           _processFullMenu();
-        }
-
-        ///todo handle all of them
-        /*else if (menuModel is CategoryMenuModel) {
-          categoryMenu = menuModel;
-          _processCategoryMenu();
-        } else if (menuModel is SimpleMenuModel) {
-          simpleMenu = menuModel;
-          _processSimpleMenu();
-        } */
-        else {
+          categories = fullMenu!.menuItems!.map((item) => item.category!).toSet().toList();
+          subCategories = fullMenu!.menuItems!
+              .expand((item) => item.subCategory!)
+              .map((subItem) => subItem.subCategoryName!)
+              .toSet()
+              .toList();
+        } else {
           context.showSnackBar(message: 'Unexpected menu model type');
         }
 
@@ -73,6 +121,48 @@ class _MenuBodyState extends State<MenuBody> {
       },
     );
   }
+
+
+  // Future<void> getMenu() async {
+  //   try {
+  //     final uid = SharedPrefsUtil().getString(AppStrings.userId)!;
+  //     final result = await MenuControllerClass.getMenuItems(
+  //       context: context,
+  //       uid: uid,
+  //     );
+
+  //     result.fold(
+  //       (String errorMessage) {
+  //         setState(() {
+  //           isMenuLoaded = true;
+  //         });
+  //         context.showSnackBar(message: errorMessage);
+  //       },
+  //       (dynamic menuModel) {
+  //         if (menuModel is FullMenuModel) {
+  //           setState(() {
+  //             fullMenu = menuModel;
+  //             categories = fullMenu!.menuItems!.map((item) => item.category!).toList();
+  //             subCategories = fullMenu!.menuItems!.expand((item) => item.subCategory!).map((subItem) => subItem.subCategoryName!).toList();
+  //           });
+  //         } else {
+  //           context.showSnackBar(message: 'Unexpected menu model type');
+  //         }
+
+  //         setState(() {
+  //           isMenuLoaded = true;
+  //         });
+  //       },
+  //     );
+  //   } catch (e) {
+  //     print("Error fetching menu: $e");
+  //     setState(() {
+  //       isMenuLoaded = true;
+  //     });
+  //     context.showSnackBar(message: AppStrings.serverError);
+  //   }
+  // }
+
 
   void _processFullMenu() {
     if (fullMenu!.menuItems != null) {
@@ -149,10 +239,30 @@ class _MenuBodyState extends State<MenuBody> {
                     : MenuItems(
                         categories: categories,
                         subCategories: subCategories,
-                        menuItemsByCategory: menuItemsByCategory,
+                        // menuItemsByCategory: menuItemsByCategory,
+                        menuItemsByCategory: _buildMenuItemsByCategory(),
                         menuModel: fullMenu!,
                       ),
           ),
         ],
       );
+
+    Map<String, List<MenuItemModel>> _buildMenuItemsByCategory() {
+      Map<String, List<MenuItemModel>> menuItemsByCategory = {};
+
+      if (fullMenu != null && fullMenu!.menuItems != null) {
+        for (var menuItem in fullMenu!.menuItems!) {
+          if (menuItem.category != null && menuItem.subCategory != null) {
+            String category = menuItem.category!;
+            if (!menuItemsByCategory.containsKey(category)) {
+              menuItemsByCategory[category] = [];
+            }
+            menuItemsByCategory[category]!.addAll(menuItem.subCategory!
+                .expand((subCategory) => subCategory.menuItems!));
+          }
+        }
+      }
+
+      return menuItemsByCategory;
+    }
 }
