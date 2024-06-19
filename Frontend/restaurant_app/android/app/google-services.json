@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "551077948387",
+    "firebase_url": "https://nukkad-test-default-rtdb.firebaseio.com",
+    "project_id": "nukkad-test",
+    "storage_bucket": "nukkad-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551077948387:android:8231d550ef9d0f76170ed6",
+        "android_client_info": {
+          "package_name": "com.example.restaurant_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgSoF5juuFj0Tu0hKc7eBO3E56xhp6EGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

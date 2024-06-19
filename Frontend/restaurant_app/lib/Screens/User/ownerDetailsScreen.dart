@@ -3,10 +3,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'dart:ui' as ui;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:restaurant_app/Controller/Profile/profile_controller.dart';
 import 'package:restaurant_app/Screens/User/documentationScreen.dart';
 import 'package:restaurant_app/Screens/User/registerScreen.dart';
@@ -18,6 +20,7 @@ import 'package:restaurant_app/Widgets/customs/User/uploadWidget.dart';
 import 'package:restaurant_app/Widgets/input_fields/numberInputField.dart';
 import 'package:restaurant_app/Widgets/input_fields/phoneField.dart';
 import 'package:restaurant_app/Widgets/input_fields/textInputField.dart';
+import 'package:restaurant_app/provider/auth_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,7 +38,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   final GlobalKey<SfSignaturePadState> signatureGlobalKey = GlobalKey();
   Uint8List? _signatureImageBytes;
   File? _image;
-  String? _base64Image;
+  String? _downloadURL;
   // final ImagePicker imagebannerpath = ImagePicker();
   String? imagebannerpath;
   String? imageSignaturePath;
@@ -431,7 +434,8 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handleAadharFrontPicked),
+                  uploadWidget(
+                      context: context, onFilePicked: _handleAadharFrontPicked),
                   isAadharUploadeFront
                       ? Text(
                           '${imageAadharFrontPath?.split('/').last} selected!',
@@ -469,7 +473,8 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handleAadharBackPicked),
+                  uploadWidget(
+                      context: context, onFilePicked: _handleAadharBackPicked),
                   isAadharBackUploaded
                       ? Text(
                           '${imageAadharBackPath?.split('/').last} selected!',
@@ -507,7 +512,8 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
                       ),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handlePanPicked),
+                  uploadWidget(
+                      context: context, onFilePicked: _handlePanPicked),
                   isPanUploaded
                       ? Text(
                           '${imagePanPath?.split('/').last} selected!',
@@ -742,18 +748,33 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
   Future pickImage(ImageSource source) async {
     final pickedFile =
         await ImagePicker().pickImage(source: source, imageQuality: 80);
-    final bytes = await File(pickedFile!.path).readAsBytes();
 
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
         imagebannerpath = _image!.path;
-        _base64Image = base64Encode(bytes);
       });
-      print(_base64Image);
-      // setState(() {
-      //   _image = File(pickedFile.path);
-      // });
+
+      // Upload image to Firebase Storage
+      try {
+        AuthProvider authProvider =
+            Provider.of<AuthProvider>(context, listen: false);
+
+        await authProvider.signInWithEmailAndPassword();
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('images/${DateTime.now().toString()}');
+        await ref.putFile(_image!);
+        final url = await ref.getDownloadURL();
+
+        setState(() {
+          _downloadURL = url;
+        });
+
+        print(_downloadURL);
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
     }
   }
 }
