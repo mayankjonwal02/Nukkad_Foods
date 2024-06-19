@@ -6,13 +6,21 @@ import '../../constants/colors.dart';
 import '../../constants/texts.dart';
 
 class MenuAppBar extends StatefulWidget {
-  const MenuAppBar({Key? key}) : super(key: key);
+  const MenuAppBar({
+    Key? key,
+    required this.categories,
+    required this.subCategories,
+  }) : super(key: key);
+  final List<String> categories;
+  final List<String> subCategories;
 
   @override
   State<MenuAppBar> createState() => _MenuAppBarState();
 }
 
 class _MenuAppBarState extends State<MenuAppBar> {
+  _MenuAppBarState();
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -32,24 +40,32 @@ class _MenuAppBarState extends State<MenuAppBar> {
                 ),
                 InkWell(
                   onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(5.0)),
-                  ),
-                  padding: EdgeInsets.all(16.0),
-                  child: AddItems(),
-                );
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(5.0)),
-              ),
-              isScrollControlled: true,
-            );
-          },
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(5.0)),
+                          ),
+                          padding: EdgeInsets.all(16.0),
+                          child: AddItems(
+                            categories: widget.categories,
+                            subCategories: widget.subCategories,
+                            closeBottomSheet: () {  
+                              Navigator.pop(context);
+                            },
+                          ),
+                        );
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(5.0)),
+                      ),
+                      isScrollControlled: true,
+                    );
+                  },
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.3.h),

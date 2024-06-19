@@ -116,7 +116,7 @@ class _SetOrderingScreenState extends State<SetOrderingScreen> {
       userInfo['restaurantImages'] = imageRestaurantImgPath;
       userInfo['foodImages'] = imageFoodImgPath;
       saveUserInfo(userInfo); // Save user info to SharedPreferences
-      sendUserDataToServer(userInfo); // Send user data to server for signup
+      // sendUserDataToServer(userInfo); // Send user data to server for signup
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: colorFailure,

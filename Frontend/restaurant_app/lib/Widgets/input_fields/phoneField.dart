@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:sizer/sizer.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 
 class PhoneField extends StatefulWidget {
   final TextEditingController controller;
@@ -16,18 +16,17 @@ class PhoneField extends StatefulWidget {
 }
 
 class _PhoneFieldState extends State<PhoneField> {
-  TextEditingController _controller = TextEditingController();
   Color _textColor = textGrey2; // Initial text color
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(_updateTextColor);
+    widget.controller.addListener(_updateTextColor);
   }
 
   void _updateTextColor() {
     setState(() {
-      if (_controller.text.length == 10) {
+      if (widget.controller.text.length == 10) {
         _textColor = Colors.green;
       } else {
         _textColor = textGrey2;
@@ -37,8 +36,8 @@ class _PhoneFieldState extends State<PhoneField> {
 
   @override
   void dispose() {
-    _controller.removeListener(_updateTextColor);
-    _controller.dispose();
+    widget.controller.removeListener(_updateTextColor);
+    widget.controller.dispose();
     super.dispose();
   }
 
@@ -48,7 +47,7 @@ class _PhoneFieldState extends State<PhoneField> {
       elevation: 3.0,
       borderRadius: BorderRadius.circular(7.0),
       child: IntlPhoneField(
-        controller: _controller,
+        controller: widget.controller,
         disableLengthCheck: true,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,

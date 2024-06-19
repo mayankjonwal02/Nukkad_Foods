@@ -164,7 +164,7 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
         panNumber.isNotEmpty &&
         ownerEmail.isNotEmpty &&
         ownerName.isNotEmpty) {
-      userInfo['ownerPhoto'] = imagebannerpath;
+      userInfo['ownerPhoto'] = _base64Image;
       userInfo['ownerName'] = ownerName;
       userInfo['ownerEmail'] = ownerEmail;
       userInfo['ownerContactNumber'] = ownerPhone;
@@ -174,8 +174,8 @@ class _OwnerDetailsScreenState extends State<OwnerDetailsScreen> {
       //   'aadharNumber': aadharNumber,
       //   'panNumber': panNumber,
       // };
-      userInfo['kycAadharNumber'] = aadharNumber;
-      userInfo['kycPanNumber'] = panNumber;
+      userInfo['kycAadhar'] = imageAadharFrontPath;
+      userInfo['kycPan'] = imagePanPath;
       userInfo['signature'] = imageSignaturePath;
 
       // userInfo['nukkadAddress'] = whatsappConfirmation;

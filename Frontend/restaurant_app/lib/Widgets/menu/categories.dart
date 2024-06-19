@@ -19,12 +19,9 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
-  bool _isSelected = false;
-
   @override
   void initState() {
     super.initState();
-    _isSelected = widget.isSelected;
   }
 
   @override
@@ -32,12 +29,11 @@ class _CategoryState extends State<Category> {
     return GestureDetector(
       onTap: () {
         widget.onTap();
-        toggleSelection();
       },
       child: Container(
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          color: _isSelected
+          color: widget.isSelected
               ? Color.fromARGB(255, 199, 241, 201)
               : Color.fromARGB(244, 244, 244, 244),
           border: Border.all(
@@ -59,11 +55,5 @@ class _CategoryState extends State<Category> {
         ),
       ),
     );
-  }
-
-  void toggleSelection() {
-    setState(() {
-      _isSelected = !_isSelected;
-    });
   }
 }

@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
+import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
+import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
+import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
+import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
+import 'package:restaurant_app/Widgets/constants/strings.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/menu/customInputField.dart';
 import 'package:sizer/sizer.dart';
 
 class SubCategoriesForm extends StatefulWidget {
-  const SubCategoriesForm({super.key});
+  const SubCategoriesForm({
+    super.key,
+    required this.categories
+  });
+  final List<String> categories;
 
   @override
   State<SubCategoriesForm> createState() => _SubCategoriesFormState();
@@ -15,8 +25,102 @@ class SubCategoriesForm extends StatefulWidget {
 class _SubCategoriesFormState extends State<SubCategoriesForm> {
   TextEditingController subCategoryName = TextEditingController();
   String? selectedCategory; // To store the currently selected value
+  List<String> categories = [];
 
-  final List<String> categories = ['Item 1', 'Item 2', 'Item 3', 'Item 4'];
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadCategories();
+  }
+
+  Future<void> loadCategories() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final List<String> fetchedCategories = await MenuControllerClass.fetchAllCategories(
+        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? '',
+        context: context,
+      );
+      setState(() {
+        categories = fetchedCategories;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      context.showSnackBar(message: "Failed to fetch categories: ${e.toString()}");
+    }
+  }
+
+  Future<void> addSubCategory() async {
+    setState(() {
+      isLoading = true;
+    });
+    if (subCategoryName.text.isNotEmpty && selectedCategory != null) {
+      final result = await MenuControllerClass.addSubCategory(
+        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? '',
+        category: selectedCategory!,
+        subCategory: subCategoryName.text,
+        context: context,
+      );
+      result.fold((errorMessage) {
+        setState(() {
+          isLoading = false;
+        });
+        context.showSnackBar(message: errorMessage);
+      }, (successMessage) {
+        setState(() {
+          isLoading = false;
+        });
+        context.showSnackBar(message: successMessage);
+        context.pop();
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      context.showSnackBar(message: AppStrings.allFieldsRequired);
+    }
+  }
+
+  Future addMenu() async {
+    setState(() {
+      isLoading = true;
+    });
+    if (subCategoryName.text.isNotEmpty && selectedCategory != null) {
+      await MenuControllerClass.saveMenuItem(
+              saveMenuItem: SaveMenuItem(
+                  uid: SharedPrefsUtil().getString(AppStrings.userId),
+                  category: selectedCategory,
+                  subCategory: subCategoryName.text),
+              context: context)
+          .then((value) {
+        setState(() {
+          isLoading = false;
+        });
+        context.pop();
+      }).catchError((error) {
+        setState(() {
+          isLoading = false;
+        });
+        context.showSnackBar(
+          message: error.toString(),
+        );
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      context.showSnackBar(
+        message: AppStrings.allFieldsRequired,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,11 +235,14 @@ class _SubCategoriesFormState extends State<SubCategoriesForm> {
               SizedBox(
                 height: 20,
               ),
-              AddButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
+              isLoading
+                  ? CircularProgressIndicator()
+                  : AddButton(
+                      onPressed: () {
+                        // addMenu();
+                        addSubCategory();
+                      },
+                    ),
             ],
           ),
         ),

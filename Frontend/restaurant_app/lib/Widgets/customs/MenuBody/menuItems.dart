@@ -1,67 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
-import 'package:restaurant_app/Widgets/menu/menuItemCard.dart';
 
-class MenuItems extends StatefulWidget {
-  const MenuItems({Key? key}) : super(key: key);
+class MenuItem extends StatelessWidget {
+  // MenuItem({super.key, required this.itemName, required this.screen});
+  const MenuItem({
+    Key? key,
+    required this.itemName,
+    required this.screen,
+    required this.closeBottomSheet,
+  }) : super(key: key);
 
-  @override
-  _MenuItemsState createState() => _MenuItemsState();
-}
-
-class _MenuItemsState extends State<MenuItems> with TickerProviderStateMixin {
-  bool isExpanded = false;
-
-  void _toggleExpand() {
-    setState(() {
-      isExpanded = !isExpanded;
-    });
-  }
+  final String itemName;
+  final Widget screen;
+  final VoidCallback closeBottomSheet;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: _toggleExpand,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Main Course (10)',
-                  style: h6TextStyle,
-                ),
-                Icon(
-                  isExpanded
-                      ? Icons.keyboard_arrow_down
-                      : Icons.keyboard_arrow_right,
-                  size: 30,
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        closeBottomSheet();
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => screen));
+      },
+      child: Container(
+        width: double.infinity, // Full width
+        padding: const EdgeInsets.all(8.0), // Add some padding if needed
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0), // Border radius
+          border: Border.all(color: Colors.black), // Black border color
+        ),
+        child: Row(
+          mainAxisAlignment:
+              MainAxisAlignment.spaceBetween, // Space between the widgets
+          children: [
+            Text(
+              itemName,
+              style: h5TextStyle,
             ),
-          ),
-          SizeTransition(
-            sizeFactor: CurvedAnimation(
-              parent: AnimationController(
-                vsync: this,
-                duration: Duration(milliseconds: 300),
-              )..forward(),
-              curve: Curves.easeInOut,
-            ),
-            axisAlignment: 0.0,
-            child: isExpanded
-                ? Column(
-                    children: [
-                      MenuItemCard(),
-                      MenuItemCard(),
-                      MenuItemCard(),
-                      MenuItemCard(),
-                    ],
-                  )
-                : SizedBox.shrink(),
-          ),
-        ],
+            Icon(Icons.add), // "+" icon
+          ],
+        ),
       ),
     );
   }

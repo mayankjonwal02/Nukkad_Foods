@@ -1,6 +1,13 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
+import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
+import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
+import 'package:restaurant_app/Widgets/constants/strings.dart';
+import 'package:restaurant_app/homeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalController {
@@ -59,6 +66,46 @@ class SignInController {
       // return Profile.fromJson(data);
     } else {
       throw Exception('Failed to login');
+    }
+  }
+}
+
+class LoginController {
+  static Future<void> login({
+    required String phoneNumber,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(AppStrings.loginEndpoint),
+        headers: <String, String>{
+          AppStrings.contentType: AppStrings.applicationJson,
+        },
+        body: jsonEncode({
+          'phoneNumber': phoneNumber,
+          'password': password,
+        }),
+      );
+
+      final jsonResponse = json.decode(response.body);
+      if (response.statusCode == 200) {
+        if (jsonResponse['executed'] == true) {
+          await SharedPrefsUtil()
+              .setString(AppStrings.userId, jsonResponse['uid'])
+              .then((value) {
+            context.showSnackBar(message: jsonResponse['message']);
+            context.push(HomeScreen());
+          });
+        } else {
+          context.showSnackBar(message: jsonResponse['message']);
+        }
+      } else {
+        context.showSnackBar(
+            message: jsonResponse['message'] ?? AppStrings.loginError);
+      }
+    } catch (e) {
+      context.showSnackBar(message: AppStrings.serverError);
     }
   }
 }

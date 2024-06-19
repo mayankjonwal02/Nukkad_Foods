@@ -91,7 +91,7 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
       //   'gstCertificateUrl': imageGstPath,
       // };
       userInfo['gstNumber'] = gstinNumber;
-      userInfo['gstCertificateUrl'] = imageGstPath;
+      userInfo['gstCertificate'] = imageGstPath;
       // userInfo['fssaiDetails'] = {
       //   'certificateNumber': fssaiNumber,
       //   'expiryDate': fssaiExpiryDate,
@@ -100,7 +100,7 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
 
       userInfo['fssaiCertificateNumber'] = fssaiNumber;
       userInfo['fssaiExpiryDate'] = fssaiExpiryDate;
-      userInfo['fssaiCertificateUrl'] = imageFssaiPath;
+      userInfo['fssaiCertificate'] = imageFssaiPath;
 
       saveUserInfo(userInfo);
       Navigator.push(context,
