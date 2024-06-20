@@ -167,7 +167,7 @@ class _DishesFormState extends State<DishesForm> {
                 timeToPrepare: double.tryParse(packingCharges.text) ?? 0.0,
                 inStock: true,
                 servingInfo: noOfServers.text,
-
+                label: selectedLabel,
               ),
             ),
             context: context,

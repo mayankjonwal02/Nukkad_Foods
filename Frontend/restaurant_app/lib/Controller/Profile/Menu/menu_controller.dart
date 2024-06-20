@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:restaurant_app/Controller/Profile/Menu/MenuAPI.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/menu_model.dart';
@@ -9,8 +10,6 @@ import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/update_menu_item_model.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/strings.dart';
-
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MenuControllerClass {
   static String baseURL = "${dotenv.env['BASE_URL']}";
@@ -23,7 +22,7 @@ class MenuControllerClass {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse("${AppStrings.getMenuItemEndpoint}$uid").replace(
+        Uri.parse("${AppStrings.getMenuItemEndpoint}/$uid").replace(
           queryParameters: {
             if (category != null) 'category': category,
             if (subCategory != null) 'subCategory': subCategory,
@@ -136,7 +135,7 @@ class MenuControllerClass {
     try {
       print(
           "${AppStrings.deleteMenuItemEndpoint}$uid/$category/$subCategory/$menuitemid");
-      final response = await http.delete(
+      final response = await http.post(
         Uri.parse(
             "${AppStrings.deleteMenuItemEndpoint}/$uid/$category/$subCategory/$menuitemid"),
       );
