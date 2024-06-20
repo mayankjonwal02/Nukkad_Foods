@@ -144,242 +144,266 @@ curl -X POST http://localhost:3000/api/auth/getUser/664094be461dc7c1a3cd4887
 
 
 
-**API Documentation for NukkadFoods Order Management System**
+# Order Management API Documentation
 
-**Introduction**
+## Overview
+This API provides endpoints to manage orders for the NukkadFoods application. The API supports operations to create, retrieve, update, and delete orders, as well as fetch all orders in the database.
 
-This API provides endpoints for managing orders within the NukkadFoods system. It allows users to create, retrieve, and update orders associated with a specific user ID (UID).
+## Base URL
+`/api/order`
 
+## Endpoints
 
-**API Endpoints**
+### Create Order
+**Endpoint:** `POST /api/order/createOrder`
 
-**1. Create Order**
-
-**Route:** `POST /api/order/createOrder`
+**Description:** Create a new order for a user.
 
 **Request Body:**
-
 ```json
 {
-  "uid": "<user_id>",
+  "uid": "string",
   "orderData": {
-    "orderId": "<unique_order_id>",
-    "date": "<order_date_in_YYYY-MM-DD format>",
-    "time": "<order_time>",
-    "orderByid": "<id_of_the_user_who_placed_the_order>",
-    "orderByName": "<name_of_the_user_who_placed_the_order>",
-    "status": "<order_status>",
-    "deliveryAddress": "{ type: String, required: true }",
+    "orderId": "string",
+    "date": "2023-06-20T00:00:00.000Z",
+    "time": "string",
+    "paymentMethod": "string",
+    "totalCost": 100,
+    "gst": 10,
+    "itemAmount": 90,
+    "deliveryCharge": 5,
+    "convinenceFee": 2,
+    "orderByid": "string",
+    "orderByName": "string",
+    "status": "string",
+    "deliveryAddress": "string",
     "items": [
       {
-        "itemId": "<item_id>",
-        "itemName": "<item_name>",
-        "itemQuantity": <number>,
-        "unitCost": <number>
-      },
-       "paymentMethod" : "{ type: String, required: true }",
-       "totalCost": "{ type: Number, required: true }",
-       "gst": "{ type: Number, required: true }",
-       "itemAmount": "{ type: Number, required: true }",
-       "deliveryCharge": "{ type: Number, required: true }",
-       "convinenceFee": "{ type: Number, required: true }"
-    ]
-  }
-}
-```
-
-**Response Body:**
-
-```json
-{
-  "message": "Order created successfully",
-  "orders": [
-    // Array of all orders for the user (including the newly created one)
-  ]
-}
-```
-
-**Error Codes:**
-
-* **400 (Bad Request):**
-    * Missing required fields in the request body.
-    * Order with the same `orderId` already exists for the user.
-
-* **500 (Internal Server Error):**
-    * Unexpected error during order creation.
-
-**2. Get All Orders**
-
-**Route:** `GET /api/order/orders`
-
-**Request Body:**
-
-```json
-{
-  "uid": "<uid>"
-}
-```
-
-**Response Body:**
-
-```json
-{
-  "orders": [
-    // Array of all orders for the user
-  ]
-}
-```
-
-**Error Codes:**
-
-* **500 (Internal Server Error):**
-    * Unexpected error during order retrieval.
-
-**3. Get Order by ID**
-
-**Route:** `GET /api/order/orders/:uid/:orderId`
-
-**Path Parameters:**
-
-* `:uid`: User ID
-* `:orderId`: Order ID
-
-**Request Body:**
-
-No request body required.
-
-**Response Body:**
-
-```json
-{
-  "order": {
-    "orderId": "<unique_order_id>",
-    "date": "<order_date_in_YYYY-MM-DD format>",
-    "time": "<order_time>",
-    "orderByid": "<id_of_the_user_who_placed_the_order>",
-    "orderByName": "<name_of_the_user_who_placed_the_order>",
-    "status": "<order_status>",
-    "items": [
-      {
-        "itemId": "<item_id>",
-        "itemName": "<item_name>",
-        "itemQuantity": <number>,
-        "unitCost": <number>
-      },
-      // ... more item objects
-    ]
-  }
-}
-```
-
-**Error Codes:**
-
-* **404 (Not Found):**
-    * User with the provided UID does not exist.
-    * Order with the provided `orderId` does not exist for the user.
-
-* **500 (Internal Server Error):**
-    * Unexpected error during order retrieval.
-
-**4. Update Order**
-
-**Route:** `PUT /api/order/orders/:uid/:orderId`
-
-**Path Parameters:**
-
-* `:uid`: User ID
-* `:orderId`: Order ID
-
-**Request Body:**
-
-```json
-{
-  "updateData": {
-    // Fields to update (e.g., "status", "items")
-  }
-}
-```
-
-**Response Body:**
-
-```json
-{
-  "message": "Order updated successfully",
-
-}
-```
-
-
-
-### DELETE /api/order/orders/:uid/:orderId
-
-**Description:**
-
-This endpoint is used to delete a specific order with the given `orderId` belonging to the user with the specified `uid`. The order is removed from the user's orders array and moved to a separate collection for cancelled orders.
-
-**Request:**
-
-- Method: DELETE
-- Path: `/api/order/orders/:uid/:orderId`
-- Parameters:
-  - `uid` (string, required): The unique identifier of the user.
-  - `orderId` (string, required): The unique identifier of the order to be deleted.
-
-**Request Body:**
-
-This endpoint does not expect any request body.
-
-**Response:**
-
-- Status Code: 200 OK
-- Status Code: 404 Not Found
-- Status Code: 500 Internal Server Error
-
-**Response Body (Success):**
-
-```json
-{
-  "message": "Order deleted successfully",
-  "order": {
-    "orderId": "5fc16a45c3a7c80f889a1f12",
-    "date": "2024-01-01",
-    "time": "12:00 PM",
-    "orderByid": "user123",
-    "orderByName": "John Doe",
-    "status": "Cancelled",
-    "items": [
-      {
-        "itemId": "item1",
-        "itemName": "Burger",
-        "itemQuantity": 2,
-        "unitCost": 5.99
-      },
-      {
-        "itemId": "item2",
-        "itemName": "Pizza",
+        "itemId": "string",
+        "itemName": "string",
         "itemQuantity": 1,
-        "unitCost": 10.99
+        "unitCost": 45
       }
     ]
   }
 }
 ```
 
-**Response Body (Order Not Found):**
+**Response:**
+- **Success:** 
+  - Status Code: 200
+  - Body:
+    ```json
+    {
+      "message": "Order created successfully",
+      "orders": [...]
+    }
+    ```
+- **Failure:**
+  - Status Code: 400
+  - Body:
+    ```json
+    {
+      "message": "Order with the same orderId already exists"
+    }
+    ```
+  - Status Code: 500
+  - Body:
+    ```json
+    {
+      "message": "Internal server error"
+    }
+    ```
 
+### Get Orders by User ID
+**Endpoint:** `GET /api/order/orders/:uid`
+
+**Description:** Retrieve all orders for a specific user.
+
+**Response:**
+- **Success:** 
+  - Status Code: 200
+  - Body:
+    ```json
+    {
+      "orders": [...]
+    }
+    ```
+- **Failure:**
+  - Status Code: 500
+  - Body:
+    ```json
+    {
+      "message": "Internal server error"
+    }
+    ```
+
+### Get Order by User ID and Order ID
+**Endpoint:** `GET /api/order/orders/:uid/:orderId`
+
+**Description:** Retrieve a specific order for a user by order ID.
+
+**Response:**
+- **Success:** 
+  - Status Code: 200
+  - Body:
+    ```json
+    {
+      "order": {...}
+    }
+    ```
+- **Failure:**
+  - Status Code: 404
+  - Body:
+    ```json
+    {
+      "message": "Order not found"
+    }
+    ```
+  - Status Code: 500
+  - Body:
+    ```json
+    {
+      "message": "Internal server error"
+    }
+    ```
+
+### Update Order by User ID and Order ID
+**Endpoint:** `PUT /api/order/orders/:uid/:orderId`
+
+**Description:** Update a specific order for a user by order ID.
+
+**Request Body:**
 ```json
 {
-  "message": "Order not found"
+  "updateData": {
+    "key": "value"
+  }
 }
 ```
 
-**Response Body (Error):**
+**Response:**
+- **Success:** 
+  - Status Code: 200
+  - Body:
+    ```json
+    {
+      "message": "Order updated successfully",
+      "order": {...}
+    }
+    ```
+- **Failure:**
+  - Status Code: 404
+  - Body:
+    ```json
+    {
+      "message": "Order not found"
+    }
+    ```
+  - Status Code: 500
+  - Body:
+    ```json
+    {
+      "message": "Internal server error"
+    }
+    ```
 
+### Delete Order by User ID and Order ID
+**Endpoint:** `DELETE /api/order/orders/:uid/:orderId`
+
+**Description:** Delete a specific order for a user by order ID.
+
+**Response:**
+- **Success:** 
+  - Status Code: 200
+  - Body:
+    ```json
+    {
+      "message": "Order deleted successfully",
+      "order": {...}
+    }
+    ```
+- **Failure:**
+  - Status Code: 404
+  - Body:
+    ```json
+    {
+      "message": "Order not found"
+    }
+    ```
+  - Status Code: 500
+  - Body:
+    ```json
+    {
+      "message": "Internal server error"
+    }
+    ```
+
+### Get All Orders
+**Endpoint:** `GET /api/order/getAllOrders`
+
+**Description:** Retrieve all orders in the database.
+
+**Response:**
+- **Success:** 
+  - Status Code: 200
+  - Body:
+    ```json
+    {
+      "orders": [...]
+    }
+    ```
+- **Failure:**
+  - Status Code: 500
+  - Body:
+    ```json
+    {
+      "message": "Internal server error"
+    }
+    ```
+
+## Error Handling
+- **400 Bad Request:** The server could not understand the request due to invalid syntax.
+- **404 Not Found:** The server can not find the requested resource.
+- **500 Internal Server Error:** The server has encountered a situation it doesn't know how to handle.
+
+## Models
+
+### Order Schema
 ```json
 {
-  "message": "Internal server error"
+  "uid": "string",
+  "orders": [
+    {
+      "orderId": "string",
+      "date": "2023-06-20T00:00:00.000Z",
+      "time": "string",
+      "paymentMethod": "string",
+      "totalCost": 100,
+      "gst": 10,
+      "itemAmount": 90,
+      "deliveryCharge": 5,
+      "convinenceFee": 2,
+      "orderByid": "string",
+      "orderByName": "string",
+      "status": "string",
+      "deliveryAddress": "string",
+      "items": [
+        {
+          "itemId": "string",
+          "itemName": "string",
+          "itemQuantity": 1,
+          "unitCost": 45
+        }
+      ]
+    }
+  ]
 }
 ```
+
+## Notes
+- Ensure to replace placeholder strings (e.g., `"string"`, `100`) with actual values in request bodies.
+
 
 
 
