@@ -1,12 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:restaurant_app/Widgets/constants/colors.dart';
+import 'package:restaurant_app/Controller/order/order_controller.dart';
+import 'package:restaurant_app/Controller/order/orders_model.dart';
+import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
+import 'package:restaurant_app/Widgets/constants/strings.dart';
 import 'package:restaurant_app/Widgets/customs/OrderBody/sortingBar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:http/http.dart' as http;
+
 import '../../Widgets/customs/OrderBody/orderFilters.dart';
 import '../../Widgets/customs/OrderBody/orderStatusSelector.dart';
 import '../../Widgets/customs/OrderBody/orderWidget.dart';
@@ -23,11 +22,17 @@ class _OrderBodyState extends State<OrderBody> {
 
   bool isLoading = false;
 
-  String? uid;
+  // String? uid;
 
-  List<Map<String, dynamic>> myOrder = [];
+  // List<Map<String, dynamic>> myOrder = [];
 
-  List<Map<String, dynamic>> responseDataList = [];
+  // List<Map<String, dynamic>> responseDataList = [];
+  Map<String, List<Orders>>? groupedOrders;
+  OrdersModel? ordersModel;
+  List<Orders> myOrder = [];
+  List<Orders> allOrder = [];
+  List<Orders>? pendingOrCancelledOrders;
+  List<Orders>? deliveredOrCancelledOrders;
   @override
   void initState() {
     // TODO: implement initState
@@ -36,144 +41,208 @@ class _OrderBodyState extends State<OrderBody> {
     //     .toList();
 
     super.initState();
-    getUid();
+    // getUid();
+    getAllOrders();
   }
 
-  Future<void> getUid() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      uid = prefs.getString('User_id');
-    });
-    getOngoingData();
-  }
-
-  Future<void> getOngoingData() async {
+  getAllOrders() async {
     if (!mounted) {
       return; // Widget is not mounted, do nothing
     }
     setState(() {
       isLoading = true;
+      groupedOrders = {};
+      allOrder = [];
+      pendingOrCancelledOrders = [];
+      deliveredOrCancelledOrders = [];
     });
-    try {
-      var baseUrl = dotenv.env['BASE_URL'];
-      final response = await http
-          .get(Uri.parse('$baseUrl/order/orders/6643a1f3c6ff7f63f77f536c'));
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        if (responseData is Map<String, dynamic>) {
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //     const SnackBar(content: Text("Get Ongoing Order Successfully")));
-          setState(() {
-            isLoading = false;
-            responseDataList =
-                List<Map<String, dynamic>>.from(responseData['orders']);
-            myOrder = responseDataList
-                .where((order) =>
-                    order['status'] == 'Pending' ||
-                    order['status'] == 'Canceled' ||
-                    order['status'] == 'Accepted' ||
-                    order['status'] == 'On the way' ||
-                    order['status'] == 'Ready')
-                .toList();
-          });
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                backgroundColor: colorFailure,
-                content: Text(responseData['message'])),
-          );
-        }
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: colorFailure,
-            content: Text("Failed to get ongoing order")));
-      }
-    } catch (e) {
+    var result = await OrderController.getAllOrders(
+      context: context,
+    );
+    result.fold((String message) {
       setState(() {
         isLoading = false;
       });
+      context.showSnackBar(message: message);
+    }, (OrdersModel getAllOrders) {
+      setState(() {
+        ordersModel = getAllOrders;
+        if (ordersModel!.orders!.length != 0) {
+          groupedOrders = ordersModel!.groupOrdersByStatus();
+          pendingOrCancelledOrders = ordersModel!
+              .groupOrdersByStatus()
+              .values
+              .where((ordersList) => ordersList.any((order) =>
+                  order.status == 'Pending' ||
+                  order.status == 'Canceled' ||
+                  order.status == 'Accepted' ||
+                  order.status == 'On the way' ||
+                  order.status == 'Ready'))
+              .expand((ordersList) => ordersList)
+              .toList();
+          deliveredOrCancelledOrders = ordersModel!
+              .groupOrdersByStatus()
+              .values
+              .where((ordersList) => ordersList.any((order) =>
+                  order.status == 'Delivered' || order.status == 'Canceled'))
+              .expand((ordersList) => ordersList)
+              .toList();
+          allOrder = ordersModel!
+              .groupOrdersByStatus()
+              .values
+              .expand((order) => order)
+              .toList();
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: colorFailure, content: Text("Error: Server Error")));
-    }
+          myOrder = pendingOrCancelledOrders ?? [];
+        }
+        isLoading = false;
+      });
+    });
   }
+
+  // Future<void> getUid() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     uid = prefs.getString('User_id');
+  //   });
+  //   getOngoingData();
+  // }
+
+  // Future<void> getOngoingData() async {
+  //   if (!mounted) {
+  //     return; // Widget is not mounted, do nothing
+  //   }
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+  //     var baseUrl = dotenv.env['BASE_URL'];
+  //     final response = await http
+  //         .get(Uri.parse('$baseUrl/order/orders/6643a1f3c6ff7f63f77f536c'));
+  //     if (response.statusCode == 200) {
+  //       final responseData = jsonDecode(response.body);
+  //       if (responseData is Map<String, dynamic>) {
+  //         // ScaffoldMessenger.of(context).showSnackBar(
+  //         //     const SnackBar(content: Text("Get Ongoing Order Successfully")));
+  //         setState(() {
+  //           isLoading = false;
+  //           responseDataList =
+  //               List<Map<String, dynamic>>.from(responseData['orders']);
+  //           myOrder = responseDataList
+  //               .where((order) =>
+  //                   order['status'] == 'Pending' ||
+  //                   order['status'] == 'Canceled' ||
+  //                   order['status'] == 'Accepted' ||
+  //                   order['status'] == 'On the way' ||
+  //                   order['status'] == 'Ready')
+  //               .toList();
+  //         });
+  //       } else {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //               backgroundColor: colorFailure,
+  //               content: Text(responseData['message'])),
+  //         );
+  //       }
+  //     } else {
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           backgroundColor: colorFailure,
+  //           content: Text("Failed to get ongoing order")));
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         backgroundColor: colorFailure, content: Text("Error: Server Error")));
+  //   }
+  // }
 
   void _handelSelectedTab(int idx) {
     if (isOngoing) {
       switch (idx) {
         case 0:
           setState(() {
-            myOrder = responseDataList
-                .where((order) =>
-                    order['status'] == 'Pending' ||
-                    order['status'] == 'Canceled' ||
-                    order['status'] == 'Accepted' ||
-                    order['status'] == 'On the way' ||
-                    order['status'] == 'Ready')
-                .toList();
+            myOrder = pendingOrCancelledOrders ?? [];
+            // myOrder = responseDataList
+            //     .where((order) =>
+            //         order['status'] == 'Pending' ||
+            //         order['status'] == 'Canceled' ||
+            //         order['status'] == 'Accepted' ||
+            //         order['status'] == 'On the way' ||
+            //         order['status'] == 'Ready')
+            //     .toList();
           });
         case 1:
           setState(() {
-            myOrder = responseDataList
-                .where((order) => order['status'] == 'Pending')
-                .toList();
+            myOrder = groupedOrders!["Pending"] ?? [];
+            // myOrder = responseDataList
+            //     .where((order) => order['status'] == 'Pending')
+            //     .toList();
           });
           break;
         case 2:
           setState(() {
-            myOrder = responseDataList
-                .where((order) => order['status'] == 'Accepted')
-                .toList();
+            myOrder = groupedOrders!["Accepted"] ?? [];
+            // myOrder = responseDataList
+            //     .where((order) => order['status'] == 'Accepted')
+            //     .toList();
           });
           break;
         case 3:
           setState(() {
-            myOrder = responseDataList
-                .where((order) => order['status'] == 'Ready')
-                .toList();
+            myOrder = groupedOrders!["Ready"] ?? [];
+            // myOrder = responseDataList
+            //     .where((order) => order['status'] == 'Ready')
+            //     .toList();
           });
           break;
         case 4:
           setState(() {
-            myOrder = responseDataList
-                .where((order) => order['status'] == 'On the way')
-                .toList();
+            myOrder = groupedOrders!["On the way"] ?? [];
+            // myOrder = responseDataList
+            //     .where((order) => order['status'] == 'On the way')
+            //     .toList();
           });
           break;
         default:
           setState(() {
-            myOrder = responseDataList
-                .where((order) =>
-                    order['status'] == 'Pending' ||
-                    order['status'] == 'Canceled' ||
-                    order['status'] == 'Accepted' ||
-                    order['status'] == 'On the way' ||
-                    order['status'] == 'Ready')
-                .toList();
+            myOrder = pendingOrCancelledOrders ?? [];
+            // myOrder = responseDataList
+            //     .where((order) =>
+            //         order['status'] == 'Pending' ||
+            //         order['status'] == 'Canceled' ||
+            //         order['status'] == 'Accepted' ||
+            //         order['status'] == 'On the way' ||
+            //         order['status'] == 'Ready')
+            //     .toList();
           });
           break;
       }
     } else {
-      List<Map<String, dynamic>> responseDataListPrv = responseDataList
-          .where((order) =>
-              order['status'] == 'Delivered' || order['status'] == 'Canceled')
-          .toList();
+      List<Orders> responseDataListPrv = deliveredOrCancelledOrders ?? [];
+      // List<Map<String, dynamic>> responseDataListPrv = responseDataList
+      //     .where((order) =>
+      //         order['status'] == 'Delivered' || order['status'] == 'Canceled')
+      //     .toList();
       ;
       switch (idx) {
         case 0:
           setState(() {
-            myOrder = responseDataListPrv
-                .where((order) =>
-                    order['status'] == 'Delivered' ||
-                    order['status'] == 'Canceled')
-                .toList();
+            myOrder = deliveredOrCancelledOrders ?? [];
+            // myOrder = responseDataListPrv
+            //     .where((order) =>
+            //         order['status'] == 'Delivered' ||
+            //         order['status'] == 'Canceled')
+            //     .toList();
           });
         case 1:
           DateTime now = DateTime.now();
@@ -181,19 +250,27 @@ class _OrderBodyState extends State<OrderBody> {
 
           setState(() {
             myOrder = responseDataListPrv.where((order) {
-              DateTime orderDateTime = DateTime.parse(order['date']);
+              DateTime orderDateTime = DateTime.parse(order.date!);
               TimeOfDay orderTime = TimeOfDay.fromDateTime(orderDateTime);
               return orderTime.hour < currentTime.hour ||
                   (orderTime.hour == currentTime.hour &&
                       orderTime.minute <= currentTime.minute);
             }).toList();
+            // myOrder = responseDataListPrv.where((order) {
+            //   DateTime orderDateTime = DateTime.parse(order['date']);
+            //   TimeOfDay orderTime = TimeOfDay.fromDateTime(orderDateTime);
+            //   return orderTime.hour < currentTime.hour ||
+            //       (orderTime.hour == currentTime.hour &&
+            //           orderTime.minute <= currentTime.minute);
+            // }).toList();
           });
           break;
         case 2:
           setState(() {
-            myOrder = responseDataList
-                .where((order) => order['status'] == 'Canceled')
-                .toList();
+            myOrder = groupedOrders!["Canceled"] ?? [];
+            // myOrder = responseDataList
+            //     .where((order) => order['status'] == 'Canceled')
+            //     .toList();
           });
           break;
         case 3:
@@ -202,11 +279,17 @@ class _OrderBodyState extends State<OrderBody> {
 
           setState(() {
             myOrder = responseDataListPrv.where((order) {
-              DateTime orderDate = DateTime.parse(order['date']);
+              DateTime orderDate = DateTime.parse(order.date!);
               DateTime orderDateOnly =
                   DateTime(orderDate.year, orderDate.month, orderDate.day);
               return orderDateOnly.isAtSameMomentAs(today);
             }).toList();
+            // myOrder = responseDataListPrv.where((order) {
+            //   DateTime orderDate = DateTime.parse(order['date']);
+            //   DateTime orderDateOnly =
+            //       DateTime(orderDate.year, orderDate.month, orderDate.day);
+            //   return orderDateOnly.isAtSameMomentAs(today);
+            // }).toList();
           });
           break;
         case 4:
@@ -216,21 +299,29 @@ class _OrderBodyState extends State<OrderBody> {
 
             setState(() {
               myOrder = responseDataListPrv.where((order) {
-                DateTime orderDate = DateTime.parse(order['date']);
+                DateTime orderDate = DateTime.parse(order.date!);
                 DateTime orderDateOnly =
                     DateTime(orderDate.year, orderDate.month, orderDate.day);
                 return orderDateOnly.isBefore(today);
               }).toList();
             });
+            // myOrder = responseDataListPrv.where((order) {
+            //     DateTime orderDate = DateTime.parse(order['date']);
+            //     DateTime orderDateOnly =
+            //         DateTime(orderDate.year, orderDate.month, orderDate.day);
+            //     return orderDateOnly.isBefore(today);
+            //   }).toList();
+            // });
           });
           break;
         default:
           setState(() {
-            myOrder = responseDataListPrv
-                .where((order) =>
-                    order['status'] == 'Delivered' ||
-                    order['status'] == 'Canceled')
-                .toList();
+            myOrder = deliveredOrCancelledOrders ?? [];
+            // myOrder = responseDataListPrv
+            //     .where((order) =>
+            //         order['status'] == 'Delivered' ||
+            //         order['status'] == 'Canceled')
+            //     .toList();
           });
           break;
       }
@@ -245,45 +336,60 @@ class _OrderBodyState extends State<OrderBody> {
           DateTime today = DateTime(now.year, now.month, now.day);
 
           setState(() {
-            myOrder = responseDataList.where((order) {
-              DateTime orderDate = DateTime.parse(order['date']);
+            myOrder = ordersModel!.orders!.where((order) {
+              DateTime orderDate = DateTime.parse(order.date!);
               DateTime orderDateOnly =
                   DateTime(orderDate.year, orderDate.month, orderDate.day);
               return orderDateOnly.isAtSameMomentAs(today);
             }).toList();
           });
+        // myOrder = responseDataList.where((order) {
+        //     DateTime orderDate = DateTime.parse(order['date']);
+        //     DateTime orderDateOnly =
+        //         DateTime(orderDate.year, orderDate.month, orderDate.day);
+        //     return orderDateOnly.isAtSameMomentAs(today);
+        //   }).toList();
+        // });
         case 'Oldest First':
           DateTime now = DateTime.now();
           DateTime today = DateTime(now.year, now.month, now.day);
 
           setState(() {
-            myOrder = responseDataList.where((order) {
-              DateTime orderDate = DateTime.parse(order['date']);
+            myOrder = ordersModel!.orders!.where((order) {
+              DateTime orderDate = DateTime.parse(order.date!);
               DateTime orderDateOnly =
                   DateTime(orderDate.year, orderDate.month, orderDate.day);
               return !orderDateOnly.isAtSameMomentAs(today);
             }).toList();
+            // myOrder = responseDataList.where((order) {
+            //   DateTime orderDate = DateTime.parse(order['date']);
+            //   DateTime orderDateOnly =
+            //       DateTime(orderDate.year, orderDate.month, orderDate.day);
+            //   return !orderDateOnly.isAtSameMomentAs(today);
+            // }).toList();
           });
           break;
 
         default:
           setState(() {
-            myOrder = responseDataList
-                .where((order) =>
-                    order['status'] == 'Pending' ||
-                    order['status'] == 'Canceled' ||
-                    order['status'] == 'Accepted' ||
-                    order['status'] == 'On the way' ||
-                    order['status'] == 'Ready')
-                .toList();
+            myOrder = pendingOrCancelledOrders ?? [];
+            // myOrder = responseDataList
+            //     .where((order) =>
+            //         order['status'] == 'Pending' ||
+            //         order['status'] == 'Canceled' ||
+            //         order['status'] == 'Accepted' ||
+            //         order['status'] == 'On the way' ||
+            //         order['status'] == 'Ready')
+            //     .toList();
           });
           break;
       }
     } else {
-      List<Map<String, dynamic>> responseDataListPrv = responseDataList
-          .where((order) =>
-              order['status'] == 'Delivered' || order['status'] == 'Canceled')
-          .toList();
+      List<Orders> responseDataListPrv = deliveredOrCancelledOrders ?? [];
+      // List<Map<String, dynamic>> responseDataListPrv = responseDataList
+      //     .where((order) =>
+      //         order['status'] == 'Delivered' || order['status'] == 'Canceled')
+      //     .toList();
       ;
       switch (text) {
         case 'Newest First':
@@ -292,11 +398,17 @@ class _OrderBodyState extends State<OrderBody> {
 
           setState(() {
             myOrder = responseDataListPrv.where((order) {
-              DateTime orderDate = DateTime.parse(order['date']);
+              DateTime orderDate = DateTime.parse(order.date!);
               DateTime orderDateOnly =
                   DateTime(orderDate.year, orderDate.month, orderDate.day);
               return orderDateOnly.isAtSameMomentAs(today);
             }).toList();
+            // myOrder = responseDataListPrv.where((order) {
+            //   DateTime orderDate = DateTime.parse(order['date']);
+            //   DateTime orderDateOnly =
+            //       DateTime(orderDate.year, orderDate.month, orderDate.day);
+            //   return orderDateOnly.isAtSameMomentAs(today);
+            // }).toList();
           });
         case 'Oldest First':
           DateTime now = DateTime.now();
@@ -304,11 +416,17 @@ class _OrderBodyState extends State<OrderBody> {
 
           setState(() {
             myOrder = responseDataListPrv.where((order) {
-              DateTime orderDate = DateTime.parse(order['date']);
+              DateTime orderDate = DateTime.parse(order.date!);
               DateTime orderDateOnly =
                   DateTime(orderDate.year, orderDate.month, orderDate.day);
               return !orderDateOnly.isAtSameMomentAs(today);
             }).toList();
+            // myOrder = responseDataListPrv.where((order) {
+            //   DateTime orderDate = DateTime.parse(order['date']);
+            //   DateTime orderDateOnly =
+            //       DateTime(orderDate.year, orderDate.month, orderDate.day);
+            //   return !orderDateOnly.isAtSameMomentAs(today);
+            // }).toList();
           });
           break;
         // case '':
@@ -342,11 +460,12 @@ class _OrderBodyState extends State<OrderBody> {
 
         default:
           setState(() {
-            myOrder = responseDataListPrv
-                .where((order) =>
-                    order['status'] == 'Delivered' ||
-                    order['status'] == 'Canceled')
-                .toList();
+            myOrder = deliveredOrCancelledOrders ?? [];
+            // myOrder = responseDataListPrv
+            //     .where((order) =>
+            //         order['status'] == 'Delivered' ||
+            //         order['status'] == 'Canceled')
+            //     .toList();
           });
           break;
       }
@@ -357,19 +476,21 @@ class _OrderBodyState extends State<OrderBody> {
     setState(() {
       isOngoing = newValue;
       if (isOngoing == true) {
-        myOrder = responseDataList
-            .where((order) =>
-                order['status'] == 'Pending' ||
-                order['status'] == 'Canceled' ||
-                order['status'] == 'Accepted' ||
-                order['status'] == 'On the way' ||
-                order['status'] == 'Ready')
-            .toList();
+        myOrder = pendingOrCancelledOrders ?? [];
+        // myOrder = responseDataList
+        //     .where((order) =>
+        //         order['status'] == 'Pending' ||
+        //         order['status'] == 'Canceled' ||
+        //         order['status'] == 'Accepted' ||
+        //         order['status'] == 'On the way' ||
+        //         order['status'] == 'Ready')
+        //     .toList();
       } else {
-        myOrder = responseDataList
-            .where((order) =>
-                order['status'] == 'Delivered' || order['status'] == 'Canceled')
-            .toList();
+        myOrder = deliveredOrCancelledOrders ?? [];
+        // myOrder = responseDataList
+        //     .where((order) =>
+        //         order['status'] == 'Delivered' || order['status'] == 'Canceled')
+        //     .toList();
       }
     });
   }
@@ -409,14 +530,18 @@ class _OrderBodyState extends State<OrderBody> {
                             color: Colors.red,
                           ),
                         )
-                      : ListView.builder(
-                          itemCount: myOrder.length,
-                          itemBuilder: (context, index) {
-                            return OrderWidget(
-                                type: isOngoing,
-                                uid: uid,
-                                order: myOrder[index]);
-                          }),
+                      : myOrder.length == 0
+                          ? Center(
+                              child: Text(AppStrings.noOrdersFound),
+                            )
+                          : ListView.builder(
+                              itemCount: myOrder.length,
+                              itemBuilder: (context, index) {
+                                return OrderWidget(
+                                    type: isOngoing,
+                                    uid: ordersModel.,
+                                    order: myOrder[index]);
+                              }),
                 ),
               ),
             ],

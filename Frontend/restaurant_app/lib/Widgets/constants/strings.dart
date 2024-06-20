@@ -79,4 +79,17 @@ class AppStrings {
     'Friday',
     'Saturday'
   ];
+
+  //Orders apis
+  static String orderEndpoint = "${baseURL}/order/";
+  static String getAllOrdersEndpoint = "${orderEndpoint}getAllOrders";
+  static String getOrderByIDEndpoint = "${orderEndpoint}orders";
+  static String updateOrderEndpoint = "${orderEndpoint}orders";
+  static String deleteOrderEndpoint = "${orderEndpoint}orders";
+  //errors
+  static const failedToLoadOrderItems = "Failed to load order items.";
+  static const failedToLoadOrderItem = "Failed to load order item.";
+  static const failedToUpdateOrderItem = "Failed to update order item.";
+  static const failedToDeleteOrderItem = "Failed to delete order item.";
+  static const noOrdersFound = "No orders found";
 }
