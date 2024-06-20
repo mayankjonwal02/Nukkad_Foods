@@ -47,9 +47,7 @@ class _MenuItemsState extends State<MenuItems> with TickerProviderStateMixin {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) => _buildCategoryList(index),
-          separatorBuilder: (context, index) => SizedBox(
-                height: 5.h,
-              ),
+          separatorBuilder: (context, index) => Divider(),
           itemCount: widget.categories.length),
     );
   }
