@@ -19,7 +19,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               Razorpay razorpay = Razorpay();
               var options = {
                 'key': 'rzp_live_ILgsfZCZoFIKMb',
-                'amount': 1000 * 100,
+                'amount': 10000 * 100,
                 'name': 'Acme Corp.',
                 'description': 'Fine T-Shirt',
                 'retry': {'enabled': true, 'max_count': 1},

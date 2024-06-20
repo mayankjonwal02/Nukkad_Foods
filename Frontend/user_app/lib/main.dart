@@ -1,43 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sizer/sizer.dart';
-import 'package:user_app/Screens/splashScreen.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/screens/intro_screen.dart';
+import 'package:user_app/screens/splash_screen.dart';
+import 'package:user_app/utils/colors.dart';
 
-Future<void> main() async {
-  try {
-    await dotenv.load(fileName: ".env");
-  } catch (e) {
-    print('Error loading .env file: $e');
-  }
-  runApp(const MainApp());
+void main() {
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Sizer(
-      builder: (context, orientation, deviceType) {
-        return MaterialApp(
-          title: 'Nukkad Foods',
-          theme: ThemeData(
-              useMaterial3: true,
-              timePickerTheme: const TimePickerThemeData(
-                dialHandColor: primaryColor,
-                backgroundColor: textWhite,
-                dayPeriodColor: textGrey3,
-                dialBackgroundColor: textGrey2,
-                hourMinuteColor: bgColor,
-                entryModeIconColor: textBlack,
-              ),
-              textTheme: GoogleFonts.poppinsTextTheme()),
-          debugShowCheckedModeBanner: false,
-          home: const SplashScreen(),
-        );
-      },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Nukkad Foods User',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: colorRed),
+        useMaterial3: true,
+        textTheme: GoogleFonts.poppinsTextTheme(),
+      ),
+      //home: SplashScreen(),
+      home: IntroScreen(),
     );
   }
 }

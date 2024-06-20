@@ -175,7 +175,8 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
                       style: h6TextStyle.copyWith(color: primaryColor),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handleGSTPicked),
+                  uploadWidget(
+                      context: context, onFilePicked: _handleGSTPicked),
                   _isGSTUploaded
                       ? Text(
                           '${imageGstPath?.split('/').last} selected!',
@@ -231,7 +232,8 @@ class _DocumentationScreenState extends State<DocumentationScreen> {
                       style: h6TextStyle.copyWith(color: primaryColor),
                     ),
                   ),
-                  uploadWidget(onFilePicked: _handleFssaiPicked),
+                  uploadWidget(
+                      context: context, onFilePicked: _handleFssaiPicked),
                   _isFSSAIUploaded
                       ? Text(
                           '${imageFssaiPath?.split('/').last} selected!',
