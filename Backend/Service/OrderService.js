@@ -181,8 +181,12 @@ const getAllOrders = async (req, res) => {
         allOrders.forEach(order => {
             const { uid, orders } = order;
             orders.forEach(orderData => {
-                const flattenedOrder = { ...orderData.toObject(), uid: uid };
-                flattenedOrders.push(flattenedOrder);
+                if (orderData) {  // Add a check to ensure orderData is not null or undefined
+                    const flattenedOrder = { ...orderData.toObject(), uid: uid };
+                    flattenedOrders.push(flattenedOrder);
+                } else {
+                    console.warn(`Found null or undefined orderData for uid: ${uid}`);
+                }
             });
         });
 
@@ -190,9 +194,9 @@ const getAllOrders = async (req, res) => {
         return res.json({ orders: flattenedOrders });
     } catch (error) {
         console.error("Error while fetching orders:", error);
-        return res.status(500).json({ message: "Internal server error", error:error });
+        return res.status(500).json({ message: "Internal server error", error: error.message });
     }
-}
+};
 
 
 
