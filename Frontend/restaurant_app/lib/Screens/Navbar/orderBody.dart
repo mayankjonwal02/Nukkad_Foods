@@ -520,28 +520,33 @@ class _OrderBodyState extends State<OrderBody> {
                 child:
                     OrderFilter(type: isOngoing, selected: _handelSelectedTab),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(5.w, 0, 5.w, 2.h),
-                child: SizedBox(
-                  height: 62.h,
-                  child: isLoading
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.red,
-                          ),
-                        )
-                      : myOrder.length == 0
-                          ? Center(
-                              child: Text(AppStrings.noOrdersFound),
-                            )
-                          : ListView.builder(
-                              itemCount: myOrder.length,
-                              itemBuilder: (context, index) {
-                                return OrderWidget(
-                                    type: isOngoing,
-                                    uid: ordersModel.,
-                                    order: myOrder[index]);
-                              }),
+              RefreshIndicator(
+                onRefresh: () {
+                  return getAllOrders();
+                },
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(5.w, 0, 5.w, 2.h),
+                  child: SizedBox(
+                    height: 62.h,
+                    child: isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.red,
+                            ),
+                          )
+                        : myOrder.length == 0
+                            ? Center(
+                                child: Text(AppStrings.noOrdersFound),
+                              )
+                            : ListView.builder(
+                                itemCount: myOrder.length,
+                                itemBuilder: (context, index) {
+                                  return OrderWidget(
+                                      type: isOngoing,
+                                      // uid: myOrder[index].uid!,
+                                      order: myOrder[index]);
+                                }),
+                  ),
                 ),
               ),
             ],

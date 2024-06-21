@@ -59,6 +59,7 @@ class Orders {
     this.deliveryAddress,
     this.items,
     this.id,
+    this.uid,
   });
 
   Orders.fromJson(dynamic json) {
@@ -82,6 +83,7 @@ class Orders {
       });
     }
     id = json['_id'];
+    uid = json['uid'];
   }
   String? orderId;
   String? date;
@@ -98,6 +100,7 @@ class Orders {
   String? deliveryAddress;
   List<Items>? items;
   String? id;
+  String? uid;
   Orders copyWith({
     String? orderId,
     String? date,
@@ -114,6 +117,7 @@ class Orders {
     String? deliveryAddress,
     List<Items>? items,
     String? id,
+    String? uid,
   }) =>
       Orders(
         orderId: orderId ?? this.orderId,
@@ -131,6 +135,7 @@ class Orders {
         deliveryAddress: deliveryAddress ?? this.deliveryAddress,
         items: items ?? this.items,
         id: id ?? this.id,
+        uid: uid ?? this.uid,
       );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -151,6 +156,7 @@ class Orders {
       map['items'] = items?.map((v) => v.toJson()).toList();
     }
     map['_id'] = id;
+    map['uid'] = uid;
     return map;
   }
 }

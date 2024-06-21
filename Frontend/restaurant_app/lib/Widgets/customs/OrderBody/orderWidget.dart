@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Controller/order/order_controller.dart';
-import 'package:restaurant_app/Controller/order/order_model.dart';
 import 'package:restaurant_app/Controller/order/orders_model.dart';
+import 'package:restaurant_app/Controller/order/update_order_response_model.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
@@ -14,9 +14,11 @@ class OrderWidget extends StatefulWidget {
   final bool type;
   // Map<String, dynamic>? order;
   Orders? order;
-  final String uid;
+  // final String uid;
   OrderWidget(
-      {super.key, required this.type, required this.uid, required this.order});
+      {super.key,
+      required this.type,
+      /* required this.uid,*/ required this.order});
 
   @override
   State<OrderWidget> createState() => _OrderWidgetState();
@@ -40,7 +42,8 @@ class _OrderWidgetState extends State<OrderWidget> {
       // orderId = widget.order!['orderId'];
       items = widget.order!.items ?? [];
       orderId = widget.order!.orderId;
-      uid = widget.uid;
+      uid = widget.order!.uid!;
+      // uid = widget.uid;
     } else {
       items = [];
     }
@@ -126,26 +129,28 @@ class _OrderWidgetState extends State<OrderWidget> {
       isLoading = true;
     });
 
-    await OrderController.updateOrder(
+    var result = await OrderController.updateOrder(
       uid: uid!,
       orderId: orderId!,
-      orderModel:
-          OrderModel(order: widget.order!.copyWith(status: "On the way")),
+      status: "On the way",
       context: context,
-    ).then((value) {
+    );
+    result.fold((errorMessage) {
       setState(() {
-        // widget.order = value['order'];
+        isLoading = false;
+      });
+      context.showSnackBar(message: errorMessage);
+    }, (UpdateOrderResponseModel updateOrderResponseModel) {
+      print(updateOrderResponseModel.order!.status!);
+      setState(() {
+        widget.order = updateOrderResponseModel.order;
         isDeclined = false;
         isAccepted = true;
         isPrepared = true;
         isMarkedReady = true;
         isLoading = false;
       });
-    }).catchError((error) {
-      setState(() {
-        isLoading = false;
-      });
-      context.showSnackBar(message: error.toString());
+      context.showSnackBar(message: updateOrderResponseModel.message!);
     });
   }
 
@@ -219,7 +224,7 @@ class _OrderWidgetState extends State<OrderWidget> {
     await OrderController.updateOrder(
       uid: uid!,
       orderId: orderId!,
-      orderModel: OrderModel(order: widget.order!.copyWith(status: "Ready")),
+      status: "Ready",
       context: context,
     ).then((value) {
       setState(() {
@@ -308,11 +313,11 @@ class _OrderWidgetState extends State<OrderWidget> {
     await OrderController.updateOrder(
       uid: uid!,
       orderId: orderId!,
-      orderModel: OrderModel(order: widget.order!.copyWith(status: "Accepted")),
+      status: "Accepted",
       context: context,
     ).then((value) {
       setState(() {
-        // widget.order = responseData['order'];
+        // widget.order = ;
         isDeclined = false;
         isAccepted = true;
         isPrepared = false;

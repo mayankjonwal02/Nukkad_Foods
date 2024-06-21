@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:restaurant_app/Controller/order/order_model.dart';
 import 'package:restaurant_app/Controller/order/orders_model.dart';
+import 'package:restaurant_app/Controller/order/update_order_response_model.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/strings.dart';
 
@@ -63,29 +64,38 @@ class OrderController {
     }
   }
 
-  static Future<void> updateOrder({
+  static Future<Either<String, UpdateOrderResponseModel>> updateOrder({
     required String uid,
     required String orderId,
-    required OrderModel orderModel,
+    required String status,
     required BuildContext context,
   }) async {
+    var reqData = {
+      "updateData": {"status": status}
+    };
+    String requestBody = jsonEncode(reqData);
     try {
       print("${AppStrings.updateOrderEndpoint}/$uid/$orderId");
       final response = await http.put(
         Uri.parse("${AppStrings.updateOrderEndpoint}/$uid/$orderId"),
-        body: json.encode(orderModel.toJson()),
+        headers: {AppStrings.contentType: AppStrings.applicationJson},
+        body: requestBody,
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         final jsonResponse = jsonDecode(response.body);
-        context.showSnackBar(message: jsonResponse['message']);
+        // context.showSnackBar(message: jsonResponse['message']);
+        return Right(UpdateOrderResponseModel.fromJson(jsonResponse));
       } else if (response.statusCode == 404) {
         final jsonResponse = jsonDecode(response.body);
-        context.showSnackBar(message: jsonResponse['message']);
+        // context.showSnackBar(message: jsonResponse['message']);
+        return Left(jsonResponse['message']);
       } else {
-        context.showSnackBar(message: AppStrings.failedToUpdateOrderItem);
+        // context.showSnackBar(message: AppStrings.failedToUpdateOrderItem);
+        return Left(AppStrings.failedToUpdateOrderItem);
       }
     } catch (e) {
-      context.showSnackBar(message: AppStrings.serverError);
+      // context.showSnackBar(message: AppStrings.serverError);
+      return Left(AppStrings.serverError);
     }
   }
 
@@ -95,12 +105,13 @@ class OrderController {
     required BuildContext context,
   }) async {
     try {
-      print("${AppStrings.updateOrderEndpoint}/$uid/$orderId");
-      final response = await http.put(
-        Uri.parse("${AppStrings.updateOrderEndpoint}/$uid/$orderId"),
+      print("${AppStrings.deleteOrderEndpoint}/$uid/$orderId");
+      final response = await http.delete(
+        Uri.parse("${AppStrings.deleteOrderEndpoint}/$uid/$orderId"),
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         final jsonResponse = jsonDecode(response.body);
+        print(jsonResponse);
         context.showSnackBar(message: jsonResponse['message']);
       } else if (response.statusCode == 404) {
         final jsonResponse = jsonDecode(response.body);
