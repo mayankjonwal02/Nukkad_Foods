@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import config from '../../config';
 import './Restaurants.css'; // Import your custom CSS file for styling
 
+
 export default function NukkadApproval() {
     const [nukkadList, setNukkadList] = useState([]);
     const [filteredNukkadList, setFilteredNukkadList] = useState([]);
@@ -9,6 +10,8 @@ export default function NukkadApproval() {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchField, setSearchField] = useState('nukkadName');
     const { API_URL } = config;
+    const [data, setData] = useState({});
+    const [pic, setPic] = useState("")
 
     useEffect(() => {
         fetch(`${API_URL}/api/auth/fetchAllRestaurants`)
@@ -26,6 +29,27 @@ export default function NukkadApproval() {
     }, []);
 
     useEffect(() => {
+        if (data) {
+            const images = [
+                data.ownerPhoto,
+                data.signature,
+                data.fssaiDetails?.certificate,
+                data.gstDetails?.gstCertificate,
+                data.kycDetails?.aadhar,
+                data.kycDetails?.pan,
+            ];
+            images.forEach((src) => {
+                if (src) {
+                    const img = new Image();
+                    img.src = src;
+                }
+            });
+
+            setPic(data.ownerPhoto);
+        }
+    }, [data]);
+
+    useEffect(() => {
         // Filter nukkad list based on search term and field
         const filtered = nukkadList.filter(nukkad =>
             nukkad[searchField].toLowerCase().includes(searchTerm.toLowerCase())
@@ -34,9 +58,9 @@ export default function NukkadApproval() {
     }, [searchTerm, searchField, nukkadList]);
 
     const handleVerifyNukkad = (id) => {
-        
+
         try {
-            
+
             fetch(`${API_URL}/api/auth/updateRestaurantById`,
                 {
                     method: 'POST',
@@ -50,21 +74,61 @@ export default function NukkadApproval() {
                     alert('Nukkad verified successfully');
                     setLoading(true);
                     fetch(`${API_URL}/api/auth/fetchAllRestaurants`)
-                    .then(res => res.json())
-                    .then(data => {
-                        const unverifiedNukkads = data.restaurants.filter(nukkad => nukkad.status === 'unverified');
-                        setNukkadList(unverifiedNukkads);
-                        setFilteredNukkadList(unverifiedNukkads);
-                        setLoading(false);
-                    })
-                    .catch(error => {
-                        console.error("Error fetching unverified nukkads:", error);
-                        setLoading(false);
-                    });
+                        .then(res => res.json())
+                        .then(data => {
+                            const unverifiedNukkads = data.restaurants.filter(nukkad => nukkad.status === 'unverified');
+                            setNukkadList(unverifiedNukkads);
+                            setFilteredNukkadList(unverifiedNukkads);
+                            setLoading(false);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching unverified nukkads:", error);
+                            setLoading(false);
+                        });
                 } else {
                     alert('Failed to verify nukkad');
                 }
-            }   
+            }
+
+            )
+        } catch (error) {
+            alert('Failed to verify nukkad', error);
+        }
+    };
+
+
+    const handleInvalidNukkad = (id) => {
+
+        try {
+
+            fetch(`${API_URL}/api/auth/updateRestaurantById`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ _id: id, updateData: { status: 'Invalid' } }),
+                }
+            ).then(res => res.json()).then(data => {
+                if (data.executed) {
+                    alert('Nukkad Removed successfully');
+                    setLoading(true);
+                    fetch(`${API_URL}/api/auth/fetchAllRestaurants`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const unverifiedNukkads = data.restaurants.filter(nukkad => nukkad.status === 'unverified');
+                            setNukkadList(unverifiedNukkads);
+                            setFilteredNukkadList(unverifiedNukkads);
+                            setLoading(false);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching unverified nukkads:", error);
+                            setLoading(false);
+                        });
+                } else {
+                    alert('Failed to verify nukkad');
+                }
+            }
 
             )
         } catch (error) {
@@ -133,12 +197,71 @@ export default function NukkadApproval() {
                             <td>{nukkad.currentAddress}</td>
                             <td>{nukkad.permananetAddress}</td>
                             <td>
-                                <button onClick={() => handleVerifyNukkad(nukkad._id)} className="btn btn-primary">Verify</button>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+
+                                    onClick={
+                                        () => {
+                                            setPic("")
+                                            setData(nukkad)} //    handleVerifyNukkad(nukkad._id)
+                                    }
+                                    className="bg-primary text-white rounded-2">Verify</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            {InfoModal(data, pic, setPic,handleVerifyNukkad,handleInvalidNukkad)}
+        </div>
+    );
+}
+
+
+
+function InfoModal(data, pic, setPic,handleVerifyNukkad,handleInvalidNukkad) {
+
+    return (
+        <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered modal-xl">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h1 className="modal-title fs-5" id="exampleModalLabel">Verify {data.nukkadName}</h1>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div className="modal-body">
+                        {/* {data && Object.keys(data).length > 0 ? (
+                            <div style={{ display: "none" }}>
+                                <img src={data.ownerPhoto} height={"300px"} loading='lazy' alt="Owner Photo" />
+                                <img src={data.signature} height={"300px"} loading='lazy' alt="Signature" />
+                                <img src={data.fssaiDetails?.certificate} height={"300px"} loading='lazy' alt="FSSAI Certificate" />
+                                <img src={data.gstDetails?.gstCertificate} height={"300px"} loading='lazy' alt="GST Certificate" />
+                                <img src={data.kycDetails?.aadhar} height={"300px"} loading='lazy' alt="Aadhar" />
+                                <img src={data.kycDetails?.pan} height={"300px"} loading='lazy' alt="PAN" />
+                            </div>
+                        ) : null} */}
+                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                            <div className='overflow-auto d-flex flex-column gap-2'>
+                                <button type="button" className="bg-primary text-white rounded-2 h-fit w-fit" onClick={() => setPic(data.ownerPhoto)}>View Owner Photo</button>
+                                <button type="button" className="bg-primary text-white rounded-2 h-fit w-fit" onClick={() => setPic(data.signature)}>View Signature</button>
+                                <button type="button" className="bg-primary text-white rounded-2 h-fit w-fit" onClick={() => setPic(data.fssaiDetails?.certificate)}>View FSSAI Certificate</button>
+                                <button type="button" className="bg-primary text-white rounded-2 h-fit w-fit" onClick={() => setPic(data.gstDetails?.gstCertificate)}>View GST Certificate</button>
+                                <button type="button" className="bg-primary text-white rounded-2 h-fit w-fit" onClick={() => setPic(data.kycDetails?.aadhar)}>View Aadhar</button>
+                                <button type="button" className="bg-primary text-white rounded-2 h-fit w-fit" onClick={() => setPic(data.kycDetails?.pan)}>View PAN</button>
+                            </div>
+                            <div>
+                                {pic ? (
+                                    <img src={pic} height={"300px"} loading='lazy' alt="Selected" onLoad={() => console.log('Image loaded')} />
+                                ) : (
+                                    <div>Loading...</div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => handleInvalidNukkad(data._id)}>Invalid</button>
+                        <button type="button" className="btn btn-primary" onClick={() => handleVerifyNukkad(data._id)}>Verify</button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

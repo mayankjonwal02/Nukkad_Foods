@@ -1,20 +1,24 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:restaurant_app/Controller/order/order_controller.dart';
+import 'package:restaurant_app/Controller/order/orders_model.dart';
+import 'package:restaurant_app/Controller/order/update_order_response_model.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
+import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/customs/HomeBody/viewTotalBill.dart';
 import 'package:sizer/sizer.dart';
-import 'package:http/http.dart' as http;
+
 import '../../../Screens/Orders/trackRiderScreen.dart';
 
 class OrderWidget extends StatefulWidget {
   final bool type;
-  Map<String, dynamic>? order;
-  String? uid;
-  OrderWidget({super.key, required this.type, this.uid, this.order});
+  // Map<String, dynamic>? order;
+  Orders? order;
+  // final String uid;
+  OrderWidget(
+      {super.key,
+      required this.type,
+      /* required this.uid,*/ required this.order});
 
   @override
   State<OrderWidget> createState() => _OrderWidgetState();
@@ -34,9 +38,12 @@ class _OrderWidgetState extends State<OrderWidget> {
     // TODO: implement initState
     if (widget.order != null) {
       // Initialize items only if widget.order is not null
-      items = widget.order!['items'] ?? [];
-      orderId = widget.order!['orderId'];
-      uid = widget.uid;
+      // items = widget.order!['items'] ?? [];
+      // orderId = widget.order!['orderId'];
+      items = widget.order!.items ?? [];
+      orderId = widget.order!.orderId;
+      uid = widget.order!.uid!;
+      // uid = widget.uid;
     } else {
       items = [];
     }
@@ -47,238 +54,345 @@ class _OrderWidgetState extends State<OrderWidget> {
     setState(() {
       isLoading = true;
     });
-    try {
-      var baseUrl = dotenv.env['BASE_URL'];
-      final response =
-          await http.delete(Uri.parse('$baseUrl/order/orders/$uid/$orderId'));
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-
-        if (responseData != null) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: colorSuccess,
-              content: Text("Menu item deleted successfully")));
-          setState(() {
-            isLoading = false;
-            isDeclined = true;
-            isAccepted = false;
-            isPrepared = false;
-            isMarkedReady = false;
-          });
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                backgroundColor: colorFailure,
-                content: Text(responseData['message'])),
-          );
-        }
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: colorFailure,
-            content: Text("Failed to order delete")));
-      }
-    } catch (e) {
+    await OrderController.deleteOrder(
+      uid: uid!,
+      orderId: orderId!,
+      context: context,
+    ).then((value) {
+      setState(() {
+        isLoading = false;
+        isDeclined = true;
+        isAccepted = false;
+        isPrepared = false;
+        isMarkedReady = false;
+      });
+    }).catchError((error) {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: colorFailure,
-          content: Text("Error:  Internal Server Error")));
-    }
+      context.showSnackBar(message: error.toString());
+    });
   }
+  // Future<void> orderDeleted() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+  //     var baseUrl = dotenv.env['BASE_URL'];
+  //     final response =
+  //         await http.delete(Uri.parse('$baseUrl/order/orders/$uid/$orderId'));
+  //     if (response.statusCode == 200) {
+  //       final responseData = jsonDecode(response.body);
+  //
+  //       if (responseData != null) {
+  //         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //             backgroundColor: colorSuccess,
+  //             content: Text("Menu item deleted successfully")));
+  //         setState(() {
+  //           isLoading = false;
+  //           isDeclined = true;
+  //           isAccepted = false;
+  //           isPrepared = false;
+  //           isMarkedReady = false;
+  //         });
+  //       } else {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //               backgroundColor: colorFailure,
+  //               content: Text(responseData['message'])),
+  //         );
+  //       }
+  //     } else {
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           backgroundColor: colorFailure,
+  //           content: Text("Failed to order delete")));
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         backgroundColor: colorFailure,
+  //         content: Text("Error:  Internal Server Error")));
+  //   }
+  // }
 
   Future<void> startOnWay() async {
     setState(() {
       isLoading = true;
     });
-    try {
-      var baseUrl = dotenv.env['BASE_URL'];
-      var reqData = {
-        "updateData": {"status": "On the way"}
-      };
-      String requestBody = jsonEncode(reqData);
-      final response =
-          await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: requestBody);
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
 
-        if (responseData != null) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: colorSuccess,
-              content: Text("Order start ride successfully")));
-          setState(() {
-            widget.order = responseData['order'];
-            isDeclined = false;
-            isAccepted = true;
-            isPrepared = true;
-            isMarkedReady = true;
-            isLoading = false;
-          });
-          print(widget.order);
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                backgroundColor: colorFailure,
-                content: Text(responseData['message'])),
-          );
-        }
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: colorFailure,
-            content: Text("Failed to start ride order")));
-      }
-    } catch (e) {
+    var result = await OrderController.updateOrder(
+      uid: uid!,
+      orderId: orderId!,
+      status: "On the way",
+      context: context,
+    );
+    result.fold((errorMessage) {
       setState(() {
         isLoading = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: colorFailure,
-          content: Text("Error:  Internal Server Error")));
-    }
+      context.showSnackBar(message: errorMessage);
+    }, (UpdateOrderResponseModel updateOrderResponseModel) {
+      print(updateOrderResponseModel.order!.status!);
+      setState(() {
+        widget.order = updateOrderResponseModel.order;
+        isDeclined = false;
+        isAccepted = true;
+        isPrepared = true;
+        isMarkedReady = true;
+        isLoading = false;
+      });
+      context.showSnackBar(message: updateOrderResponseModel.message!);
+    });
   }
+
+  // Future<void> startOnWay() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+  //     var baseUrl = dotenv.env['BASE_URL'];
+  //     var reqData = {
+  //       "updateData": {"status": "On the way"}
+  //     };
+  //     String requestBody = jsonEncode(reqData);
+  //     final response =
+  //         await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
+  //             headers: {
+  //               'Content-Type': 'application/json',
+  //             },
+  //             body: requestBody);
+  //     if (response.statusCode == 200) {
+  //       final responseData = jsonDecode(response.body);
+  //
+  //       if (responseData != null) {
+  //         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //             backgroundColor: colorSuccess,
+  //             content: Text("Order start ride successfully")));
+  //         setState(() {
+  //           widget.order = responseData['order'];
+  //           isDeclined = false;
+  //           isAccepted = true;
+  //           isPrepared = true;
+  //           isMarkedReady = true;
+  //           isLoading = false;
+  //         });
+  //         print(widget.order);
+  //       } else {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //               backgroundColor: colorFailure,
+  //               content: Text(responseData['message'])),
+  //         );
+  //       }
+  //     } else {
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           backgroundColor: colorFailure,
+  //           content: Text("Failed to start ride order")));
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         backgroundColor: colorFailure,
+  //         content: Text("Error:  Internal Server Error")));
+  //   }
+  // }
 
   Future<void> startPreparing() async {
     setState(() {
       isLoading = true;
     });
-    try {
-      var baseUrl = dotenv.env['BASE_URL'];
-      var reqData = {
-        "updateData": {"status": "Ready"}
-      };
-      String requestBody = jsonEncode(reqData);
-      final response =
-          await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: requestBody);
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
 
-        if (responseData != null) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: colorSuccess,
-              content: Text("Order item start Preparing successfully")));
-          setState(() {
-            widget.order = responseData['order'];
-            isDeclined = false;
-            isAccepted = true;
-            isLoading = false;
-            isPrepared = true;
-            isMarkedReady = false;
-          });
-          print(widget.order);
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                backgroundColor: colorFailure,
-                content: Text(responseData['message'])),
-          );
-        }
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: colorFailure,
-            content: Text("Failed to start Preparing order")));
-      }
-    } catch (e) {
+    await OrderController.updateOrder(
+      uid: uid!,
+      orderId: orderId!,
+      status: "Ready",
+      context: context,
+    ).then((value) {
+      setState(() {
+        // widget.order = responseData['order'];
+        isDeclined = false;
+        isAccepted = true;
+        isLoading = false;
+        isPrepared = true;
+        isMarkedReady = false;
+      });
+    }).catchError((error) {
       setState(() {
         isLoading = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: colorFailure,
-          content: Text("Error:  Internal Server Error")));
-    }
+      context.showSnackBar(message: error.toString());
+    });
   }
+
+  // Future<void> startPreparing() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+  //     var baseUrl = dotenv.env['BASE_URL'];
+  //     var reqData = {
+  //       "updateData": {"status": "Ready"}
+  //     };
+  //     String requestBody = jsonEncode(reqData);
+  //     final response =
+  //         await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
+  //             headers: {
+  //               'Content-Type': 'application/json',
+  //             },
+  //             body: requestBody);
+  //     if (response.statusCode == 200) {
+  //       final responseData = jsonDecode(response.body);
+  //
+  //       if (responseData != null) {
+  //         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //             backgroundColor: colorSuccess,
+  //             content: Text("Order item start Preparing successfully")));
+  //         setState(() {
+  //           widget.order = responseData['order'];
+  //           isDeclined = false;
+  //           isAccepted = true;
+  //           isLoading = false;
+  //           isPrepared = true;
+  //           isMarkedReady = false;
+  //         });
+  //         print(widget.order);
+  //       } else {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //               backgroundColor: colorFailure,
+  //               content: Text(responseData['message'])),
+  //         );
+  //       }
+  //     } else {
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           backgroundColor: colorFailure,
+  //           content: Text("Failed to start Preparing order")));
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         backgroundColor: colorFailure,
+  //         content: Text("Error:  Internal Server Error")));
+  //   }
+  // }
 
   Future<void> acceptOrder() async {
     setState(() {
       isLoading = true;
     });
-    try {
-      var baseUrl = dotenv.env['BASE_URL'];
-      var reqData = {
-        "updateData": {"status": "Accepted"}
-      };
-      String requestBody = jsonEncode(reqData);
-      final response =
-          await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: requestBody);
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
 
-        if (responseData != null) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: colorSuccess,
-              content: Text("Order item update successfully")));
-          setState(() {
-            widget.order = responseData['order'];
-            isDeclined = false;
-            isAccepted = true;
-            isPrepared = false;
-            isMarkedReady = false;
-            isLoading = false;
-          });
-          print(widget.order);
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                backgroundColor: colorFailure,
-                content: Text(responseData['message'])),
-          );
-        }
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: colorFailure,
-            content: Text("Failed to update order")));
-      }
-    } catch (e) {
+    await OrderController.updateOrder(
+      uid: uid!,
+      orderId: orderId!,
+      status: "Accepted",
+      context: context,
+    ).then((value) {
+      setState(() {
+        // widget.order = ;
+        isDeclined = false;
+        isAccepted = true;
+        isPrepared = false;
+        isMarkedReady = false;
+        isLoading = false;
+      });
+    }).catchError((error) {
       setState(() {
         isLoading = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: colorFailure,
-          content: Text("Error:  Internal Server Error")));
-    }
+      context.showSnackBar(message: error.toString());
+    });
   }
+
+  // Future<void> acceptOrder() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+  //     var baseUrl = dotenv.env['BASE_URL'];
+  //     var reqData = {
+  //       "updateData": {"status": "Accepted"}
+  //     };
+  //     String requestBody = jsonEncode(reqData);
+  //     final response =
+  //         await http.put(Uri.parse('$baseUrl/order/orders/$uid/$orderId'),
+  //             headers: {
+  //               'Content-Type': 'application/json',
+  //             },
+  //             body: requestBody);
+  //     if (response.statusCode == 200) {
+  //       final responseData = jsonDecode(response.body);
+  //
+  //       if (responseData != null) {
+  //         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //             backgroundColor: colorSuccess,
+  //             content: Text("Order item update successfully")));
+  //         setState(() {
+  //           widget.order = responseData['order'];
+  //           isDeclined = false;
+  //           isAccepted = true;
+  //           isPrepared = false;
+  //           isMarkedReady = false;
+  //           isLoading = false;
+  //         });
+  //         print(widget.order);
+  //       } else {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(
+  //               backgroundColor: colorFailure,
+  //               content: Text(responseData['message'])),
+  //         );
+  //       }
+  //     } else {
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           backgroundColor: colorFailure,
+  //           content: Text("Failed to update order")));
+  //     }
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         backgroundColor: colorFailure,
+  //         content: Text("Error:  Internal Server Error")));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -326,7 +440,8 @@ class _OrderWidgetState extends State<OrderWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                "ID: #${widget.order!['orderId'] != null ? widget.order!['orderId'] : 0}",
+                                // "ID: #${widget.order!['orderId'] != null ? widget.order!['orderId'] : 0}",
+                                "ID: #${widget.order!.orderId != null ? widget.order!.orderId : 0}",
                                 style: body4TextStyle.copyWith(
                                     color: primaryColor,
                                     fontWeight: FontWeight.bold),
@@ -339,8 +454,10 @@ class _OrderWidgetState extends State<OrderWidget> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Text(
-                                  widget.order!['status'] != null
-                                      ? widget.order!['status']
+                                  // widget.order!['status'] != null
+                                  //     ? widget.order!['status']
+                                  widget.order!.status != null
+                                      ? widget.order!.status!
                                       : '',
                                   style: body4TextStyle.copyWith(
                                       color: textWhite,
@@ -357,7 +474,8 @@ class _OrderWidgetState extends State<OrderWidget> {
                                 width: 35.w,
                                 padding: EdgeInsets.symmetric(vertical: 0.4.h),
                                 child: Text(
-                                  'Today, ${widget.order!['time'] != null ? widget.order!['time'] : ''}',
+                                  // 'Today, ${widget.order!['time'] != null ? widget.order!['time'] : ''}',
+                                  'Today, ${widget.order!.time != null ? widget.order!.time : ''}',
                                   style:
                                       body5TextStyle.copyWith(color: textGrey2),
                                   maxLines: 1,
@@ -369,7 +487,8 @@ class _OrderWidgetState extends State<OrderWidget> {
                                 width: 48.w,
                                 padding: EdgeInsets.symmetric(vertical: 0.4.h),
                                 child: Text(
-                                  'By ${widget.order!['orderByName'] != null ? widget.order!['orderByName'] : ''}',
+                                  // 'By ${widget.order!['orderByName'] != null ? widget.order!['orderByName'] : ''}',
+                                  'By ${widget.order!.orderByName != null ? widget.order!.orderByName : ''}',
                                   style:
                                       body5TextStyle.copyWith(color: textGrey2),
                                   maxLines: 1,
@@ -494,20 +613,31 @@ class _OrderWidgetState extends State<OrderWidget> {
   //   }
 
   Widget _buildOrderStatusWidget() {
-    if (widget.order!['status'] == 'Canceled') {
+    if (widget.order!.status == 'Canceled') {
       return _buildDeclinedWidget();
-    } else if (widget.order!['status'] == 'Pending') {
+    } else if (widget.order!.status == 'Pending') {
       return _buildPendingWidget();
-    } else if ((widget.order!['status'] == 'Accepted')) {
+    } else if ((widget.order!.status == 'Accepted')) {
       return _buildPreparedWidget();
-    } else if (widget.order!['status'] == 'Ready') {
+    } else if (widget.order!.status == 'Ready') {
       return _buildMarkReadyWidget();
     } else {
       return _buildTrackRideWidget();
     }
+    // if (widget.order!['status'] == 'Canceled') {
+    //   return _buildDeclinedWidget();
+    // } else if (widget.order!['status'] == 'Pending') {
+    //   return _buildPendingWidget();
+    // } else if ((widget.order!['status'] == 'Accepted')) {
+    //   return _buildPreparedWidget();
+    // } else if (widget.order!['status'] == 'Ready') {
+    //   return _buildMarkReadyWidget();
+    // } else {
+    //   return _buildTrackRideWidget();
+    // }
   }
 
-  Widget _buildOrderDetailsWidget(dynamic item) {
+  Widget _buildOrderDetailsWidget(Items item) {
     return SizedBox(
       width: 45.w,
       child: Row(
@@ -515,12 +645,12 @@ class _OrderWidgetState extends State<OrderWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            '${item['itemQuantity']} x',
+            '${item.itemQuantity} x',
             style: body4TextStyle,
           ),
           SizedBox(width: 6.w),
           Text(
-            '${item['itemName']}',
+            '${item.itemName}',
             style: body4TextStyle,
           ),
         ],
