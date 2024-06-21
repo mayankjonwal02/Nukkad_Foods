@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:user_app/screens/signin_signout/signin.dart';
 import 'package:user_app/utils/colors.dart';
 import 'package:user_app/widgets/common/full_width_red_button.dart';
+import 'package:user_app/widgets/common/transition_to_next_screen.dart';
 import '../utils/font-styles.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -122,8 +123,8 @@ class _IntroScreenState extends State<IntroScreen> {
                 child: FullWidthRedButton(
                   label: 'Next',
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SignInScreen()));
+                    Navigator.of(context)
+                        .push(transitionToNextScreen(SignInScreen()));
                   },
                 ),
               ),
