@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:user_app/screens/signin_signout/signin.dart';
 import 'package:user_app/utils/colors.dart';
+import 'package:user_app/widgets/common/full_width_red_button.dart';
+import 'package:user_app/widgets/common/transition_to_next_screen.dart';
 import '../utils/font-styles.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -12,6 +16,8 @@ class IntroScreen extends StatefulWidget {
 class _IntroScreenState extends State<IntroScreen> {
   PageController _pageController = PageController();
   int _currentPage = 0;
+  bool _autoSlide = true; // Flag to control auto sliding
+  Timer? _timer; // Timer object for auto sliding
 
   List<Map<String, dynamic>> _slides = [
     {
@@ -37,9 +43,37 @@ class _IntroScreenState extends State<IntroScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Start auto sliding when the widget is initialized
+    startAutoSlide();
+  }
+
+  @override
   void dispose() {
     _pageController.dispose();
+    _timer?.cancel(); // Cancel the timer to avoid memory leaks
     super.dispose();
+  }
+
+  void startAutoSlide() {
+    _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
+      if (_autoSlide) {
+        // Check if not on the last slide, then slide to the next one
+        if (_currentPage < _slides.length - 1) {
+          _currentPage++;
+        } else {
+          // Stop auto sliding when reaching the last slide
+          _autoSlide = false;
+          _timer?.cancel();
+        }
+        _pageController.animateToPage(
+          _currentPage,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.ease,
+        );
+      }
+    });
   }
 
   @override
@@ -82,12 +116,17 @@ class _IntroScreenState extends State<IntroScreen> {
               ),
             ),
             SizedBox(height: 20.0), // Adjust spacing between dots and button
-            if (_currentPage ==
-                _slides.length - 1) // Show button only on last slide
+            if (_currentPage == _slides.length - 1)
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 height: 50,
-                child: buildNextButton(),
+                child: FullWidthRedButton(
+                  label: 'Next',
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(transitionToNextScreen(SignInScreen()));
+                  },
+                ),
               ),
             SizedBox(height: 10), // Fixed space below button area
           ],
@@ -150,23 +189,7 @@ class _IntroScreenState extends State<IntroScreen> {
     );
   }
 
-  Widget buildNextButton() {
-    return ElevatedButton(
-      onPressed: () {
-        // Handle button press, navigate to next screen, etc.
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: colorRed, // Background color
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12), // Rounded corners
-        ),
-      ),
-      child: Text(
-        'Next',
-        style: TextStyle(
-          color: Colors.white, // Text color
-        ),
-      ),
-    );
-  }
+  // Widget buildNextButton() {
+  //   return ;
+  // }
 }
