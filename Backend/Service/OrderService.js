@@ -190,7 +190,7 @@ const getAllOrders = async (req, res) => {
         return res.json({ orders: flattenedOrders });
     } catch (error) {
         console.error("Error while fetching orders:", error);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error", error:error });
     }
 }
 
