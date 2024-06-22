@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:user_app/screens/reset_password_screen.dart';
 import 'package:user_app/utils/colors.dart';
 import 'package:user_app/widgets/common/full_width_red_button.dart';
+import 'package:user_app/widgets/common/transition_to_next_screen.dart';
 
 import '../utils/font-styles.dart';
 
@@ -32,6 +34,7 @@ class _OtpScreenState extends State<OtpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context).pop();
@@ -80,7 +83,12 @@ class _OtpScreenState extends State<OtpScreen> {
             SizedBox(
               height: 60,
             ),
-            FullWidthRedButton(label: 'CONTINUE', onPressed: () {}),
+            FullWidthRedButton(
+                label: 'CONTINUE',
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(transitionToNextScreen(ResetPasswordScreen()));
+                }),
             SizedBox(
               height: 20,
             ),

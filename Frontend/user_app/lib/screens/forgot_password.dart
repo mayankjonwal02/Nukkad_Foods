@@ -19,6 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: GestureDetector(
             onTap: () {
               Navigator.of(context).pop();

@@ -17,6 +17,16 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController _mobileNumberController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  bool _isPasswordObscured = false;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordObscured = !_isPasswordObscured;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +57,17 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               CustomTextField(
                 label: 'Password',
-                isObscured: true,
-                icon: Icons.visibility,
+                controller: _passwordController,
+                isObscured: _isPasswordObscured,
+                icon: IconButton(
+                  icon: Icon(
+                    _isPasswordObscured
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    color: colorRed,
+                  ),
+                  onPressed: _togglePasswordVisibility,
+                ),
               ),
               SizedBox(
                 height: 40,
