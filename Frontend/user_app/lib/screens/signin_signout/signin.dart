@@ -30,119 +30,122 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 60,
-              ),
-              Text(
-                'Sign In',
-                style: TextStyle(
-                  fontSize: extraLarge,
-                  fontWeight: FontWeight.bold,
+      body: PopScope(
+        canPop: false,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 60,
                 ),
-              ),
-              SizedBox(
-                height: 60,
-              ),
-              CustomPhoneField(
-                controller: _mobileNumberController,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              CustomTextField(
-                label: 'Password',
-                controller: _passwordController,
-                isObscured: _isPasswordObscured,
-                icon: IconButton(
-                  icon: Icon(
-                    _isPasswordObscured
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    color: colorRed,
-                  ),
-                  onPressed: _togglePasswordVisibility,
-                ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(transitionToNextScreen(ForgotPasswordScreen()));
-                },
-                child: Center(
-                    child: Text(
-                  'Forgot Password',
+                Text(
+                  'Sign In',
                   style: TextStyle(
-                    fontSize: mediumSmall,
-                    color: colorRed,
+                    fontSize: extraLarge,
+                    fontWeight: FontWeight.bold,
                   ),
-                )),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Center(
-                child: FullWidthRedButton(
-                  label: 'SIGN IN',
-                  onPressed: () {},
                 ),
-              ),
-              SizedBox(height: 40),
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Don’t have an account?',
-                        style: TextStyle(
-                            fontSize: mediumSmall, color: Colors.black),
-                      ),
-                      TextSpan(
-                        text: ' Sign up',
-                        style: TextStyle(
-                          fontSize: mediumSmall,
-                          color: colorRed,
-                          fontWeight: FontWeight.bold,
+                SizedBox(
+                  height: 60,
+                ),
+                CustomPhoneField(
+                  controller: _mobileNumberController,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                CustomTextField(
+                  label: 'Password',
+                  controller: _passwordController,
+                  isObscured: _isPasswordObscured,
+                  icon: IconButton(
+                    icon: Icon(
+                      _isPasswordObscured
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: colorRed,
+                    ),
+                    onPressed: _togglePasswordVisibility,
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(transitionToNextScreen(ForgotPasswordScreen()));
+                  },
+                  child: Center(
+                      child: Text(
+                    'Forgot Password',
+                    style: TextStyle(
+                      fontSize: mediumSmall,
+                      color: colorRed,
+                    ),
+                  )),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Center(
+                  child: FullWidthRedButton(
+                    label: 'SIGN IN',
+                    onPressed: () {},
+                  ),
+                ),
+                SizedBox(height: 40),
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Don’t have an account?',
+                          style: TextStyle(
+                              fontSize: mediumSmall, color: Colors.black),
                         ),
-                      ),
-                    ],
+                        TextSpan(
+                          text: ' Sign up',
+                          style: TextStyle(
+                            fontSize: mediumSmall,
+                            color: colorRed,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Center(
-                  child: Text(
-                'Sign in with',
-                style: TextStyle(color: colorGray, fontSize: mediumSmall),
-              )),
-              SizedBox(
-                height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/googlelogo.png'),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image.asset('assets/images/facebooklogo.png'),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Image.asset('assets/images/twitterlogo.png'),
-                ],
-              )
-            ],
+                SizedBox(
+                  height: 40,
+                ),
+                Center(
+                    child: Text(
+                  'Sign in with',
+                  style: TextStyle(color: colorGray, fontSize: mediumSmall),
+                )),
+                SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/googlelogo.png'),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Image.asset('assets/images/facebooklogo.png'),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Image.asset('assets/images/twitterlogo.png'),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
