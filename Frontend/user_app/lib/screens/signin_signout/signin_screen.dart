@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:user_app/screens/forgot_password.dart';
+import 'package:user_app/screens/signin_signout/signup_screen.dart';
 import 'package:user_app/widgets/common/custom_phone_field.dart';
 import 'package:user_app/widgets/common/custom_text_field.dart';
 import 'package:user_app/widgets/common/full_width_red_button.dart';
@@ -19,7 +20,7 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController _mobileNumberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  bool _isPasswordObscured = false;
+  bool _isPasswordObscured = true;
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -99,23 +100,29 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 SizedBox(height: 40),
                 Center(
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Don’t have an account?',
-                          style: TextStyle(
-                              fontSize: mediumSmall, color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: ' Sign up',
-                          style: TextStyle(
-                            fontSize: mediumSmall,
-                            color: colorRed,
-                            fontWeight: FontWeight.bold,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(transitionToNextScreen(SignupScreen()));
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Don’t have an account?',
+                            style: TextStyle(
+                                fontSize: mediumSmall, color: Colors.black),
                           ),
-                        ),
-                      ],
+                          TextSpan(
+                            text: ' Sign up',
+                            style: TextStyle(
+                              fontSize: mediumSmall,
+                              color: colorRed,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
