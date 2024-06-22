@@ -5,9 +5,7 @@ import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/strings.dart';
 import 'package:restaurant_app/Widgets/customs/MenuBody/menuAppBar.dart';
-import 'package:restaurant_app/Widgets/customs/MenuBody/menuItems.dart';
 import 'package:restaurant_app/Widgets/customs/MenuBody/menuSearchBar.dart';
-import 'package:restaurant_app/Widgets/menu/addItems.dart';
 import 'package:restaurant_app/Widgets/menu/menuItem.dart';
 
 class MenuBody extends StatefulWidget {
@@ -28,6 +26,8 @@ class _MenuBodyState extends State<MenuBody> {
   Map<String, List<MenuItemModel>> menuItemsByCategory = {};
   List<String> categories = [];
   List<String> subCategories = [];
+
+  final Map<String, List<String>> subCategoryMap = {};
 
   // Future<void> getMenu() async {
   //   setState(() {
@@ -64,7 +64,7 @@ class _MenuBodyState extends State<MenuBody> {
   //       // } else if (menuModel is SimpleMenuModel) {
   //       //   simpleMenu = menuModel;
   //       //   _processSimpleMenu();
-  //       // } 
+  //       // }
   //       else {
   //         context.showSnackBar(message: 'Unexpected menu model type');
   //       }
@@ -75,7 +75,6 @@ class _MenuBodyState extends State<MenuBody> {
   //     },
   //   );
   // }
-
 
   Future<void> getMenu({String? category, String? subCategory}) async {
     setState(() {
@@ -105,7 +104,10 @@ class _MenuBodyState extends State<MenuBody> {
         if (menuModel is FullMenuModel) {
           fullMenu = menuModel;
           _processFullMenu();
-          categories = fullMenu!.menuItems!.map((item) => item.category!).toSet().toList();
+          categories = fullMenu!.menuItems!
+              .map((item) => item.category!)
+              .toSet()
+              .toList();
           subCategories = fullMenu!.menuItems!
               .expand((item) => item.subCategory!)
               .map((subItem) => subItem.subCategoryName!)
@@ -121,7 +123,6 @@ class _MenuBodyState extends State<MenuBody> {
       },
     );
   }
-
 
   // Future<void> getMenu() async {
   //   try {
@@ -163,12 +164,18 @@ class _MenuBodyState extends State<MenuBody> {
   //   }
   // }
 
-
   void _processFullMenu() {
     if (fullMenu!.menuItems != null) {
       for (var menuItem in fullMenu!.menuItems!) {
         if (menuItem.category != null && menuItem.subCategory != null) {
           String category = menuItem.category!;
+          subCategoryMap[category] = [];
+          subCategoryMap[category]!.addAll(menuItem.subCategory!.isEmpty
+              ? []
+              : menuItem.subCategory!.map((subCategory) =>
+                  subCategory.subCategoryName!.isEmpty
+                      ? ""
+                      : subCategory.subCategoryName!));
           if (!menuItemsByCategory.containsKey(category)) {
             menuItemsByCategory[category] = [];
           }
@@ -181,20 +188,20 @@ class _MenuBodyState extends State<MenuBody> {
     }
   }
 
-  getSubAndMenuItemCategoryNames({required FullMenuModel menuItems}) {
-    for (var category
-        in menuItems.menuItems!.map((e) => e.category).toList() ?? []) {
-      for (var subCategory in category.subCategory ?? []) {
-        if (subCategory.subCategoryName != null) {
-          subCategoryNames.add(subCategory.subCategoryName!);
-        }
-        if (subCategory.menuItems != null) {
-          menuItemsList.addAll(subCategory.menuItems!);
-        }
-      }
-    }
-    setState(() {});
-  }
+  // getSubAndMenuItemCategoryNames({required FullMenuModel menuItems}) {
+  //   for (var category
+  //       in menuItems.menuItems!.map((e) => e.category).toList() ?? []) {
+  //     for (var subCategory in category.subCategory ?? []) {
+  //       if (subCategory.subCategoryName != null) {
+  //         subCategoryNames.add(subCategory.subCategoryName!);
+  //       }
+  //       if (subCategory.menuItems != null) {
+  //         menuItemsList.addAll(subCategory.menuItems!);
+  //       }
+  //     }
+  //   }
+  //   setState(() {});
+  // }
 
   @override
   void initState() {
@@ -228,6 +235,7 @@ class _MenuBodyState extends State<MenuBody> {
           MenuAppBar(
             categories: categories,
             subCategories: subCategories,
+            subCategoriesMap: subCategoryMap,
           ),
           MenuSearchBar(),
           Padding(
@@ -242,27 +250,28 @@ class _MenuBodyState extends State<MenuBody> {
                         // menuItemsByCategory: menuItemsByCategory,
                         menuItemsByCategory: _buildMenuItemsByCategory(),
                         menuModel: fullMenu!,
+                        subCategoriesMap: subCategoryMap,
                       ),
           ),
         ],
       );
 
-    Map<String, List<MenuItemModel>> _buildMenuItemsByCategory() {
-      Map<String, List<MenuItemModel>> menuItemsByCategory = {};
+  Map<String, List<MenuItemModel>> _buildMenuItemsByCategory() {
+    Map<String, List<MenuItemModel>> menuItemsByCategory = {};
 
-      if (fullMenu != null && fullMenu!.menuItems != null) {
-        for (var menuItem in fullMenu!.menuItems!) {
-          if (menuItem.category != null && menuItem.subCategory != null) {
-            String category = menuItem.category!;
-            if (!menuItemsByCategory.containsKey(category)) {
-              menuItemsByCategory[category] = [];
-            }
-            menuItemsByCategory[category]!.addAll(menuItem.subCategory!
-                .expand((subCategory) => subCategory.menuItems!));
+    if (fullMenu != null && fullMenu!.menuItems != null) {
+      for (var menuItem in fullMenu!.menuItems!) {
+        if (menuItem.category != null && menuItem.subCategory != null) {
+          String category = menuItem.category!;
+          if (!menuItemsByCategory.containsKey(category)) {
+            menuItemsByCategory[category] = [];
           }
+          menuItemsByCategory[category]!.addAll(menuItem.subCategory!
+              .expand((subCategory) => subCategory.menuItems!));
         }
       }
-
-      return menuItemsByCategory;
     }
+
+    return menuItemsByCategory;
+  }
 }

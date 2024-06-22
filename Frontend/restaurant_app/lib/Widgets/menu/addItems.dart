@@ -7,15 +7,16 @@ import 'package:restaurant_app/Widgets/forms/dishesForm.dart';
 import 'package:restaurant_app/Widgets/forms/subCategoryForm.dart';
 
 class AddItems extends StatelessWidget {
-  const AddItems({
-    super.key,
-    required this.categories,
-    required this.subCategories,
-    required this.closeBottomSheet,
-  });
+  const AddItems(
+      {super.key,
+      required this.categories,
+      required this.subCategories,
+      required this.closeBottomSheet,
+      required this.subCategoriesMap});
   final List<String> categories;
   final List<String> subCategories;
   final VoidCallback closeBottomSheet;
+  final Map<String, List<String>> subCategoriesMap;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +37,9 @@ class AddItems extends StatelessWidget {
             MenuItem(
               itemName: 'Add Dish',
               screen: DishesForm(
-                categories: categories,
-                subCategories: subCategories,
-              ),
+                  categories: categories,
+                  subCategories: subCategories,
+                  subCategoriesMap: subCategoriesMap),
               closeBottomSheet: closeBottomSheet,
             ),
             SizedBox(
@@ -46,7 +47,9 @@ class AddItems extends StatelessWidget {
             ),
             MenuItem(
               itemName: 'Add Category',
-              screen: CategoriesForm(),
+              screen: CategoriesForm(
+                categories: categories,
+              ),
               closeBottomSheet: closeBottomSheet,
             ),
             SizedBox(
@@ -56,6 +59,7 @@ class AddItems extends StatelessWidget {
               itemName: 'Add Sub-Category',
               screen: SubCategoriesForm(
                 categories: categories,
+                subCategoriesMap: subCategoriesMap,
               ),
               closeBottomSheet: closeBottomSheet,
             ),

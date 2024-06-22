@@ -19,6 +19,7 @@ class DishesForm extends StatefulWidget {
     super.key,
     required this.categories,
     required this.subCategories,
+    required this.subCategoriesMap,
     // this.subCategory,
     this.menuItemModel,
     this.edit = false,
@@ -34,6 +35,7 @@ class DishesForm extends StatefulWidget {
   final String? selectedCategory;
   final String? selectedSubCategory;
   final String? selectedLabel;
+  final Map<String, List<String>> subCategoriesMap;
 
   @override
   State<DishesForm> createState() => _DishesFormState();
@@ -73,7 +75,7 @@ class _DishesFormState extends State<DishesForm> {
     // TODO: implement initState
     super.initState();
 
-    fetchCategories(); // Fetch categories when the form initializes
+    // fetchCategories(); // Fetch categories when the form initializes
     // fetchSubCategories(); // Fetch categories when the form initializes
 
     widget.edit
@@ -85,8 +87,8 @@ class _DishesFormState extends State<DishesForm> {
               packingCharges.text =
                   widget.menuItemModel!.timeToPrepare.toString();
               noOfServers.text = widget.menuItemModel!.servingInfo!;
-              selectedCategory = widget.selectedCategory;
-              selectedSubCategory = widget.selectedSubCategory;
+              selectedCategory = widget.selectedCategory!;
+              selectedSubCategory = widget.selectedSubCategory!;
               selectedLabel = widget.menuItemModel!.label;
               for (int i = 0; i < subCategoryCheck.length; i++) {
                 if (widget.selectedLabel == AppStrings.subCategory[i]) {
@@ -98,56 +100,56 @@ class _DishesFormState extends State<DishesForm> {
         : null;
   }
 
-  Future<void> fetchCategories() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-
-      final categories = await MenuControllerClass.fetchAllCategories(
-        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
-        context: context,
-      );
-
-      setState(() {
-        widget.categories.clear();
-        widget.categories.addAll(categories);
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      context.showSnackBar(
-          message: "Failed to fetch categories: ${e.toString()}");
-    }
-  }
-
-  Future<void> fetchSubCategories() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-
-      final subCategories = await MenuControllerClass.fetchAllSubCategories(
-        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
-        category: selectedCategory!,
-        context: context,
-      );
-
-      setState(() {
-        widget.subCategories.clear();
-        widget.subCategories.addAll(subCategories);
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      context.showSnackBar(
-          message: "Failed to fetch sub-categories: ${e.toString()}");
-    }
-  }
+  // Future<void> fetchCategories() async {
+  //   try {
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //
+  //     final categories = await MenuControllerClass.fetchAllCategories(
+  //       uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
+  //       context: context,
+  //     );
+  //
+  //     setState(() {
+  //       widget.categories.clear();
+  //       widget.categories.addAll(categories);
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     context.showSnackBar(
+  //         message: "Failed to fetch categories: ${e.toString()}");
+  //   }
+  // }
+  //
+  // Future<void> fetchSubCategories() async {
+  //   try {
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //
+  //     final subCategories = await MenuControllerClass.fetchAllSubCategories(
+  //       uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
+  //       category: selectedCategory!,
+  //       context: context,
+  //     );
+  //
+  //     setState(() {
+  //       widget.subCategories.clear();
+  //       widget.subCategories.addAll(subCategories);
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     context.showSnackBar(
+  //         message: "Failed to fetch sub-categories: ${e.toString()}");
+  //   }
+  // }
 
   Future saveMenu() async {
     setState(() {
@@ -173,17 +175,17 @@ class _DishesFormState extends State<DishesForm> {
             context: context,
             uid: SharedPrefsUtil().getString(AppStrings.userId) ?? "",
             menuitemid: widget.menuItemModel!.id!,
-            category: widget.selectedCategory ?? "",
+            category: widget.selectedCategory!.replaceAll(" ", "_") ?? "",
             // subCategory: widget.subCategory ?? "null",
-            subCategory: widget.selectedSubCategory ?? "",
+            subCategory: widget.selectedSubCategory!.replaceAll(" ", "_") ?? "",
           );
         } else {
           print("hello3");
           await MenuControllerClass.saveMenuItem(
             saveMenuItem: SaveMenuItem(
               uid: SharedPrefsUtil().getString(AppStrings.userId),
-              category: selectedCategory!,
-              subCategory: selectedSubCategory!,
+              category: selectedCategory!.replaceAll(" ", "_"),
+              subCategory: selectedSubCategory!.replaceAll(" ", "_"),
               menuItem: SaveMenuItemModel(
                 menuItemName: itemName.text,
                 menuItemImageURL: "image_url.png",
@@ -349,7 +351,7 @@ class _DishesFormState extends State<DishesForm> {
                                   // selectedLabel = null;
                                 });
                                 if (selectedCategory != null) {
-                                  fetchSubCategories();
+                                  // fetchSubCategories();
                                 }
                               },
                               isExpanded: true,
@@ -360,7 +362,7 @@ class _DishesFormState extends State<DishesForm> {
                                   child: Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10.0),
-                                    child: Text(item),
+                                    child: Text(item.replaceAll("_", " ")),
                                   ),
                                 );
                               }).toList(),
@@ -408,20 +410,28 @@ class _DishesFormState extends State<DishesForm> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   selectedSubCategory = newValue;
+                                  print(selectedSubCategory);
                                 });
                               },
                               isExpanded: true,
                               underline: Container(),
-                              items: widget.subCategories.map((String item) {
-                                return DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.0),
-                                    child: Text(item),
-                                  ),
-                                );
-                              }).toList(),
+                              items: selectedCategory == null ||
+                                      widget.subCategoriesMap.isEmpty ||
+                                      widget.subCategoriesMap[selectedCategory]!
+                                          .isEmpty
+                                  ? []
+                                  : widget.subCategoriesMap[selectedCategory]!
+                                      .map((String item) {
+                                      return DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child:
+                                              Text(item.replaceAll("_", " ")),
+                                        ),
+                                      );
+                                    }).toList(),
                             ),
                           ),
                         ),

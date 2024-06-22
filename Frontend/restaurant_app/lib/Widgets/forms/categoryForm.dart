@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
-import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
@@ -14,8 +13,10 @@ import 'package:sizer/sizer.dart';
 class CategoriesForm extends StatefulWidget {
   const CategoriesForm({
     super.key,
+    required this.categories,
   });
 
+  final List<String> categories;
   @override
   State<CategoriesForm> createState() => _CategoriesFormState();
 }
@@ -80,39 +81,50 @@ class _CategoriesFormState extends State<CategoriesForm> {
               ),
               isAddCategoryLoaded
                   ? AddButton(
-                onPressed: () async {
-                  setState(() {
-                    isAddCategoryLoaded = false;
-                  });
-                  if (categoryName.text.isNotEmpty) {
-                    String? uid = SharedPrefsUtil().getString(AppStrings.userId);
-                    if (uid != null) {
-                      await MenuControllerClass.addCategory(
-                        uid: uid,
-                        category: categoryName.text,
-                        context: context,
-                      ).then((_) {
+                      onPressed: () async {
                         setState(() {
-                          isAddCategoryLoaded = true;
+                          isAddCategoryLoaded = false;
                         });
-                        context.pop();
-                      });
-                    } else {
-                      setState(() {
-                        isAddCategoryLoaded = true;
-                      });
-                      context.showSnackBar(
-                          message: 'User ID is not available');
-                    }
-                  } else {
-                    setState(() {
-                      isAddCategoryLoaded = true;
-                    });
-                    context.showSnackBar(
-                        message: AppStrings.allFieldsRequired);
-                  }
-                },
-              )
+                        if (categoryName.text.isNotEmpty) {
+                          if (!widget.categories.contains(
+                              categoryName.text.replaceAll(" ", "_"))) {
+                            String? uid =
+                                SharedPrefsUtil().getString(AppStrings.userId);
+                            if (uid != null) {
+                              await MenuControllerClass.addCategory(
+                                uid: uid,
+                                category:
+                                    categoryName.text.replaceAll(" ", "_"),
+                                context: context,
+                              ).then((_) {
+                                setState(() {
+                                  isAddCategoryLoaded = true;
+                                });
+                                context.pop();
+                              });
+                            } else {
+                              setState(() {
+                                isAddCategoryLoaded = true;
+                              });
+                              context.showSnackBar(
+                                  message: 'User ID is not available');
+                            }
+                          } else {
+                            setState(() {
+                              isAddCategoryLoaded = true;
+                            });
+                            context.showSnackBar(
+                                message: 'Category already exists');
+                          }
+                        } else {
+                          setState(() {
+                            isAddCategoryLoaded = true;
+                          });
+                          context.showSnackBar(
+                              message: AppStrings.allFieldsRequired);
+                        }
+                      },
+                    )
                   : Center(child: CircularProgressIndicator()),
             ],
           ),

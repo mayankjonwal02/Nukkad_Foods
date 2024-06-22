@@ -14,12 +14,14 @@ class MenuItemCard extends StatefulWidget {
     required this.subCategory,
     required this.categories,
     required this.subCategories,
+    required this.subCategoriesMap,
   });
   final MenuItemModel menuItemModel;
   final List<String> categories;
   final List<String> subCategories;
   final String category;
   final String subCategory;
+  final Map<String, List<String>> subCategoriesMap;
   @override
   _MenuItemCardState createState() =>
       _MenuItemCardState(menuItemModel: menuItemModel);
@@ -143,6 +145,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                 selectedCategory: widget.category,
                                 selectedSubCategory: widget.subCategory,
                                 edit: true,
+                                subCategoriesMap: widget.subCategoriesMap,
                               ),
                             )),
                     Text(

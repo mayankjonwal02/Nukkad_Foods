@@ -11,11 +11,13 @@ class MenuItems extends StatefulWidget {
     required this.subCategories,
     required this.menuItemsByCategory,
     required this.menuModel,
+    required this.subCategoriesMap,
   }) : super(key: key);
   final List<String> categories;
   final List<String> subCategories;
   final Map<String, List<MenuItemModel>> menuItemsByCategory;
   final FullMenuModel menuModel;
+  final Map<String, List<String>> subCategoriesMap;
 
   @override
   _MenuItemsState createState() => _MenuItemsState();
@@ -61,7 +63,7 @@ class _MenuItemsState extends State<MenuItems> with TickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${widget.categories[index]} (${widget.menuItemsByCategory[widget.categories[index]]!.length})',
+                '${widget.categories[index].replaceAll("_", " ")} (${widget.menuItemsByCategory[widget.categories[index]]!.length})',
                 style: h6TextStyle,
               ),
               Icon(
@@ -93,7 +95,8 @@ class _MenuItemsState extends State<MenuItems> with TickerProviderStateMixin {
                         categories: widget.categories,
                         subCategories: widget.subCategories,
                         category: widget.categories[index],
-                        subCategory: getSubCategory(index),
+                        subCategory: getSubCategory(index, itemIndex),
+                        subCategoriesMap: widget.subCategoriesMap,
                       ),
                   separatorBuilder: (context, index) => SizedBox(height: 1.h),
                   itemCount: widget
@@ -104,18 +107,36 @@ class _MenuItemsState extends State<MenuItems> with TickerProviderStateMixin {
     );
   }
 
-  String getSubCategory(int index) {
+  String getSubCategory(int index, int itemIndex) {
     String subCategory = "null";
-    for (MenuCategory menuItem in widget.menuModel.menuItems!) {
-      for (SubCategory subCategory in menuItem.subCategory!) {
-        for (MenuItemModel item in subCategory.menuItems!) {
-          if (item.id == widget.menuItemsByCategory[widget.categories[index]])
-            print(subCategory.subCategoryName);
-          return subCategory.subCategoryName ?? "null";
-        }
+    // List<String> subcategories =
+    //     widget.subCategoriesMap[widget.categories[index]] ?? [];
+    // List<String?> itemsID = widget
+    //     .menuItemsByCategory[widget.categories[index]]!
+    //     .map((e) => e.id)
+    //     .toList();
+    widget.menuModel.menuItems!.forEach((MenuCategory category) {
+      if (category.category == widget.categories[index]) {
+        category.subCategory?.forEach((SubCategory subcategories) {
+          subcategories.menuItems?.forEach((MenuItemModel item) {
+            if (item.id ==
+                widget.menuItemsByCategory[widget.categories[index]]![itemIndex]
+                    .id) {
+              subCategory = subcategories.subCategoryName ?? "null";
+            }
+          });
+        });
       }
-    }
-    ;
+    });
+    // for (MenuCategory menuItem in widget.menuModel.menuItems!) {
+    //   for (SubCategory subCategory in menuItem.subCategory!) {
+    //     for (MenuItemModel item in subCategory.menuItems!) {
+    //       if (item.id == widget.menuItemsByCategory[widget.categories[index]])
+    //         print(subCategory.subCategoryName);
+    //       return subCategory.subCategoryName ?? "null";
+    //     }
+    //   }
+    // }
     return subCategory;
   }
 }
