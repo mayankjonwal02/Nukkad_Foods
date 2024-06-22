@@ -16,23 +16,26 @@ class CustomTextField extends StatelessWidget {
       elevation: 2, // Elevation value for shadow
       shadowColor: Colors.grey[400], // Shadow color
       borderRadius: BorderRadius.circular(7),
-      child: TextField(
-        obscureText: isObscured,
-        autocorrect: false,
-        decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(7),
-              borderSide: BorderSide(color: colorLightGray),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: colorLightGray),
-            ),
-            labelText: label,
-            labelStyle: TextStyle(color: colorLightGray),
-            suffixIcon: Icon(
-              icon,
-              color: colorRed,
-            )),
+      child: Container(
+        color: Colors.white,
+        child: TextField(
+          obscureText: isObscured,
+          autocorrect: false,
+          decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(7),
+                borderSide: BorderSide(color: colorLightGray),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: colorLightGray),
+              ),
+              labelText: label,
+              labelStyle: TextStyle(color: colorLightGray),
+              suffixIcon: Icon(
+                icon,
+                color: colorRed,
+              )),
+        ),
       ),
     );
   }

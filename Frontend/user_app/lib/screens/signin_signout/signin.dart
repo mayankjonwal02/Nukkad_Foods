@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:user_app/screens/forgot_password.dart';
 import 'package:user_app/widgets/common/custom_phone_field.dart';
 import 'package:user_app/widgets/common/custom_text_field.dart';
 import 'package:user_app/widgets/common/full_width_red_button.dart';
+import 'package:user_app/widgets/common/transition_to_next_screen.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/font-styles.dart';
@@ -46,19 +48,25 @@ class _SignInScreenState extends State<SignInScreen> {
               CustomTextField(
                 label: 'Password',
                 isObscured: true,
-                icon: Icons.remove_red_eye_rounded,
+                icon: Icons.visibility,
               ),
               SizedBox(
                 height: 40,
               ),
-              Center(
-                  child: Text(
-                'Forgot Password',
-                style: TextStyle(
-                  fontSize: mediumSmall,
-                  color: colorRed,
-                ),
-              )),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(transitionToNextScreen(ForgotPasswordScreen()));
+                },
+                child: Center(
+                    child: Text(
+                  'Forgot Password',
+                  style: TextStyle(
+                    fontSize: mediumSmall,
+                    color: colorRed,
+                  ),
+                )),
+              ),
               SizedBox(
                 height: 40,
               ),
