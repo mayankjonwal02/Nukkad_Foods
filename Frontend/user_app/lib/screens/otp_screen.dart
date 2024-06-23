@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:user_app/screens/location/location_screen.dart';
 import 'package:user_app/screens/reset_password_screen.dart';
 import 'package:user_app/utils/colors.dart';
 import 'package:user_app/widgets/common/full_width_red_button.dart';
@@ -8,7 +9,9 @@ import 'package:user_app/widgets/common/transition_to_next_screen.dart';
 import '../utils/font-styles.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  const OtpScreen({super.key, this.isSigninUp = false});
+
+  final bool isSigninUp;
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -86,8 +89,10 @@ class _OtpScreenState extends State<OtpScreen> {
             FullWidthRedButton(
                 label: 'CONTINUE',
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(transitionToNextScreen(ResetPasswordScreen()));
+                  Navigator.of(context).push(transitionToNextScreen(
+                      widget.isSigninUp
+                          ? LocationScreen()
+                          : ResetPasswordScreen()));
                 }),
             SizedBox(
               height: 20,
