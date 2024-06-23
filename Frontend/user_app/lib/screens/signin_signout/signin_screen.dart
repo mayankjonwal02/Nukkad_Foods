@@ -59,7 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 30,
                 ),
                 CustomTextField(
-                  label: 'Password',
+                  label: 'PASSWORD',
                   controller: _passwordController,
                   isObscured: _isPasswordObscured,
                   icon: IconButton(

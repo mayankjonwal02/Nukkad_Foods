@@ -74,7 +74,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               height: 60,
             ),
             CustomTextField(
-              label: 'Password',
+              label: 'PASSWORD',
               controller: _passwordController,
               isObscured: _isPasswordObscured,
               icon: IconButton(
@@ -89,7 +89,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               height: 30,
             ),
             CustomTextField(
-              label: 'Confirm Password',
+              label: 'CONFIRM PASSWORD',
               controller: _comfirmPasswordController,
               isObscured: _isConfirmPasswordObscured,
               icon: IconButton(
