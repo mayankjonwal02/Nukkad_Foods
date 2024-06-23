@@ -506,7 +506,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                                 width: 35.w,
                                 padding: EdgeInsets.symmetric(vertical: 0.4.h),
                                 child: Text(
-                                  'Order total : ₹202',
+                                  'Order total : ₹${widget.order!.totalCost != null ? widget.order!.totalCost : 0}',
                                   style: body5TextStyle.copyWith(
                                     color: textBlack,
                                     fontWeight: FontWeight.bold,
@@ -526,7 +526,7 @@ class _OrderWidgetState extends State<OrderWidget> {
                                 padding: EdgeInsets.symmetric(
                                     vertical: 0.2.h, horizontal: 3.w),
                                 child: Text(
-                                  'COD',
+                                  '${widget.order!.paymentMethod != null ? widget.order!.paymentMethod : ''}',
                                   style: body5TextStyle.copyWith(
                                       color: textBlack,
                                       fontWeight: FontWeight.bold),

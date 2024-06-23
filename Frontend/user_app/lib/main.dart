@@ -17,12 +17,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Nukkad Foods User',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(seedColor: colorRed),
         useMaterial3: true,
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
-      //home: SplashScreen(),
-      home: IntroScreen(),
+      home: SplashScreen(),
+      //home: IntroScreen(),
     );
   }
 }

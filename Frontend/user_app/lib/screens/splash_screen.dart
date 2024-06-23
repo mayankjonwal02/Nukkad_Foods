@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
-import 'dart:async'; // Import the dart:async package
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
+import 'package:user_app/screens/signin_signout/signin_screen.dart';
 import 'package:user_app/utils/colors.dart';
-import 'package:user_app/screens/intro_screen.dart'; // Import the intro screen
+import 'package:user_app/screens/intro_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Set up the timer to navigate to the intro screen after 3 seconds
-    Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) =>
-              IntroScreen(), // Replace with your IntroScreen widget
-        ),
-      );
+    // Set up the timer to navigate to the appropriate screen after 3 seconds
+    Timer(Duration(seconds: 3), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+
+      if (isFirstLaunch) {
+        // Set 'isFirstLaunch' to false so that IntroScreen won't be shown again
+        await prefs.setBool('isFirstLaunch', false);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => IntroScreen(),
+          ),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => SignInScreen(),
+          ),
+        );
+      }
     });
 
     return Scaffold(

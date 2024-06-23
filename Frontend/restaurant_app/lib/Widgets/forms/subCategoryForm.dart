@@ -14,9 +14,11 @@ import 'package:sizer/sizer.dart';
 class SubCategoriesForm extends StatefulWidget {
   const SubCategoriesForm({
     super.key,
-    required this.categories
+    required this.categories,
+    required this.subCategoriesMap,
   });
   final List<String> categories;
+  final Map<String, List<String>> subCategoriesMap;
 
   @override
   State<SubCategoriesForm> createState() => _SubCategoriesFormState();
@@ -25,60 +27,71 @@ class SubCategoriesForm extends StatefulWidget {
 class _SubCategoriesFormState extends State<SubCategoriesForm> {
   TextEditingController subCategoryName = TextEditingController();
   String? selectedCategory; // To store the currently selected value
-  List<String> categories = [];
+  // List<String> categories = [];
 
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    loadCategories();
+    // loadCategories();
   }
 
-  Future<void> loadCategories() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      final List<String> fetchedCategories = await MenuControllerClass.fetchAllCategories(
-        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? '',
-        context: context,
-      );
-      setState(() {
-        categories = fetchedCategories;
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      context.showSnackBar(message: "Failed to fetch categories: ${e.toString()}");
-    }
-  }
+  // Future<void> loadCategories() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   try {
+  //     final List<String> fetchedCategories =
+  //         await MenuControllerClass.fetchAllCategories(
+  //       uid: SharedPrefsUtil().getString(AppStrings.userId) ?? '',
+  //       context: context,
+  //     );
+  //     setState(() {
+  //       categories =
+  //           fetchedCategories.map((e) => e.replaceAll("_", " ")).toList();
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     context.showSnackBar(
+  //         message: "Failed to fetch categories: ${e.toString()}");
+  //   }
+  // }
 
   Future<void> addSubCategory() async {
     setState(() {
       isLoading = true;
     });
     if (subCategoryName.text.isNotEmpty && selectedCategory != null) {
-      final result = await MenuControllerClass.addSubCategory(
-        uid: SharedPrefsUtil().getString(AppStrings.userId) ?? '',
-        category: selectedCategory!,
-        subCategory: subCategoryName.text,
-        context: context,
-      );
-      result.fold((errorMessage) {
+      if (!widget.subCategoriesMap[selectedCategory]!
+          .contains(subCategoryName.text.replaceAll(" ", "_"))) {
+        final result = await MenuControllerClass.addSubCategory(
+          uid: SharedPrefsUtil().getString(AppStrings.userId) ?? '',
+          category: selectedCategory!.replaceAll(" ", "_"),
+          subCategory: subCategoryName.text.replaceAll(" ", "_"),
+          context: context,
+        );
+        result.fold((errorMessage) {
+          setState(() {
+            isLoading = false;
+          });
+          context.showSnackBar(message: errorMessage);
+        }, (successMessage) {
+          setState(() {
+            isLoading = false;
+          });
+          context.showSnackBar(message: successMessage);
+          context.pop();
+        });
+      } else {
         setState(() {
           isLoading = false;
         });
-        context.showSnackBar(message: errorMessage);
-      }, (successMessage) {
-        setState(() {
-          isLoading = false;
-        });
-        context.showSnackBar(message: successMessage);
-        context.pop();
-      });
+        context.showSnackBar(message: "SubCategory Already Exists");
+      }
     } else {
       setState(() {
         isLoading = false;
@@ -209,13 +222,13 @@ class _SubCategoriesFormState extends State<SubCategoriesForm> {
                                   true, // Ensure the dropdown button fills the full width
                               underline:
                                   Container(), // Remove the default underline
-                              items: categories.map((String item) {
+                              items: widget.categories.map((String item) {
                                 return DropdownMenuItem<String>(
                                   value: item,
                                   child: Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10.0),
-                                    child: Text(item),
+                                    child: Text(item.replaceAll("_", " ")),
                                   ),
                                 );
                               }).toList(),
