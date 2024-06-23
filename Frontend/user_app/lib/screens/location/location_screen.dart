@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:user_app/screens/location/add_address_screen.dart';
+import 'package:user_app/screens/location/pin_location_screen.dart';
 import 'package:user_app/utils/colors.dart';
 import 'package:user_app/utils/font-styles.dart';
 import 'package:user_app/widgets/common/full_width_red_button.dart';
+import 'package:user_app/widgets/common/transition_to_next_screen.dart';
 
 class LocationScreen extends StatelessWidget {
   const LocationScreen({super.key});
@@ -46,18 +49,28 @@ class LocationScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: FullWidthRedButton(
-                label: 'ALLOW LOCATION ACCESS', onPressed: () {}),
+                label: 'ALLOW LOCATION ACCESS',
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(transitionToNextScreen(PinLocationScreen()));
+                }),
           ),
           SizedBox(
             height: 20,
           ),
-          Center(
-            child: Text(
-              'Enter Location Manually',
-              style: TextStyle(
-                color: colorRed,
-                fontWeight: FontWeight.bold,
-                fontSize: medium,
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(transitionToNextScreen(AddAddressScreen()));
+            },
+            child: Center(
+              child: Text(
+                'Enter Location Manually',
+                style: TextStyle(
+                  color: colorRed,
+                  fontWeight: FontWeight.bold,
+                  fontSize: medium,
+                ),
               ),
             ),
           ),
