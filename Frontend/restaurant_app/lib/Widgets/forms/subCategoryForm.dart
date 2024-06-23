@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
+import 'package:restaurant_app/Screens/Navbar/menuBody.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
@@ -16,9 +17,11 @@ class SubCategoriesForm extends StatefulWidget {
     super.key,
     required this.categories,
     required this.subCategoriesMap,
+    required this.menuRefreshCallback,
   });
   final List<String> categories;
   final Map<String, List<String>> subCategoriesMap;
+  final MenuRefreshCallback menuRefreshCallback;
 
   @override
   State<SubCategoriesForm> createState() => _SubCategoriesFormState();
@@ -85,6 +88,7 @@ class _SubCategoriesFormState extends State<SubCategoriesForm> {
           });
           context.showSnackBar(message: successMessage);
           context.pop();
+          widget.menuRefreshCallback();
         });
       } else {
         setState(() {

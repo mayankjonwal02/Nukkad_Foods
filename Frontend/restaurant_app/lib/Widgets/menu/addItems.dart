@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Screens/Navbar/menuBody.dart';
 import 'package:restaurant_app/Widgets/buttons/cancelButton.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/customs/MenuBody/menuItems.dart';
@@ -7,16 +8,19 @@ import 'package:restaurant_app/Widgets/forms/dishesForm.dart';
 import 'package:restaurant_app/Widgets/forms/subCategoryForm.dart';
 
 class AddItems extends StatelessWidget {
-  const AddItems(
-      {super.key,
-      required this.categories,
-      required this.subCategories,
-      required this.closeBottomSheet,
-      required this.subCategoriesMap});
+  const AddItems({
+    super.key,
+    required this.categories,
+    required this.subCategories,
+    required this.closeBottomSheet,
+    required this.subCategoriesMap,
+    required this.menuRefreshCallback,
+  });
   final List<String> categories;
   final List<String> subCategories;
   final VoidCallback closeBottomSheet;
   final Map<String, List<String>> subCategoriesMap;
+  final MenuRefreshCallback menuRefreshCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,8 @@ class AddItems extends StatelessWidget {
               screen: DishesForm(
                   categories: categories,
                   subCategories: subCategories,
-                  subCategoriesMap: subCategoriesMap),
+                  subCategoriesMap: subCategoriesMap,
+                  menuRefreshCallback: menuRefreshCallback),
               closeBottomSheet: closeBottomSheet,
             ),
             SizedBox(
@@ -49,6 +54,7 @@ class AddItems extends StatelessWidget {
               itemName: 'Add Category',
               screen: CategoriesForm(
                 categories: categories,
+                menuRefreshCallback: menuRefreshCallback,
               ),
               closeBottomSheet: closeBottomSheet,
             ),
@@ -60,6 +66,7 @@ class AddItems extends StatelessWidget {
               screen: SubCategoriesForm(
                 categories: categories,
                 subCategoriesMap: subCategoriesMap,
+                menuRefreshCallback: menuRefreshCallback,
               ),
               closeBottomSheet: closeBottomSheet,
             ),

@@ -8,6 +8,8 @@ import 'package:restaurant_app/Widgets/customs/MenuBody/menuAppBar.dart';
 import 'package:restaurant_app/Widgets/customs/MenuBody/menuSearchBar.dart';
 import 'package:restaurant_app/Widgets/menu/menuItem.dart';
 
+typedef void MenuRefreshCallback();
+
 class MenuBody extends StatefulWidget {
   const MenuBody({super.key});
 
@@ -236,6 +238,7 @@ class _MenuBodyState extends State<MenuBody> {
             categories: categories,
             subCategories: subCategories,
             subCategoriesMap: subCategoryMap,
+            menuRefreshCallback: getMenu,
           ),
           MenuSearchBar(),
           Padding(
@@ -251,6 +254,7 @@ class _MenuBodyState extends State<MenuBody> {
                         menuItemsByCategory: _buildMenuItemsByCategory(),
                         menuModel: fullMenu!,
                         subCategoriesMap: subCategoryMap,
+                        menuRefreshCallback: getMenu,
                       ),
           ),
         ],

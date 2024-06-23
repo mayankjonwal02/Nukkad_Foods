@@ -10,6 +10,8 @@ import '../../Widgets/customs/OrderBody/orderFilters.dart';
 import '../../Widgets/customs/OrderBody/orderStatusSelector.dart';
 import '../../Widgets/customs/OrderBody/orderWidget.dart';
 
+typedef void OrdersRefreshCallback();
+
 class OrderBody extends StatefulWidget {
   const OrderBody({super.key});
 
@@ -33,6 +35,7 @@ class _OrderBodyState extends State<OrderBody> {
   List<Orders> allOrder = [];
   List<Orders>? pendingOrCancelledOrders;
   List<Orders>? deliveredOrCancelledOrders;
+  int selectedindex = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -55,6 +58,7 @@ class _OrderBodyState extends State<OrderBody> {
       allOrder = [];
       pendingOrCancelledOrders = [];
       deliveredOrCancelledOrders = [];
+      selectedindex = 0;
     });
     var result = await OrderController.getAllOrders(
       context: context,
@@ -167,6 +171,9 @@ class _OrderBodyState extends State<OrderBody> {
   // }
 
   void _handelSelectedTab(int idx) {
+    setState(() {
+      selectedindex = idx;
+    });
     if (isOngoing) {
       switch (idx) {
         case 0:
@@ -510,43 +517,54 @@ class _OrderBodyState extends State<OrderBody> {
                   onOrderStatusChanged: _handleOrderTypeChanged,
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: SortingBar(
-                    type: isOngoing, onOrderFilterChanged: _handelOrderFilter),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-                child:
-                    OrderFilter(type: isOngoing, selected: _handelSelectedTab),
-              ),
               RefreshIndicator(
                 onRefresh: () {
                   return getAllOrders();
                 },
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5.w, 0, 5.w, 2.h),
-                  child: SizedBox(
-                    height: 62.h,
-                    child: isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.red,
-                            ),
-                          )
-                        : myOrder.length == 0
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5.w),
+                      child: SortingBar(
+                          type: isOngoing,
+                          onOrderFilterChanged: _handelOrderFilter),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+                      child: OrderFilter(
+                        type: isOngoing,
+                        selected: _handelSelectedTab,
+                        selectedindex: selectedindex,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5.w, 0, 5.w, 2.h),
+                      child: SizedBox(
+                        height: 62.h,
+                        child: isLoading
                             ? Center(
-                                child: Text(AppStrings.noOrdersFound),
+                                child: CircularProgressIndicator(
+                                  color: Colors.red,
+                                ),
                               )
-                            : ListView.builder(
-                                itemCount: myOrder.length,
-                                itemBuilder: (context, index) {
-                                  return OrderWidget(
-                                      type: isOngoing,
-                                      // uid: myOrder[index].uid!,
-                                      order: myOrder[index]);
-                                }),
-                  ),
+                            : myOrder.length == 0
+                                ? Center(
+                                    child: Text(AppStrings.noOrdersFound),
+                                  )
+                                : ListView.builder(
+                                    itemCount: myOrder.length,
+                                    itemBuilder: (context, index) {
+                                      return OrderWidget(
+                                        type: isOngoing,
+                                        // uid: myOrder[index].uid!,
+                                        order: myOrder[index],
+                                        onOrdersRefresh: getAllOrders,
+                                      );
+                                    }),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

@@ -5,6 +5,7 @@ import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/menu_model.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/update_menu_item_model.dart';
+import 'package:restaurant_app/Screens/Navbar/menuBody.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
 import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
@@ -26,6 +27,7 @@ class DishesForm extends StatefulWidget {
     this.selectedCategory,
     this.selectedSubCategory,
     this.selectedLabel,
+    required this.menuRefreshCallback,
   });
   final List<String> categories;
   final List<String> subCategories;
@@ -36,6 +38,7 @@ class DishesForm extends StatefulWidget {
   final String? selectedSubCategory;
   final String? selectedLabel;
   final Map<String, List<String>> subCategoriesMap;
+  final MenuRefreshCallback menuRefreshCallback;
 
   @override
   State<DishesForm> createState() => _DishesFormState();
@@ -206,6 +209,7 @@ class _DishesFormState extends State<DishesForm> {
         // context.pop(); // Close the form after successful submission
         // Notify the menu screen that a new item has been added or updated
         Navigator.pop(context, true);
+        widget.menuRefreshCallback();
       } else {
         setState(() {
           isLoading = false;

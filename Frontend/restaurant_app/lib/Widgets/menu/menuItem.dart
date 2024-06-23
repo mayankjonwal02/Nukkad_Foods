@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/menu_model.dart';
+import 'package:restaurant_app/Screens/Navbar/menuBody.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/menu/menuItemCard.dart';
 import 'package:sizer/sizer.dart';
@@ -12,12 +13,14 @@ class MenuItems extends StatefulWidget {
     required this.menuItemsByCategory,
     required this.menuModel,
     required this.subCategoriesMap,
+    required this.menuRefreshCallback,
   }) : super(key: key);
   final List<String> categories;
   final List<String> subCategories;
   final Map<String, List<MenuItemModel>> menuItemsByCategory;
   final FullMenuModel menuModel;
   final Map<String, List<String>> subCategoriesMap;
+  final MenuRefreshCallback menuRefreshCallback;
 
   @override
   _MenuItemsState createState() => _MenuItemsState();
@@ -97,6 +100,7 @@ class _MenuItemsState extends State<MenuItems> with TickerProviderStateMixin {
                         category: widget.categories[index],
                         subCategory: getSubCategory(index, itemIndex),
                         subCategoriesMap: widget.subCategoriesMap,
+                        menuRefreshCallback: widget.menuRefreshCallback,
                       ),
                   separatorBuilder: (context, index) => SizedBox(height: 1.h),
                   itemCount: widget

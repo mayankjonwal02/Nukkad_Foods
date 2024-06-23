@@ -6,15 +6,20 @@ import 'package:sizer/sizer.dart';
 class OrderFilter extends StatefulWidget {
   final bool type;
   final Function(int) selected;
-  const OrderFilter({super.key, required this.type, required this.selected});
+  final int selectedindex;
+  OrderFilter(
+      {super.key,
+      required this.type,
+      required this.selected,
+      required this.selectedindex});
 
   @override
   State<OrderFilter> createState() => _OrderFilterState();
 }
 
 class _OrderFilterState extends State<OrderFilter> {
-  int selectedindex = 0;
-
+  // int selectedindex = 0;
+  late int selectedindex;
   List ongoingOrderFilters = [
     'All',
     'New',
@@ -32,7 +37,24 @@ class _OrderFilterState extends State<OrderFilter> {
   @override
   void initState() {
     super.initState();
-    selectedindex = 0;
+    selectedindex = widget.selectedindex!;
+  }
+
+  @override
+  void didUpdateWidget(covariant OrderFilter oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedindex != selectedindex) {
+      setState(() {
+        selectedindex = widget.selectedindex!;
+      });
+    }
+  }
+
+  void _handleTap(int index) {
+    setState(() {
+      selectedindex = index;
+    });
+    widget.selected(selectedindex);
   }
 
   @override
@@ -51,12 +73,13 @@ class _OrderFilterState extends State<OrderFilter> {
                   : previousOrderFilters[index]),
               padding: EdgeInsets.symmetric(horizontal: 2.w),
               child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedindex = index;
-                  });
-                  widget.selected(selectedindex);
-                },
+                onTap: () => _handleTap(index),
+                // onTap: () {
+                //   setState(() {
+                //     selectedindex = index;
+                //   });
+                //   widget.selected(selectedindex);
+                // },
                 child: Container(
                   padding:
                       EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 3.w),

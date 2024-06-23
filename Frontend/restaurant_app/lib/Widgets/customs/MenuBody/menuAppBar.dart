@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Screens/Navbar/menuBody.dart';
 import 'package:restaurant_app/Widgets/menu/addItems.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,11 +11,13 @@ class MenuAppBar extends StatefulWidget {
       {Key? key,
       required this.categories,
       required this.subCategories,
-      required this.subCategoriesMap})
+      required this.subCategoriesMap,
+      required this.menuRefreshCallback})
       : super(key: key);
   final List<String> categories;
   final List<String> subCategories;
   final Map<String, List<String>> subCategoriesMap;
+  final MenuRefreshCallback menuRefreshCallback;
 
   @override
   State<MenuAppBar> createState() => _MenuAppBarState();
@@ -58,7 +61,8 @@ class _MenuAppBarState extends State<MenuAppBar> {
                               closeBottomSheet: () {
                                 Navigator.pop(context);
                               },
-                              subCategoriesMap: widget.subCategoriesMap),
+                              subCategoriesMap: widget.subCategoriesMap,
+                              menuRefreshCallback: widget.menuRefreshCallback),
                         );
                       },
                       shape: RoundedRectangleBorder(

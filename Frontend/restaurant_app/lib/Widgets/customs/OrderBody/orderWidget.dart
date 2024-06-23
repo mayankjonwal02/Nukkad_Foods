@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/Controller/order/order_controller.dart';
 import 'package:restaurant_app/Controller/order/orders_model.dart';
 import 'package:restaurant_app/Controller/order/update_order_response_model.dart';
+import 'package:restaurant_app/Screens/Navbar/orderBody.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
@@ -14,10 +15,12 @@ class OrderWidget extends StatefulWidget {
   final bool type;
   // Map<String, dynamic>? order;
   Orders? order;
+  final OrdersRefreshCallback onOrdersRefresh;
   // final String uid;
   OrderWidget(
       {super.key,
       required this.type,
+      required this.onOrdersRefresh,
       /* required this.uid,*/ required this.order});
 
   @override
@@ -30,7 +33,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   bool isPrepared = false;
   bool isMarkedReady = false;
   List<dynamic> items = [];
-  bool isLoading = false;
+  bool isEditLoading = false;
   String? orderId;
   String? uid;
   @override
@@ -52,7 +55,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   Future<void> orderDeleted() async {
     setState(() {
-      isLoading = true;
+      isEditLoading = true;
     });
     await OrderController.deleteOrder(
       uid: uid!,
@@ -60,22 +63,23 @@ class _OrderWidgetState extends State<OrderWidget> {
       context: context,
     ).then((value) {
       setState(() {
-        isLoading = false;
+        isEditLoading = false;
         isDeclined = true;
         isAccepted = false;
         isPrepared = false;
         isMarkedReady = false;
       });
+      widget.onOrdersRefresh();
     }).catchError((error) {
       setState(() {
-        isLoading = false;
+        isEditLoading = false;
       });
       context.showSnackBar(message: error.toString());
     });
   }
   // Future<void> orderDeleted() async {
   //   setState(() {
-  //     isLoading = true;
+  //     isEditLoading = true;
   //   });
   //   try {
   //     var baseUrl = dotenv.env['BASE_URL'];
@@ -89,7 +93,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //             backgroundColor: colorSuccess,
   //             content: Text("Menu item deleted successfully")));
   //         setState(() {
-  //           isLoading = false;
+  //           isEditLoading = false;
   //           isDeclined = true;
   //           isAccepted = false;
   //           isPrepared = false;
@@ -97,7 +101,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //         });
   //       } else {
   //         setState(() {
-  //           isLoading = false;
+  //           isEditLoading = false;
   //         });
   //         ScaffoldMessenger.of(context).showSnackBar(
   //           SnackBar(
@@ -107,7 +111,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //       }
   //     } else {
   //       setState(() {
-  //         isLoading = false;
+  //         isEditLoading = false;
   //       });
   //
   //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -116,7 +120,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //     }
   //   } catch (e) {
   //     setState(() {
-  //       isLoading = false;
+  //       isEditLoading = false;
   //     });
   //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
   //         backgroundColor: colorFailure,
@@ -126,7 +130,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   Future<void> startOnWay() async {
     setState(() {
-      isLoading = true;
+      isEditLoading = true;
     });
 
     var result = await OrderController.updateOrder(
@@ -137,18 +141,19 @@ class _OrderWidgetState extends State<OrderWidget> {
     );
     result.fold((errorMessage) {
       setState(() {
-        isLoading = false;
+        isEditLoading = false;
       });
       context.showSnackBar(message: errorMessage);
     }, (UpdateOrderResponseModel updateOrderResponseModel) {
       print(updateOrderResponseModel.order!.status!);
       setState(() {
-        widget.order = updateOrderResponseModel.order;
+        // widget.order = updateOrderResponseModel.order;
+        widget.onOrdersRefresh();
         isDeclined = false;
         isAccepted = true;
         isPrepared = true;
         isMarkedReady = true;
-        isLoading = false;
+        isEditLoading = false;
       });
       context.showSnackBar(message: updateOrderResponseModel.message!);
     });
@@ -156,7 +161,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   // Future<void> startOnWay() async {
   //   setState(() {
-  //     isLoading = true;
+  //     isEditLoading = true;
   //   });
   //   try {
   //     var baseUrl = dotenv.env['BASE_URL'];
@@ -183,12 +188,12 @@ class _OrderWidgetState extends State<OrderWidget> {
   //           isAccepted = true;
   //           isPrepared = true;
   //           isMarkedReady = true;
-  //           isLoading = false;
+  //           isEditLoading = false;
   //         });
   //         print(widget.order);
   //       } else {
   //         setState(() {
-  //           isLoading = false;
+  //           isEditLoading = false;
   //         });
   //         ScaffoldMessenger.of(context).showSnackBar(
   //           SnackBar(
@@ -198,7 +203,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //       }
   //     } else {
   //       setState(() {
-  //         isLoading = false;
+  //         isEditLoading = false;
   //       });
   //
   //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -207,7 +212,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //     }
   //   } catch (e) {
   //     setState(() {
-  //       isLoading = false;
+  //       isEditLoading = false;
   //     });
   //
   //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -218,7 +223,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   Future<void> startPreparing() async {
     setState(() {
-      isLoading = true;
+      isEditLoading = true;
     });
 
     await OrderController.updateOrder(
@@ -228,16 +233,17 @@ class _OrderWidgetState extends State<OrderWidget> {
       context: context,
     ).then((value) {
       setState(() {
-        // widget.order = responseData['order'];
+        // widget.order = updateOrderResponseModel.order;
+        widget.onOrdersRefresh();
         isDeclined = false;
         isAccepted = true;
-        isLoading = false;
+        isEditLoading = false;
         isPrepared = true;
         isMarkedReady = false;
       });
     }).catchError((error) {
       setState(() {
-        isLoading = false;
+        isEditLoading = false;
       });
       context.showSnackBar(message: error.toString());
     });
@@ -245,7 +251,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   // Future<void> startPreparing() async {
   //   setState(() {
-  //     isLoading = true;
+  //     isEditLoading = true;
   //   });
   //   try {
   //     var baseUrl = dotenv.env['BASE_URL'];
@@ -270,14 +276,14 @@ class _OrderWidgetState extends State<OrderWidget> {
   //           widget.order = responseData['order'];
   //           isDeclined = false;
   //           isAccepted = true;
-  //           isLoading = false;
+  //           isEditLoading = false;
   //           isPrepared = true;
   //           isMarkedReady = false;
   //         });
   //         print(widget.order);
   //       } else {
   //         setState(() {
-  //           isLoading = false;
+  //           isEditLoading = false;
   //         });
   //         ScaffoldMessenger.of(context).showSnackBar(
   //           SnackBar(
@@ -287,7 +293,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //       }
   //     } else {
   //       setState(() {
-  //         isLoading = false;
+  //         isEditLoading = false;
   //       });
   //
   //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -296,7 +302,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //     }
   //   } catch (e) {
   //     setState(() {
-  //       isLoading = false;
+  //       isEditLoading = false;
   //     });
   //
   //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -307,7 +313,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   Future<void> acceptOrder() async {
     setState(() {
-      isLoading = true;
+      isEditLoading = true;
     });
 
     await OrderController.updateOrder(
@@ -317,16 +323,17 @@ class _OrderWidgetState extends State<OrderWidget> {
       context: context,
     ).then((value) {
       setState(() {
-        // widget.order = ;
+        // widget.order = updateOrderResponseModel.order;
+        widget.onOrdersRefresh();
         isDeclined = false;
         isAccepted = true;
         isPrepared = false;
         isMarkedReady = false;
-        isLoading = false;
+        isEditLoading = false;
       });
     }).catchError((error) {
       setState(() {
-        isLoading = false;
+        isEditLoading = false;
       });
       context.showSnackBar(message: error.toString());
     });
@@ -334,7 +341,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 
   // Future<void> acceptOrder() async {
   //   setState(() {
-  //     isLoading = true;
+  //     isEditLoading = true;
   //   });
   //   try {
   //     var baseUrl = dotenv.env['BASE_URL'];
@@ -361,12 +368,12 @@ class _OrderWidgetState extends State<OrderWidget> {
   //           isAccepted = true;
   //           isPrepared = false;
   //           isMarkedReady = false;
-  //           isLoading = false;
+  //           isEditLoading = false;
   //         });
   //         print(widget.order);
   //       } else {
   //         setState(() {
-  //           isLoading = false;
+  //           isEditLoading = false;
   //         });
   //         ScaffoldMessenger.of(context).showSnackBar(
   //           SnackBar(
@@ -376,7 +383,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //       }
   //     } else {
   //       setState(() {
-  //         isLoading = false;
+  //         isEditLoading = false;
   //       });
   //
   //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -385,7 +392,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   //     }
   //   } catch (e) {
   //     setState(() {
-  //       isLoading = false;
+  //       isEditLoading = false;
   //     });
   //
   //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -397,7 +404,7 @@ class _OrderWidgetState extends State<OrderWidget> {
   @override
   Widget build(BuildContext context) {
     bool type = widget.type;
-    return isLoading
+    return isEditLoading
         ? Center(
             child: CircularProgressIndicator(
               color: Colors.red,

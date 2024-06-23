@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
+import 'package:restaurant_app/Screens/Navbar/menuBody.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
 import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
@@ -14,9 +15,11 @@ class CategoriesForm extends StatefulWidget {
   const CategoriesForm({
     super.key,
     required this.categories,
+    required this.menuRefreshCallback,
   });
 
   final List<String> categories;
+  final MenuRefreshCallback menuRefreshCallback;
   @override
   State<CategoriesForm> createState() => _CategoriesFormState();
 }
@@ -101,6 +104,7 @@ class _CategoriesFormState extends State<CategoriesForm> {
                                   isAddCategoryLoaded = true;
                                 });
                                 context.pop();
+                                widget.menuRefreshCallback();
                               });
                             } else {
                               setState(() {

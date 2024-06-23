@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/menu_controller.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/menu_model.dart';
+import 'package:restaurant_app/Screens/Navbar/menuBody.dart';
 import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
 import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
 import 'package:restaurant_app/Widgets/constants/strings.dart';
@@ -15,6 +16,8 @@ class MenuItemCard extends StatefulWidget {
     required this.categories,
     required this.subCategories,
     required this.subCategoriesMap,
+    required this.menuRefreshCallback,
+    Key? key,
   });
   final MenuItemModel menuItemModel;
   final List<String> categories;
@@ -22,6 +25,7 @@ class MenuItemCard extends StatefulWidget {
   final String category;
   final String subCategory;
   final Map<String, List<String>> subCategoriesMap;
+  final MenuRefreshCallback menuRefreshCallback;
   @override
   _MenuItemCardState createState() =>
       _MenuItemCardState(menuItemModel: menuItemModel);
@@ -146,6 +150,7 @@ class _MenuItemCardState extends State<MenuItemCard> {
                                 selectedSubCategory: widget.subCategory,
                                 edit: true,
                                 subCategoriesMap: widget.subCategoriesMap,
+                                menuRefreshCallback: widget.menuRefreshCallback,
                               ),
                             )),
                     Text(
