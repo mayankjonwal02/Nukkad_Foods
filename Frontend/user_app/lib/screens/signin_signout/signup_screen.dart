@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:user_app/screens/otp_screen.dart';
 import 'package:user_app/screens/signin_signout/signin_screen.dart';
 import 'package:user_app/widgets/common/custom_phone_field.dart';
 import 'package:user_app/widgets/common/custom_text_field.dart';
@@ -97,7 +98,7 @@ class _SignupScreenState extends State<SignupScreen> {
               height: 20,
             ),
             CustomTextField(
-              label: 'Password',
+              label: 'PASSWORD',
               controller: _passwordController,
               isObscured: _isPasswordObscured,
               icon: IconButton(
@@ -112,7 +113,7 @@ class _SignupScreenState extends State<SignupScreen> {
               height: 20,
             ),
             CustomTextField(
-              label: 'Confirm Password',
+              label: 'CONFIRM PASSWORD',
               controller: _confirmPasswordController,
               isObscured: _isConfirmPasswordObscured,
               icon: IconButton(
@@ -128,7 +129,13 @@ class _SignupScreenState extends State<SignupScreen> {
             SizedBox(
               height: 40,
             ),
-            FullWidthRedButton(label: 'SIGN UP', onPressed: () {}),
+            FullWidthRedButton(
+                label: 'SIGN UP',
+                onPressed: () {
+                  Navigator.of(context).push(transitionToNextScreen(OtpScreen(
+                    isSigninUp: true,
+                  )));
+                }),
             SizedBox(
               height: 20,
             ),

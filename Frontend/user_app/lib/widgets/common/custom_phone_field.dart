@@ -32,7 +32,7 @@ class CustomPhoneField extends StatelessWidget {
               borderRadius: BorderRadius.circular(7),
               borderSide: BorderSide(color: colorLightGray),
             ),
-            labelText: 'Mobile',
+            labelText: 'MOBILE',
             labelStyle: TextStyle(color: colorLightGray),
             prefixIcon: Row(
               mainAxisSize: MainAxisSize.min,
