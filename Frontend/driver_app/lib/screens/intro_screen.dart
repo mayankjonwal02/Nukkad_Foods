@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/colors.dart';
 import '../utils/font-styles.dart';
-import '../widgets/common/full_width_red_button.dart';
+import '../widgets/common/full_width_green_button.dart';
 import '../widgets/common/transition_to_next_screen.dart';
 import 'signin_signout/signin_screen.dart';
 
@@ -24,22 +24,21 @@ class _IntroScreenState extends State<IntroScreen> {
     {
       'bgImage': 'assets/images/introbg1.png',
       'image': 'assets/images/intro1.png',
-      'text': 'Find Food Stalls',
-      'subText':
-          'Order from your nearby food vendors and restaurants, while relaxing at your home.'
+      'text': 'Register yourself',
+      'subText': 'Complete your documentation and register on our app!'
     },
     {
       'bgImage': 'assets/images/introbg2.png',
       'image': 'assets/images/intro2.png',
-      'text': 'Browse Menu',
-      'subText': 'Find what you are craving for, and click order'
+      'text': 'Accept Orders',
+      'subText': 'Accept delivery orders near you.'
     },
     {
       'bgImage': 'assets/images/introbg3.png',
       'image': 'assets/images/intro3.png',
-      'text': 'Relax !',
+      'text': 'Deliver happiness',
       'subText':
-          'Sit back and relax while our delivery captain reaches you with your favorite food.'
+          'Track home and delivery delicious food from stalls to costomer!'
     },
   ];
 
@@ -121,7 +120,7 @@ class _IntroScreenState extends State<IntroScreen> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 height: 50,
-                child: FullWidthRedButton(
+                child: FullWidthGreenButton(
                   label: 'Next',
                   onPressed: () {
                     Navigator.of(context)
@@ -159,7 +158,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 _slides.isNotEmpty ? _slides[index]['text'] : '',
                 style: TextStyle(
                   fontSize: large,
-                  color: colorRed,
+                  color: colorBrightGreen,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
@@ -185,12 +184,8 @@ class _IntroScreenState extends State<IntroScreen> {
       height: 10.0,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _currentPage == index ? colorRed : colorGray,
+        color: _currentPage == index ? colorBrightGreen : colorGray,
       ),
     );
   }
-
-  // Widget buildNextButton() {
-  //   return ;
-  // }
 }

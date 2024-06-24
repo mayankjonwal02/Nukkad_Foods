@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/font-styles.dart';
-import '../../widgets/common/full_width_red_button.dart';
+import '../../widgets/common/full_width_green_button.dart';
 import 'add_address_screen.dart';
 import 'pin_location_screen.dart';
 
@@ -49,7 +49,7 @@ class LocationScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: FullWidthRedButton(
+            child: FullWidthGreenButton(
                 label: 'ALLOW LOCATION ACCESS',
                 onPressed: () {
                   Navigator.of(context)

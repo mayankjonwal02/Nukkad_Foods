@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../utils/colors.dart';
 import '../utils/font-styles.dart';
-import '../widgets/common/full_width_red_button.dart';
+import '../widgets/common/full_width_green_button.dart';
 import '../widgets/common/transition_to_next_screen.dart';
 import 'location/location_screen.dart';
 import 'reset_password_screen.dart';
@@ -86,7 +86,7 @@ class _OtpScreenState extends State<OtpScreen> {
             SizedBox(
               height: 60,
             ),
-            FullWidthRedButton(
+            FullWidthGreenButton(
                 label: 'CONTINUE',
                 onPressed: () {
                   Navigator.of(context).push(transitionToNextScreen(

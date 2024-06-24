@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../utils/colors.dart';
 
-class FullWidthRedButton extends StatelessWidget {
-  const FullWidthRedButton(
+class FullWidthGreenButton extends StatelessWidget {
+  const FullWidthGreenButton(
       {super.key, required this.label, required this.onPressed});
   final String label;
   final void Function()? onPressed;
@@ -16,7 +16,7 @@ class FullWidthRedButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: colorRed, // Background color
+          backgroundColor: colorBrightGreen, // Background color
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12), // Rounded corners
           ),

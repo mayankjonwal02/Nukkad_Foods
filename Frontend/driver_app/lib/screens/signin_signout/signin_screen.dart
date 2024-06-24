@@ -4,7 +4,7 @@ import '../../utils/colors.dart';
 import '../../utils/font-styles.dart';
 import '../../widgets/common/custom_phone_field.dart';
 import '../../widgets/common/custom_text_field.dart';
-import '../../widgets/common/full_width_red_button.dart';
+import '../../widgets/common/full_width_green_button.dart';
 import '../../widgets/common/transition_to_next_screen.dart';
 import '../forgot_password.dart';
 import 'signup_screen.dart';
@@ -67,7 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       _isPasswordObscured
                           ? Icons.visibility_off
                           : Icons.visibility,
-                      color: colorRed,
+                      color: colorBrightGreen,
                     ),
                     onPressed: _togglePasswordVisibility,
                   ),
@@ -85,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     'Forgot Password',
                     style: TextStyle(
                       fontSize: mediumSmall,
-                      color: colorRed,
+                      color: colorBrightGreen,
                     ),
                   )),
                 ),
@@ -93,38 +93,35 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 40,
                 ),
                 Center(
-                  child: FullWidthRedButton(
+                  child: FullWidthGreenButton(
                     label: 'SIGN IN',
                     onPressed: () {},
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 80),
                 Center(
                   child: GestureDetector(
                     onTap: () {
                       Navigator.of(context)
                           .push(transitionToNextScreen(SignupScreen()));
                     },
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Don’t have an account?',
-                            style: TextStyle(
-                                fontSize: mediumSmall, color: Colors.black),
-                          ),
-                          TextSpan(
-                            text: ' Sign up',
-                            style: TextStyle(
-                              fontSize: mediumSmall,
-                              color: colorRed,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                    child: Text(
+                      'Have not listed with us yet?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: medium,
                       ),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Center(
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.4,
+                      child: FullWidthGreenButton(
+                          label: 'REGISTER', onPressed: () {})),
                 ),
                 SizedBox(
                   height: 40,
@@ -135,7 +132,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   style: TextStyle(color: colorGray, fontSize: mediumSmall),
                 )),
                 SizedBox(
-                  height: 40,
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../utils/font-styles.dart';
 import '../../widgets/common/custom_text_field.dart';
-import '../../widgets/common/full_width_red_button.dart';
+import '../../widgets/common/full_width_green_button.dart';
 import '../../widgets/common/transition_to_next_screen.dart';
 import '../main/home_screen.dart';
 
@@ -88,7 +88,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             SizedBox(
               height: 40,
             ),
-            FullWidthRedButton(
+            FullWidthGreenButton(
                 label: 'SAVE ADDRESS',
                 onPressed: () {
                   Navigator.of(context)

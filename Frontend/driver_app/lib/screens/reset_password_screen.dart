@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../utils/colors.dart';
 import '../utils/font-styles.dart';
 import '../widgets/common/custom_text_field.dart';
-import '../widgets/common/full_width_red_button.dart';
+import '../widgets/common/full_width_green_button.dart';
 import '../widgets/common/transition_to_next_screen.dart';
 import 'reset_password_success_screen.dart';
 
@@ -105,7 +105,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             SizedBox(
               height: 60,
             ),
-            FullWidthRedButton(
+            FullWidthGreenButton(
                 label: 'RESET',
                 onPressed: () {
                   Navigator.of(context).push(

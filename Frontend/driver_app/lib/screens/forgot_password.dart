@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/font-styles.dart';
 import '../widgets/common/custom_phone_field.dart';
-import '../widgets/common/full_width_red_button.dart';
+import '../widgets/common/full_width_green_button.dart';
 import '../widgets/common/transition_to_next_screen.dart';
 import 'otp_screen.dart';
 
@@ -64,7 +64,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             SizedBox(
               height: 80,
             ),
-            FullWidthRedButton(
+            FullWidthGreenButton(
               label: 'SEND OTP',
               onPressed: () {
                 Navigator.of(context).push(transitionToNextScreen(OtpScreen()));
