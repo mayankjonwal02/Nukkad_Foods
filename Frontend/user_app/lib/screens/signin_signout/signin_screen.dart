@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:user_app/screens/forgot_password.dart';
 import 'package:user_app/screens/signin_signout/signup_screen.dart';
@@ -5,6 +7,12 @@ import 'package:user_app/widgets/common/custom_phone_field.dart';
 import 'package:user_app/widgets/common/custom_text_field.dart';
 import 'package:user_app/widgets/common/full_width_red_button.dart';
 import 'package:user_app/widgets/common/transition_to_next_screen.dart';
+import 'package:user_app/widgets/constants/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:user_app/screens/main/home_screen.dart';
+import 'package:sizer/sizer.dart';
+
 
 import '../../utils/colors.dart';
 import '../../utils/font-styles.dart';
@@ -22,11 +30,113 @@ class _SignInScreenState extends State<SignInScreen> {
 
   bool _isPasswordObscured = true;
 
+  String userNumber = '';
+  String userPassword = '';
+  bool isLoading = false;
+
+  void routeHome() {
+    if (userNumber != '' && userPassword != '') {
+      // userNumber = userNumber.substring(3);
+      if (userNumber.substring(3).length == 10) {
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => HomeScreen()),
+        // );
+        // ViewTotalBillWidget
+        // signIn();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Please Enter Phone Number Correctly")));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Please Fill Both Field")),
+      );
+    }
+  }
+
   void _togglePasswordVisibility() {
     setState(() {
       _isPasswordObscured = !_isPasswordObscured;
     });
   }
+
+  Future<void> signIn() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var baseUrl = dotenv.env['BASE_URL'];
+      var reqData = {'phoneNumber': userNumber, 'password': userPassword};
+      String requestBody = jsonEncode(reqData);
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/login'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: requestBody,
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        if (responseData != null && responseData['executed'] == true) {
+          saveUserInfo(responseData['uid']);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorSuccess,
+              content: Text("Login Successfully")));
+          setState(() {
+            isLoading = false;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'] ?? "Login failed")),
+          );
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure, content: Text("Failed to login")));
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure, content: Text("Error: Server Error")));
+    }
+  }
+
+  Future<void> saveUserInfo(userInfo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('User_id', userInfo);
+    // print('sdggdgsagasssdasdasdasdads');
+    print(prefs.getString('User_id'));
+  }
+
+  // void routeRegister() {
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => const GetStartedScreen(),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

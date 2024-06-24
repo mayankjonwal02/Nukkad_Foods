@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:user_app/screens/otp_screen.dart';
 import 'package:user_app/screens/signin_signout/signin_screen.dart';
@@ -5,6 +7,9 @@ import 'package:user_app/widgets/common/custom_phone_field.dart';
 import 'package:user_app/widgets/common/custom_text_field.dart';
 import 'package:user_app/widgets/common/full_width_red_button.dart';
 import 'package:user_app/widgets/common/transition_to_next_screen.dart';
+import 'package:user_app/widgets/constants/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../../utils/colors.dart';
 import '../../utils/font-styles.dart';
@@ -24,6 +29,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController _confirmPasswordController = TextEditingController();
   bool _isPasswordObscured = true;
   bool _isConfirmPasswordObscured = true;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -46,6 +52,87 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
     });
+  }
+
+  Future<void> signUp() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("Passwords do not match"),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    var baseUrl = dotenv.env['BASE_URL'];
+    var reqData = {
+      'name': _nameController.text,
+      'email': _emailController.text,
+      'phoneNumber': _phoneNoController.text,
+      'password': _passwordController.text,
+    };
+    String requestBody = jsonEncode(reqData);
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/signup'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: requestBody,
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        if (responseData != null && responseData['executed'] == true) {
+          saveUserInfo(responseData['uid']);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: colorSuccess,
+              content: Text("Signup Successfully")));
+          setState(() {
+            isLoading = false;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => OtpScreen(isSigninUp: true)),
+          );
+        } else {
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                backgroundColor: colorFailure,
+                content: Text(responseData['message'] ?? "Signup failed")),
+          );
+        }
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: colorFailure, content: Text("Failed to signup")));
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorFailure, content: Text("Error: Server Error")));
+    }
+  }
+
+  Future<void> saveUserInfo(userInfo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('User_id', userInfo);
+    print(prefs.getString('User_id'));
   }
 
   @override
