@@ -7,6 +7,7 @@ import 'package:restaurant_app/Controller/Profile/Menu/save_menu_Item.dart';
 import 'package:restaurant_app/Controller/Profile/Menu/update_menu_item_model.dart';
 import 'package:restaurant_app/Screens/Navbar/menuBody.dart';
 import 'package:restaurant_app/Widgets/buttons/addButton.dart';
+import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/strings.dart';
@@ -71,6 +72,8 @@ class _DishesFormState extends State<DishesForm> {
     'assets/images/dairyfree.png'
   ];
 
+  bool isDishImageUploaded = false;
+  String? imageDishPath;
   _DishesFormState();
 
   @override
@@ -98,9 +101,18 @@ class _DishesFormState extends State<DishesForm> {
                   subCategoryCheck[i] = true;
                 }
               }
+              imageDishPath = widget.menuItemModel!.menuItemImageURL ?? "";
+              isDishImageUploaded = true;
             })
           }
         : null;
+  }
+
+  void _handleImagePicked(bool isPicked, String? filePath) {
+    setState(() {
+      isDishImageUploaded = isPicked;
+      imageDishPath = filePath;
+    });
   }
 
   // Future<void> fetchCategories() async {
@@ -173,6 +185,7 @@ class _DishesFormState extends State<DishesForm> {
                 inStock: true,
                 servingInfo: noOfServers.text,
                 label: selectedLabel,
+                menuItemImageURL: imageDishPath ?? "",
               ),
             ),
             context: context,
@@ -191,7 +204,7 @@ class _DishesFormState extends State<DishesForm> {
               subCategory: selectedSubCategory!.replaceAll(" ", "_"),
               menuItem: SaveMenuItemModel(
                 menuItemName: itemName.text,
-                menuItemImageURL: "image_url.png",
+                menuItemImageURL: imageDishPath ?? "",
                 servingInfo: noOfServers.text,
                 menuItemCost: double.tryParse(basePrice.text) ?? 0.0,
                 inStock: true,
@@ -231,7 +244,8 @@ class _DishesFormState extends State<DishesForm> {
         noOfServers.text.isNotEmpty &&
         selectedCategory != null &&
         selectedSubCategory != null &&
-        selectedLabel != null;
+        selectedLabel != null &&
+        imageDishPath != null;
   }
 
   changeSubCategoryCheck(int index) {
@@ -445,7 +459,14 @@ class _DishesFormState extends State<DishesForm> {
                 ),
               ),
               SizedBox(height: 20),
-              AddImage(),
+              // AddImage(),
+              AddImage(context: context, onFilePicked: _handleImagePicked),
+              isDishImageUploaded
+                  ? Text(
+                      '${imageDishPath?.split('/').last} selected!',
+                      style: body4TextStyle.copyWith(color: colorSuccess),
+                    )
+                  : const SizedBox.shrink(),
               SizedBox(height: 20),
               isLoading
                   ? CircularProgressIndicator()

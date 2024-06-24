@@ -7,6 +7,7 @@ import 'package:restaurant_app/Widgets/constants/navigation_extension.dart';
 import 'package:restaurant_app/Widgets/constants/shared_preferences.dart';
 import 'package:restaurant_app/Widgets/constants/show_snack_bar_extension.dart';
 import 'package:restaurant_app/Widgets/constants/strings.dart';
+import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/menu/addImage.dart';
 import 'package:restaurant_app/Widgets/menu/customInputField.dart';
 import 'package:sizer/sizer.dart';
@@ -29,6 +30,16 @@ class _CategoriesFormState extends State<CategoriesForm> {
   String? selectedCategory; // To store the currently selected value
 
   bool isAddCategoryLoaded = true;
+  bool isCategoryImageUploaded = false;
+  String? imageCategoryPath;
+
+  void _handleImagePicked(bool isPicked, String? filePath) {
+    setState(() {
+      isCategoryImageUploaded = isPicked;
+      imageCategoryPath = filePath;
+    });
+  }
+
   @override
   void dispose() {
     categoryName.dispose();
@@ -78,7 +89,16 @@ class _CategoriesFormState extends State<CategoriesForm> {
               SizedBox(
                 height: 20,
               ),
-              AddImage(),
+              AddImage(
+                context: context,
+                onFilePicked: _handleImagePicked,
+              ),
+              isCategoryImageUploaded
+                  ? Text(
+                      '${imageCategoryPath?.split('/').last} selected!',
+                      style: body4TextStyle.copyWith(color: colorSuccess),
+                    )
+                  : const SizedBox.shrink(),
               SizedBox(
                 height: 20,
               ),

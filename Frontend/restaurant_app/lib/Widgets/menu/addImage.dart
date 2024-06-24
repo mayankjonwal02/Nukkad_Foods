@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/customs/User/uploadWidget.dart';
 
-
 class AddImage extends StatefulWidget {
-  const AddImage({Key? key}) : super(key: key ?? const Key('default'));
+  const AddImage({Key? key, required this.onFilePicked, required this.context})
+      : super(key: key ?? const Key('default'));
+  final OnFilePicked onFilePicked;
+  final BuildContext context;
 
   @override
   _AddImageState createState() => _AddImageState();
@@ -42,11 +44,13 @@ class _AddImageState extends State<AddImage> {
             height: 20,
           ),
           Center(
-            child: GestureDetector(
-              onTap: () async {
-                // Use uploadWidget to pick a file
-                uploadWidget(onFilePicked: _handleFilePicked, context: context);
-              },
+            child: uploadWidget(
+              onFilePicked: widget.onFilePicked, context: widget.context,
+              // onTap: () async {
+              //   // Use uploadWidget to pick a file
+              //   uploadWidget(
+              //       onFilePicked: widget.onFilePicked, context: widget.context);
+              // },
               child: DottedBorder(
                 strokeWidth: 2,
                 dashPattern: [6, 3],
