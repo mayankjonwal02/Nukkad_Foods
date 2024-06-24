@@ -92,13 +92,9 @@ class _CategoriesFormState extends State<CategoriesForm> {
               AddImage(
                 context: context,
                 onFilePicked: _handleImagePicked,
+                imagePath: imageCategoryPath,
+                isImageUploaded: isCategoryImageUploaded,
               ),
-              isCategoryImageUploaded
-                  ? Text(
-                      '${imageCategoryPath?.split('/').last} selected!',
-                      style: body4TextStyle.copyWith(color: colorSuccess),
-                    )
-                  : const SizedBox.shrink(),
               SizedBox(
                 height: 20,
               ),

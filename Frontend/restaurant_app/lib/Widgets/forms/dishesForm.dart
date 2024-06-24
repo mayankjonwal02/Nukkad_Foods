@@ -244,8 +244,7 @@ class _DishesFormState extends State<DishesForm> {
         noOfServers.text.isNotEmpty &&
         selectedCategory != null &&
         selectedSubCategory != null &&
-        selectedLabel != null &&
-        imageDishPath != null;
+        selectedLabel != null ;
   }
 
   changeSubCategoryCheck(int index) {
@@ -460,13 +459,9 @@ class _DishesFormState extends State<DishesForm> {
               ),
               SizedBox(height: 20),
               // AddImage(),
-              AddImage(context: context, onFilePicked: _handleImagePicked),
-              isDishImageUploaded
-                  ? Text(
-                      '${imageDishPath?.split('/').last} selected!',
-                      style: body4TextStyle.copyWith(color: colorSuccess),
-                    )
-                  : const SizedBox.shrink(),
+              AddImage(context: context, onFilePicked: _handleImagePicked,
+              isImageUploaded: isDishImageUploaded,
+              imagePath: imageDishPath),
               SizedBox(height: 20),
               isLoading
                   ? CircularProgressIndicator()

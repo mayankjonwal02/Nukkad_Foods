@@ -1,13 +1,16 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurant_app/Widgets/constants/colors.dart';
 import 'package:restaurant_app/Widgets/constants/texts.dart';
 import 'package:restaurant_app/Widgets/customs/User/uploadWidget.dart';
 
 class AddImage extends StatefulWidget {
-  const AddImage({Key? key, required this.onFilePicked, required this.context})
+  const AddImage({Key? key, required this.onFilePicked, required this.context,this.isImageUploaded= false,this.imagePath})
       : super(key: key ?? const Key('default'));
   final OnFilePicked onFilePicked;
   final BuildContext context;
+  final bool? isImageUploaded;
+  final String? imagePath;
 
   @override
   _AddImageState createState() => _AddImageState();
@@ -75,6 +78,15 @@ class _AddImageState extends State<AddImage> {
               ),
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          widget.isImageUploaded!
+              ? Text(
+            '${widget.imagePath?.split('/').last} selected!',
+            style: body4TextStyle.copyWith(color: colorSuccess),
+          )
+              : const SizedBox.shrink(),
         ],
       ),
     );
