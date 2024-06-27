@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/src/flutter_dotenv.dart';
 import 'package:user_app/screens/intro_screen.dart';
 import 'package:user_app/screens/splash_screen.dart';
 import 'package:user_app/utils/colors.dart';
@@ -20,10 +21,10 @@ void main() async {
     print('Error loading .env file: $e');
   }
 
-  WidgetsFlutterBinding.ensureInitialized;
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // WidgetsFlutterBinding.ensureInitialized;
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   runApp(const MyApp());
 }
 

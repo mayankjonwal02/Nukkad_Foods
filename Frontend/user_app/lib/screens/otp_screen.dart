@@ -9,9 +9,16 @@ import 'package:user_app/widgets/common/transition_to_next_screen.dart';
 import '../utils/font-styles.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key, this.isSigninUp = false});
+  const OtpScreen({
+    super.key,
+    this.isSigninUp = false,
+    required this.userNumber,
+    required this.otp,
+  });
 
   final bool isSigninUp;
+  final String userNumber;
+  final String otp;
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -31,6 +38,25 @@ class _OtpScreenState extends State<OtpScreen> {
     controller3.dispose();
     controller4.dispose();
     super.dispose();
+  }
+
+  void verifyOtp() {
+    String enteredOtp = controller1.text +
+        controller2.text +
+        controller3.text +
+        controller4.text;
+
+    if (enteredOtp == widget.otp) {
+      Navigator.of(context).push(transitionToNextScreen(
+          widget.isSigninUp ? LocationScreen() : ResetPasswordScreen()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("Invalid OTP"),
+        ),
+      );
+    }
   }
 
   @override
@@ -69,7 +95,7 @@ class _OtpScreenState extends State<OtpScreen> {
               height: 20,
             ),
             Text(
-              'Verify with OTP sent to xxxxxxx999',
+              'Verify with OTP sent to ${widget.userNumber}',
               style:
                   TextStyle(fontSize: extraLarge, fontWeight: FontWeight.bold),
             ),
@@ -88,12 +114,13 @@ class _OtpScreenState extends State<OtpScreen> {
             ),
             FullWidthRedButton(
                 label: 'CONTINUE',
-                onPressed: () {
-                  Navigator.of(context).push(transitionToNextScreen(
-                      widget.isSigninUp
-                          ? LocationScreen()
-                          : ResetPasswordScreen()));
-                }),
+                onPressed: verifyOtp,
+                //   Navigator.of(context).push(transitionToNextScreen(
+                //       widget.isSigninUp
+                //           ? LocationScreen()
+                //           : ResetPasswordScreen()));
+                // }),
+            ),
             SizedBox(
               height: 20,
             ),

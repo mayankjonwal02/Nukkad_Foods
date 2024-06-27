@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,13 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
-  Future<void> signUp() async {
+  String generateOTP() {
+    Random random = Random();
+    int otp = random.nextInt(10000);
+    return otp.toString().padLeft(4, '0');
+  }
+
+  Future<void> signUpAndSendOTP() async {
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -70,62 +77,70 @@ class _SignupScreenState extends State<SignupScreen> {
     });
 
     var baseUrl = dotenv.env['BASE_URL'];
-    var reqData = {
-      'name': _nameController.text,
+    String requestBody = jsonEncode({
+      'username': _nameController.text,
       'email': _emailController.text,
-      'phoneNumber': _phoneNoController.text,
+      'contact': _phoneNoController.text,
       'password': _passwordController.text,
-    };
-    String requestBody = jsonEncode(reqData);
+    });
 
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/auth/signup'),
-        headers: {
-          'Content-Type': 'application/json',
+      // Save user info temporarily in SharedPreferences
+      print("Shared preferences------");
+      await saveUserInfo(requestBody);
+
+      print("Hello");
+
+      String otp = generateOTP();
+      print(otp);
+
+      final otpResponse = await http.post(
+        Uri.parse('$baseUrl/sms/sendSMS'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: requestBody,
+        body: jsonEncode(<String, String>{
+          'to': _phoneNoController.text,
+          'body': 'Your OTP is $otp',
+        }),
       );
 
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-
-        if (responseData != null && responseData['executed'] == true) {
-          saveUserInfo(responseData['uid']);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: colorSuccess,
-              content: Text("Signup Successfully")));
-          setState(() {
-            isLoading = false;
-          });
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => OtpScreen(isSigninUp: true)),
-          );
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                backgroundColor: colorFailure,
-                content: Text(responseData['message'] ?? "Signup failed")),
-          );
-        }
+      if (otpResponse.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: colorSuccess,
+          content: Text("OTP sent successfully"),
+        ));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpScreen(
+              isSigninUp: true,
+              userNumber: _phoneNoController.text,
+              otp: otp,
+            ),
+          ),
+        );
       } else {
         setState(() {
           isLoading = false;
         });
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: colorFailure, content: Text("Failed to signup")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("Failed to send OTP"),
+          ),
+        );
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: colorFailure, content: Text("Error: Server Error")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text("Error: Failed to sign up"),
+        ),
+      );
     }
   }
 
@@ -217,12 +232,13 @@ class _SignupScreenState extends State<SignupScreen> {
               height: 40,
             ),
             FullWidthRedButton(
-                label: 'SIGN UP',
-                onPressed: () {
-                  Navigator.of(context).push(transitionToNextScreen(OtpScreen(
-                    isSigninUp: true,
-                  )));
-                }),
+              label: 'SIGN UP',
+              onPressed: signUpAndSendOTP,
+              //   Navigator.of(context).push(transitionToNextScreen(OtpScreen(
+              //     isSigninUp: true,
+              //   )));
+              // }),
+            ),
             SizedBox(
               height: 20,
             ),

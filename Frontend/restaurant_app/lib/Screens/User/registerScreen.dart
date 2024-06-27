@@ -153,21 +153,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         print(otp);
 
         // Call the sendOtp endpoint
-        // final String baseUrl = dotenv.env['BASE_URL']!;
-        // final response = await http.post(
-        //   Uri.parse('$baseUrl/sms/sendSMS'), // Update with your backend URL
-        //   headers: <String, String>{
-        //     'Content-Type': 'application/json; charset=UTF-8',
-        //   },
-        //   body: jsonEncode(<String, String>{
-        //     'to': nukkadContact,
-        //     'body': 'Your OTP is $otp',
-        //   }),
-        // );
+        final String baseUrl = dotenv.env['BASE_URL']!;
+        final response = await http.post(
+          Uri.parse('$baseUrl/sms/sendSMS'), // Update with your backend URL
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'to': nukkadContact,
+            'body': 'Your OTP is $otp',
+          }),
+        );
 
-        // debugPrint('response : $response');
+        debugPrint('response : $response');
 
-        if (true) {
+        if (response.statusCode == 200) {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return OTPScreen(
               userNumber: nukkadContact,

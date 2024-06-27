@@ -34,6 +34,19 @@ class _SignInScreenState extends State<SignInScreen> {
   String userPassword = '';
   bool isLoading = false;
 
+  @override
+  void dispose() {
+    super.dispose();
+    _mobileNumberController.dispose();
+    _passwordController.dispose();
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordObscured = !_isPasswordObscured;
+    });
+  }
+
   void routeHome() {
     if (userNumber != '' && userPassword != '') {
       // userNumber = userNumber.substring(3);
@@ -58,25 +71,42 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
-  void _togglePasswordVisibility() {
-    setState(() {
-      _isPasswordObscured = !_isPasswordObscured;
-    });
-  }
-
   Future<void> signIn() async {
+    String userNumber = _mobileNumberController.text;
+    String userPassword = _passwordController.text;
+
+    if (userNumber.isEmpty || userPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Please fill in both fields"),
+        ),
+      );
+      return;
+    }
+
+    if (userNumber.length < 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Please enter a valid phone number"),
+        ),
+      );
+      return;
+    }
+
     setState(() {
       isLoading = true;
     });
+
     try {
       var baseUrl = dotenv.env['BASE_URL'];
       var reqData = {'phoneNumber': userNumber, 'password': userPassword};
       String requestBody = jsonEncode(reqData);
+
       final response = await http.post(
         Uri.parse('$baseUrl/auth/login'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: requestBody,
       );
 
@@ -85,47 +115,49 @@ class _SignInScreenState extends State<SignInScreen> {
 
         if (responseData != null && responseData['executed'] == true) {
           saveUserInfo(responseData['uid']);
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
               backgroundColor: colorSuccess,
-              content: Text("Login Successfully")));
-          setState(() {
-            isLoading = false;
-          });
-          Navigator.push(
+              content: Text("Login Successful"),
+            ),
+          );
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HomeScreen()),
           );
         } else {
-          setState(() {
-            isLoading = false;
-          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                backgroundColor: colorFailure,
-                content: Text(responseData['message'] ?? "Login failed")),
+              backgroundColor: colorFailure,
+              content: Text(responseData['message'] ?? "Login failed"),
+            ),
           );
         }
       } else {
-        setState(() {
-          isLoading = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: colorFailure, content: Text("Failed to login")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: colorFailure,
+            content: Text("Failed to login"),
+          ),
+        );
       }
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: colorFailure,
+          content: Text("Error: Server Error"),
+        ),
+      );
+    } finally {
       setState(() {
         isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: colorFailure, content: Text("Error: Server Error")));
     }
   }
 
-  Future<void> saveUserInfo(userInfo) async {
+  Future<void> saveUserInfo(String userInfo) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('User_id', userInfo);
-    // print('sdggdgsagasssdasdasdasdads');
     print(prefs.getString('User_id'));
   }
 
@@ -205,7 +237,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Center(
                   child: FullWidthRedButton(
                     label: 'SIGN IN',
-                    onPressed: () {},
+                    onPressed: signIn,
                   ),
                 ),
                 SizedBox(height: 40),
