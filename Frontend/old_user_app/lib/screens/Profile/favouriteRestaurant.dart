@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/Widgets/customs/Food/allRestaurants.dart';
 
 class FavouriteRestaurants extends StatefulWidget {
   const FavouriteRestaurants({super.key});
@@ -29,9 +28,9 @@ class _FavouriteRestaurantsState extends State<FavouriteRestaurants> {
         padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
         child: Column(
           children: [
-            restaurant(context, 'KFC'),
-            restaurant(context, 'Burger King'),
-            restaurant(context, 'Pizza Hut'),
+            // restaurant(context, 'KFC'),
+            // restaurant(context, 'Burger King'),
+            // restaurant(context, 'Pizza Hut'),
           ],
         ),
       ),

@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Controller/food/menu_model.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/widgets/constants/strings.dart';
+import 'package:user_app/widgets/customs/network_image_widget.dart';
 
 class FoodItemWidget extends StatefulWidget {
   final void Function(int) onCounterChanged;
+  final MenuItemModel menuItem;
 
-  const FoodItemWidget({Key? key, required this.onCounterChanged})
-      : super(key: key);
+  const FoodItemWidget({
+    Key? key,
+    required this.onCounterChanged,
+    required this.menuItem,
+  }) : super(key: key);
 
   @override
   _FoodItemWidgetState createState() => _FoodItemWidgetState();
@@ -56,16 +63,19 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset('assets/icons/veg_icon.png', height: 4.h),
+              Image.asset(
+                  AppStrings.lableIcons[AppStrings.lable
+                      .indexOf(widget.menuItem.label ?? AppStrings.lable[0])],
+                  height: 4.h),
               SizedBox(width: 2.w),
-              SizedBox(
-                width: 40.w,
+              Expanded(
+                // width: 40.w,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Veg Manchurian Gravy',
+                      widget.menuItem.menuItemName ?? "",
                       style: body4TextStyle.copyWith(
                           fontWeight: FontWeight.bold, fontSize: 13.sp),
                       textAlign: TextAlign.start,
@@ -73,7 +83,7 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      '₹ 200',
+                      '₹ ${widget.menuItem.menuItemCost ?? 0.0}',
                       style: body4TextStyle.copyWith(
                           fontWeight: FontWeight.bold, fontSize: 13.sp),
                       textAlign: TextAlign.start,
@@ -89,7 +99,12 @@ class _FoodItemWidgetState extends State<FoodItemWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/bowl_3.png', height: 9.h),
+                    NetworkImageWidget(
+                      height: 9.h,
+                      width: 20.w,
+                      imageUrl: widget.menuItem.menuItemImageURL,
+                    ),
+                    // Image.asset('assets/images/bowl_3.png', height: 9.h),
                     Container(
                       height: 3.h,
                       width: 15.w,

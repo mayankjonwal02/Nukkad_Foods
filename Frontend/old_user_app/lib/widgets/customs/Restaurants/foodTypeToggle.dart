@@ -5,11 +5,11 @@ import 'package:user_app/Widgets/constants/texts.dart';
 
 Widget foodTypeToggle(Function(int) onTap, List<bool> isSelected) {
   List<String> types = [
-    'Pure-Veg',
+    'Veg',
     'Non-Veg',
     'Vegan',
-    'Gluten Free',
-    'Dairy Free'
+    'Gluten-Free',
+    'Dairy Free',
   ];
   List<String> typeIcons = [
     'assets/icons/veg_icon.png',

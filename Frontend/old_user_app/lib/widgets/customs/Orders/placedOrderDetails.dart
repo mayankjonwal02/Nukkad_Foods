@@ -2,19 +2,24 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Screens/Orders/orderSummary.dart';
+import 'package:user_app/Controller/order/orders_model.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
+import 'package:user_app/screens/Orders/orderSummary.dart';
 
-Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
+Widget placedOrderDetails({
+  required bool isOngoing,
+  required BuildContext context,
+  required Orders order,
+  /*required Restaurants restaurant*/
+}) {
   return GestureDetector(
     onTap: () {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => OrderSummary(
-            isOngoing: _isOngoing,
-          ),
+          builder: (context) =>
+              OrderSummary(isOngoing: isOngoing, order: order),
         ),
       );
     },
@@ -117,21 +122,23 @@ Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
                     height: 3.5.h,
                     width: 25.w,
                     decoration: BoxDecoration(
-                        color: _isOngoing ? Colors.green : textGrey2,
+                        color: isOngoing ? Colors.green : textGrey2,
                         borderRadius: BorderRadius.circular(6)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SvgPicture.asset(
-                          _isOngoing
+                          isOngoing
                               ? 'assets/icons/preparing_icon.svg'
                               : 'assets/icons/delivered_icon.svg',
-                          height: _isOngoing ? 3.h : 2.h,
+                          height: isOngoing ? 3.h : 2.h,
                           color: Colors.white,
                         ),
                         Text(
-                          _isOngoing ? 'Preparing' : 'Delivered',
+                          // isOngoing ? 'Preparing' : 'Delivered',
+                          order.status ??
+                              (isOngoing ? 'Preparing' : 'Delivered'),
                           style: body5TextStyle.copyWith(
                             color: textWhite,
                           ),
@@ -148,8 +155,17 @@ Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('1 x Fried Rice', style: body4TextStyle),
-                  Text('1 x Schezwan Noodles', style: body4TextStyle),
+                  order.items!.length != 0
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: order.items!.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) => Text(
+                              '${order.items![index].itemQuantity} x ${order.items![index].itemName}',
+                              style: body4TextStyle))
+                      : SizedBox.shrink(),
+                  // Text('1 x Fried Rice', style: body4TextStyle),
+                  // Text('1 x Schezwan Noodles', style: body4TextStyle),
                   Divider(
                     thickness: 0.2.h,
                     color: textGrey3,
@@ -162,7 +178,7 @@ Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
                         Text('Total', style: body5TextStyle),
                         Spacer(),
                         Spacer(),
-                        Text('₹ 250', style: h6TextStyle),
+                        Text('₹ ${order.totalCost ?? "0"}', style: h6TextStyle),
                         Spacer()
                       ],
                     ),
@@ -216,14 +232,14 @@ Widget placedOrderDetails(bool _isOngoing, BuildContext context) {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   SvgPicture.asset(
-                                    _isOngoing
+                                    isOngoing
                                         ? 'assets/icons/track_order_icon.svg'
                                         : 'assets/icons/repeat_order_icon.svg',
                                     color: Colors.white,
                                     height: 2.5.h,
                                   ),
                                   Text(
-                                    _isOngoing ? 'Track' : 'Reorder',
+                                    isOngoing ? 'Track' : 'Reorder',
                                     style: body4TextStyle.copyWith(
                                         color: textWhite),
                                   ),

@@ -8,7 +8,6 @@ import 'package:user_app/Screens/Subscriptions/planScreen.dart';
 import 'package:user_app/Screens/Support/helpSupportScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/screens/rewards/rewardsScreen.dart';
 
 class customAppBar extends StatefulWidget {
   const customAppBar({super.key});
@@ -22,6 +21,7 @@ class _customAppBarState extends State<customAppBar> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 5.h, right: 1.8.w, left: 3.w),
+      height: 9.h,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,50 +34,61 @@ class _customAppBarState extends State<customAppBar> {
               color: primaryColor,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 49.w,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Home',
-                      style: h5TextStyle,
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      '506 B, kanadiya road main road',
-                      style: body5TextStyle,
-                      textAlign: TextAlign.start,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // SizedBox(
+                // width: 49.w,
+                /*child: */ Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: AlignmentDirectional.bottomStart,
+                          child: Text(
+                            'Home',
+                            style: h5TextStyle,
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '506 B, kanadiya road main road',
+                          style: body5TextStyle,
+                          textAlign: TextAlign.start,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SavedAddresses(),
-                    ),
-                  );
-                },
-                icon: SvgPicture.asset(
-                  'assets/icons/dropdown_icon.svg',
-                  height: 3.5.h,
+                // ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SavedAddresses(),
+                      ),
+                    );
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/icons/dropdown_icon.svg',
+                    height: 3.5.h,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          const Spacer(),
+          // const Spacer(),
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -107,8 +118,12 @@ class _customAppBarState extends State<customAppBar> {
                 ),
               );
             },
-            child:
-                Text('Help', style: h6TextStyle.copyWith(color: primaryColor)),
+            child: Text(
+              'Help',
+              style: h6TextStyle.copyWith(color: primaryColor),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),

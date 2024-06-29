@@ -104,7 +104,7 @@ class ExpandableBox extends StatefulWidget {
 
 class _ExpandableBoxState extends State<ExpandableBox> {
   bool _isExpanded = false;
-  double _boxHeight = 7.h;
+  double _boxHeight = 7.5.h;
 
   void _toggleExpand() {
     setState(() {

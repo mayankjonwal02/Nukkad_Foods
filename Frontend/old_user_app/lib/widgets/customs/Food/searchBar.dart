@@ -4,11 +4,14 @@ import 'package:sizer/sizer.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 
-Widget searchBar(String barText) {
+Widget searchBar(String barText, TextEditingController controller,
+    Function(String)? onChanged) {
   return Container(
     height: 7.h,
     margin: EdgeInsets.fromLTRB(2.w, 2.h, 2.w, 0),
     child: TextField(
+      controller: controller,
+      onChanged: onChanged,
       decoration: InputDecoration(
         hintText: barText,
         contentPadding: EdgeInsets.symmetric(vertical: 1.h),

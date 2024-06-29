@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:user_app/Controller/food/fetch_all_restaurants_model.dart';
+import 'package:user_app/Controller/food/food_controller.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:user_app/Widgets/customs/Food/allRestaurants.dart';
 import 'package:user_app/Widgets/customs/Food/appBar.dart';
 import 'package:user_app/Widgets/customs/Food/offersSlider.dart';
-import 'package:user_app/Widgets/customs/Food/restaurantSlider.dart';
-import 'package:user_app/Widgets/customs/Food/searchBar.dart';
 import 'package:user_app/Widgets/customs/Food/sectionGrid.dart';
 import 'package:user_app/Widgets/customs/Food/sectionSlider.dart';
-import 'package:user_app/widgets/customs/Food/adsSlider.dart';
+import 'package:user_app/widgets/constants/show_snack_bar_extension.dart';
+import 'package:user_app/widgets/customs/Food/restaurantSlider.dart';
+import 'package:user_app/widgets/customs/Food/searchBar.dart';
+import 'package:user_app/widgets/food/build_all_restaurant_list_widget.dart';
 
 class FoodBody extends StatefulWidget {
   const FoodBody({super.key});
@@ -127,52 +129,86 @@ class _FoodBodyState extends State<FoodBody> {
   ];
   List offerData = [];
 
-  final ScrollController _scrollController = ScrollController();
+  // final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
+
+  bool isAllRestaurantsLoaded = false;
+  FetchAllRestaurantsModel? fetchAllRestaurantsModel;
+
+  bool isLatestRestaurantsLoaded = false;
+  FetchAllRestaurantsModel? fetchLatestRestaurantsModel;
+
+  bool isNearestRestaurantsLoaded = false;
+  FetchAllRestaurantsModel? fetchNearestRestaurantsModel;
+
+  bool isQuickDeliveryRestaurantsLoaded = false;
+  FetchAllRestaurantsModel? fetchQuickDeliveryRestaurantsModel;
+
+  final TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_scrollListener);
-    _loadMoreRestaurants();
+    fetchAllRestaurants();
+    // _scrollController.addListener(_scrollListener);
+    // _loadMoreRestaurants();
+  }
+
+  fetchAllRestaurants() async {
+    setState(() {
+      isAllRestaurantsLoaded = false;
+    });
+    var result = await FoodController.fetchAllRestaurants(context: context);
+    result.fold((String text) {
+      setState(() {
+        isAllRestaurantsLoaded = true;
+        context.showSnackBar(message: text);
+      });
+    }, (FetchAllRestaurantsModel allRestaurantsModel) {
+      setState(() {
+        fetchAllRestaurantsModel = allRestaurantsModel;
+        isAllRestaurantsLoaded = true;
+        print("allRestaurantsModel: $fetchAllRestaurantsModel");
+      });
+    });
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    // _scrollController.dispose();
     super.dispose();
   }
 
-  void _scrollListener() {
-    if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent &&
-        !_isLoading) {
-      _loadMoreRestaurants();
-    }
-  }
+  // void _scrollListener() {
+  //   if (_scrollController.position.pixels ==
+  //           _scrollController.position.maxScrollExtent &&
+  //       !_isLoading) {
+  //     _loadMoreRestaurants();
+  //   }
+  // }
 
-  void _loadMoreRestaurants() async {
-    if (!_isLoading) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      await Future.delayed(const Duration(seconds: 2));
-      setState(() {
-        restaurantNames.addAll([
-          'New Restaurant ${restaurantNames.length + 1}',
-          'New Restaurant ${restaurantNames.length + 2}',
-        ]);
-        restaurantImages.addAll(['new_image_url1', 'new_image_url2']);
-        _isLoading = false;
-      });
-    }
-  }
+  // void _loadMoreRestaurants() async {
+  //   if (!_isLoading) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //
+  //     await Future.delayed(const Duration(seconds: 2));
+  //     setState(() {
+  //       restaurantNames.addAll([
+  //         'New Restaurant ${restaurantNames.length + 1}',
+  //         'New Restaurant ${restaurantNames.length + 2}',
+  //       ]);
+  //       restaurantImages.addAll(['new_image_url1', 'new_image_url2']);
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: _scrollController,
+      // controller: _scrollController,
       child: Column(
         children: [
           const customAppBar(),
@@ -180,16 +216,19 @@ class _FoodBodyState extends State<FoodBody> {
             padding: EdgeInsets.only(bottom: 2.h),
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 2.w),
-              child: searchBar('What are you looking for?'),
+              child: searchBar('What are you looking for?', searchController,
+                  (String text) {}),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 2.h),
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 2.w),
-              child: AdsSlider(),
-            ),
-          ),
+
+          ///todo remove comment
+          // Padding(
+          //   padding: EdgeInsets.only(bottom: 2.h),
+          //   child: Container(
+          //     margin: EdgeInsets.symmetric(horizontal: 2.w),
+          //     child: AdsSlider(),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(bottom: 0),
             child: Container(
@@ -242,7 +281,10 @@ class _FoodBodyState extends State<FoodBody> {
             height: 30.h,
             padding: EdgeInsets.only(top: 3.h, left: 2.w, bottom: 3.h),
             color: const Color(0xFFfee5ec),
-            child: restaurantSlider(context),
+            child: isQuickDeliveryRestaurantsLoaded
+                ? restaurantSlider(context,
+                    restaurants: fetchQuickDeliveryRestaurantsModel!)
+                : Center(child: CircularProgressIndicator()),
           ),
           Align(
             alignment: Alignment.centerLeft,
@@ -259,7 +301,10 @@ class _FoodBodyState extends State<FoodBody> {
             height: 30.h,
             color: const Color(0xFFfee5ec),
             padding: EdgeInsets.only(top: 3.h, left: 2.w, bottom: 3.h),
-            child: restaurantSlider(context),
+            child: isNearestRestaurantsLoaded
+                ? restaurantSlider(context,
+                    restaurants: fetchNearestRestaurantsModel!)
+                : Center(child: CircularProgressIndicator()),
           ),
           Align(
             alignment: Alignment.centerLeft,
@@ -276,7 +321,10 @@ class _FoodBodyState extends State<FoodBody> {
             height: 30.h,
             padding: EdgeInsets.only(top: 3.h, left: 2.w, bottom: 3.h),
             color: const Color(0xFFfee5ec),
-            child: restaurantSlider(context),
+            child: isLatestRestaurantsLoaded
+                ? restaurantSlider(context,
+                    restaurants: fetchLatestRestaurantsModel!)
+                : Center(child: CircularProgressIndicator()),
           ),
           Padding(
             padding: EdgeInsets.only(top: 2.h, bottom: 3.h),
@@ -287,47 +335,53 @@ class _FoodBodyState extends State<FoodBody> {
               endIndent: 3.w,
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 2.h),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'ALL RESTAURANTS',
-                  style: titleTextStyle,
-                  textAlign: TextAlign.center,
+          isAllRestaurantsLoaded
+              ? BuildAllRestaurantListWidget(
+                  fetchAllRestaurantsModel: fetchAllRestaurantsModel!)
+              : Center(
+                  child: CircularProgressIndicator(),
                 ),
-                Text(
-                  '${restaurantNames.length} Restaurants delivering to you',
-                  style: body5TextStyle.copyWith(color: textGrey2),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 3.w),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: restaurantNames.length,
-              itemBuilder: (context, index) {
-                if (index == restaurantNames.length) {
-                  {
-                    return Column(
-                      children: [
-                        restaurant(context, restaurantNames[index]),
-                        const CircularProgressIndicator(),
-                      ],
-                    );
-                  }
-                } else {
-                  return restaurant(context, restaurantNames[index]);
-                }
-              },
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.only(bottom: 2.h),
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: [
+          //       Text(
+          //         'ALL RESTAURANTS',
+          //         style: titleTextStyle,
+          //         textAlign: TextAlign.center,
+          //       ),
+          //       Text(
+          //         '${restaurantNames.length} Restaurants delivering to you',
+          //         style: body5TextStyle.copyWith(color: textGrey2),
+          //         textAlign: TextAlign.center,
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Container(
+          //   margin: EdgeInsets.symmetric(horizontal: 3.w),
+          //   child: ListView.builder(
+          //     shrinkWrap: true,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     itemCount: restaurantNames.length,
+          //     itemBuilder: (context, index) {
+          //       if (index == restaurantNames.length) {
+          //         {
+          //           return Column(
+          //             children: [
+          //               restaurant(context, restaurantNames[index]),
+          //               const CircularProgressIndicator(),
+          //             ],
+          //           );
+          //         }
+          //       } else {
+          //         return restaurant(context, restaurantNames[index]);
+          //       }
+          //     },
+          //   ),
+          // ),
           SizedBox(height: 1.h),
         ],
       ),

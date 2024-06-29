@@ -1,28 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:user_app/Screens/Restaurant/restaurantScreen.dart';
+import 'package:user_app/Controller/food/fetch_all_restaurants_model.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/customs/Food/ratingWidget.dart';
+import 'package:user_app/screens/Restaurant/restaurantScreen.dart';
+import 'package:user_app/widgets/customs/network_image_widget.dart';
 
-Widget allRestaurants(BuildContext context, String restaurantName) {
+Widget allRestaurants(
+    {required BuildContext context,
+    /* String restaurantName*/ required List<Restaurants> restaurantsList}) {
   return SizedBox(
     height: 75.h,
     child: ListView.builder(
       itemCount: 15,
       itemBuilder: (context, index) {
-        return restaurant(context, restaurantName);
+        return restaurant(
+          context: context,
+          restaurantModel: restaurantsList[index],
+        );
       },
     ),
   );
 }
 
-Widget restaurant(BuildContext context, String restaurantName) {
+Widget restaurant(
+    {required BuildContext context,
+    required Restaurants restaurantModel,
+    String? restaurantName = ""}) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const RestaurantScreen()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => RestaurantScreen(
+                    restaurantID: restaurantModel.id ?? "",
+                  )));
     },
     child: Container(
       margin: EdgeInsets.only(bottom: 2.h),
@@ -43,16 +57,21 @@ Widget restaurant(BuildContext context, String restaurantName) {
               Stack(
                 children: [
                   Container(
-                    height: 15.h,
-                    width: 28.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Image.asset(
-                      'assets/images/restaurantImage.png',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                      height: 15.h,
+                      width: 28.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: NetworkImageWidget(
+                        imageUrl: restaurantModel.restaurantImages![0],
+                        height: 15.h,
+                        width: 28.w,
+                      )
+                      // child: Image.asset(
+                      //   'assets/images/restaurantImage.png',
+                      //   fit: BoxFit.fill,
+                      // ),
+                      ),
                   Positioned(
                     bottom: 1.h,
                     left: 1.5.w,
@@ -71,106 +90,92 @@ Widget restaurant(BuildContext context, String restaurantName) {
                   ),
                 ],
               ),
-              Container(
-                width: 50.w,
-                padding: EdgeInsets.only(left: 2.w, top: 2.h, bottom: 2.h),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      restaurantName,
-                      style: h5TextStyle.copyWith(fontSize: 14.sp),
-                      maxLines: 1,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    SizedBox(height: 0.5.h),
-                    Text(
-                      'Saket Nagar, Indore',
-                      style: body4TextStyle.copyWith(color: textGrey2),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(height: 0.5.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/timer_icon.svg',
-                          height: 3.h,
-                          color: primaryColor,
-                        ),
-                        SizedBox(width: 1.5.w),
-                        Text('30 MINS',
-                            style: body5TextStyle.copyWith(color: textGrey1)),
-                        SvgPicture.asset(
-                          'assets/icons/dot.svg',
-                          height: 2.h,
-                          color: textGrey1,
-                        ),
-                        Text('5.4 KM',
-                            style: body5TextStyle.copyWith(color: textGrey1)),
-                      ],
-                    ),
-                  ],
-                ),
+              SizedBox(
+                width: 2.w,
               ),
-              PopupMenuButton(
-                color: const Color(0xFFB8B8B8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                onSelected: (value) {
-                  if (value == 'hide') {
-                    // Implement your edit action here
-                  } else if (value == 'share') {
-                    // Implement your delete action here
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 'hide',
-                    child: SizedBox(
-                      width: 40.w,
+              Expanded(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.visibility_off_outlined,
-                            color: textBlack,
-                            size: 15.sp,
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: AlignmentDirectional.bottomStart,
+                          child: Text(
+                            restaurantModel.nukkadName ?? "",
+                            style: h5TextStyle.copyWith(fontSize: 14.sp),
+                            maxLines: 1,
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(width: 1.5.w),
-                          Text('Hide Restaurant', style: body4TextStyle),
-                        ],
+                        ),
+                      ),
+                      _buildMoreWidget(),
+                    ],
+                  )),
+                  Expanded(
+                    child: Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(
+                        restaurantModel.nukkadAddress ?? "",
+                        style: body4TextStyle.copyWith(color: textGrey2),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
                       ),
                     ),
                   ),
-                  PopupMenuItem(
-                    value: 'share',
-                    child: SizedBox(
-                      width: 42.w,
+                  Expanded(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.share_outlined,
-                            color: textBlack,
-                            size: 15.sp,
-                          ),
-                          SizedBox(width: 1.5.w),
-                          Text('Share Restaurant', style: body4TextStyle),
-                        ],
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/timer_icon.svg',
+                              height: 3.h,
+                              color: primaryColor,
+                            ),
+                            SizedBox(width: 1.5.w),
+                            Expanded(
+                              child: Text(
+                                '30 MINS',
+                                style: body5TextStyle.copyWith(
+                                  color: textGrey1,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
+                      Expanded(
+                          child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/dot.svg',
+                            height: 2.h,
+                            color: textGrey1,
+                          ),
+                          Expanded(
+                            child: Text(
+                              '5.4 KM',
+                              style: body5TextStyle.copyWith(color: textGrey1),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ))
+                    ],
+                  ))
                 ],
-              ),
+              )),
             ],
           ),
         ),
@@ -178,3 +183,57 @@ Widget restaurant(BuildContext context, String restaurantName) {
     ),
   );
 }
+
+Widget _buildMoreWidget() => PopupMenuButton(
+      color: const Color(0xFFB8B8B8),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      onSelected: (value) {
+        if (value == 'hide') {
+          // Implement your edit action here
+        } else if (value == 'share') {
+          // Implement your delete action here
+        }
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          value: 'hide',
+          child: SizedBox(
+            width: 40.w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.visibility_off_outlined,
+                  color: textBlack,
+                  size: 15.sp,
+                ),
+                SizedBox(width: 1.5.w),
+                Text('Hide Restaurant', style: body4TextStyle),
+              ],
+            ),
+          ),
+        ),
+        PopupMenuItem(
+          value: 'share',
+          child: SizedBox(
+            width: 42.w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.share_outlined,
+                  color: textBlack,
+                  size: 15.sp,
+                ),
+                SizedBox(width: 1.5.w),
+                Text('Share Restaurant', style: body4TextStyle),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );

@@ -4,8 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/splashScreen.dart';
 import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/widgets/constants/shared_preferences.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefsUtil().init();
   try {
     await dotenv.load(fileName: ".env");
   } catch (e) {

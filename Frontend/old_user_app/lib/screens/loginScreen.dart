@@ -1,20 +1,22 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:user_app/Screens/registerScreen.dart';
-import 'package:user_app/Screens/homeScreen.dart';
-import 'package:user_app/Widgets/buttons/mainButton.dart';
-import 'package:user_app/Widgets/constants/colors.dart';
 import 'package:user_app/Widgets/buttons/forgotPasswordButton.dart';
+import 'package:user_app/Widgets/buttons/mainButton.dart';
 import 'package:user_app/Widgets/buttons/socialLoginButtons.dart';
 import 'package:user_app/Widgets/buttons/textRichButton.dart';
+import 'package:user_app/Widgets/constants/colors.dart';
+import 'package:user_app/Widgets/constants/strings.dart';
+import 'package:user_app/Widgets/constants/texts.dart';
 import 'package:user_app/Widgets/input_fields/passwordField.dart';
 import 'package:user_app/Widgets/input_fields/phoneField.dart';
-import 'package:user_app/Widgets/constants/texts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_app/screens/locationSetupScreen.dart';
+import 'package:user_app/widgets/constants/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -59,6 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final responseData = jsonDecode(response.body);
 
         if (responseData != null && responseData['executed']) {
+          SharedPrefsUtil().setString(AppStrings.userId, responseData['uid']);
           saveUserInfo(responseData['uid']);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: colorSuccess,
